@@ -61,6 +61,21 @@ specs/                         # Feature specifications (numbered branches)
   tasks/                       # Task index and backlog
 ```
 
+## Prompt Commands
+
+Commands for perfecting prompts and generating content. All prompt commands follow a consistent flow:
+
+1. **Phase 0: Prompt Perfection** - Analyze, clarify, correct, and structure the user's prompt
+2. **Wait for approval** (`y`/`n`/modifications)
+3. **Execute specific logic** after approval
+
+| Command | Purpose |
+|---------|---------|
+| `/prompt` | Perfect any prompt - analyze, clarify, correct, structure |
+| `/prompt-technical` | Technical implementation analysis with code scaffolding |
+| `/prompt-article` | Interactive article writing wizard (blog, LinkedIn, tutorial, etc.) |
+| `/prompt-article-readme` | README.md generator with project analysis |
+
 ## Core Principles
 
 1. **Task Completion is Non-Negotiable**: Build must succeed, tests must pass, task status synced in both tasks.md AND TodoWrite

@@ -1,10 +1,83 @@
 # /prompt-article - Interactive Article Writing Wizard
 
-This command provides an interactive wizard for writing articles in Slovak or English, with configurable types, audiences, styles, and multi-platform output.
+This command provides an interactive wizard for writing articles in Slovak or English, with configurable types, audiences, styles, and multi-platform output. It first perfects the user's prompt, then guides through the article creation wizard.
 
 ---
 
-## Interactive Wizard Flow
+## Phase 0: Prompt Perfection
+
+**Before starting the article wizard, first perfect the user's prompt.**
+
+### Step 0.1: Initial Analysis
+- Detect language (Slovak / English)
+- Identify prompt type: Should be "Article" or "Content Creation"
+- Extract the core intent: What article does the user want to create?
+
+### Step 0.2: Completeness Check
+Verify the prompt contains:
+- [ ] Clear goal/desired outcome (what article to write)
+- [ ] Context (topic, background information)
+- [ ] Scope (target audience, platform)
+- [ ] Constraints (if any: length, tone, deadline)
+- [ ] Success criteria (what makes a good article)
+
+Mark missing items - these will be collected in the wizard steps.
+
+### Step 0.3: Clarification (if needed)
+- If anything is ambiguous or unclear, ASK before proceeding
+- If multiple valid approaches exist:
+  - List each option with pros/cons
+  - Mark ⭐ recommended option with reasoning
+  - Wait for user selection
+
+### Step 0.4: Correction
+- Fix grammar, spelling, sentence structure in the topic/title
+- Preserve all technical terms, names, and references EXACTLY
+- Keep original intent and tone
+- Make it clear, specific, and actionable
+
+### Step 0.5: Structure the Perfect Prompt
+Transform into an executable format with:
+1. **Goal** - What article to create
+2. **Topic** - Main subject matter
+3. **Context** - Background and key points to cover
+4. **Constraints** - Any limitations or requirements
+5. **Expected Result** - What the final article should achieve
+
+### Phase 0 Output Format
+
+**Detected Language:** [Slovak / English]
+**Prompt Type:** Article / Content Creation
+
+**Original:**
+> $ARGUMENTS
+
+**Completeness Check:**
+- [x] Goal: [extracted or ❌ will be collected in wizard]
+- [x] Topic: [extracted or ❌ will be collected in wizard]
+- [x] Context: [extracted or ❌ will be collected in wizard]
+- [ ] Constraints: [extracted or ❌ optional]
+- [x] Target Audience: [extracted or ❌ will be collected in wizard]
+
+**Perfected Prompt:**
+> **Goal:** [one clear sentence about the article]
+> **Topic:** [main subject]
+> **Key Points:** [if provided]
+> **Constraints:** [any limitations, or "None - will configure in wizard"]
+
+**Changes Made:**
+- [list of corrections and improvements]
+
+---
+
+⏸️ **Waiting for approval before starting article wizard.** Reply with:
+- `y` or `yes` — proceed to article wizard
+- `n` or `no` — cancel
+- Or type modifications for adjustments
+
+---
+
+## Article Wizard Flow
 
 Guide the user through each step using the AskUserQuestion tool. Do NOT skip steps or assume answers.
 
@@ -363,13 +436,17 @@ Characters: [count]/3000
 
 When this command is executed:
 
-1. **Start the interactive wizard** - Use AskUserQuestion tool for each step
-2. **Collect all inputs** - Do not skip steps, ensure all parameters are captured
-3. **Generate the article** - Follow the structure for the selected article type
-4. **Apply writing style** - Match tone and complexity to selected audience/style
-5. **Create platform versions** - Generate formatted versions for each selected destination
-6. **Save the file** - Write the markdown file to the specified location
-7. **Display all versions** - Show the main article and all platform-specific versions
+1. **Phase 0: Prompt Perfection** - Perfect the user's prompt first
+   - Analyze, check completeness, clarify if needed, correct, structure
+   - Display the perfected prompt and wait for user approval (`y`/`n`/modifications)
+   - **Do NOT proceed to article wizard until user approves**
+2. **Start the interactive wizard** - Use AskUserQuestion tool for each step
+3. **Collect all inputs** - Do not skip steps, ensure all parameters are captured
+4. **Generate the article** - Follow the structure for the selected article type
+5. **Apply writing style** - Match tone and complexity to selected audience/style
+6. **Create platform versions** - Generate formatted versions for each selected destination
+7. **Save the file** - Write the markdown file to the specified location
+8. **Display all versions** - Show the main article and all platform-specific versions
 
 ### Language-Specific Guidelines
 
@@ -401,7 +478,33 @@ Before finalizing, verify:
 ## Example Wizard Interaction
 
 ```
-User: /prompt-article
+User: /prompt-article Write a blog post about AI in healthcare
+
+Claude: [Phase 0: Prompt Perfection]
+
+**Detected Language:** English
+**Prompt Type:** Article / Content Creation
+
+**Original:**
+> Write a blog post about AI in healthcare
+
+**Completeness Check:**
+- [x] Goal: Write a blog post
+- [x] Topic: AI in healthcare
+- [ ] Context: ❌ will be collected in wizard
+- [ ] Target Audience: ❌ will be collected in wizard
+
+**Perfected Prompt:**
+> **Goal:** Create a blog post about artificial intelligence applications in healthcare
+> **Topic:** AI in healthcare
+> **Constraints:** None - will configure in wizard
+
+**Changes Made:**
+- Expanded "AI" to "artificial intelligence" for clarity
+
+⏸️ **Waiting for approval.** Reply with y/n/modifications
+
+User: y
 
 Claude: Welcome to the Article Writing Wizard! Let me guide you through creating your article.
 

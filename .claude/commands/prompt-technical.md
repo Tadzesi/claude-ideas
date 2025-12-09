@@ -1,10 +1,89 @@
 # /prompt-technical - Technical Implementation Analysis
 
-This command continues after `/prompt` clarifications to provide deep technical analysis for programming and development tasks.
+This command provides deep technical analysis for programming and development tasks. It first perfects the user's prompt, then performs comprehensive technical analysis.
 
 ---
 
-## Step 1: Project Analysis
+## Phase 0: Prompt Perfection
+
+**Before any technical analysis, first perfect the user's prompt.**
+
+### Step 0.1: Initial Analysis
+- Detect language (Slovak / English)
+- Identify prompt type: [Question | Task | Bug Fix | Explanation | Code Review | Other]
+- Extract the core intent: What does the user ultimately want to achieve?
+
+### Step 0.2: Completeness Check
+Verify the prompt contains:
+- [ ] Clear goal/desired outcome
+- [ ] Context (project, technology, environment)
+- [ ] Scope (which files, components, areas)
+- [ ] Constraints (if any: performance, security, compatibility)
+- [ ] Success criteria (how to verify it's done)
+
+Mark missing items and ASK about them.
+
+### Step 0.3: Clarification (if needed)
+- If anything is ambiguous or unclear, ASK before proceeding
+- If multiple valid approaches exist:
+  - List each option with pros/cons
+  - Mark ⭐ recommended option with reasoning
+  - Wait for user selection
+
+### Step 0.4: Correction
+- Fix grammar, spelling, sentence structure
+- Preserve all technical terms, code references, variable names EXACTLY
+- Keep original intent and tone
+- Make it clear, specific, and actionable
+
+### Step 0.5: Structure the Perfect Prompt
+Transform into an executable format with:
+1. **Goal** - One sentence stating the desired outcome
+2. **Context** - Environment, technologies, relevant background
+3. **Scope** - What specifically to work on
+4. **Requirements** - Numbered list of specific requirements
+5. **Constraints** - Any limitations or rules to follow
+6. **Expected Result** - What success looks like
+
+### Phase 0 Output Format
+
+**Detected Language:** [Slovak / English]
+**Prompt Type:** [Question | Task | Bug Fix | Explanation | Code Review | Other]
+
+**Original:**
+> $ARGUMENTS
+
+**Completeness Check:**
+- [x] Goal: [extracted or ❌ MISSING]
+- [x] Context: [extracted or ❌ MISSING]
+- [x] Scope: [extracted or ❌ MISSING]
+- [ ] Constraints: [extracted or ❌ MISSING - optional]
+- [x] Success Criteria: [extracted or ❌ MISSING]
+
+**Questions (if any):**
+> 1. [Question about missing/unclear information]
+
+**Perfected Prompt:**
+> **Goal:** [one clear sentence]
+> **Context:** [environment, tech stack, background]
+> **Scope:** [specific files, components, areas]
+> **Requirements:** [numbered list]
+> **Constraints:** [any limitations, or "None"]
+> **Expected Result:** [what success looks like]
+
+**Changes Made:**
+- [list of corrections and improvements]
+
+---
+
+⏸️ **Waiting for approval before technical analysis.** Reply with:
+- `y` or `yes` — proceed to technical analysis
+- `n` or `no` — cancel
+- Or type modifications for adjustments
+
+---
+
+## Phase 1: Project Analysis
 
 Automatically detect and analyze:
 
@@ -35,9 +114,9 @@ Automatically detect and analyze:
 
 ---
 
-## Step 2: Technical Analysis Output
+## Phase 2: Technical Analysis Output
 
-Based on the clarified prompt from `/prompt`, provide:
+Based on the perfected prompt from Phase 0, provide:
 
 **Project Context:**
 ```
@@ -49,7 +128,7 @@ Relevant Files: [files that will be affected]
 
 ---
 
-## Step 3: Implementation Options
+## Phase 3: Implementation Options
 
 For each valid approach, provide:
 
@@ -85,7 +164,7 @@ For each valid approach, provide:
 
 ---
 
-## Step 4: Best Practices Checklist
+## Phase 4: Best Practices Checklist
 
 Based on the detected tech stack, suggest:
 
@@ -98,7 +177,7 @@ Based on the detected tech stack, suggest:
 
 ---
 
-## Step 5: Implementation Plan
+## Phase 5: Implementation Plan
 
 Provide numbered, actionable steps:
 
@@ -116,7 +195,7 @@ Provide numbered, actionable steps:
 
 ---
 
-## Step 6: Code Scaffolding
+## Phase 6: Code Scaffolding
 
 Generate ready-to-use code templates:
 
@@ -147,7 +226,7 @@ Generate ready-to-use code templates:
 ├── Architecture: [pattern]
 └── Relevant Existing Code: [files/patterns]
 
-🔍 ANALYSIS OF: "[task summary from /prompt]"
+🔍 ANALYSIS OF: "[task summary from Phase 0]"
 
 📋 IMPLEMENTATION OPTIONS
 ┌─────────────────────────────────────────────────────────────┐
@@ -183,12 +262,15 @@ Generate ready-to-use code templates:
 
 When this command is executed:
 
-1. **First**, scan the project directory for configuration files and structure
-2. **Second**, identify the tech stack and existing patterns
-3. **Third**, analyze the user's task (from previous `/prompt` conversation)
-4. **Fourth**, generate 2-3 implementation options with code examples
-5. **Fifth**, recommend the best option with reasoning
-6. **Sixth**, provide actionable implementation steps with code scaffolding
+1. **Phase 0**: Perfect the user's prompt using the Prompt Perfection flow
+   - Analyze, check completeness, clarify if needed, correct, structure
+   - Display the perfected prompt and wait for user approval (`y`/`n`/modifications)
+   - **Do NOT proceed to technical analysis until user approves**
+2. **Phase 1**: Scan the project directory for configuration files and structure
+3. **Phase 2**: Identify the tech stack and existing patterns
+4. **Phase 3**: Generate 2-3 implementation options with code examples
+5. **Phase 4**: Recommend the best option with reasoning
+6. **Phase 5-6**: Provide actionable implementation steps with code scaffolding
 
 Always include:
 - Actual code examples (not pseudocode)

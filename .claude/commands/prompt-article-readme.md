@@ -1,10 +1,83 @@
 # /prompt-article-readme - README.md Generator
 
-This command generates or updates a professional README.md file for any project by analyzing the codebase structure, configuration files, and existing documentation.
+This command generates or updates a professional README.md file for any project by analyzing the codebase structure, configuration files, and existing documentation. It first perfects the user's prompt, then guides through the README generation wizard.
 
 ---
 
-## Interactive Wizard Flow
+## Phase 0: Prompt Perfection
+
+**Before starting the README wizard, first perfect the user's prompt.**
+
+### Step 0.1: Initial Analysis
+- Detect language (Slovak / English)
+- Identify prompt type: Should be "Documentation" or "README Generation"
+- Extract the core intent: What README does the user want to create/update?
+
+### Step 0.2: Completeness Check
+Verify the prompt contains:
+- [ ] Clear goal/desired outcome (generate new / update existing README)
+- [ ] Context (project type, purpose)
+- [ ] Scope (which project, specific sections needed)
+- [ ] Constraints (if any: style preference, sections to include/exclude)
+- [ ] Success criteria (what makes a good README for this project)
+
+Mark missing items - these will be collected in the wizard steps.
+
+### Step 0.3: Clarification (if needed)
+- If anything is ambiguous or unclear, ASK before proceeding
+- If multiple valid approaches exist:
+  - List each option with pros/cons
+  - Mark ⭐ recommended option with reasoning
+  - Wait for user selection
+
+### Step 0.4: Correction
+- Fix grammar, spelling, sentence structure
+- Preserve all technical terms, project names, and references EXACTLY
+- Keep original intent and tone
+- Make it clear, specific, and actionable
+
+### Step 0.5: Structure the Perfect Prompt
+Transform into an executable format with:
+1. **Goal** - Generate new or update existing README
+2. **Project** - Which project/directory
+3. **Context** - Project purpose and background
+4. **Constraints** - Style, sections, or other requirements
+5. **Expected Result** - What the README should achieve
+
+### Phase 0 Output Format
+
+**Detected Language:** [Slovak / English]
+**Prompt Type:** Documentation / README Generation
+
+**Original:**
+> $ARGUMENTS
+
+**Completeness Check:**
+- [x] Goal: [extracted or ❌ will be collected in wizard]
+- [x] Project: [extracted or ❌ current directory]
+- [x] Context: [extracted or ❌ will be auto-detected]
+- [ ] Constraints: [extracted or ❌ optional]
+- [x] Style: [extracted or ❌ will be collected in wizard]
+
+**Perfected Prompt:**
+> **Goal:** [generate/update README]
+> **Project:** [project path or current directory]
+> **Style:** [if specified, or "will configure in wizard"]
+> **Constraints:** [any limitations, or "None - will configure in wizard"]
+
+**Changes Made:**
+- [list of corrections and improvements]
+
+---
+
+⏸️ **Waiting for approval before starting README wizard.** Reply with:
+- `y` or `yes` — proceed to README wizard
+- `n` or `no` — cancel
+- Or type modifications for adjustments
+
+---
+
+## README Wizard Flow
 
 Guide the user through each step using the AskUserQuestion tool. Do NOT skip steps or assume answers.
 
@@ -440,14 +513,18 @@ python -m pytest
 
 When this command is executed:
 
-1. **Start the interactive wizard** - Use AskUserQuestion tool for each step
-2. **Analyze the project** - Read package.json, *.csproj, requirements.txt, etc.
-3. **Detect project structure** - Use Glob to map directories
-4. **Check existing README** - Read if exists, offer handling options
-5. **Generate README** - Follow template for selected style
-6. **Customize content** - Add project-specific details from analysis
-7. **Save the file** - Write README.md (backup existing if replacing)
-8. **Display result** - Show generated content and file location
+1. **Phase 0: Prompt Perfection** - Perfect the user's prompt first
+   - Analyze, check completeness, clarify if needed, correct, structure
+   - Display the perfected prompt and wait for user approval (`y`/`n`/modifications)
+   - **Do NOT proceed to README wizard until user approves**
+2. **Start the interactive wizard** - Use AskUserQuestion tool for each step
+3. **Analyze the project** - Read package.json, *.csproj, requirements.txt, etc.
+4. **Detect project structure** - Use Glob to map directories
+5. **Check existing README** - Read if exists, offer handling options
+6. **Generate README** - Follow template for selected style
+7. **Customize content** - Add project-specific details from analysis
+8. **Save the file** - Write README.md (backup existing if replacing)
+9. **Display result** - Show generated content and file location
 
 ### Analysis Commands (Windows-compatible)
 
@@ -478,7 +555,34 @@ Before finalizing, verify:
 ## Example Wizard Interaction
 
 ```
-User: /prompt-article-readme
+User: /prompt-article-readme Generate README for my React project
+
+Claude: [Phase 0: Prompt Perfection]
+
+**Detected Language:** English
+**Prompt Type:** Documentation / README Generation
+
+**Original:**
+> Generate README for my React project
+
+**Completeness Check:**
+- [x] Goal: Generate README
+- [x] Project: Current directory (React project)
+- [ ] Context: ❌ will be auto-detected
+- [ ] Style: ❌ will be collected in wizard
+
+**Perfected Prompt:**
+> **Goal:** Generate a new README.md file
+> **Project:** Current directory (React project)
+> **Style:** will configure in wizard
+> **Constraints:** None - will configure in wizard
+
+**Changes Made:**
+- Clarified goal as "Generate a new README.md file"
+
+⏸️ **Waiting for approval.** Reply with y/n/modifications
+
+User: y
 
 Claude: Welcome to the README Generator! Let me analyze your project and help create documentation.
 
