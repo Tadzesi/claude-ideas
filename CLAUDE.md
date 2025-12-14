@@ -76,6 +76,17 @@ Commands for perfecting prompts and generating content. All prompt commands foll
 | `/prompt-article` | Interactive article writing wizard (blog, LinkedIn, tutorial, etc.) |
 | `/prompt-article-readme` | README.md generator with project analysis |
 
+## Session Memory
+
+Persistent context between Claude Code sessions.
+
+| Command | Purpose |
+|---------|---------|
+| `/session-end` | Save session context (decisions, changes, next steps) |
+| `/session-start` | Load previous session context |
+
+@.claude/memory/sessions.md
+
 ## Core Principles
 
 1. **Task Completion is Non-Negotiable**: Build must succeed, tests must pass, task status synced in both tasks.md AND TodoWrite
