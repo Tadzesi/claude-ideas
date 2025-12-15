@@ -61,119 +61,192 @@ specs/                         # Feature specifications (numbered branches)
   tasks/                       # Task index and backlog
 ```
 
-## Prompt Commands
+## Commands
 
-Commands for perfecting prompts and generating content. All prompt commands follow a **standardized Phase 0 flow** that ensures clarity and completeness before execution.
+### `/prompt`
 
-### Phase 0: Prompt Perfection Flow
+**Purpose:** Analyze, clarify, and perfect any prompt into an unambiguous, executable format.
 
-Every prompt command starts with Phase 0 to transform vague requests into precise, executable instructions:
+**What it does:**
+1. Detects language (Slovak/English)
+2. Identifies prompt type (Task, Question, Bug Fix, etc.)
+3. Checks completeness (goal, context, scope, constraints)
+4. Asks clarifying questions if needed
+5. Outputs a structured, perfected prompt
 
-1. **Step 0.1: Initial Analysis**
-   - Detects language (Slovak/English)
-   - Identifies prompt type (Task, Question, Bug Fix, Explanation, Code Review, etc.)
-   - Extracts core intent
-
-2. **Step 0.2: Completeness Check**
-   - Verifies: Goal, Context, Scope, Constraints, Success Criteria
-   - Marks missing items for clarification
-   - Uses smart defaults where applicable
-
-3. **Step 0.3: Clarification**
-   - Asks questions about ambiguous or missing information
-   - Presents multiple implementation options when valid approaches exist
-   - Marks recommended approach with reasoning
-
-4. **Step 0.4: Correction**
-   - Fixes grammar, spelling, sentence structure
-   - Preserves technical terms, code references, variable names EXACTLY
-   - Makes prompts clear, specific, and actionable
-
-5. **Step 0.5: Structure the Perfect Prompt**
-   - Outputs structured format: Goal, Context, Scope, Requirements, Constraints, Expected Result
-   - Ready for execution with ZERO ambiguity
-
-6. **Wait for Approval**
-   - User reviews perfected prompt
-   - Can approve (`y`), cancel (`n`), or request modifications
-   - Ensures user sees exactly what will be executed
-
-7. **Execute Command-Specific Logic**
-   - Only after approval, execute the specialized command logic
-   - `/prompt`: Outputs perfected prompt
-   - `/prompt-technical`: Runs technical analysis and generates code scaffolding
-   - `/prompt-article`: Launches interactive article wizard
-   - `/prompt-article-readme`: Analyzes project and generates README
-
-### Smart Defaults
-
-Specialized commands auto-detect context to streamline the process:
-
-- **`/prompt-article`**: Auto-detects prompt type as "Article/Content Creation"
-- **`/prompt-article-readme`**: Auto-detects current directory and project structure from config files (package.json, *.csproj, etc.)
-- **`/prompt-technical`**: Auto-analyzes tech stack, framework, architecture patterns, and existing code conventions
-
-Smart defaults are clearly marked in output (e.g., *(auto-detected)*) so users know what was inferred.
-
-### Command Reference
-
-| Command | Purpose | Smart Defaults |
-|---------|---------|----------------|
-| `/prompt` | Perfect any prompt - analyze, clarify, correct, structure | Language detection |
-| `/prompt-technical` | Technical implementation analysis with code scaffolding | Project structure, tech stack, patterns |
-| `/prompt-article` | Interactive article writing wizard (blog, LinkedIn, tutorial, etc.) | Article type, output format |
-| `/prompt-article-readme` | README.md generator with project analysis | Project type, directory, tech stack |
-
-### Usage Example
-
+**Usage:**
 ```
-User: /prompt Fix login bug
-
-Claude (Phase 0):
-Detected Language: English
-Prompt Type: Bug Fix
-
-Completeness Check:
-✓ Goal: Fix login bug
-✗ Context: MISSING - Which framework? ASP.NET? React?
-✗ Scope: MISSING - Frontend or backend? Which file?
-✗ Success Criteria: MISSING - How to verify fix?
-
-Questions:
-1. What authentication framework are you using?
-2. What specific error occurs?
-3. Which layer needs fixing (UI, API, database)?
-
-[After user answers...]
-
-Perfected Prompt:
-Goal: Fix null reference exception in ASP.NET Core login API
-Context: ASP.NET Core 6.0, SQL Server, JWT authentication
-Scope: UserController.Login() method, line 47
-Requirements:
-  1. Handle null email input
-  2. Add proper error logging
-  3. Return appropriate HTTP status codes
-Constraints: Maintain existing JWT token structure
-Expected Result: Login API handles invalid input gracefully
-
-⏸️ Waiting for approval. Reply y/n/modifications
-
-User: y
-
-Claude: [Proceeds with implementation...]
+/prompt Fix the login bug in my app
 ```
 
-## Session Memory
+**Output:** A structured prompt with Goal, Context, Scope, Requirements, Constraints, and Expected Result.
 
-Persistent context between Claude Code sessions.
+---
 
-| Command | Purpose |
-|---------|---------|
-| `/session-end` | Save session context (decisions, changes, next steps) |
-| `/session-start` | Load previous session context |
+### `/prompt-technical`
 
-@.claude/memory/sessions.md
+**Purpose:** Provide deep technical analysis for programming tasks with implementation options.
+
+**What it does:**
+1. Scans project structure and tech stack
+2. Identifies frameworks, patterns, and conventions
+3. Generates 2-3 implementation options with pros/cons
+4. Recommends best approach with reasoning
+5. Provides ready-to-use code scaffolding
+
+**Usage:**
+```
+/prompt-technical
+```
+
+Best used after `/prompt` to get detailed implementation analysis.
+
+**Output:** Technical analysis report with project context, implementation options, best practices checklist, and code scaffolding.
+
+---
+
+### `/prompt-article`
+
+**Purpose:** Interactive wizard for writing articles with multi-platform output.
+
+**What it does:**
+1. Guides through language, type, audience, and style selection
+2. Collects topic and key points
+3. Generates article in selected format
+4. Creates platform-specific versions (LinkedIn, Jira, Medium, Dev.to, etc.)
+5. Saves markdown file to specified location
+
+**Usage:**
+```
+/prompt-article
+```
+
+**Article Types:** Blog Post, LinkedIn Post, Technical Article, Tutorial, How-to Guide, Case Study, News Article, Opinion Piece
+
+**Output:** Full article with formatted versions for each selected platform.
+
+---
+
+### `/prompt-article-readme`
+
+**Purpose:** Generate or update professional README.md files by analyzing your project.
+
+**What it does:**
+1. Analyzes project structure and configuration files
+2. Detects tech stack, frameworks, and dependencies
+3. Guides through style selection (Minimal, Standard, Comprehensive)
+4. Generates README with appropriate sections
+5. Handles existing README (replace, update, merge)
+
+**Usage:**
+```
+/prompt-article-readme
+/prompt-article-readme --update
+```
+
+**Output:** Professional README.md tailored to your project type.
+
+---
+
+### `/session-end`
+
+**Purpose:** Capture comprehensive session context to ensure zero information loss between sessions.
+
+**What it does:**
+1. Analyzes everything discussed, implemented, and learned in the current session
+2. Captures 10 comprehensive sections of context:
+   - Decisions Made (with rationale and trade-offs)
+   - Code Changes (files modified, created, deleted)
+   - Features Implemented (status: Complete/In Progress/Blocked)
+   - Problems Solved (root cause → solution)
+   - Technical Stack & Architecture (tech choices, patterns)
+   - Key Insights (codebase understanding, discoveries)
+   - User Preferences & Patterns (coding style, workflow)
+   - Active Work In Progress (current task, files, blockers)
+   - Project Structure Notes (important paths, organization)
+   - Next Steps (actionable TODOs with file paths)
+3. Appends structured summary to `.claude/memory/sessions.md`
+4. Shows confirmation with count of captured items
+
+**Usage:**
+```
+/session-end
+```
+
+**Best used:** Before ending a session to save all context for next time.
+
+**Output:**
+```
+✅ Session saved to memory.
+
+Captured:
+- Decisions: 3
+- Code Changes: 9 files
+- Features: 4 (3 complete, 1 in progress)
+- Problems Solved: 3
+- Technical Notes: 4
+- Insights: 4
+- Preferences: 4 new patterns
+- WIP: Documentation in progress
+- Next Steps: 4 pending
+
+Session State: Enhanced session memory with comprehensive capture
+```
+
+---
+
+### `/session-start`
+
+**Purpose:** Load comprehensive context from previous sessions to continue work with full project knowledge.
+
+**What it does:**
+1. Reads ALL sessions from `.claude/memory/sessions.md`
+2. Aggregates cumulative context across sessions:
+   - Combines all User Preferences & Patterns
+   - Merges Project Structure Notes
+   - Builds complete Tech Stack understanding
+3. Highlights active work and pending items
+4. Presents organized summary with 7 key sections:
+   - Active Work In Progress (current task, files, blockers)
+   - Pending Next Steps (all uncompleted TODOs)
+   - Recent Session Summary (last session with key decisions)
+   - Project Context (tech stack, architecture, important locations)
+   - User Preferences & Patterns (accumulated across all sessions)
+   - Key Insights Library (codebase understanding built over time)
+   - Session History (total sessions, current branch, last active)
+5. Asks what to work on today
+
+**Usage:**
+```
+/session-start
+```
+
+**Best used:** At the beginning of a session to load full context and resume work seamlessly.
+
+**Output:**
+```
+🔄 Session Context Loaded
+
+## 📌 Active Work In Progress
+Current Task: Documentation updates for command reference
+Files: README.md, CLAUDE.md
+Status: Ready to continue
+
+## ✅ Pending Next Steps
+- [ ] Update README.md with session commands
+- [ ] Update CLAUDE.md with identical documentation
+- [ ] Verify no differences between files
+
+## 🎯 Recent Session Summary
+Last Session: 2024-12-15 - main
+Enhanced session memory system with 10-section comprehensive capture...
+
+[Additional sections with full context...]
+
+What would you like to work on today?
+```
+
+---
 
 ## Core Principles
 

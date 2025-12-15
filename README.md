@@ -116,6 +116,106 @@ Best used after `/prompt` to get detailed implementation analysis.
 
 ---
 
+### `/session-end`
+
+**Purpose:** Capture comprehensive session context to ensure zero information loss between sessions.
+
+**What it does:**
+1. Analyzes everything discussed, implemented, and learned in the current session
+2. Captures 10 comprehensive sections of context:
+   - Decisions Made (with rationale and trade-offs)
+   - Code Changes (files modified, created, deleted)
+   - Features Implemented (status: Complete/In Progress/Blocked)
+   - Problems Solved (root cause → solution)
+   - Technical Stack & Architecture (tech choices, patterns)
+   - Key Insights (codebase understanding, discoveries)
+   - User Preferences & Patterns (coding style, workflow)
+   - Active Work In Progress (current task, files, blockers)
+   - Project Structure Notes (important paths, organization)
+   - Next Steps (actionable TODOs with file paths)
+3. Appends structured summary to `.claude/memory/sessions.md`
+4. Shows confirmation with count of captured items
+
+**Usage:**
+```
+/session-end
+```
+
+**Best used:** Before ending a session to save all context for next time.
+
+**Output:**
+```
+✅ Session saved to memory.
+
+Captured:
+- Decisions: 3
+- Code Changes: 9 files
+- Features: 4 (3 complete, 1 in progress)
+- Problems Solved: 3
+- Technical Notes: 4
+- Insights: 4
+- Preferences: 4 new patterns
+- WIP: Documentation in progress
+- Next Steps: 4 pending
+
+Session State: Enhanced session memory with comprehensive capture
+```
+
+---
+
+### `/session-start`
+
+**Purpose:** Load comprehensive context from previous sessions to continue work with full project knowledge.
+
+**What it does:**
+1. Reads ALL sessions from `.claude/memory/sessions.md`
+2. Aggregates cumulative context across sessions:
+   - Combines all User Preferences & Patterns
+   - Merges Project Structure Notes
+   - Builds complete Tech Stack understanding
+3. Highlights active work and pending items
+4. Presents organized summary with 7 key sections:
+   - Active Work In Progress (current task, files, blockers)
+   - Pending Next Steps (all uncompleted TODOs)
+   - Recent Session Summary (last session with key decisions)
+   - Project Context (tech stack, architecture, important locations)
+   - User Preferences & Patterns (accumulated across all sessions)
+   - Key Insights Library (codebase understanding built over time)
+   - Session History (total sessions, current branch, last active)
+5. Asks what to work on today
+
+**Usage:**
+```
+/session-start
+```
+
+**Best used:** At the beginning of a session to load full context and resume work seamlessly.
+
+**Output:**
+```
+🔄 Session Context Loaded
+
+## 📌 Active Work In Progress
+Current Task: Documentation updates for command reference
+Files: README.md, CLAUDE.md
+Status: Ready to continue
+
+## ✅ Pending Next Steps
+- [ ] Update README.md with session commands
+- [ ] Update CLAUDE.md with identical documentation
+- [ ] Verify no differences between files
+
+## 🎯 Recent Session Summary
+Last Session: 2024-12-15 - main
+Enhanced session memory system with 10-section comprehensive capture...
+
+[Additional sections with full context...]
+
+What would you like to work on today?
+```
+
+---
+
 ## Recent Improvements (December 2024)
 
 ### Phase 0: Prompt Perfection Framework
