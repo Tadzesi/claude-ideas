@@ -12,6 +12,7 @@ This command provides deep technical analysis for programming and development ta
 - Detect language (Slovak / English)
 - Identify prompt type: [Question | Task | Bug Fix | Explanation | Code Review | Other]
 - Extract the core intent: What does the user ultimately want to achieve?
+- **Smart analysis:** Project structure and tech stack will be auto-detected in Phase 1
 
 ### Step 0.2: Completeness Check
 Verify the prompt contains:
@@ -55,10 +56,15 @@ Transform into an executable format with:
 
 **Completeness Check:**
 - [x] Goal: [extracted or ❌ MISSING]
-- [x] Context: [extracted or ❌ MISSING]
+- [x] Context: [extracted or ✅ will be auto-detected from project analysis]
 - [x] Scope: [extracted or ❌ MISSING]
 - [ ] Constraints: [extracted or ❌ MISSING - optional]
 - [x] Success Criteria: [extracted or ❌ MISSING]
+
+**Smart Defaults Applied:**
+- Project context: Will be auto-detected (tech stack, framework, architecture)
+- Implementation options: Will be generated based on detected patterns
+- Code scaffolding: Will match existing project structure and conventions
 
 **Questions (if any):**
 > 1. [Question about missing/unclear information]

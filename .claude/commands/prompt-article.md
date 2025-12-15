@@ -10,7 +10,7 @@ This command provides an interactive wizard for writing articles in Slovak or En
 
 ### Step 0.1: Initial Analysis
 - Detect language (Slovak / English)
-- Identify prompt type: Should be "Article" or "Content Creation"
+- **Auto-detect prompt type:** Article / Content Creation (smart default for this command)
 - Extract the core intent: What article does the user want to create?
 
 ### Step 0.2: Completeness Check
@@ -47,17 +47,21 @@ Transform into an executable format with:
 ### Phase 0 Output Format
 
 **Detected Language:** [Slovak / English]
-**Prompt Type:** Article / Content Creation
+**Prompt Type:** Article / Content Creation *(auto-detected)*
 
 **Original:**
 > $ARGUMENTS
 
 **Completeness Check:**
-- [x] Goal: [extracted or ❌ will be collected in wizard]
+- [x] Goal: [extracted or ✅ auto-filled: "Write an article" - will be collected in wizard]
 - [x] Topic: [extracted or ❌ will be collected in wizard]
-- [x] Context: [extracted or ❌ will be collected in wizard]
+- [x] Context: [extracted or ✅ auto-filled: "article content" - will be collected in wizard]
 - [ ] Constraints: [extracted or ❌ optional]
 - [x] Target Audience: [extracted or ❌ will be collected in wizard]
+
+**Smart Defaults Applied:**
+- Output format: Article (auto-detected from command type)
+- Wizard will collect all missing article-specific parameters
 
 **Perfected Prompt:**
 > **Goal:** [one clear sentence about the article]

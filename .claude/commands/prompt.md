@@ -1,11 +1,13 @@
-Analyze, clarify, and perfect my prompt below. Your goal: transform it into an unambiguous, executable prompt that requires ZERO guessing.
+## Phase 0: Prompt Perfection
 
-## Step 1: Initial Analysis
+Analyze, clarify, and perfect the user's prompt. Your goal: transform it into an unambiguous, executable prompt that requires ZERO guessing.
+
+### Step 0.1: Initial Analysis
 - Detect language (Slovak / English)
 - Identify prompt type: [Question | Task | Bug Fix | Explanation | Code Review | Other]
 - Extract the core intent: What does the user ultimately want to achieve?
 
-## Step 2: Completeness Check
+### Step 0.2: Completeness Check
 Verify the prompt contains:
 - [ ] Clear goal/desired outcome
 - [ ] Context (project, technology, environment)
@@ -15,20 +17,20 @@ Verify the prompt contains:
 
 Mark missing items and ASK about them.
 
-## Step 3: Clarification (if needed)
+### Step 0.3: Clarification (if needed)
 - If anything is ambiguous or unclear, ASK before proceeding
 - If multiple valid approaches exist:
   - List each option with pros/cons
   - Mark ⭐ recommended option with reasoning
   - Wait for user selection
 
-## Step 4: Correction
+### Step 0.4: Correction
 - Fix grammar, spelling, sentence structure
 - Preserve all technical terms, code references, variable names EXACTLY
 - Keep original intent and tone
 - Make it clear, specific, and actionable
 
-## Step 5: Structure the Perfect Prompt
+### Step 0.5: Structure the Perfect Prompt
 Transform into an executable format with:
 1. **Goal** - One sentence stating the desired outcome
 2. **Context** - Environment, technologies, relevant background
@@ -39,7 +41,7 @@ Transform into an executable format with:
 
 ---
 
-## Output Format
+## Phase 0 Output Format
 
 **Detected Language:** [Slovak / English]
 **Prompt Type:** [Question | Task | Bug Fix | Explanation | Code Review | Other]

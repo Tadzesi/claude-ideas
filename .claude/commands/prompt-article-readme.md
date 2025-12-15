@@ -10,7 +10,7 @@ This command generates or updates a professional README.md file for any project 
 
 ### Step 0.1: Initial Analysis
 - Detect language (Slovak / English)
-- Identify prompt type: Should be "Documentation" or "README Generation"
+- **Auto-detect prompt type:** Documentation / README Generation (smart default for this command)
 - Extract the core intent: What README does the user want to create/update?
 
 ### Step 0.2: Completeness Check
@@ -47,17 +47,22 @@ Transform into an executable format with:
 ### Phase 0 Output Format
 
 **Detected Language:** [Slovak / English]
-**Prompt Type:** Documentation / README Generation
+**Prompt Type:** Documentation / README Generation *(auto-detected)*
 
 **Original:**
 > $ARGUMENTS
 
 **Completeness Check:**
-- [x] Goal: [extracted or ❌ will be collected in wizard]
-- [x] Project: [extracted or ❌ current directory]
-- [x] Context: [extracted or ❌ will be auto-detected]
+- [x] Goal: [extracted or ✅ auto-filled: "Generate README.md" - will be collected in wizard]
+- [x] Project: [extracted or ✅ auto-filled: current directory]
+- [x] Context: [extracted or ✅ auto-detected from project analysis]
 - [ ] Constraints: [extracted or ❌ optional]
 - [x] Style: [extracted or ❌ will be collected in wizard]
+
+**Smart Defaults Applied:**
+- Output format: README.md file (auto-detected from command type)
+- Project context: Auto-analyzed from current directory
+- Wizard will collect all missing documentation-specific parameters
 
 **Perfected Prompt:**
 > **Goal:** [generate/update README]
