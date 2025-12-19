@@ -1,107 +1,255 @@
+# /prompt - Prompt Perfection
+
+Transform any prompt into an unambiguous, executable format through systematic validation and clarification.
+
+This command uses the **Unified Library System** for consistent Phase 0 prompt perfection.
+
+---
+
 ## Phase 0: Prompt Perfection
 
-Analyze, clarify, and perfect the user's prompt. Your goal: transform it into an unambiguous, executable prompt that requires ZERO guessing.
+**Import:** Use Phase 0 from `.claude/library/prompt-perfection-core.md`
+**Adaptation:** None (universal criteria only)
+
+**Process:**
 
 ### Step 0.1: Initial Analysis
-- Detect language (Slovak / English)
-- Identify prompt type: [Question | Task | Bug Fix | Explanation | Code Review | Other]
-- Extract the core intent: What does the user ultimately want to achieve?
+
+Examine the user's input and detect:
+- Language (Slovak / English)
+- Prompt type (Question | Task | Bug Fix | Explanation | Code Review | Other)
+- Core intent (what the user ultimately wants)
 
 ### Step 0.2: Completeness Check
-Verify the prompt contains:
-- [ ] Clear goal/desired outcome
-- [ ] Context (project, technology, environment)
-- [ ] Scope (which files, components, areas)
-- [ ] Constraints (if any: performance, security, compatibility)
-- [ ] Success criteria (how to verify it's done)
 
-Mark missing items and ASK about them.
+Verify the prompt contains the **6 universal criteria:**
+- [ ] **Goal:** Clear desired outcome
+- [ ] **Context:** Project, technology, environment
+- [ ] **Scope:** Which files, components, areas
+- [ ] **Requirements:** Specific needs
+- [ ] **Constraints:** Limitations, rules (optional)
+- [ ] **Expected Result:** How to verify success
 
-### Step 0.3: Clarification (if needed)
-- If anything is ambiguous or unclear, ASK before proceeding
-- If multiple valid approaches exist:
-  - List each option with pros/cons
-  - Mark ⭐ recommended option with reasoning
-  - Wait for user selection
+Mark missing items for clarification.
 
-### Step 0.4: Correction
-- Fix grammar, spelling, sentence structure
-- Preserve all technical terms, code references, variable names EXACTLY
-- Keep original intent and tone
-- Make it clear, specific, and actionable
+### Step 0.3: Clarification Questions
 
-### Step 0.5: Structure the Perfect Prompt
-Transform into an executable format with:
-1. **Goal** - One sentence stating the desired outcome
-2. **Context** - Environment, technologies, relevant background
-3. **Scope** - What specifically to work on
-4. **Requirements** - Numbered list of specific requirements
-5. **Constraints** - Any limitations or rules to follow
-6. **Expected Result** - What success looks like
+If anything is missing or unclear, ask questions with priority:
 
----
+**🚨 Critical (must have):**
+- Questions about Goal, Scope, or Expected Result
+- Ambiguities that block execution
 
-## Phase 0 Output Format
+**⚠️ Important (should have):**
+- Questions about Context or Requirements
+- Information that improves quality
 
-**Detected Language:** [Slovak / English]
-**Prompt Type:** [Question | Task | Bug Fix | Explanation | Code Review | Other]
+**💡 Optional (nice to have):**
+- Questions about Constraints or optimizations
 
-**Original:**
-> $ARGUMENTS
+**If multiple valid approaches exist:**
+- List each option with pros/cons
+- Mark ⭐ recommended option with reasoning
+- Wait for user selection
 
-**Completeness Check:**
-- [x] Goal: [extracted or ❌ MISSING]
-- [x] Context: [extracted or ❌ MISSING]
-- [x] Scope: [extracted or ❌ MISSING]
-- [ ] Constraints: [extracted or ❌ MISSING - optional]
-- [x] Success Criteria: [extracted or ❌ MISSING]
+### Step 0.4-0.5: Correction & Output
 
-**Questions (if any):**
-> 1. [Question about missing/unclear information]
-> 2. [Another question if needed]
+Once all information gathered:
+1. Fix grammar, spelling, sentence structure
+2. Preserve technical terms EXACTLY
+3. Make it clear, specific, actionable
 
-**Options (if multiple approaches):**
-> 1. [Option A] - [pros/cons]
-> 2. [Option B] - [pros/cons]
-> ⭐ **Recommended:** [Option X] - [reasoning]
->
-> *Select option(s): e.g., "1" or "1,3"*
+Output the perfected prompt:
 
----
+```markdown
+**✨ Perfected Prompt:**
 
-*After all questions answered and options selected:*
+**Goal:** [One clear sentence stating desired outcome]
 
-**Perfected Prompt:**
-> **Goal:** [one clear sentence]
->
-> **Context:** [environment, tech stack, background]
->
-> **Scope:** [specific files, components, areas]
->
-> **Requirements:**
-> 1. [First specific requirement]
-> 2. [Second specific requirement]
-> 3. [...]
->
-> **Constraints:** [any limitations, or "None"]
->
-> **Expected Result:** [what success looks like]
+**Context:**
+- Environment: [OS, platform]
+- Tech Stack: [languages, frameworks]
+- Background: [relevant context]
+
+**Scope:**
+- Files to modify: [list]
+- Files to create: [list]
+- Components affected: [list]
+
+**Requirements:**
+1. [First specific requirement]
+2. [Second specific requirement]
+...
+
+**Constraints:**
+- [Constraint 1]
+- [Constraint 2]
+Or: None
+
+**Expected Result:**
+[Clear description of what success looks like]
 
 **Changes Made:**
-- [list of corrections and improvements]
+- [List of corrections and improvements]
+```
+
+### Step 0.6: Approval Gate
+
+Wait for user approval before proceeding:
+
+```markdown
+⏸️ **Perfected Prompt Ready - Awaiting Your Approval**
+
+**Summary:**
+- Type: [prompt type]
+- Goal: [brief summary]
+- Confidence: [High/Medium based on completeness]
+
+**Reply with:**
+- `y` or `yes` — Execute this perfected prompt
+- `n` or `no` — Cancel
+- `modify [description]` — Adjust the prompt
+- `explain [component]` — Explain why I included something
+```
+
+**Handle responses:**
+- `yes`/`y` → Proceed to execution
+- `no`/`n` → Cancel
+- `modify` → Apply changes, re-display, wait for approval
+- `explain` → Provide explanation, re-prompt
 
 ---
 
-## Good Prompt Tips (Reference)
+## Execution
+
+After user approves:
+
+```markdown
+✅ **Prompt Perfected and Approved**
+
+You can now use this perfected prompt for your task.
+
+**What would you like to do next?**
+- If this was a question: I can answer it now with full context
+- If this was a task: I can begin implementation
+- If this was planning: I can create an implementation plan
+```
+
+---
+
+## Good Prompt Tips
+
 1. **Be specific** - "Fix null reference in UserService.GetUser()" not "fix my code"
 2. **Include context** - Technologies, frameworks, environment
 3. **Specify output format** - How should the result be structured?
-4. **Provide background** - Error messages, what you already tried
+4. **Provide background** - Error messages, what you tried
 5. **Break down complexity** - Use numbered requirements
 
 ---
 
-⏸️ **Waiting for your approval.** Reply with:
-- `y` or `yes` — execute the perfected prompt
-- `n` or `no` — cancel
-- Or type modifications for adjustments
+## Examples
+
+### Example 1: Vague Prompt
+
+**Input:**
+```
+/prompt help with my code
+```
+
+**Process:**
+- Missing: Goal (what help?), Context (what code?), Scope (which files?)
+- Questions asked for all missing info
+- User provides: "Fix bug in login.js, NullPointerException on line 42"
+- Result: Perfected prompt with clear goal, exact file, specific issue
+
+### Example 2: Complete Prompt
+
+**Input:**
+```
+/prompt Add email validation to UserService.Register() method in C#. Use regex pattern, return validation error if invalid. Should work with .NET 6.
+```
+
+**Process:**
+- All criteria present
+- Minor corrections: clarify regex pattern
+- Result: Perfected prompt, ready for immediate execution
+
+### Example 3: Multiple Approaches
+
+**Input:**
+```
+/prompt Add caching to the API
+```
+
+**Process:**
+- Missing: Which caching approach?
+- Options presented:
+  - Option 1: In-memory caching (fast, simple)
+  - Option 2: Redis (distributed, scalable)
+  - Option 3: Database caching (persistent)
+- User selects Option 2
+- Result: Perfected prompt with Redis implementation plan
+
+---
+
+## When to Use /prompt vs Other Commands
+
+### Use `/prompt` when:
+- ✅ Quick, simple prompts
+- ✅ You provide all context
+- ✅ Single-file or small scope
+- ✅ No codebase analysis needed
+
+### Use `/prompt-hybrid` when:
+- ✅ Complex tasks needing codebase exploration
+- ✅ Pattern detection required
+- ✅ Multi-file scope
+- ✅ Agent assistance helpful
+
+### Use `/prompt-technical` when:
+- ✅ Need technical implementation options
+- ✅ Want code scaffolding
+- ✅ Need best practices guidance
+- ✅ Architecture decisions needed
+
+### Use `/prompt-article` when:
+- ✅ Writing articles or content
+- ✅ Need multi-platform formatting
+- ✅ Interactive wizard preferred
+
+---
+
+## Version History
+
+**v2.0 (2024-12-19):**
+- ✨ Migrated to unified library system
+- ✨ References prompt-perfection-core.md
+- ✨ Consistent with other prompt commands
+- Maintains same user experience
+
+**v1.0 (Previous):**
+- Standalone Phase 0 implementation
+- Basic prompt perfection
+
+---
+
+## Related Commands
+
+- **More Complex:** `/prompt-hybrid` (with agent support)
+- **Technical Focus:** `/prompt-technical` (implementation analysis)
+- **Content Creation:** `/prompt-article` (article wizard)
+
+---
+
+## Library Integration
+
+This command uses the **Unified Library System:**
+- **Core:** `.claude/library/prompt-perfection-core.md` (universal Phase 0)
+- **Adapter:** None (uses core only)
+- **Benefits:** Consistent validation, proven flow, easy maintenance
+
+For details on the library system, see: `doc/Unified_Library_System_Guide.md`
+
+---
+
+**Ready to perfect your prompt? Just type: `/prompt [your prompt]`**

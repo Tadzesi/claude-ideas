@@ -1,225 +1,308 @@
-# /prompt-technical - Technical Implementation Analysis
+# /prompt-technical - Technical Implementation Analysis with Hybrid Intelligence
 
-This command provides deep technical analysis for programming and development tasks. It first perfects the user's prompt, then performs comprehensive technical analysis.
+This command provides deep technical analysis for programming and development tasks. It uses **hybrid intelligence** - combining Phase 0 prompt perfection with automatic agent-powered codebase analysis for complex tasks.
 
 ---
 
-## Phase 0: Prompt Perfection
+## Phase 0: Prompt Perfection with Complexity Detection
 
-**Before any technical analysis, first perfect the user's prompt.**
+**Before any technical analysis, first perfect the user's prompt and detect complexity.**
 
 ### Step 0.1: Initial Analysis
+
 - Detect language (Slovak / English)
-- Identify prompt type: [Question | Task | Bug Fix | Explanation | Code Review | Other]
+- Identify prompt type: [Question | Task | Bug Fix | Explanation | Code Review | Implementation | Other]
 - Extract the core intent: What does the user ultimately want to achieve?
-- **Smart analysis:** Project structure and tech stack will be auto-detected in Phase 1
+- **Analyze for technical complexity**
 
-### Step 0.2: Completeness Check
-Verify the prompt contains:
-- [ ] Clear goal/desired outcome
-- [ ] Context (project, technology, environment)
-- [ ] Scope (which files, components, areas)
-- [ ] Constraints (if any: performance, security, compatibility)
-- [ ] Success criteria (how to verify it's done)
-
-Mark missing items and ASK about them.
-
-### Step 0.3: Clarification (if needed)
-- If anything is ambiguous or unclear, ASK before proceeding
-- If multiple valid approaches exist:
-  - List each option with pros/cons
-  - Mark ⭐ recommended option with reasoning
-  - Wait for user selection
-
-### Step 0.4: Correction
-- Fix grammar, spelling, sentence structure
-- Preserve all technical terms, code references, variable names EXACTLY
-- Keep original intent and tone
-- Make it clear, specific, and actionable
-
-### Step 0.5: Structure the Perfect Prompt
-Transform into an executable format with:
-1. **Goal** - One sentence stating the desired outcome
-2. **Context** - Environment, technologies, relevant background
-3. **Scope** - What specifically to work on
-4. **Requirements** - Numbered list of specific requirements
-5. **Constraints** - Any limitations or rules to follow
-6. **Expected Result** - What success looks like
-
-### Phase 0 Output Format
-
-**Detected Language:** [Slovak / English]
-**Prompt Type:** [Question | Task | Bug Fix | Explanation | Code Review | Other]
-
-**Original:**
+**Input:**
 > $ARGUMENTS
-
-**Completeness Check:**
-- [x] Goal: [extracted or ❌ MISSING]
-- [x] Context: [extracted or ✅ will be auto-detected from project analysis]
-- [x] Scope: [extracted or ❌ MISSING]
-- [ ] Constraints: [extracted or ❌ MISSING - optional]
-- [x] Success Criteria: [extracted or ❌ MISSING]
-
-**Smart Defaults Applied:**
-- Project context: Will be auto-detected (tech stack, framework, architecture)
-- Implementation options: Will be generated based on detected patterns
-- Code scaffolding: Will match existing project structure and conventions
-
-**Questions (if any):**
-> 1. [Question about missing/unclear information]
-
-**Perfected Prompt:**
-> **Goal:** [one clear sentence]
-> **Context:** [environment, tech stack, background]
-> **Scope:** [specific files, components, areas]
-> **Requirements:** [numbered list]
-> **Constraints:** [any limitations, or "None"]
-> **Expected Result:** [what success looks like]
-
-**Changes Made:**
-- [list of corrections and improvements]
 
 ---
 
-⏸️ **Waiting for approval before technical analysis.** Reply with:
+### Step 0.2: Complexity Detection
+
+**Analyze prompt for complexity signals:**
+
+Read configuration from: `.claude/config/complexity-rules.json`
+
+**Technical Complexity Triggers:**
+- Multi-file scope (5): "multiple files", "across files", "entire codebase"
+- Architecture questions (7): "how does", "where is", "what handles"
+- Pattern detection (6): "existing pattern", "current convention", "match existing"
+- Implementation planning (3): "implement", "build", "create feature"
+- Cross-cutting concerns (4): "authentication", "logging", "error handling"
+- Refactoring tasks (5): "refactor", "restructure", "improve structure"
+
+**Calculate complexity score:**
+- Score = Σ(weight for each matched trigger)
+- Thresholds:
+  - 0-4: **Simple** → Manual project scan
+  - 5-9: **Moderate** → Ask user if agent assistance wanted
+  - 10+: **Complex** → Automatic agent assistance
+
+**Display complexity analysis:**
+```markdown
+**Complexity Analysis:**
+Detected Language: [Slovak / English]
+Prompt Type: [type]
+Technical Complexity Score: [total]
+Category: [Simple / Moderate / Complex]
+
+Matched Triggers:
+- [trigger 1] (weight: X)
+- [trigger 2] (weight: Y)
+
+Recommendation: [Use agent / Manual scan]
+```
+
+---
+
+### Step 0.3: Completeness Check
+
+Verify the prompt contains:
+- [ ] **Goal:** Clear desired outcome
+- [ ] **Context:** Project, technology, environment (will be auto-detected)
+- [ ] **Scope:** Which files, components, areas
+- [ ] **Constraints:** Performance, security, compatibility (optional)
+- [ ] **Success Criteria:** How to verify it's done
+
+**Mark missing items and prepare questions.**
+
+---
+
+### Step 0.4: Clarification (if needed)
+
+IF anything is missing or unclear:
+
+**Ask questions:**
+```markdown
+**Questions:**
+
+🚨 Critical:
+1. [Essential missing information]
+
+⚠️ Important:
+2. [Helpful context]
+
+💡 Technical Details:
+3. [Implementation specifics]
+```
+
+**IF multiple valid approaches exist:**
+```markdown
+**Multiple Approaches Detected:**
+
+**Option 1:** [Name]
+- Pro: [advantage]
+- Con: [disadvantage]
+
+**Option 2:** [Name]
+- Pro: [advantage]
+- Con: [disadvantage]
+
+⭐ **Recommended:** Option [X]
+**Reasoning:** [why]
+```
+
+**Wait for user answers.**
+
+---
+
+### Step 0.5: Structure the Perfect Prompt
+
+**Output the perfected prompt:**
+
+```markdown
+**Perfected Prompt:**
+
+**Goal:** [one clear sentence]
+**Context:** [environment, tech stack - will be auto-detected]
+**Scope:** [specific files, components, areas]
+**Requirements:**
+1. [First specific requirement]
+2. [Second specific requirement]
+3. [...]
+**Constraints:** [limitations, or "None"]
+**Expected Result:** [what success looks like]
+
+**Changes Made:**
+- [Correction 1]
+- [Correction 2]
+- [Improvement 1]
+```
+
+---
+
+**⏸️ Waiting for approval before technical analysis.**
+
+Reply with:
 - `y` or `yes` — proceed to technical analysis
 - `n` or `no` — cancel
 - Or type modifications for adjustments
 
 ---
 
-## Phase 1: Project Analysis
+## Phase 1: Intelligent Project Analysis
 
-Automatically detect and analyze:
+**Based on complexity score, choose analysis method:**
 
-### 1.1 Project Structure Detection
-- Scan for project configuration files:
-  - `package.json` (Node.js/JavaScript/TypeScript)
-  - `requirements.txt`, `pyproject.toml`, `setup.py` (Python)
-  - `Cargo.toml` (Rust)
-  - `go.mod` (Go)
-  - `pom.xml`, `build.gradle` (Java)
-  - `*.csproj`, `*.sln` (C#/.NET)
-  - `composer.json` (PHP)
-- Map directory structure (src/, lib/, tests/, etc.)
-- Identify entry points and main modules
+### Path A: Simple Complexity (Score 0-4) - Manual Scan
 
-### 1.2 Tech Stack Identification
-- Frameworks (React, Vue, Angular, Django, FastAPI, Spring, etc.)
-- Build tools (Webpack, Vite, esbuild, etc.)
-- Testing frameworks (Jest, Pytest, JUnit, etc.)
-- Database technologies (from config files or dependencies)
-- CI/CD configuration (.github/workflows, .gitlab-ci.yml, etc.)
+**Quickly scan for:**
 
-### 1.3 Existing Patterns Analysis
-- Code style and conventions used in the project
-- Common patterns (repository pattern, service layer, etc.)
-- Existing utilities and helpers that can be reused
-- Naming conventions and file organization
+1. **Project Structure Detection**
+   - Look for configuration files:
+     - `package.json` (Node.js/JavaScript/TypeScript)
+     - `requirements.txt`, `pyproject.toml` (Python)
+     - `*.csproj`, `*.sln` (C#/.NET)
+     - `Cargo.toml` (Rust)
+     - `go.mod` (Go)
+     - `pom.xml`, `build.gradle` (Java)
+     - `composer.json` (PHP)
+
+2. **Tech Stack Identification**
+   - Frameworks (React, Vue, Angular, Django, FastAPI, ASP.NET, etc.)
+   - Build tools (Webpack, Vite, npm, etc.)
+   - Testing frameworks (Jest, Pytest, JUnit, etc.)
+
+3. **Quick Pattern Check**
+   - File organization
+   - Naming conventions
+   - Common utilities
+
+**Proceed to Phase 2.**
+
+---
+
+### Path B: Moderate Complexity (Score 5-9) - Ask User
+
+**Inform user:**
+```markdown
+⚖️ **Moderate Complexity Detected (Score: [X])**
+
+I can perform the technical analysis in two ways:
+
+**Option 1: Quick Manual Scan** (~5 seconds)
+- Fast configuration file analysis
+- Basic pattern detection
+- Good for straightforward tasks
+
+**Option 2: Agent-Powered Deep Analysis** (~20 seconds)
+- Comprehensive codebase exploration
+- Detailed pattern and convention detection
+- Validates technical feasibility
+- Finds similar implementations
+- Better for complex or unfamiliar codebases
+
+**Would you like me to use agent assistance?** (yes/no)
+```
+
+**Wait for user choice:**
+- `yes` → Go to Path C (Agent-Powered)
+- `no` → Continue with Path A (Manual)
+
+---
+
+### Path C: Complex (Score 10+) - Agent-Powered Analysis
+
+**Inform user:**
+```markdown
+🤖 **Complex Task Detected - Launching Agent Analysis**
+
+Complexity Score: [X]
+Matched Triggers: [list]
+
+The agent will:
+- Explore relevant files and directories
+- Detect existing patterns and conventions
+- Validate technical feasibility
+- Find similar implementations
+- Identify reusable components
+
+This will take 15-30 seconds...
+```
+
+**Spawn Explore Agent:**
+
+Read agent template from: `.claude/config/agent-templates.json`
+
+**Use template:** `explore_codebase_context` or `detect_patterns_and_conventions` (based on triggers)
+
+**Agent Task:**
+```
+Explore the codebase for technical analysis of:
+"{user_prompt}"
+
+Objectives:
+1. Find relevant files for: {scope}
+2. Detect code organization patterns
+3. Identify existing implementations
+4. Check technical feasibility
+5. Find reusable components
+
+Return:
+- Relevant Files: [list with descriptions]
+- Tech Stack: [detected technologies]
+- Patterns: [conventions found]
+- Similar Implementations: [examples]
+- Feasibility: [assessment]
+- Recommendations: [technical approach]
+```
+
+**Spawn the agent:**
+```
+Task(
+  subagent_type="Explore",
+  description="Technical codebase analysis",
+  prompt=[agent task],
+  model="haiku"
+)
+```
+
+**Wait for agent results.**
+
+---
+
+### Agent Results Processing (Path C Only)
+
+**Display agent findings:**
+```markdown
+✅ **Agent Analysis Complete**
+
+### Codebase Context Discovered:
+
+**Tech Stack Detected:**
+- [Technology 1]
+- [Technology 2]
+- [Framework details]
+
+**Relevant Files Found:**
+- [file1.ext] - [description]
+- [file2.ext] - [description]
+
+**Patterns & Conventions:**
+- Naming: [pattern]
+- Structure: [pattern]
+- Organization: [pattern]
+
+**Similar Implementations:**
+- [file] - [description of similar code]
+
+**Technical Feasibility:**
+- Feasible: [yes/no]
+- Blockers: [list or "None"]
+- Required Dependencies: [list or "All present"]
+
+**Agent Recommendations:**
+[Detailed recommendations based on analysis]
+```
 
 ---
 
 ## Phase 2: Technical Analysis Output
 
-Based on the perfected prompt from Phase 0, provide:
-
-**Project Context:**
-```
-Tech Stack: [detected technologies]
-Framework: [detected framework(s)]
-Architecture: [detected patterns]
-Relevant Files: [files that will be affected]
-```
-
----
-
-## Phase 3: Implementation Options
-
-For each valid approach, provide:
-
-### Option A: [Name]
-**Description:** [What this approach does]
-
-**Pros:**
-- [Advantage 1]
-- [Advantage 2]
-
-**Cons:**
-- [Disadvantage 1]
-- [Disadvantage 2]
-
-**Code Example:**
-```[language]
-// Scaffolding example for this approach
-[code snippet]
-```
-
-**Files to Create/Modify:**
-- `path/to/file.ext` - [what changes]
-
----
-
-### Option B: [Name]
-[Same structure as Option A]
-
----
-
-### ⭐ Recommended Option: [X]
-**Reasoning:** [Why this is the best choice for this project]
-
----
-
-## Phase 4: Best Practices Checklist
-
-Based on the detected tech stack, suggest:
-
-- [ ] **Architecture:** [Relevant architectural best practice]
-- [ ] **Error Handling:** [Error handling approach for this stack]
-- [ ] **Testing:** [Testing strategy recommendation]
-- [ ] **Security:** [Security considerations if applicable]
-- [ ] **Performance:** [Performance considerations if applicable]
-- [ ] **Documentation:** [Documentation suggestions]
-
----
-
-## Phase 5: Implementation Plan
-
-Provide numbered, actionable steps:
-
-1. **[First step]**
-   ```[language]
-   // Code scaffolding
-   ```
-
-2. **[Second step]**
-   ```[language]
-   // Code scaffolding
-   ```
-
-3. [Continue as needed...]
-
----
-
-## Phase 6: Code Scaffolding
-
-Generate ready-to-use code templates:
-
-### File: `[path/to/new/file.ext]`
-```[language]
-// Complete scaffolding code
-[full implementation template]
-```
-
-### File: `[path/to/modified/file.ext]`
-```[language]
-// Changes to make (with context)
-[code with modifications highlighted]
-```
-
----
-
-## Output Format
+**Synthesize findings (from Manual or Agent analysis):**
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
@@ -227,67 +310,312 @@ Generate ready-to-use code templates:
 ╚══════════════════════════════════════════════════════════════╝
 
 📁 PROJECT CONTEXT
-├── Tech Stack: [list]
+├── Tech Stack: [detected technologies]
 ├── Framework: [name + version if detectable]
-├── Architecture: [pattern]
-└── Relevant Existing Code: [files/patterns]
+├── Architecture: [detected patterns]
+├── Analysis Method: [Manual Scan / Agent-Powered]
+└── Relevant Files: [files that will be affected]
 
-🔍 ANALYSIS OF: "[task summary from Phase 0]"
+🔍 ANALYSIS OF: "[task from perfected prompt]"
 
-📋 IMPLEMENTATION OPTIONS
-┌─────────────────────────────────────────────────────────────┐
-│ Option A: [name]                                            │
-│ + [pro]                                                     │
-│ - [con]                                                     │
-├─────────────────────────────────────────────────────────────┤
-│ Option B: [name]                                            │
-│ + [pro]                                                     │
-│ - [con]                                                     │
-├─────────────────────────────────────────────────────────────┤
-│ ⭐ RECOMMENDED: Option [X]                                   │
-│ Reason: [why]                                               │
-└─────────────────────────────────────────────────────────────┘
-
-✅ BEST PRACTICES FOR [TECH STACK]
-• [practice 1]
-• [practice 2]
-• [practice 3]
-
-📝 IMPLEMENTATION STEPS
-1. [step with code example]
-2. [step with code example]
-3. [...]
-
-💻 CODE SCAFFOLDING
-[Ready-to-use code blocks]
+**Context Source:** [Configuration files / Agent exploration]
 ```
 
 ---
 
-## Instructions for Claude
+## Phase 3: Implementation Options
 
-When this command is executed:
+**Generate 2-3 implementation approaches:**
 
-1. **Phase 0**: Perfect the user's prompt using the Prompt Perfection flow
-   - Analyze, check completeness, clarify if needed, correct, structure
-   - Display the perfected prompt and wait for user approval (`y`/`n`/modifications)
-   - **Do NOT proceed to technical analysis until user approves**
-2. **Phase 1**: Scan the project directory for configuration files and structure
-3. **Phase 2**: Identify the tech stack and existing patterns
-4. **Phase 3**: Generate 2-3 implementation options with code examples
-5. **Phase 4**: Recommend the best option with reasoning
-6. **Phase 5-6**: Provide actionable implementation steps with code scaffolding
+### Option A: [Name]
 
-Always include:
-- Actual code examples (not pseudocode)
-- File paths relative to project root
-- Consideration of existing project patterns
-- Security and performance notes where relevant
+**Description:** [What this approach does]
+
+**Pros:**
+- [Advantage 1]
+- [Advantage 2]
+- [Advantage 3]
+
+**Cons:**
+- [Disadvantage 1]
+- [Disadvantage 2]
+
+**Alignment with Codebase:**
+- [How it fits existing patterns - from agent if available]
+
+**Code Example:**
+```[language]
+// Scaffolding example following detected patterns
+[code snippet matching conventions]
+```
+
+**Files to Create/Modify:**
+- `path/to/file.ext` - [what changes]
+- `path/to/file2.ext` - [what changes]
+
+**Complexity:** [Low / Medium / High]
+
+---
+
+### Option B: [Name]
+
+[Same structure as Option A]
+
+---
+
+### Option C: [Name] (if applicable)
+
+[Same structure as Option A]
+
+---
+
+### ⭐ Recommended Option: [X]
+
+**Reasoning:**
+- [Why this is best for this project]
+- [How it aligns with existing patterns]
+- [Benefits specific to detected tech stack]
+- [Agent recommendation if applicable]
+
+---
+
+## Phase 4: Best Practices Checklist
+
+**Based on detected tech stack and patterns:**
+
+```markdown
+✅ **BEST PRACTICES FOR [TECH STACK]**
+
+- [ ] **Architecture:** [Pattern-specific best practice]
+  - [Detail from agent if available]
+
+- [ ] **Error Handling:** [Stack-specific approach]
+  - Example from codebase: [file reference if found]
+
+- [ ] **Testing:** [Testing strategy for this stack]
+  - Follow pattern from: [test file if found]
+
+- [ ] **Security:** [Security considerations]
+  - [Stack-specific guidance]
+
+- [ ] **Performance:** [Performance considerations]
+  - [Relevant to detected architecture]
+
+- [ ] **Code Organization:** [Follow detected conventions]
+  - Naming: [detected pattern]
+  - Structure: [detected pattern]
+
+- [ ] **Documentation:** [Documentation approach]
+  - [Consistent with existing docs]
+```
+
+---
+
+## Phase 5: Implementation Plan
+
+**Provide actionable, ordered steps:**
+
+```markdown
+📝 **IMPLEMENTATION STEPS**
+
+**Phase 1: Preparation**
+1. **[First preparation step]**
+   - Files: [list]
+   - Action: [what to do]
+   ```[language]
+   // Code scaffolding matching conventions
+   ```
+
+**Phase 2: Core Implementation**
+2. **[Implementation step]**
+   - Follow pattern from: [example file if agent found one]
+   - Files: [list]
+   ```[language]
+   // Implementation code
+   ```
+
+3. **[Next step]**
+   ```[language]
+   // More code
+   ```
+
+**Phase 3: Integration**
+4. **[Integration step]**
+   - Connect with existing: [component/file]
+   ```[language]
+   // Integration code
+   ```
+
+**Phase 4: Testing**
+5. **[Testing step]**
+   - Test files: [list]
+   - Follow test pattern from: [existing test if found]
+   ```[language]
+   // Test code
+   ```
+
+**Phase 5: Validation**
+6. **[Validation step]**
+   - Verify: [success criteria from perfected prompt]
+```
+
+---
+
+## Phase 6: Code Scaffolding
+
+**Generate ready-to-use code templates following detected patterns:**
+
+### File: `[path/to/new/file.ext]`
+
+**Purpose:** [What this file does]
+**Pattern:** [Following convention from: existing_file.ext]
+
+```[language]
+// Complete scaffolding code matching codebase conventions
+// Namespace/package: [detected pattern]
+// Class/component naming: [detected convention]
+
+[Full implementation template]
+```
+
+---
+
+### File: `[path/to/modified/file.ext]`
+
+**Changes:** [What to modify]
+**Location:** [Line/section references if available]
+
+```[language]
+// Context: existing code
+[surrounding code for context]
+
+// NEW: Changes to make
+[modifications highlighted]
+
+// End of changes
+```
+
+---
+
+## Final Output Summary
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║              TECHNICAL ANALYSIS COMPLETE                      ║
+╚══════════════════════════════════════════════════════════════╝
+
+📊 **Analysis Summary:**
+├── Complexity: [Simple/Moderate/Complex]
+├── Analysis Method: [Manual/Agent-Powered]
+├── Options Generated: [count]
+├── Recommended: Option [X]
+└── Agent Insights: [Yes/No - summary if yes]
+
+📋 **Implementation Options:**
+┌─────────────────────────────────────────────────────────────┐
+│ Option A: [name] - Complexity: [Low/Medium/High]           │
+│ Option B: [name] - Complexity: [Low/Medium/High]           │
+│ ⭐ Recommended: [X] - [brief reason]                         │
+└─────────────────────────────────────────────────────────────┘
+
+✅ **Best Practices:** [count] items identified
+📝 **Implementation Plan:** [count] phases, [count] steps
+💻 **Code Scaffolding:** [count] files prepared
+
+🎯 **Success Criteria (from prompt):**
+[List from perfected prompt]
+
+**Alignment with Codebase:**
+[How solution fits existing patterns - agent insights if available]
+```
 
 ---
 
 ⏸️ **After analysis, wait for user confirmation:**
-- `proceed` — implement the recommended option
-- `option [A/B/C]` — implement specific option
-- `modify` — adjust the analysis
-- `cancel` — stop
+
+Reply with:
+- `proceed` — Implement the recommended option
+- `option [A/B/C]` — Implement specific option
+- `explain` — Explain analysis or agent findings in detail
+- `modify` — Adjust the analysis
+- `agent` — Re-run with agent analysis (if manual was used)
+- `manual` — Re-run with manual scan (if agent was used)
+- `cancel` — Stop
+
+---
+
+## Configuration
+
+**This command uses:**
+- `.claude/config/complexity-rules.json` - Complexity detection rules
+- `.claude/config/agent-templates.json` - Agent prompt templates
+
+**Customize:**
+- Edit complexity rules to adjust thresholds
+- Modify agent templates for domain-specific analysis
+- Tune weights for your project type
+
+---
+
+## How It Helps
+
+**Hybrid Intelligence Benefits:**
+
+✅ **Fast when simple:** Manual scan for straightforward tasks (~5s)
+✅ **Deep when complex:** Agent explores for comprehensive analysis (~20s)
+✅ **Always accurate:** Context gathered from actual codebase
+✅ **Pattern-aware:** Follows existing conventions automatically
+✅ **Validated:** Checks technical feasibility before recommending
+
+**Compared to manual analysis:**
+- ⚡ Faster codebase exploration
+- 🎯 More accurate pattern detection
+- ✅ Validated feasibility
+- 📚 Finds existing examples automatically
+- 🤖 Scales from simple to complex seamlessly
+
+---
+
+## Examples
+
+### Example 1: Simple Task (Manual Scan)
+
+**Input:**
+```
+/prompt-technical Add input validation to the login form
+```
+
+**Complexity:** Score 0 (simple, single component)
+**Analysis:** Manual scan (~5s)
+**Output:** Quick tech stack detection + validation patterns + scaffolding
+
+---
+
+### Example 2: Complex Task (Agent-Powered)
+
+**Input:**
+```
+/prompt-technical Implement caching layer following existing patterns in the codebase
+```
+
+**Complexity:** Score 10 (pattern detection=6 + cross-cutting=4)
+**Analysis:** Agent-powered (~20s)
+**Agent finds:** Existing cache implementations, Redis config, service layer patterns
+**Output:** Comprehensive analysis with agent insights + pattern-matched scaffolding
+
+---
+
+## Tips
+
+1. **Be specific in your prompt** - Better prompts → better analysis
+2. **Trust complexity detection** - Let the system choose the right approach
+3. **Review agent findings** - Agent insights are shown transparently
+4. **Try both methods** - Use `manual` or `agent` flags to override
+5. **Customize for your stack** - Edit config files for domain-specific rules
+
+---
+
+**Ready for technical analysis? Just type:**
+```
+/prompt-technical [your technical task]
+```
