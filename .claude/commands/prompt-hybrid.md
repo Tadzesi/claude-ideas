@@ -1,12 +1,14 @@
 # /prompt-hybrid - Intelligent Prompt Perfection with Agent Assistance
 
-Transform any prompt into an unambiguous, executable format using intelligent complexity detection and autonomous agent assistance.
+Transform any prompt into an unambiguous, executable format using intelligent complexity detection, autonomous agent assistance, and advanced features.
+
+This command uses the **Unified Library System** with **Hybrid Intelligence Enhancements** for optimal prompt perfection.
 
 ---
 
 ## Overview
 
-This command analyzes your prompt, detects complexity, and automatically spawns agents when needed to gather codebase context. It ensures zero-guessing execution through dual-layer validation.
+This command combines the proven Phase 0 flow with intelligent complexity detection and powerful advanced features for enterprise-grade prompt perfection.
 
 **Core Features:**
 - ✅ Automatic complexity detection
@@ -15,37 +17,38 @@ This command analyzes your prompt, detects complexity, and automatically spawns 
 - ✅ Context-aware clarification
 - ✅ Preserves main conversation context
 
-**Advanced Features:** ⚡ **NEW**
-- ✅ Agent result caching (avoid re-analysis, ~10-20x faster for repeated prompts)
-- ✅ Multi-agent verification (cross-validate critical operations with 2-3 agents)
-- ✅ Learning system (track patterns, suggest smart defaults, improve over time)
-- ✅ Cache hit indicators (see when cached results are used)
-- ✅ Consensus analysis (aggregate findings from multiple agents)
-- ✅ Pattern tracking (learn from successful transformations)
+**Advanced Features:** ⚡🔍📚 **NEW (December 2025)**
+- ⚡ **Agent result caching** - 10-20x faster for repeated prompts
+- 🔍 **Multi-agent verification** - Cross-validate critical operations with 2-3 agents
+- 📚 **Learning system** - Track patterns, suggest smart defaults, improve over time
+- ⚡ **Cache hit indicators** - See when cached results are used
+- 🔍 **Consensus analysis** - Aggregate findings from multiple agents
+- 📚 **Pattern tracking** - Learn from successful transformations
 
 ---
 
-## Execution Flow
+## Phase 0: Prompt Perfection with Hybrid Intelligence
 
-### Phase 0: Initial Analysis
+**Import:** Use Phase 0 from `.claude/library/prompt-perfection-core.md`
 
-**Step 1: Analyze the prompt**
+**Adaptation:** Technical with Hybrid Intelligence (from `.claude/library/adapters/technical-adapter.md`)
 
-Examine the user's input:
-> $ARGUMENTS
+**Enhanced Flow:**
 
-**Detect:**
-1. **Language:** Slovak / English
-2. **Type:** Question | Task | Bug Fix | Explanation | Code Review | Implementation | Refactoring | Other
-3. **Core Intent:** What does the user ultimately want to achieve?
+The canonical Phase 0 flow is enhanced with hybrid intelligence at specific steps:
 
----
+### Enhanced Step 0.1: Initial Analysis + Complexity Detection
 
-### Phase 1: Complexity Detection
+**Standard Phase 0 Step 0.1:**
+- Detect language (Slovak / English)
+- Identify prompt type
+- Extract core intent
 
-**Analyze the prompt for complexity signals using these rules:**
+**THEN add Complexity Detection:**
 
 Read configuration from: `.claude/config/complexity-rules.json`
+
+**Analyze prompt for complexity signals:**
 
 **Complexity Triggers (with weights):**
 - Multi-file scope (5): "multiple files", "across files", "in all", "entire codebase"
@@ -60,162 +63,61 @@ Read configuration from: `.claude/config/complexity-rules.json`
 - Sum the weight of all matched triggers
 - Thresholds:
   - 0-4: **Simple** (inline validation)
-  - 5-9: **Moderate** (suggest agent)
+  - 5-9: **Moderate** (ask user)
   - 10+: **Complex** (spawn agent)
+  - 15+: **Very High** (multi-agent verification)
 
 **Output complexity analysis:**
 ```markdown
-**Complexity Analysis:**
-Detected Language: [Slovak / English]
-Prompt Type: [type]
-Core Intent: [intent]
+**Phase 0: Prompt Perfection**
 
+**Detected Language:** [Slovak / English]
+**Prompt Type:** [type]
+**Core Intent:** [intent]
+
+**Complexity Analysis:**
 Matched Triggers:
 - [trigger 1] (weight: X)
 - [trigger 2] (weight: Y)
 
 Complexity Score: [total]
-Category: [Simple / Moderate / Complex]
+Category: [Simple / Moderate / Complex / Very High]
 ```
 
 **Decision Point:**
-- IF score < 5 → **Go to Simple Path**
-- IF score 5-9 → **Ask user:** "This prompt has moderate complexity. Would you like me to use an agent to analyze the codebase for better context? (yes/no)"
-  - If yes → **Go to Complex Path**
-  - If no → **Go to Simple Path**
-- IF score >= 10 → **Go to Complex Path**
+- IF score < 5 → Continue with standard Phase 0 (Simple Path)
+- IF score 5-9 → Ask user: "This prompt has moderate complexity. Would you like me to use an agent to analyze the codebase for better context? (yes/no)"
+  - If yes → Go to Enhanced Step 0.2 (Complex Path)
+  - If no → Continue with standard Phase 0 (Simple Path)
+- IF score >= 10 → Go to Enhanced Step 0.2 (Complex Path)
+- IF score >= 15 → Go to Enhanced Step 0.2 + Multi-Agent Verification
 
 ---
 
-## Simple Path: Inline Validation
+### Simple Path: Standard Phase 0 Flow
 
-**Step 2.1: Completeness Check**
+**When complexity score < 5:**
 
-Verify the prompt contains:
-- [ ] **Goal:** Clear desired outcome
-- [ ] **Context:** Project, technology, environment
-- [ ] **Scope:** Which files, components, areas
-- [ ] **Constraints:** Performance, security, compatibility (optional)
-- [ ] **Success Criteria:** How to verify it's done
+**Run standard Phase 0 Steps 0.2-0.6 from library:**
+1. **Step 0.2:** Completeness Check (universal 6 criteria)
+2. **Step 0.3:** Clarification Questions (if needed)
+3. **Step 0.4:** Correction & Structuring
+4. **Step 0.5:** Output Perfect Prompt
+5. **Step 0.6:** Approval Gate
 
-**For each missing item, mark it and prepare questions.**
-
----
-
-**Step 2.2: Clarification Questions**
-
-IF anything is missing or unclear:
-
-**Ask questions in priority order:**
-
-```markdown
-**Missing Information:**
-
-🚨 Critical (must have):
-1. [Question about essential missing info]
-
-⚠️ Important (should have):
-2. [Question about helpful context]
-
-💡 Optional (nice to have):
-3. [Question about optimizations]
-```
-
-**IF multiple valid approaches exist:**
-```markdown
-**Multiple Approaches Detected:**
-
-**Option 1:** [Name]
-- Pro: [advantage]
-- Con: [disadvantage]
-
-**Option 2:** [Name]
-- Pro: [advantage]
-- Con: [disadvantage]
-
-⭐ **Recommended:** Option [X]
-**Reasoning:** [why this is best]
-
-*Select an option (1/2) or describe your preference*
-```
-
-**Wait for user answers before proceeding.**
+Then **jump to Execution** section below.
 
 ---
 
-**Step 2.3: Correction & Structuring**
+### Complex Path: Agent-Enhanced Phase 0 Flow
 
-Once all information is gathered:
+**When complexity score >= 10:**
 
-1. **Correct:** Fix grammar, spelling, sentence structure
-2. **Preserve:** Keep all technical terms, code references, variable names EXACTLY
-3. **Clarify:** Make it clear, specific, and actionable
+### Enhanced Step 0.2: Agent Context Gathering
 
-**Output the perfected prompt:**
+**Before running standard Step 0.2 Completeness Check, gather codebase context:**
 
-```markdown
-**Perfected Prompt:**
-
-**Goal:** [one clear sentence stating desired outcome]
-
-**Context:**
-- Environment: [OS, platform]
-- Tech Stack: [languages, frameworks]
-- Background: [relevant project context]
-
-**Scope:**
-- Files to modify: [list]
-- Files to create: [list]
-- Components affected: [list]
-
-**Requirements:**
-1. [First specific requirement]
-2. [Second specific requirement]
-3. [Third specific requirement]
-...
-
-**Constraints:**
-- [Constraint 1]
-- [Constraint 2]
-Or: None
-
-**Expected Result:**
-[Clear description of what success looks like]
-
-**Changes Made:**
-- [Correction 1]
-- [Correction 2]
-- [Improvement 1]
-...
-```
-
-**→ Jump to Approval Gate**
-
----
-
-## Complex Path: Agent-Assisted Analysis
-
-**Step 3.1: Prepare Agent Task**
-
-Read agent template configuration from: `.claude/config/agent-templates.json`
-
-**Determine agent type based on complexity triggers:**
-- Architecture questions, multi-file scope, cross-cutting → **Explore agent** with "explore_codebase_context" template
-- Pattern detection needed → **Explore agent** with "detect_patterns_and_conventions" template
-- Feasibility check → **Explore agent** with "validate_technical_feasibility" template
-- Implementation planning, refactoring → **Plan agent** with "plan_implementation" template
-
-**Extract keywords from user prompt** for agent context.
-
-**Build agent prompt** from template, replacing:
-- `{user_prompt}` with original user input
-- `{keywords}` with extracted keywords
-- `{scope}` with detected scope
-- `{context}` with available context
-
----
-
-**Step 3.1.5: Check Agent Result Cache** ⚡ **NEW**
+#### Step 0.2.1: Check Agent Result Cache ⚡ **NEW**
 
 Read cache configuration from: `.claude/config/cache-config.json`
 
@@ -247,7 +149,7 @@ Branch: [branch name]
 Loading cached results... ✅
 ```
 
-**Use cached agent results** and **skip to Step 3.3** (Process Agent Results)
+**Use cached agent results** and **skip to Step 0.2.3** (Process Agent Results)
 
 **IF no cache or invalid:**
 ```markdown
@@ -256,13 +158,19 @@ Loading cached results... ✅
 Reason: [Cache miss / Expired / Files changed / Branch changed]
 ```
 
-**Continue to Step 3.2** (Spawn Agent)
-
-**Note:** Cache results will be saved after agent completes for future use.
+**Continue to Step 0.2.2** (Spawn Agent)
 
 ---
 
-**Step 3.2: Spawn Agent**
+#### Step 0.2.2: Spawn Exploration Agent
+
+Read agent template configuration from: `.claude/config/agent-templates.json`
+
+**Determine agent type based on complexity triggers:**
+- Architecture questions, multi-file scope, cross-cutting → **Explore agent** with "explore_codebase_context" template
+- Pattern detection needed → **Explore agent** with "detect_patterns_and_conventions" template
+- Feasibility check → **Explore agent** with "validate_technical_feasibility" template
+- Implementation planning, refactoring → **Plan agent** with "plan_implementation" template
 
 **Inform user:**
 ```markdown
@@ -274,6 +182,12 @@ Task: [brief description]
 
 This will take 10-30 seconds. Analyzing codebase to gather context...
 ```
+
+**Build agent prompt** from template, replacing:
+- `{user_prompt}` with original user input
+- `{keywords}` with extracted keywords
+- `{scope}` with detected scope
+- `{context}` with available context
 
 **Use the Task tool to spawn the agent:**
 ```
@@ -289,7 +203,7 @@ Task(
 
 ---
 
-**Step 3.3: Process Agent Results**
+#### Step 0.2.3: Process Agent Results
 
 **Agent returns structured context. Display summary:**
 
@@ -315,7 +229,7 @@ Expiry: [timestamp + 24h]
 
 ---
 
-**Step 3.3.5: Multi-Agent Verification** 🔍 **NEW** *(Optional)*
+#### Step 0.2.4: Multi-Agent Verification 🔍 **NEW** *(Optional)*
 
 Read verification configuration from: `.claude/config/verification-config.json`
 
@@ -399,7 +313,11 @@ Running agents in parallel... ⏳
 
 ---
 
-**Step 3.4: Enhanced Completeness Check**
+### Enhanced Step 0.2-0.6: Standard Phase 0 with Agent Context
+
+**Now run standard Phase 0 Steps 0.2-0.6 from library, enhanced with agent context:**
+
+**Step 0.2: Enhanced Completeness Check**
 
 With agent context, verify prompt contains:
 
@@ -414,18 +332,15 @@ With agent context, verify prompt contains:
 - [✅] Scope: Agent-identified files
   - To modify: [agent-found]
   - To create: [user + agent suggestions]
+- [❌/✅] Requirements: [from user or missing]
 - [❌/✅] Constraints: [from user or missing]
 - [❌/✅] Success Criteria: [from user or missing]
 - [✅] Technical Feasibility: Agent-validated
 ```
 
-**If still missing info, ask questions.**
+**Step 0.3: Agent-Enhanced Clarification**
 
----
-
-**Step 3.5: Context-Aware Clarification**
-
-**Ask questions with agent insights:**
+**If anything still missing, ask questions with agent insights:**
 
 ```markdown
 **Agent-Enhanced Clarification:**
@@ -456,14 +371,16 @@ Do you want to:
 
 **Wait for user response.**
 
----
+**Step 0.4: Correction & Structuring**
 
-**Step 3.6: Structure Perfect Prompt (Enhanced)**
+Follow standard library Step 0.4.
+
+**Step 0.5: Agent-Enhanced Perfect Prompt Output**
 
 **Output the agent-enhanced perfected prompt:**
 
 ```markdown
-**Perfected Prompt (Agent-Enhanced):**
+**✨ Perfected Prompt (Agent-Enhanced):**
 
 **Goal:** [one clear sentence]
 
@@ -518,13 +435,7 @@ Do you want to:
 - Similar implementations found and referenced
 ```
 
-**→ Jump to Approval Gate**
-
----
-
-## Approval Gate
-
-**Both paths converge here.**
+**Step 0.6: Enhanced Approval Gate**
 
 **Present the perfected prompt and wait for user approval:**
 
@@ -536,9 +447,11 @@ Do you want to:
 **Summary:**
 - Goal: [goal summary]
 - Scope: [scope summary]
-- Complexity: [Simple / Moderate / Complex]
+- Complexity: [Simple / Moderate / Complex / Very High]
 - Agent Used: [Yes - Explore/Plan / No]
-- Confidence: [High / Medium - based on completeness]
+- Multi-Agent Verification: [Yes / No]
+- Cache Hit: [Yes / No]
+- Confidence: [High / Medium - based on completeness + agent validation]
 
 **Reply with:**
 - `y` or `yes` — Execute this perfected prompt
@@ -551,11 +464,11 @@ Do you want to:
 **Wait for user response.**
 
 **Handle responses:**
-- `yes` or `y` → **Proceed to execution** (return perfected prompt for user to use)
+- `yes` or `y` → **Proceed to Execution**
 - `no` or `n` → **Cancel** (inform user: "Prompt perfection cancelled.")
 - `modify [changes]` → **Apply changes** and re-display for approval
 - `explain` → **Show detailed explanation** of analysis, then re-prompt for approval
-- `retry` → **Re-run** Phase 1 with manual complexity selection
+- `retry` → **Re-run** with manual complexity selection
 
 ---
 
@@ -582,7 +495,7 @@ Do you want to:
 
 ---
 
-**Learning System Integration** 📚 **NEW**
+## Learning System Integration 📚 **NEW**
 
 Read learning configuration from: `.claude/config/learning-config.json`
 
@@ -610,7 +523,7 @@ Tracking:
 **Original Prompt:**
 [User's input]
 
-**Complexity Score:** [score] ([Simple/Moderate/Complex])
+**Complexity Score:** [score] ([Simple/Moderate/Complex/Very High])
 **Triggered Rules:** [list of matched triggers]
 **Agent Used:** [Yes - Explore/Plan / No]
 **Cache Hit:** [Yes / No]
@@ -686,6 +599,12 @@ Feedback recorded for future calibration.
 ## Configuration Files
 
 This command uses:
+
+**Core Library:**
+- `.claude/library/prompt-perfection-core.md` - Canonical Phase 0 implementation
+- `.claude/library/adapters/technical-adapter.md` - Technical domain adaptation
+
+**Configuration:**
 - `.claude/config/complexity-rules.json` - Complexity detection rules and thresholds
 - `.claude/config/agent-templates.json` - Agent prompt templates
 - `.claude/config/cache-config.json` - Agent result caching configuration ⚡ **NEW**
@@ -717,7 +636,7 @@ This command uses:
 
 **Execution:**
 - Complexity score: 0 (single file, clear scope)
-- Path: Simple (inline)
+- Path: Simple (standard Phase 0)
 - Questions: None (all info present)
 - Output: Perfected prompt with corrections
 - Time: ~2 seconds
@@ -738,7 +657,7 @@ This command uses:
 - Agent finds: JWT pattern in src/auth/, AuthController.cs example
 - Questions: Agent-enhanced (with pattern recommendations)
 - Output: Agent-enhanced perfected prompt
-- Time: ~20 seconds
+- Time: ~20 seconds (first time), ~2 seconds (cached)
 
 ---
 
@@ -769,7 +688,7 @@ This command uses:
 
 **Execution:**
 - Complexity score: 17 (implementation=3 + cross-cutting=4 + critical keyword "payment"=10)
-- Path: Complex + Multi-Agent Verification
+- Path: Complex + Multi-Agent Verification (score >= 15)
 - Verification triggered: Critical operation detected (payment)
 - Spawning 3 agents:
   1. Breadth-First (Haiku, 30s) - Wide coverage
@@ -822,23 +741,6 @@ This command uses:
 - Second prompt: Instant cache hit (2s)
 - Third prompt: Smart defaults applied automatically
 - Future prompts: Even faster with learned patterns
-
----
-
-## Tips for Best Results
-
-1. **Be as specific as possible** - Even if agent fills gaps, your initial context helps
-2. **Trust the complexity detection** - Let the system decide when to use agents
-3. **Review agent findings** - Agent insights are shown transparently
-4. **Ask for explanations** - Use `explain` to understand the analysis
-5. **Iterate freely** - Use `modify` to refine without starting over
-
-**Advanced Tips:** ⚡ **NEW**
-6. **Leverage caching** - Similar prompts use cached results (10-20x faster)
-7. **Review verification results** - Multi-agent verification shows consensus and disagreements
-8. **Accept smart defaults** - Learning system improves with usage
-9. **Clear cache when needed** - Delete `.claude/cache/agent-results/` if codebase changes significantly
-10. **Track your patterns** - Review `.claude/memory/prompt-patterns.md` to see learning progress
 
 ---
 
@@ -964,7 +866,7 @@ Apply this smart default? (yes/no)
 - User approval rate
 
 **View your learning data:**
-```
+```bash
 cat .claude/memory/prompt-patterns.md
 ```
 
@@ -977,6 +879,13 @@ cat .claude/memory/prompt-patterns.md
 3. **Review agent findings** - Agent insights are shown transparently
 4. **Ask for explanations** - Use `explain` to understand the analysis
 5. **Iterate freely** - Use `modify` to refine without starting over
+
+**Advanced Tips:** ⚡ **NEW**
+6. **Leverage caching** - Similar prompts use cached results (10-20x faster)
+7. **Review verification results** - Multi-agent verification shows consensus and disagreements
+8. **Accept smart defaults** - Learning system improves with usage
+9. **Clear cache when needed** - Delete `.claude/cache/agent-results/` if codebase changes significantly
+10. **Track your patterns** - Review `.claude/memory/prompt-patterns.md` to see learning progress
 
 ---
 
@@ -1083,14 +992,45 @@ cat .claude/memory/prompt-patterns.md
 
 **Works standalone or with:**
 - `/prompt-technical` - For technical deep-dive after perfection
-- `/spectacular` workflow - Can integrate in future for spec → plan
+- `/prompt` - For quick, simple prompts without complexity detection
 - Other prompt commands - Complementary to existing commands
 
 **Recommendation:**
-- Use `/prompt` for quick, simple prompts
+- Use `/prompt` for quick, simple prompts (< 2 seconds)
 - Use `/prompt-hybrid` for complex tasks needing codebase analysis
 - Use `/prompt-technical` after hybrid for implementation details
 
 ---
 
-**Ready to perfect your prompt? Just type: `/prompt-hybrid [your prompt]`**
+## Version History
+
+**v2.0 (2024-12-20):**
+- ✨ Migrated to unified library system
+- ✨ References prompt-perfection-core.md and technical-adapter.md
+- ✨ Eliminated code duplication (~500 lines reduced)
+- ✨ Enhanced Flow pattern for hybrid intelligence
+- Maintains all advanced features (caching, multi-agent, learning)
+- Improved maintainability and consistency
+
+**v1.0 (2024-12-15):**
+- Initial release with hybrid intelligence
+- Standalone Phase 0 implementation
+- Complexity detection
+- Agent spawning
+- Advanced features: caching, multi-agent verification, learning
+
+---
+
+## Library Integration
+
+This command uses the **Unified Library System:**
+- **Core:** `.claude/library/prompt-perfection-core.md` (canonical Phase 0)
+- **Adapter:** `.claude/library/adapters/technical-adapter.md` (technical domain)
+- **Enhancement:** Hybrid Intelligence (complexity detection, agents, caching, learning)
+- **Benefits:** Consistent validation, proven flow, easy maintenance, single source of truth
+
+For details on the library system, see: `doc/Unified_Library_System_Guide.md`
+
+---
+
+**Ready to perfect your prompt with hybrid intelligence? Just type: `/prompt-hybrid [your prompt]`**

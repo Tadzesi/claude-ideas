@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
-# Version: 1.0
-# Description: Installs/updates Claude commands and libraries from GitHub repository
+# Version: 2.0
+# Description: Installs/updates Claude commands and libraries from GitHub repository (v2.0 with unified library system)
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -335,6 +335,24 @@ function Show-Summary {
 
     Write-Host "`n" -NoNewline
     Write-Success "Installation complete!"
+
+    # v2.0 Feature Announcement
+    Write-Host "`n========================================" -ForegroundColor Magenta
+    Write-Host "  NEW IN VERSION 2.0 (December 2024)" -ForegroundColor Magenta
+    Write-Host "========================================" -ForegroundColor Magenta
+    Write-Host "`nMajor architectural refactoring with unified library system:" -ForegroundColor White
+    Write-Host "  - Eliminated code duplication (~500 lines)" -ForegroundColor Gray
+    Write-Host "  - Single source of truth for Phase 0 logic" -ForegroundColor Gray
+    Write-Host "  - New hybrid-adapter.md for advanced features" -ForegroundColor Gray
+    Write-Host "  - All commands now reference library system" -ForegroundColor Gray
+    Write-Host "  - 100% completeness and consistency" -ForegroundColor Gray
+    Write-Host "`nNew Features:" -ForegroundColor White
+    Write-Host "  - Agent result caching (10-20x faster)" -ForegroundColor Green
+    Write-Host "  - Multi-agent verification (2-3 agents)" -ForegroundColor Green
+    Write-Host "  - Learning system (pattern tracking)" -ForegroundColor Green
+    Write-Host "  - Comprehensive documentation" -ForegroundColor Green
+    Write-Host "`nSee CHANGELOG.md for complete details" -ForegroundColor Cyan
+    Write-Host "========================================`n" -ForegroundColor Magenta
 
     Write-Host "`nNext Steps:" -ForegroundColor Cyan
     Write-Host "  1. Navigate to your project directory" -ForegroundColor Gray

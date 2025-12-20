@@ -4,62 +4,195 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a SpecTacular workflow workspace - a structured feature development pipeline for Claude Code projects.
+This is the **Claude Commands Library** - a collection of reusable slash commands for Claude Code that enhance prompt engineering, content creation, and session management.
 
-## Environment
+## Response Style Guidelines
 
-- Platform: Windows 11
-- Use Windows-compatible commands (cmd, PowerShell)
+**IMPORTANT: Terminal Response Formatting**
 
-## Tech Stack
+When responding in the Claude Code terminal, use PLAIN TEXT ONLY to avoid rendering issues.
 
-- ASP.NET Core (backend)
-- React (frontend)
-- SQL Server (database)
+DO NOT use in terminal responses:
+- Markdown headers (##, ###)
+- Emojis (all types)
+- Markdown tables
+- Special bullets or formatting
+- Lines over 80 characters
 
-## SpecTacular Workflow Commands
+DO use in terminal responses:
+- Plain text only
+- Simple dashes for lists (-)
+- UPPERCASE for emphasis
+- Blank lines between sections
+- Simple indentation
 
-The project uses a 5-step pipeline for feature development. Use these slash commands:
+For markdown files:
+- NEVER display markdown file contents in terminal
+- Read files using Read tool when needed
+- Respond in plain text only
+- Direct user to VS Code for viewing: code FILENAME.md
 
-| Command | Purpose |
-|---------|---------|
-| `/spectacular.0-quick` | Full pipeline in one command (spec → plan → tasks → implement → validate) |
-| `/spectacular.1-spec` | Create feature branch and specification document |
-| `/spectacular.2-plan` | Generate technical implementation plan |
-| `/spectacular.3-tasks` | Generate actionable task list from spec and plan |
-| `/spectacular.4-implement` | Execute all tasks in tasks.md |
-| `/spectacular.5-validate` | Validate implementation (tasks, build, tests) |
-| `/spectacular.dashboard` | Launch task monitor and spec viewer |
+See .claude/config/RESPONSE_STYLE.txt for detailed formatting rules.
 
-## Key Scripts (PowerShell)
+## Repository Type
 
-```powershell
-# Create new feature branch and spec
-.spectacular/scripts/powershell/create-new-feature.ps1 -Json "feature description"
+- **Language:** Markdown (command definitions and documentation)
+- **Platform:** Windows 11 (primary), cross-platform compatible
+- **Format:** Claude Code slash commands using `.md` files
 
-# Validate implementation completeness
-.spectacular/scripts/powershell/validate-implementation.ps1
+## Architecture
 
-# Setup plan for current feature
-.spectacular/scripts/powershell/setup-plan.ps1 -Json
+This repository uses a **library-based architecture** where:
+
+1. **Core Library** (`.claude/library/prompt-perfection-core.md`) - Canonical Phase 0 implementation
+2. **Adapters** (`.claude/library/adapters/`) - Domain-specific customizations for different command types
+3. **Commands** (`.claude/commands/`) - Individual slash commands that reference the library
+4. **Configuration** (`.claude/config/`) - JSON config files for complexity detection, agent templates, caching, etc.
+
+### Key Architectural Pattern
+
+Commands don't duplicate Phase 0 logic - they **reference** the library:
+
+```markdown
+## Phase 0: Prompt Perfection
+**Import:** Use Phase 0 from `.claude/library/prompt-perfection-core.md`
+**Adaptation:** Technical (from `.claude/library/adapters/technical-adapter.md`)
 ```
+
+This ensures:
+- Consistency across all commands
+- Single source of truth for Phase 0
+- Easy maintenance (update once, all commands benefit)
+- Smaller command files (50-200 lines instead of 500+)
 
 ## Project Structure
 
 ```
-specs/                         # Feature specifications (numbered branches)
-  ###-feature-name/
-    spec.md                    # Feature specification
-    plan.md                    # Implementation plan
-    tasks.md                   # Actionable task checklist
-.spectacular/
-  memory/constitution.md       # Core principles and tech stack
-  templates/                   # Templates for spec, plan, tasks
-  scripts/powershell/          # Automation scripts
 .claude/
-  commands/                    # Slash command definitions
-  tasks/                       # Task index and backlog
+├── commands/                 # Slash commands
+│   ├── prompt.md            # Basic prompt perfection
+│   ├── prompt-hybrid.md     # Hybrid with agent support
+│   ├── prompt-technical.md  # Technical analysis
+│   ├── prompt-article.md    # Article generation
+│   ├── session-start.md     # Load session context
+│   └── session-end.md       # Save session context
+├── library/                  # Reusable components
+│   ├── prompt-perfection-core.md  # Canonical Phase 0
+│   └── adapters/            # Domain-specific adaptations
+│       ├── technical-adapter.md
+│       ├── article-adapter.md
+│       ├── session-adapter.md
+│       └── hybrid-adapter.md      # Advanced features (NEW v2.0)
+├── config/                   # Configuration files
+│   ├── complexity-rules.json      # Complexity detection
+│   ├── agent-templates.json       # Agent prompts
+│   ├── cache-config.json          # Caching settings
+│   ├── verification-config.json   # Multi-agent verification
+│   └── learning-config.json       # Learning system
+├── memory/                   # User session data (preserved on update)
+│   ├── sessions.md          # Session history
+│   └── prompt-patterns.md   # Learned patterns
+└── cache/                    # Agent result cache
+    └── agent-results/
+
+doc/                          # Documentation
+├── Unified_Library_System_Guide.md
+├── Hybrid_Prompt_Perfection_Architecture.md
+├── Executive_Summary_Hybrid_Prompt_System.md
+└── Advanced_Features_Testing_Guide.md
+
+install-claude-commands.ps1   # Windows installer script
 ```
+
+## Installation
+
+This repository includes an installer script for easy deployment:
+
+```powershell
+# Download installer
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Tadzesi/claude-ideas/main/install-claude-commands.ps1" -OutFile "install-claude-commands.ps1"
+
+# Run installer in your project directory
+.\install-claude-commands.ps1
+```
+
+The installer:
+- Clones/updates the repository
+- Deploys `.claude/` directory to your project
+- Preserves user memory files during updates
+- Creates backups before updates
+- Verifies installation completeness
+
+See `README-INSTALL.md` for detailed installation instructions.
+
+---
+
+## Version 2.0 - December 2024 Refactoring ✨
+
+**Major Architectural Improvements:**
+
+The v2.0 release brings significant improvements to the command library architecture:
+
+### What Changed
+
+**Before v2.0:**
+- Each command had its own Phase 0 implementation
+- Code duplication across multiple commands
+- Inconsistent validation logic
+- Harder to maintain (updates needed in multiple files)
+
+**After v2.0:**
+- All commands reference the unified library system
+- Single source of truth for Phase 0 logic
+- Consistent validation across all commands
+- Easy maintenance (update library once, all commands benefit)
+- New hybrid-adapter.md for reusable advanced features
+
+### File Size Reductions
+
+- `prompt-hybrid.md`: Reduced from 1097 to 1037 lines (~500 lines of duplication eliminated)
+- All commands now 50-200 lines of domain logic + library references
+- Overall codebase: More maintainable with DRY principles
+
+### New Features in v2.0
+
+1. **Hybrid Intelligence Adapter** (`.claude/library/adapters/hybrid-adapter.md`)
+   - Reusable complexity detection
+   - Agent spawning logic
+   - Caching system
+   - Multi-agent verification
+   - Learning system integration
+
+2. **Enhanced Documentation**
+   - All commands now have version history
+   - Library Integration sections
+   - Clear references to core and adapters
+   - Consistent structure across all commands
+
+3. **Improved Maintainability**
+   - Single source of truth for Phase 0
+   - Easy to add new commands (just reference the library)
+   - Simple to update all commands (modify library once)
+   - Clear separation of concerns (core vs. domain logic)
+
+### Migration Guide
+
+If you created custom commands based on v1.0:
+
+1. Replace duplicate Phase 0 code with library references:
+   ```markdown
+   ## Phase 0: Prompt Perfection
+   **Import:** Use Phase 0 from `.claude/library/prompt-perfection-core.md`
+   **Adaptation:** [Technical/Article/Session/Hybrid] (from adapter)
+   ```
+
+2. Add version history section
+3. Add Library Integration section
+4. Keep your domain-specific logic in Phase 1+
+
+See any v2.0 command for examples.
+
+---
 
 ## Commands
 
@@ -609,12 +742,86 @@ Total: 10 → Complex → Agent spawns automatically
 
 ---
 
-## Core Principles
+## Development Practices for This Repository
 
-1. **Task Completion is Non-Negotiable**: Build must succeed, tests must pass, task status synced in both tasks.md AND TodoWrite
-2. **Simple Steps Over Complex Workflows**: Use `/spectacular.0-quick` for simple features
-3. **Validation Before Completion**: Run `validate-implementation.ps1` before marking complete
-4. **Production-Ready Defaults**: No placeholder code, error handling included, security addressed
+### Working with Commands
+
+**When adding or modifying commands:**
+
+1. **Use the Library System** - Don't duplicate Phase 0 logic
+   - Reference `.claude/library/prompt-perfection-core.md`
+   - Use adapters from `.claude/library/adapters/` when needed
+   - Keep commands focused on their specific functionality
+
+2. **Follow the Pattern** - Study existing commands as templates
+   - `prompt.md` - Simplest example
+   - `prompt-hybrid.md` - Most complex (with agents, caching, learning)
+   - `session-end.md` - Session management pattern
+
+3. **Test Changes** - Verify commands work as expected
+   - Test Phase 0 validation flow
+   - Verify import references work correctly
+   - Check domain-specific adaptations apply properly
+
+### Working with the Library
+
+**When modifying core library:**
+
+1. **Impact Analysis** - Changes affect ALL commands
+   - Test with at least 2-3 different commands
+   - Verify backward compatibility
+   - Update version number in library file
+
+2. **Adapter Pattern** - Use adapters for domain-specific logic
+   - Don't modify core for domain-specific needs
+   - Create/update adapters instead
+   - Keep core universal
+
+### Working with Configuration
+
+**When modifying config files:**
+
+1. **Validate JSON** - Ensure valid JSON syntax
+   ```powershell
+   Get-Content .claude/config/complexity-rules.json | ConvertFrom-Json
+   ```
+
+2. **Test Changes** - Verify config works as expected
+   - Test complexity detection with different prompts
+   - Verify agent templates spawn correctly
+   - Check cache invalidation rules
+
+### Documentation Standards
+
+**When updating documentation:**
+
+1. **Keep CLAUDE.md in Sync** - This file is the source of truth
+   - Update here first, then other docs
+   - Maintain consistency across README.md and CLAUDE.md
+
+2. **Version Documentation** - Track major changes
+   - Update version numbers in library files
+   - Document breaking changes
+   - Maintain backward compatibility when possible
+
+### Git Workflow
+
+**For this repository:**
+
+- Main branch is `main`
+- Keep command files atomic (one command per file)
+- Preserve `.claude/memory/` directory (user data)
+- Never commit cache files (`.claude/cache/`)
+
+### Testing New Features
+
+**Manual testing workflow:**
+
+1. Install to a test project: `.\install-claude-commands.ps1 -InstallPath "C:\TestProject"`
+2. Test the command: `/your-command test input`
+3. Verify Phase 0 flow works correctly
+4. Check output matches expectations
+5. Test edge cases and error handling
 
 ## Hybrid System - Implementation Status
 

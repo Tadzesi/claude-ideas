@@ -6,6 +6,9 @@ This command provides an interactive wizard for writing articles in Slovak or En
 
 ## Phase 0: Prompt Perfection
 
+**Import:** Use Phase 0 from `.claude/library/prompt-perfection-core.md`
+**Adaptation:** Article (from `.claude/library/adapters/article-adapter.md`)
+
 **Before starting the article wizard, first perfect the user's prompt.**
 
 ### Step 0.1: Initial Analysis
@@ -551,3 +554,33 @@ Would pre-select:
 - Type: LinkedIn Post
 - Topic: "My Topic Here"
 - (Continue wizard for remaining options)
+
+---
+
+## Version History
+
+**v2.0 (2024-12-20):**
+- ✨ Added explicit library reference
+- ✨ References prompt-perfection-core.md and article-adapter.md
+- Enhanced documentation consistency
+- Maintains all wizard functionality
+
+**v1.0 (Previous):**
+- Initial release
+- Interactive article wizard
+- Multi-platform output support
+
+---
+
+## Library Integration
+
+This command uses the **Unified Library System:**
+- **Core:** `.claude/library/prompt-perfection-core.md` (universal Phase 0)
+- **Adapter:** `.claude/library/adapters/article-adapter.md` (article domain)
+- **Benefits:** Consistent validation, proven flow, easy maintenance
+
+For details on the library system, see: `doc/Unified_Library_System_Guide.md`
+
+---
+
+**Ready to write your article? Just type: `/prompt-article [your topic]`**

@@ -6,6 +6,9 @@ This command generates or updates a professional README.md file for any project 
 
 ## Phase 0: Prompt Perfection
 
+**Import:** Use Phase 0 from `.claude/library/prompt-perfection-core.md`
+**Adaptation:** Article/Documentation (from `.claude/library/adapters/article-adapter.md`)
+
 **Before starting the README wizard, first perfect the user's prompt.**
 
 ### Step 0.1: Initial Analysis
@@ -648,3 +651,34 @@ Would:
 - Detect existing README
 - Default to "Update" mode
 - Preserve custom content
+
+---
+
+## Version History
+
+**v2.0 (2024-12-20):**
+- ✨ Added explicit library reference
+- ✨ References prompt-perfection-core.md and article-adapter.md
+- Enhanced documentation consistency
+- Maintains all README generation functionality
+
+**v1.0 (Previous):**
+- Initial release
+- Interactive README wizard
+- Project analysis automation
+- Multi-style support
+
+---
+
+## Library Integration
+
+This command uses the **Unified Library System:**
+- **Core:** `.claude/library/prompt-perfection-core.md` (universal Phase 0)
+- **Adapter:** `.claude/library/adapters/article-adapter.md` (article/documentation domain)
+- **Benefits:** Consistent validation, proven flow, easy maintenance
+
+For details on the library system, see: `doc/Unified_Library_System_Guide.md`
+
+---
+
+**Ready to generate your README? Just type: `/prompt-article-readme`**

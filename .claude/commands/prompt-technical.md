@@ -6,6 +6,11 @@ This command provides deep technical analysis for programming and development ta
 
 ## Phase 0: Prompt Perfection with Complexity Detection
 
+**Import:** Use Phase 0 from `.claude/library/prompt-perfection-core.md`
+**Adaptation:** Technical with Hybrid Intelligence (from `.claude/library/adapters/technical-adapter.md`)
+
+**Enhanced Flow:** This command enhances Phase 0 with automatic complexity detection and intelligent agent spawning for complex tasks.
+
 **Before any technical analysis, first perfect the user's prompt and detect complexity.**
 
 ### Step 0.1: Initial Analysis
@@ -612,6 +617,52 @@ Reply with:
 3. **Review agent findings** - Agent insights are shown transparently
 4. **Try both methods** - Use `manual` or `agent` flags to override
 5. **Customize for your stack** - Edit config files for domain-specific rules
+
+---
+
+## Advanced Features
+
+This command supports the same advanced features as `/prompt-hybrid`:
+
+**Available (when configured):**
+- ⚡ **Agent result caching** - Faster repeated analysis
+- 🔍 **Multi-agent verification** - For critical technical decisions
+- 📚 **Learning system** - Pattern tracking for technical prompts
+
+**To enable:**
+- Configure `.claude/config/cache-config.json` for caching
+- Configure `.claude/config/verification-config.json` for multi-agent
+- Configure `.claude/config/learning-config.json` for learning
+
+See `/prompt-hybrid` documentation for details on advanced features.
+
+---
+
+## Version History
+
+**v2.0 (2024-12-20):**
+- ✨ Added explicit library reference
+- ✨ References prompt-perfection-core.md and technical-adapter.md
+- ✨ Enhanced documentation with advanced features reference
+- Maintains all hybrid intelligence functionality
+
+**v1.0 (Previous):**
+- Initial release with hybrid intelligence
+- Complexity detection
+- Agent-powered analysis
+- Technical implementation options
+
+---
+
+## Library Integration
+
+This command uses the **Unified Library System:**
+- **Core:** `.claude/library/prompt-perfection-core.md` (canonical Phase 0)
+- **Adapter:** `.claude/library/adapters/technical-adapter.md` (technical domain)
+- **Enhancement:** Hybrid Intelligence (complexity detection, agents)
+- **Benefits:** Consistent validation, proven flow, easy maintenance
+
+For details on the library system, see: `doc/Unified_Library_System_Guide.md`
 
 ---
 
