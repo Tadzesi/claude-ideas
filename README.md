@@ -1,5 +1,9 @@
 # Claude Prompt Commands
 
+[![Documentation](https://img.shields.io/badge/docs-live-brightgreen)](https://tadzesi.github.io/claude-ideas/)
+[![GitHub Pages](https://github.com/Tadzesi/claude-ideas/actions/workflows/deploy-docs.yml/badge.svg)](https://github.com/Tadzesi/claude-ideas/actions/workflows/deploy-docs.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 A collection of Claude Code slash commands for prompt engineering, refinement, and content generation. Transform vague ideas into precise, executable prompts with intelligent agent assistance, caching, and learning.
 
 **Version 2.0** - December 2025
