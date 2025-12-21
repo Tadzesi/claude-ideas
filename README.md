@@ -18,11 +18,25 @@ A collection of Claude Code slash commands for prompt engineering, refinement, a
 
 ## Documentation
 
-📚 **[Complete Command Reference Guide](doc/Command_Reference_Guide.md)** - Comprehensive documentation with example flows, architecture diagrams, and best practices (200+ pages)
+### 📚 Interactive Documentation (NEW!)
 
-⚡ **[Quick Reference](doc/Quick_Reference.md)** - Fast lookup guide for all commands, decisions trees, and common workflows
+**[VitePress Documentation Site](https://tadzesi.github.io/claude-ideas/)** - Beautiful, searchable documentation
 
-📘 **[Project Overview](CLAUDE.md)** - Detailed project documentation, architecture, and development practices
+```bash
+# Development server
+npm run docs:dev
+
+# Build documentation
+npm run docs:build
+
+# Preview production build
+npm run docs:preview
+```
+
+### 📄 Legacy Documentation
+
+- **[Project Overview](CLAUDE.md)** - Detailed project documentation, architecture, and development practices
+- **[Source Documentation](docs-source/)** - Original markdown documentation files
 
 ---
 
