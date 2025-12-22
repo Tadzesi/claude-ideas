@@ -95,7 +95,16 @@ This ensures:
 └── cache/                    # Agent result cache
     └── agent-results/
 
-doc/                          # Documentation
+docs/                         # VitePress documentation (NEW - v2.0.1)
+├── .vitepress/config.ts      # VitePress configuration
+├── index.md                  # Home page
+├── getting-started/          # Installation and setup
+├── guide/                    # Commands, architecture, advanced features
+├── reference/                # Configuration and best practices
+├── migration/                # Migration guides
+└── testing/                  # Testing documentation
+
+docs-source/                  # Legacy documentation (archived)
 ├── Unified_Library_System_Guide.md
 ├── Hybrid_Prompt_Perfection_Architecture.md
 ├── Executive_Summary_Hybrid_Prompt_System.md
@@ -852,8 +861,9 @@ Total: 10 → Complex → Agent spawns automatically
 - `.claude/commands/prompt-hybrid.md` - Main hybrid command
 - `.claude/config/complexity-rules.json` - Complexity detection rules
 - `.claude/config/agent-templates.json` - Agent prompt templates
-- `doc/Hybrid_Prompt_Perfection_Architecture.md` - Full architecture
-- `doc/Executive_Summary_Hybrid_Prompt_System.md` - Quick reference
+- `docs-source/Hybrid_Prompt_Perfection_Architecture.md` - Full architecture (legacy)
+- `docs-source/Executive_Summary_Hybrid_Prompt_System.md` - Quick reference (legacy)
+- **NEW:** https://tadzesi.github.io/claude-ideas/ - VitePress documentation site
 
 **Advanced Features Files:** ⚡ **NEW**
 - `.claude/config/cache-config.json` - Agent caching configuration
@@ -868,7 +878,8 @@ Total: 10 → Complex → Agent spawns automatically
 - Multi-agent verification: ~50s (3 agents in parallel)
 
 **See documentation:**
-- Core system: `doc/Executive_Summary_Hybrid_Prompt_System.md`
+- Interactive documentation: https://tadzesi.github.io/claude-ideas/
+- Legacy reference: `docs-source/Executive_Summary_Hybrid_Prompt_System.md`
 - Advanced features: `.claude/commands/prompt-hybrid.md` (sections: "Advanced Features Guide")
 
 ---

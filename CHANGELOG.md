@@ -5,6 +5,75 @@ All notable changes to the Claude Commands Library will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2024-12-22
+
+### Added
+
+#### Documentation
+- **New:** VitePress documentation site deployed to GitHub Pages
+  - Live at: https://tadzesi.github.io/claude-ideas/
+  - Searchable, beautiful documentation interface
+  - 20+ documentation pages organized in logical sections
+  - Mobile-responsive design with dark mode support
+- **New:** AI-themed logo and favicon for branding
+  - `docs/public/logo.svg` - Neural network themed logo with Claude brand colors
+  - `docs/public/favicon.svg` - Simplified version for browser tabs
+  - Integrated into VitePress navbar, hero section, and meta tags
+- **New:** Documentation badges in README.md
+  - Live documentation link badge
+  - GitHub Pages deployment status badge
+  - MIT License badge
+
+#### CI/CD
+- **New:** `.github/workflows/deploy-docs.yml` - Automated documentation deployment
+  - Builds VitePress site on every push to main
+  - Deploys to GitHub Pages automatically
+  - Uses VitePress v1.6.4
+
+#### Project Structure
+- **New:** `docs/` directory - VitePress documentation source
+  - Replaces old `doc/` directory (moved to `docs-source/` for legacy reference)
+  - Organized into: getting-started, guide, reference, migration, testing sections
+  - Configuration in `docs/.vitepress/config.ts`
+
+### Changed
+
+- **README.md:** Fixed date references (December 2024 → December 2025)
+- **README.md:** Added badges section at top with documentation and deployment status
+- **Documentation Structure:** Migrated from `/doc` to `/docs` for VitePress
+
+### Fixed
+
+- **Install Script:** Fixed PowerShell encoding issues
+  - Replaced Unicode characters (✓✗ℹ⚠) with ASCII equivalents ([OK][ERROR][INFO][WARNING])
+  - Replaced box-drawing characters with simple ASCII
+  - Resolved parse errors on line 89 and 371
+  - Script now runs without errors on all Windows systems
+
+### Documentation
+
+**VitePress Site Structure:**
+```
+docs/
+├── getting-started/     (3 pages)
+├── guide/
+│   ├── commands/        (6 pages)
+│   ├── architecture/    (2 pages)
+│   └── advanced-features/ (3 pages)
+├── reference/           (2 pages)
+├── migration/           (2 pages)
+└── testing/             (1 page)
+```
+
+**Navigation Sections:**
+- Getting Started: Overview, Installation, Quick Start
+- Guide: Commands, Architecture, Advanced Features
+- Reference: Configuration, Best Practices
+- Migration: v2.0 Migration, Custom Commands
+- Testing: Advanced Features Testing
+
+---
+
 ## [2.0.0] - 2024-12-20
 
 ### Major Architectural Refactoring
@@ -284,7 +353,7 @@ Original structure with inline Phase 0 implementations:
 
 ## License
 
-[Specify your license here]
+Released under the MIT License. See [LICENSE](LICENSE) file for details.
 
 ---
 

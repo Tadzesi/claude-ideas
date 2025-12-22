@@ -1,5 +1,9 @@
 # Installation
 
+::: tip Interactive Documentation
+This installation guide is part of our comprehensive [VitePress Documentation Site](https://tadzesi.github.io/claude-ideas/). Browse the full documentation with search, navigation, and interactive examples!
+:::
+
 ## Prerequisites
 
 Before installing, ensure you have:

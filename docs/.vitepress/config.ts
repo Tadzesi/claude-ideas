@@ -127,12 +127,14 @@ export default defineConfig({
   },
 
   head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+    ['link', { rel: 'alternate icon', href: '/favicon.svg' }],
     ['meta', { name: 'theme-color', content: '#5f67ee' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:locale', content: 'en' }],
     ['meta', { property: 'og:title', content: 'Claude Commands Library' }],
     ['meta', { property: 'og:site_name', content: 'Claude Commands Library' }],
+    ['meta', { property: 'og:image', content: 'https://tadzesi.github.io/claude-ideas/logo.svg' }],
     ['meta', { property: 'og:description', content: 'Transform vague ideas into precise, executable prompts' }]
   ]
 })

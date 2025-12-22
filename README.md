@@ -46,7 +46,7 @@ npm run docs:preview
 
 ## What's New in Version 2.0 🎉
 
-**Major Architectural Refactoring (December 2024)**
+**Major Architectural Refactoring (December 2025)**
 
 Version 2.0 introduces a **unified library system** that dramatically improves maintainability and consistency:
 
@@ -388,7 +388,7 @@ What would you like to work on today?
 
 ---
 
-## Recent Improvements (December 2024)
+## Recent Improvements (December 2025)
 
 ### Phase 0: Prompt Perfection Framework
 

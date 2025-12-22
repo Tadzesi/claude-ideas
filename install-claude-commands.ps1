@@ -45,16 +45,16 @@ $TempDir = Join-Path $env:TEMP "claude-commands-temp"
 $BackupDir = Join-Path $InstallPath ".claude-backup"
 
 # Colors for output
-function Write-Success { param($Message) Write-Host "✓ $Message" -ForegroundColor Green }
-function Write-Error { param($Message) Write-Host "✗ $Message" -ForegroundColor Red }
-function Write-Info { param($Message) Write-Host "ℹ $Message" -ForegroundColor Cyan }
-function Write-Warning { param($Message) Write-Host "⚠ $Message" -ForegroundColor Yellow }
+function Write-Success { param($Message) Write-Host "[OK] $Message" -ForegroundColor Green }
+function Write-Error { param($Message) Write-Host "[ERROR] $Message" -ForegroundColor Red }
+function Write-Info { param($Message) Write-Host "[INFO] $Message" -ForegroundColor Cyan }
+function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -ForegroundColor Yellow }
 
 # Banner
-Write-Host "`n╔════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║     Claude Commands Library Installer v1.0            ║" -ForegroundColor Cyan
-Write-Host "║     https://github.com/Tadzesi/claude-ideas           ║" -ForegroundColor Cyan
-Write-Host "╚════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
+Write-Host "`n========================================================" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v1.0" -ForegroundColor Cyan
+Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
+Write-Host "========================================================`n" -ForegroundColor Cyan
 
 # Check if Git is installed
 function Test-GitInstalled {
@@ -86,7 +86,7 @@ function Backup-ClaudeDirectory {
     }
 
     if ($SkipBackup) {
-        Write-Warning "Skipping backup (--SkipBackup flag set)"
+        Write-Warning "Skipping backup (-SkipBackup flag set)"
         return $true
     }
 
@@ -293,9 +293,9 @@ function Show-Summary {
 
     $targetClaudeDir = Join-Path $TargetPath $ClaudeDir
 
-    Write-Host "`n╔════════════════════════════════════════════════════════╗" -ForegroundColor Green
-    Write-Host "║           Installation Summary                         ║" -ForegroundColor Green
-    Write-Host "╚════════════════════════════════════════════════════════╝`n" -ForegroundColor Green
+    Write-Host "`n========================================================" -ForegroundColor Green
+    Write-Host " Installation Summary" -ForegroundColor Green
+    Write-Host "========================================================`n" -ForegroundColor Green
 
     Write-Host "Installation Path: " -NoNewline
     Write-Host "$targetClaudeDir" -ForegroundColor Yellow
