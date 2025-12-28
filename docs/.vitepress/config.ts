@@ -37,6 +37,7 @@ export default defineConfig({
             { text: 'Overview', link: '/guide/commands/' },
             { text: '/prompt', link: '/guide/commands/prompt' },
             { text: '/prompt-hybrid', link: '/guide/commands/prompt-hybrid' },
+            { text: '/prompt-research', link: '/guide/commands/prompt-research' },
             { text: '/prompt-technical', link: '/guide/commands/prompt-technical' },
             { text: '/prompt-article', link: '/guide/commands/prompt-article' },
             { text: 'Session Management', link: '/guide/commands/session-management' }
