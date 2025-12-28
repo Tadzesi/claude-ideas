@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
-# Version: 2.0
-# Description: Installs/updates Claude commands and libraries from GitHub repository (v2.0 with unified library system)
+# Version: 3.0.0
+# Description: Installs/updates Claude commands and libraries from GitHub repository (v3.0 with multi-agent research system)
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -52,7 +52,7 @@ function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -Foregr
 
 # Banner
 Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host " Claude Commands Library Installer v1.0" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v3.0.0" -ForegroundColor Cyan
 Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
@@ -336,21 +336,25 @@ function Show-Summary {
     Write-Host "`n" -NoNewline
     Write-Success "Installation complete!"
 
-    # v2.0 Feature Announcement
+    # v3.0 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  NEW IN VERSION 2.0 (December 2024)" -ForegroundColor Magenta
+    Write-Host "  NEW IN VERSION 3.0 (December 2025)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`nMajor architectural refactoring with unified library system:" -ForegroundColor White
-    Write-Host "  - Eliminated code duplication (~500 lines)" -ForegroundColor Gray
-    Write-Host "  - Single source of truth for Phase 0 logic" -ForegroundColor Gray
-    Write-Host "  - New hybrid-adapter.md for advanced features" -ForegroundColor Gray
-    Write-Host "  - All commands now reference library system" -ForegroundColor Gray
-    Write-Host "  - 100% completeness and consistency" -ForegroundColor Gray
-    Write-Host "`nNew Features:" -ForegroundColor White
-    Write-Host "  - Agent result caching (10-20x faster)" -ForegroundColor Green
-    Write-Host "  - Multi-agent verification (2-3 agents)" -ForegroundColor Green
-    Write-Host "  - Learning system (pattern tracking)" -ForegroundColor Green
-    Write-Host "  - Comprehensive documentation" -ForegroundColor Green
+    Write-Host "`nMulti-Agent Research System:" -ForegroundColor White
+    Write-Host "  - NEW: /prompt-research command" -ForegroundColor Green
+    Write-Host "  - 5 specialized research agents" -ForegroundColor Gray
+    Write-Host "  - Iterative refinement (2-4 cycles)" -ForegroundColor Gray
+    Write-Host "  - Source attribution (file:line citations)" -ForegroundColor Gray
+    Write-Host "  - Persistent knowledge graph" -ForegroundColor Gray
+    Write-Host "  - Comprehensive 15-20 page reports" -ForegroundColor Gray
+    Write-Host "`nResearch Agents:" -ForegroundColor White
+    Write-Host "  - ExploreAgent (codebase discovery)" -ForegroundColor Green
+    Write-Host "  - CitationAgent (source attribution)" -ForegroundColor Green
+    Write-Host "  - SecurityAgent (OWASP Top 10 audits)" -ForegroundColor Green
+    Write-Host "  - PerformanceAgent (bottleneck detection)" -ForegroundColor Green
+    Write-Host "  - PatternAgent (convention analysis)" -ForegroundColor Green
+    Write-Host "`nUse Cases: Security audits, performance analysis," -ForegroundColor Cyan
+    Write-Host "           architecture understanding, pattern discovery" -ForegroundColor Cyan
     Write-Host "`nSee CHANGELOG.md for complete details" -ForegroundColor Cyan
     Write-Host "========================================`n" -ForegroundColor Magenta
 
@@ -363,6 +367,7 @@ function Show-Summary {
     Write-Host "  /prompt           - Basic prompt perfection" -ForegroundColor Gray
     Write-Host "  /prompt-hybrid    - Advanced with agent support" -ForegroundColor Gray
     Write-Host "  /prompt-technical - Technical implementation analysis" -ForegroundColor Gray
+    Write-Host "  /prompt-research  - Deep multi-agent research (NEW v3.0)" -ForegroundColor Green
     Write-Host "  /prompt-article   - Article creation wizard" -ForegroundColor Gray
     Write-Host "  /session-start    - Load session context" -ForegroundColor Gray
     Write-Host "  /session-end      - Save session context" -ForegroundColor Gray

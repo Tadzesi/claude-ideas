@@ -1,6 +1,6 @@
 # Commands Overview
 
-The Claude Commands Library provides 7 powerful slash commands organized into three categories.
+The Claude Commands Library provides 8 powerful slash commands organized into four categories.
 
 ## All Commands
 
@@ -8,6 +8,7 @@ The Claude Commands Library provides 7 powerful slash commands organized into th
 |---------|----------|---------|------|------------|
 | `/prompt` | Prompt Engineering | Basic prompt perfection | ~2s | Simple |
 | `/prompt-hybrid` | Prompt Engineering | Intelligent with agent support | 2-50s | Advanced |
+| `/prompt-research` | Research & Analysis | Deep multi-agent research | 60-180s | Expert |
 | `/prompt-technical` | Technical Analysis | Implementation planning | 5-30s | Advanced |
 | `/prompt-article` | Content Creation | Interactive article wizard | 2-5min | Medium |
 | `/prompt-article-readme` | Content Creation | README generator | 10-30s | Medium |
@@ -40,6 +41,24 @@ Transform vague ideas into precise, executable prompts:
   - Learning system
 
 [Learn more →](/guide/commands/prompt-hybrid)
+
+### 🔬 Research & Analysis
+
+Deep codebase research with orchestrated agents:
+
+#### `/prompt-research`
+- **Purpose:** Comprehensive multi-agent research **NEW v3.0**
+- **Time:** 60-180 seconds (depending on strategy)
+- **Best for:** Security audits, performance analysis, architecture understanding
+- **Features:**
+  - 2-5 specialized research agents
+  - Iterative refinement (2-4 cycles)
+  - Source attribution (file:line citations)
+  - Persistent knowledge graph
+  - 15-20 page research reports
+  - Smart convergence detection
+
+[Learn more →](/guide/commands/prompt-hybrid#prompt-research)
 
 ### 🔧 Technical Analysis
 
@@ -122,6 +141,7 @@ Zero information loss between sessions:
 |-----------|---------|-----|
 | Quick prompt cleanup | `/prompt` | Fast, simple, no codebase analysis |
 | General prompt perfection | `/prompt-hybrid` | Smart complexity detection |
+| Deep research & analysis | `/prompt-research` | Multi-agent, comprehensive reports |
 | Technical implementation | `/prompt-technical` | Deep tech analysis, patterns |
 | Write an article | `/prompt-article` | Interactive wizard, multi-platform |
 | Generate README | `/prompt-article-readme` | Auto-detects tech stack |
@@ -134,9 +154,16 @@ Zero information loss between sessions:
 Need prompt help?
 ├─ Just fix quickly → /prompt
 ├─ Complex, not sure → /prompt-hybrid
+├─ Deep research needed → /prompt-research
 ├─ Need implementation → /prompt-technical
 ├─ Write article → /prompt-article
 └─ Need README → /prompt-article-readme
+
+Research & Analysis?
+├─ Security audit → /prompt-research
+├─ Performance investigation → /prompt-research
+├─ Architecture analysis → /prompt-research
+└─ Pattern discovery → /prompt-research
 
 Session management?
 ├─ Starting work → /session-start

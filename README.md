@@ -6,13 +6,14 @@
 
 A collection of Claude Code slash commands for prompt engineering, refinement, and content generation. Transform vague ideas into precise, executable prompts with intelligent agent assistance, caching, and learning.
 
-**Version 2.0** - December 2025
+**Version 3.0** - December 2025
 
 ## Features
 
 - ⚡ **Prompt Perfection** - Analyze and refine any prompt to be clear and unambiguous
 - 🤖 **Intelligent Agent Assistance** - Automatic codebase analysis for complex tasks
 - 🔍 **Multi-Agent Verification** - Cross-validate critical operations with 3 agents
+- 🔬 **Multi-Agent Research** - Deep codebase research with orchestrated agents and iterative refinement
 - ⚡ **Agent Result Caching** - 10-20x faster for repeated prompts
 - 📚 **Learning System** - Tracks patterns and suggests smart defaults over time
 - 🔧 **Technical Analysis** - Deep dive into implementation options with code scaffolding
@@ -37,18 +38,50 @@ npm run docs:build
 npm run docs:preview
 ```
 
-### 📄 Legacy Documentation
+### 📄 Additional Documentation
 
 - **[Project Overview](CLAUDE.md)** - Detailed project documentation, architecture, and development practices
-- **[Source Documentation](docs-source/)** - Original markdown documentation files
+- **[Archived Documentation](docs-archive/)** - Historical documentation from v2.0 and earlier (migrated to VitePress)
 
 ---
 
-## What's New in Version 2.0 🎉
+## What's New in Version 3.0 🎉
 
-**Major Architectural Refactoring (December 2025)**
+**Major Release - Multi-Agent Research System (December 2025)**
 
-Version 2.0 introduces a **unified library system** that dramatically improves maintainability and consistency:
+Version 3.0 introduces a **comprehensive multi-agent research system** aligned with Anthropic's research architecture, enabling deep codebase analysis with orchestrated agents and iterative refinement.
+
+### Headline Features
+
+🔬 **NEW: `/prompt-research` Command**
+- Deep multi-agent research with 2-5 specialized agents
+- Iterative refinement (2-4 cycles) with smart convergence
+- Source attribution with file:line citations and code snippets
+- Persistent knowledge graph across sessions
+- 15-20 page comprehensive research reports
+- Security audits, performance analysis, architecture understanding
+
+🤖 **5 Specialized Research Agents**
+- **ExploreAgent** - Codebase discovery and architecture mapping
+- **CitationAgent** - Source attribution with precision
+- **SecurityAgent** - OWASP Top 10 compliance checks
+- **PerformanceAgent** - Bottleneck detection and optimization
+- **PatternAgent** - Convention and consistency analysis
+
+🧠 **External Memory System**
+- Persistent knowledge base (`project-knowledge.md`)
+- Architectural context (`architectural-context.md`)
+- Citation index with evidence tracking
+
+See [CHANGELOG.md](CHANGELOG.md) for complete v3.0 details.
+
+---
+
+## What Was New in Version 2.0
+
+**Unified Library System (December 2024)**
+
+Version 2.0 introduced a **unified library system** that dramatically improved maintainability and consistency:
 
 ### Key Improvements
 

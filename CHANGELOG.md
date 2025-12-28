@@ -5,6 +5,82 @@ All notable changes to the Claude Commands Library will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2025-12-28
+
+### Major Release - Multi-Agent Research System
+
+Version 3.0 introduces a comprehensive multi-agent research system aligned with Anthropic's research architecture, enabling deep codebase analysis with orchestrated agents and iterative refinement.
+
+### Added
+
+#### New Command: `/prompt-research`
+- **Deep multi-agent research** with orchestrator-worker architecture
+- **Iterative refinement** - 2-4 iteration cycles with gap-driven analysis
+- **Source attribution** - Every finding includes file:line citations with code snippets
+- **External memory** - Persistent knowledge graph across sessions
+- **Comprehensive reporting** - 15-20 page research reports with priority classification
+- **Smart convergence** - Automatically determines when research is complete
+- **Research strategies** - Narrow (60s), Broad (120s), Comprehensive (180s)
+
+#### Orchestration Components
+- **NEW:** `.claude/library/orchestration/lead-agent-core.md` - Coordinates 2-5 specialized agents
+- **NEW:** `.claude/library/orchestration/iteration-engine.md` - Multi-step refinement with gap detection
+- **NEW:** `.claude/library/orchestration/result-aggregator.md` - Deduplication, conflict resolution, confidence scoring
+
+#### Specialized Agents
+- **NEW:** `.claude/library/agents/explore-agent.md` - Codebase discovery and architecture understanding
+- **NEW:** `.claude/library/agents/citation-agent.md` - Source attribution with file:line precision
+- **NEW:** `.claude/library/agents/security-agent.md` - OWASP Top 10 compliance and vulnerability detection
+- **NEW:** `.claude/library/agents/performance-agent.md` - Bottleneck detection and N+1 query analysis
+- **NEW:** `.claude/library/agents/pattern-agent.md` - Convention detection and consistency analysis
+
+#### External Memory System
+- **NEW:** `.claude/memory/project-knowledge.md` - Persistent facts, patterns, and findings
+- **NEW:** `.claude/memory/architectural-context.md` - System understanding and design rationale
+- **NEW:** `.claude/memory/citation-index.md` - Source evidence mapping with confidence scores
+
+#### Configuration
+- **NEW:** `.claude/config/orchestration-config.json` - Research strategies and agent coordination
+- **NEW:** `.claude/config/iteration-rules.json` - Convergence criteria and gap detection rules
+- **NEW:** `.claude/config/agent-roles.json` - Agent definitions, triggers, and timeouts
+- **NEW:** `.claude/config/citation-config.json` - Citation formatting and snippet extraction
+- **NEW:** `.claude/config/external-memory-config.json` - Memory persistence and cleanup rules
+- **NEW:** `.claude/library/adapters/research-adapter.md` - Research-specific Phase 0 adaptation
+
+### Enhanced
+
+#### Complexity Detection
+- **UPDATED:** `.claude/config/complexity-rules.json` - Added research mode threshold (score >= 20)
+- Research-level complexity automatically triggers multi-agent orchestration
+- New triggers for deep analysis tasks (security audits, performance investigations)
+
+#### Agent Templates
+- **UPDATED:** `.claude/config/agent-templates.json` - Added orchestrator templates for research coordination
+
+### Use Cases
+
+The `/prompt-research` command excels at:
+- **Architecture analysis** - Understanding system structure and relationships
+- **Security audits** - OWASP Top 10 compliance and vulnerability detection
+- **Performance investigations** - Bottleneck identification and optimization opportunities
+- **Pattern discovery** - Naming conventions and consistency analysis
+- **Comprehensive understanding** - Multiple perspectives with cross-validation
+
+### Performance
+
+- **First run:** 60-180s depending on strategy (Narrow/Broad/Comprehensive)
+- **Cached run:** ~10s (10-20x faster for repeated research)
+- **Memory benefits:** Faster on related topics as knowledge accumulates
+
+### Documentation
+
+- Comprehensive `/prompt-research` command documentation in CLAUDE.md
+- Research adapter and orchestration component specifications
+- Agent behavior and coordination protocols
+- External memory structure and update strategies
+
+---
+
 ## [2.0.1] - 2024-12-22
 
 ### Added

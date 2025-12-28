@@ -95,7 +95,7 @@ This ensures:
 └── cache/                    # Agent result cache
     └── agent-results/
 
-docs/                         # VitePress documentation (NEW - v2.0.1)
+docs/                         # VitePress documentation (v2.0.1+)
 ├── .vitepress/config.ts      # VitePress configuration
 ├── index.md                  # Home page
 ├── getting-started/          # Installation and setup
@@ -104,7 +104,7 @@ docs/                         # VitePress documentation (NEW - v2.0.1)
 ├── migration/                # Migration guides
 └── testing/                  # Testing documentation
 
-docs-source/                  # Legacy documentation (archived)
+docs-archive/                 # Archived legacy documentation (v2.0 and earlier)
 ├── Unified_Library_System_Guide.md
 ├── Hybrid_Prompt_Perfection_Architecture.md
 ├── Executive_Summary_Hybrid_Prompt_System.md
@@ -200,6 +200,182 @@ If you created custom commands based on v1.0:
 4. Keep your domain-specific logic in Phase 1+
 
 See any v2.0 command for examples.
+
+---
+
+## Version 3.0 - December 2025 Multi-Agent Research System 🔬
+
+**Major Enhancement: Deep Multi-Agent Research with Iterative Refinement**
+
+The v3.0 release introduces a comprehensive multi-agent research system aligned with Anthropic's research architecture, enabling deep codebase analysis with orchestrated agents and persistent knowledge.
+
+### What's New in v3.0
+
+**New Command: `/prompt-research`**
+- Multi-agent orchestration (2-5 specialized agents)
+- Iterative refinement (2-4 iteration cycles)
+- Source attribution (file:line citations with code snippets)
+- External memory (persistent knowledge graph across sessions)
+- Comprehensive reports (15-20 pages with priorities)
+- Smart convergence (automatic research completion detection)
+
+**New Orchestration Components:**
+1. **Lead Agent** (`.claude/library/orchestration/lead-agent-core.md`)
+   - Coordinates worker agents
+   - Monitors research progress
+   - Decides iterations and convergence
+
+2. **Iteration Engine** (`.claude/library/orchestration/iteration-engine.md`)
+   - Multi-step refinement loop (max 4 iterations)
+   - Gap detection (8 gap types)
+   - Adaptive agent selection
+   - Convergence evaluation
+
+3. **Result Aggregator** (`.claude/library/orchestration/result-aggregator.md`)
+   - Deduplication and merging
+   - Conflict resolution (6 rules)
+   - Confidence scoring
+   - Priority organization (Critical/Important/Informational)
+
+**New Specialized Agents:**
+1. **ExploreAgent** (`.claude/library/agents/explore-agent.md`)
+   - Codebase discovery and file mapping
+   - Architecture understanding
+   - Pattern recognition
+
+2. **CitationAgent** (`.claude/library/agents/citation-agent.md`) ⭐ NEW
+   - Source attribution (file:line precision)
+   - Code snippet extraction
+   - Confidence scoring
+   - Evidence tracking
+
+3. **SecurityAgent** (`.claude/library/agents/security-agent.md`) ⭐ NEW
+   - OWASP Top 10 compliance
+   - Vulnerability detection
+   - Authentication/authorization analysis
+
+4. **PerformanceAgent** (`.claude/library/agents/performance-agent.md`) ⭐ NEW
+   - Bottleneck detection
+   - N+1 query identification
+   - Caching analysis
+
+5. **PatternAgent** (`.claude/library/agents/pattern-agent.md`) ⭐ NEW
+   - Convention detection
+   - Consistency analysis
+   - Pattern recognition
+
+**External Memory System:**
+1. **project-knowledge.md** - Facts, patterns, findings
+2. **architectural-context.md** - Understanding, rationale
+3. **citation-index.md** - Source evidence mapping
+
+**Enhanced Configuration:**
+- `orchestration-config.json` - Research strategies, iterations
+- `iteration-rules.json` - Convergence criteria, gap detection
+- `agent-roles.json` - Agent definitions and triggers
+- `citation-config.json` - Citation formatting
+- `external-memory-config.json` - Memory persistence
+
+### File Structure Changes (v3.0)
+
+**New Directories:**
+```
+.claude/
+├── library/
+│   ├── orchestration/              # NEW - Multi-agent orchestration
+│   │   ├── lead-agent-core.md
+│   │   ├── iteration-engine.md
+│   │   └── result-aggregator.md
+│   ├── agents/                     # NEW - Specialized agents
+│   │   ├── explore-agent.md
+│   │   ├── citation-agent.md
+│   │   ├── security-agent.md
+│   │   ├── performance-agent.md
+│   │   └── pattern-agent.md
+│   └── adapters/
+│       └── research-adapter.md     # NEW - Research Phase 0 adapter
+├── memory/                         # NEW - Persistent knowledge
+│   ├── project-knowledge.md
+│   ├── architectural-context.md
+│   └── citation-index.md
+├── cache/
+│   └── iteration-checkpoints/      # NEW - Iteration state
+└── config/
+    ├── orchestration-config.json   # NEW
+    ├── iteration-rules.json        # NEW
+    ├── agent-roles.json            # NEW
+    ├── citation-config.json        # NEW
+    ├── external-memory-config.json # NEW
+    ├── complexity-rules.json       # UPDATED with research triggers
+    └── agent-templates.json        # UPDATED with orchestrator templates
+```
+
+### Migration Guide (v2.0 → v3.0)
+
+**For Existing Users:**
+
+v3.0 is **fully backward compatible** - all existing commands (`/prompt`, `/prompt-hybrid`, `/prompt-technical`, etc.) continue to work exactly as before.
+
+**What's Preserved:**
+- ✅ All existing commands unchanged
+- ✅ All existing configurations preserved
+- ✅ Cache system continues to work
+- ✅ Learning system continues to improve
+- ✅ Session management unchanged
+
+**What's New:**
+- ✅ New `/prompt-research` command (opt-in)
+- ✅ Persistent knowledge graph (`.claude/memory/`)
+- ✅ Enhanced complexity detection (research depth 20+)
+- ✅ New orchestrator templates in `agent-templates.json`
+
+**Adoption Path:**
+1. **Update to v3.0** (installer preserves all existing data)
+   ```powershell
+   .\install-claude-commands.ps1
+   ```
+
+2. **Continue using existing commands** as before
+   - `/prompt` - Quick prompt cleanup
+   - `/prompt-hybrid` - Fast single-pass with agents
+   - `/prompt-technical` - Technical analysis
+
+3. **Try `/prompt-research` when needed:**
+   - Security audits
+   - Performance investigations
+   - Architecture analysis
+   - Comprehensive understanding
+
+4. **Knowledge graph builds automatically:**
+   - First research: Creates knowledge base
+   - Subsequent research: Builds on existing knowledge
+   - Faster over time as memory grows
+
+**No Action Required** - v3.0 enhances your system without breaking anything.
+
+**When to Use Each Command:**
+```
+Quick task → /prompt or /prompt-hybrid (2-30s)
+Deep research → /prompt-research (60-180s)
+Implementation → /prompt-technical (after research)
+```
+
+### Performance Impact
+
+**Existing Commands:** No change (same performance as v2.0)
+**New `/prompt-research`:**
+- First run: 60-180s (depending on strategy)
+- Cached run: ~10s (10-20x faster)
+- Memory-assisted: Faster on related topics
+
+### Configuration Recommendations
+
+**Default Settings:** Work well out-of-the-box
+
+**Optional Tuning:**
+1. Adjust research strategies in `orchestration-config.json`
+2. Customize agent triggers in `agent-roles.json`
+3. Modify convergence criteria in `iteration-rules.json`
 
 ---
 
@@ -430,6 +606,127 @@ Inline Q&A    Check Cache ⚡
 
 ---
 
+### `/prompt-research` 🔬 DEEP MULTI-AGENT RESEARCH **NEW (v3.0)**
+
+**Purpose:** Comprehensive codebase research using orchestrator-worker architecture with iterative refinement for deep understanding, security audits, and performance analysis.
+
+**What it does:**
+1. **Multi-agent orchestration** - Coordinates 2-5 specialized agents in parallel
+2. **Iterative refinement** - 2-4 iteration cycles with gap-driven analysis
+3. **Source attribution** - Every finding has file:line citations with code snippets
+4. **External memory** - Builds persistent knowledge graph across sessions
+5. **Comprehensive reporting** - 15-20 page research reports with priorities
+6. **Smart convergence** - Automatically determines when research is complete
+
+**The Research Approach:**
+
+```
+User Request
+     ↓
+Phase 0: Research Specification
+     ↓
+Lead Agent (Orchestrator)
+     ↓
+┌────────┴────────┐
+↓                 ↓
+Iteration 1    Iteration 2-4
+(Initial)      (Refinement)
+     ↓                 ↓
+Worker Agents (Parallel):
+- ExploreAgent (always)
+- CitationAgent (always)
+- SecurityAgent (conditional)
+- PerformanceAgent (conditional)
+- PatternAgent (conditional)
+     ↓
+Convergence Check
+(Coverage >= 70%, Confidence >= 0.80)
+     ↓
+Result Aggregator
+     ↓
+Research Report + Memory Updates
+```
+
+**Complexity Scoring:**
+- **20-29:** Narrow research (2 agents, 1-2 iterations, ~60s)
+- **30-49:** Broad research (3-4 agents, 2-3 iterations, ~120s) *[Recommended]*
+- **50+:** Comprehensive research (5 agents, 3-4 iterations, ~180s)
+
+**Usage:**
+```
+/prompt-research Analyze the authentication system
+/prompt-research Perform security audit of payment processing
+/prompt-research Investigate performance issues in the API layer
+```
+
+**Interactive Questions:**
+1. **Research Scope:** Architecture / Security / Performance / Patterns / All
+2. **Research Depth:** Quick / Standard / Comprehensive
+3. **Specific Questions:** What do you need to know?
+4. **Focus Areas:** Which area needs special attention?
+
+**Specialized Agents:**
+- **ExploreAgent** (Haiku, 30s) - Codebase discovery, file mapping, architecture
+- **CitationAgent** (Haiku, 20s) - Source attribution, file:line citations
+- **SecurityAgent** (Sonnet, 45s) - OWASP Top 10, vulnerability detection
+- **PerformanceAgent** (Sonnet, 45s) - Bottleneck detection, N+1 queries
+- **PatternAgent** (Haiku, 30s) - Convention detection, consistency analysis
+
+**Research Report Structure:**
+- Executive Summary (key takeaways)
+- Research Metadata (agents, iterations, duration, files analyzed)
+- **Critical Findings** 🚨 (P0 - immediate action required)
+- **Important Findings** ⚠️ (P1 - address soon)
+- **Informational Findings** 💡 (P2 - nice to know)
+- Architectural Insights
+- Security Analysis (OWASP Top 10 compliance)
+- Performance Analysis (bottlenecks, opportunities)
+- Patterns & Conventions (consistency scores)
+- Recommendations (prioritized with rationale + citations)
+- Knowledge Graph Updates
+- Gaps & Future Research
+- Citations & References (file:line with code snippets)
+- Research Statistics
+- Next Steps
+
+**External Memory (Persistent Knowledge):**
+- `.claude/memory/project-knowledge.md` - Facts, patterns, findings
+- `.claude/memory/architectural-context.md` - Understanding, rationale
+- `.claude/memory/citation-index.md` - Source evidence mapping
+
+**Performance:**
+- First run: 60-180s (depending on strategy)
+- Cached run (same research): ~10s (10-20x faster)
+- Memory benefits: Faster on related topics over time
+
+**Configuration:**
+- `.claude/config/orchestration-config.json` - Strategies, iterations
+- `.claude/config/agent-roles.json` - Agent definitions, triggers
+- `.claude/config/external-memory-config.json` - Memory persistence
+- `.claude/config/iteration-rules.json` - Convergence criteria
+- `.claude/config/citation-config.json` - Citation formatting
+
+**When to Use:**
+✅ Architecture analysis - Understanding system structure
+✅ Security audits - OWASP Top 10, vulnerability detection
+✅ Performance investigations - Bottleneck detection, optimization
+✅ Pattern discovery - Naming conventions, consistency checks
+✅ Comprehensive understanding - Multiple perspectives needed
+✅ Critical decisions - When accuracy matters more than speed
+
+**Comparison with /prompt-hybrid:**
+| Feature | /prompt-research | /prompt-hybrid |
+|---------|------------------|----------------|
+| Duration | 60-180s | 2-30s |
+| Agents | 2-5 specialized | 0-1 general |
+| Iterations | 2-4 cycles | Single-pass |
+| Depth | Comprehensive | Balanced |
+| Citations | Always (file:line) | Optional |
+| Memory | Persistent graph | Learning only |
+| Report | 15-20 pages | Structured prompt |
+
+---
+
 ### `/session-end`
 
 **Purpose:** Capture comprehensive session context to ensure zero information loss between sessions.
@@ -538,6 +835,7 @@ What would you like to work on today?
 |-----------|---------|-----|
 | **Quick prompt cleanup** | `/prompt` | Fast, simple, no codebase analysis |
 | **General prompt perfection** | `/prompt-hybrid` | Smart complexity detection, agents when needed |
+| **Deep research & analysis** | `/prompt-research` | Multi-agent, iterative, comprehensive reports |
 | **Technical implementation** | `/prompt-technical` | Deep tech analysis, auto-detects patterns |
 | **Write an article** | `/prompt-article` | Interactive wizard, multi-platform output |
 | **Generate README** | `/prompt-article-readme` | Project analysis, auto-detects tech stack |
@@ -550,9 +848,16 @@ What would you like to work on today?
 Need prompt help?
 ├─ Just fix my prompt quickly → /prompt
 ├─ Complex task, not sure if needs analysis → /prompt-hybrid
+├─ Deep research needed (security, performance, architecture) → /prompt-research
 ├─ Technical implementation needed → /prompt-technical
 ├─ Want to write article/content → /prompt-article
 └─ Need README for project → /prompt-article-readme
+
+Research & Analysis?
+├─ Security audit → /prompt-research (SecurityAgent)
+├─ Performance investigation → /prompt-research (PerformanceAgent)
+├─ Architecture analysis → /prompt-research (multi-agent)
+└─ Pattern discovery → /prompt-research (PatternAgent)
 
 Session management?
 ├─ Starting work → /session-start
@@ -604,6 +909,36 @@ Session management?
 /prompt-technical      → Then get technical analysis
 ```
 
+#### `/prompt-hybrid` vs `/prompt-research`
+
+**Use `/prompt-hybrid` when:**
+- ✅ You need fast results (2-30s)
+- ✅ Single-pass analysis is sufficient
+- ✅ General task complexity (score 10-19)
+- ✅ One agent perspective is enough
+
+**Use `/prompt-research` when:**
+- ✅ You need comprehensive analysis (60-180s)
+- ✅ Multiple perspectives required (2-5 agents)
+- ✅ Iterative refinement needed (2-4 cycles)
+- ✅ Research complexity (score 20+)
+- ✅ Security audits, performance investigations, architecture analysis
+- ✅ Persistent knowledge graph needed
+- ✅ Source citations required (file:line with code snippets)
+
+**Example:**
+```
+/prompt-hybrid Analyze auth system          → Fast, single agent (~20s)
+/prompt-research Perform security audit     → Deep, multi-agent (~120s)
+```
+
+**Decision Criteria:**
+- Speed vs. Depth: hybrid = fast, research = comprehensive
+- Agents: hybrid = 0-1, research = 2-5
+- Iterations: hybrid = 1, research = 2-4
+- Citations: hybrid = optional, research = always
+- Memory: hybrid = learning only, research = persistent graph
+
 ### Common Workflows
 
 **Workflow 1: From Idea to Implementation**
@@ -640,6 +975,51 @@ Session management?
 
 3. /session-end
    → Save changes
+```
+
+**Workflow 4: Deep Research & Security Audit**
+```
+1. /prompt-research "Perform comprehensive security audit"
+   → Interactive questions (scope, depth, focus)
+   → User selects: Security + Architecture, Standard depth
+
+2. Multi-agent research (120s)
+   → Iteration 1: SecurityAgent + ExploreAgent + CitationAgent
+   → Iteration 2: Refinement based on gaps
+   → Converges at 75% coverage, 0.85 confidence
+
+3. Review 15-20 page research report
+   → Critical findings (vulnerabilities)
+   → Important findings (security concerns)
+   → Recommendations with priorities
+   → Full citations (file:line with code)
+
+4. Knowledge graph updated automatically
+   → project-knowledge.md (security model)
+   → architectural-context.md (security architecture)
+   → citation-index.md (evidence tracking)
+
+5. Follow-up research (optional)
+   → /prompt-research "Investigate Finding #1 in detail"
+   → Builds on existing knowledge (faster)
+
+6. /session-end
+   → Save session context
+```
+
+**Workflow 5: Performance Investigation**
+```
+1. /prompt-research "Why is the dashboard slow?"
+   → User selects: Performance focus, Standard depth
+
+2. Multi-agent research (95s)
+   → PerformanceAgent detects N+1 query (critical)
+   → ExploreAgent maps data flow
+   → CitationAgent provides exact locations
+
+3. Implement fixes based on recommendations
+
+4. /session-end
 ```
 
 ---
