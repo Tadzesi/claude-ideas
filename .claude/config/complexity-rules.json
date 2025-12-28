@@ -115,6 +115,144 @@
       "weight": 5,
       "agent": "Explore",
       "confidence": "high"
+    },
+    {
+      "id": "security_audit",
+      "name": "Security Audit Request",
+      "description": "Comprehensive security analysis needed",
+      "triggers": [
+        "security audit",
+        "vulnerability scan",
+        "security review",
+        "penetration test",
+        "security assessment",
+        "OWASP",
+        "security vulnerabilities",
+        "security risks"
+      ],
+      "weight": 10,
+      "agent": "Security",
+      "confidence": "high",
+      "research_mode": true
+    },
+    {
+      "id": "performance_investigation",
+      "name": "Performance Investigation",
+      "description": "Deep performance analysis required",
+      "triggers": [
+        "performance audit",
+        "performance investigation",
+        "bottleneck analysis",
+        "slow performance",
+        "optimize performance",
+        "performance issues",
+        "performance review"
+      ],
+      "weight": 8,
+      "agent": "Performance",
+      "confidence": "high",
+      "research_mode": true
+    },
+    {
+      "id": "architecture_analysis",
+      "name": "Architecture Analysis",
+      "description": "Comprehensive architecture understanding",
+      "triggers": [
+        "analyze architecture",
+        "architecture review",
+        "understand architecture",
+        "system design",
+        "architecture audit",
+        "architecture analysis"
+      ],
+      "weight": 7,
+      "agent": "Explore",
+      "confidence": "high",
+      "research_mode": true
+    },
+    {
+      "id": "pattern_discovery",
+      "name": "Pattern Discovery",
+      "description": "Discover and analyze code patterns",
+      "triggers": [
+        "discover patterns",
+        "analyze patterns",
+        "pattern analysis",
+        "convention analysis",
+        "consistency check",
+        "pattern review"
+      ],
+      "weight": 6,
+      "agent": "Pattern",
+      "confidence": "high",
+      "research_mode": true
+    },
+    {
+      "id": "codebase_exploration",
+      "name": "Codebase Exploration",
+      "description": "Deep codebase exploration and mapping",
+      "triggers": [
+        "explore codebase",
+        "map codebase",
+        "codebase analysis",
+        "understand codebase",
+        "codebase review",
+        "comprehensive analysis"
+      ],
+      "weight": 7,
+      "agent": "Explore",
+      "confidence": "high",
+      "research_mode": true
+    },
+    {
+      "id": "technical_debt_assessment",
+      "name": "Technical Debt Assessment",
+      "description": "Identify and assess technical debt",
+      "triggers": [
+        "technical debt",
+        "debt assessment",
+        "code quality review",
+        "assess quality",
+        "debt analysis"
+      ],
+      "weight": 8,
+      "agent": "Explore",
+      "confidence": "high",
+      "research_mode": true
+    },
+    {
+      "id": "compliance_review",
+      "name": "Compliance Review",
+      "description": "Regulatory or standards compliance check",
+      "triggers": [
+        "compliance review",
+        "regulatory compliance",
+        "standards compliance",
+        "GDPR",
+        "HIPAA",
+        "PCI DSS",
+        "compliance audit"
+      ],
+      "weight": 10,
+      "agent": "Security",
+      "confidence": "high",
+      "research_mode": true
+    },
+    {
+      "id": "multiple_focus_areas",
+      "name": "Multiple Focus Areas",
+      "description": "Research requires multiple specialized agents",
+      "triggers": [
+        "and",
+        "plus",
+        "also",
+        "including"
+      ],
+      "weight": 5,
+      "agent": "Multiple",
+      "confidence": "medium",
+      "research_mode": true,
+      "requires_context": true
     }
   ],
   "thresholds": {
@@ -122,19 +260,46 @@
       "min": 0,
       "max": 4,
       "description": "Simple prompt, inline validation sufficient",
-      "action": "inline"
+      "action": "inline",
+      "command": "prompt-hybrid"
     },
     "moderate": {
       "min": 5,
       "max": 9,
       "description": "Moderate complexity, agent optional",
-      "action": "suggest_agent"
+      "action": "suggest_agent",
+      "command": "prompt-hybrid"
     },
     "complex": {
       "min": 10,
-      "max": 999,
+      "max": 19,
       "description": "Complex prompt, agent recommended",
-      "action": "spawn_agent"
+      "action": "spawn_agent",
+      "command": "prompt-hybrid"
+    },
+    "research_narrow": {
+      "min": 20,
+      "max": 29,
+      "description": "Research mode - narrow strategy (2 agents, 1-2 iterations)",
+      "action": "research_mode",
+      "command": "prompt-research",
+      "strategy": "narrow"
+    },
+    "research_broad": {
+      "min": 30,
+      "max": 49,
+      "description": "Research mode - broad strategy (3-4 agents, 2-3 iterations)",
+      "action": "research_mode",
+      "command": "prompt-research",
+      "strategy": "broad"
+    },
+    "research_comprehensive": {
+      "min": 50,
+      "max": 999,
+      "description": "Research mode - comprehensive strategy (5 agents, 3-4 iterations)",
+      "action": "research_mode",
+      "command": "prompt-research",
+      "strategy": "comprehensive"
     }
   },
   "agent_config": {

@@ -28,6 +28,41 @@
       "agent": "Plan",
       "model": "sonnet",
       "prompt_template": "Create a detailed implementation plan for:\n\n\"{user_prompt}\"\n\n## Planning Objectives:\n\n1. **Understand Requirements**\n   - Break down what needs to be built\n   - Identify dependencies between components\n   - Note any constraints\n\n2. **Analyze Existing Code**\n   - Find relevant existing implementations\n   - Identify reusable components\n   - Note patterns to follow\n\n3. **Design Approach**\n   - Propose 2-3 implementation options\n   - Compare trade-offs\n   - Recommend best approach\n\n4. **Implementation Steps**\n   - Create ordered, actionable steps\n   - Identify files to create/modify\n   - Note testing requirements\n\n5. **Risk Assessment**\n   - Identify potential issues\n   - Suggest mitigation strategies\n\n## Return Format:\n\n```\n### Requirements Analysis\n[Breakdown of what needs to be built]\n\n### Existing Code Analysis\n- Relevant files: [list]\n- Reusable components: [list]\n- Patterns to follow: [description]\n\n### Implementation Options\n\n**Option 1: [Name]**\nPros:\n- [pro 1]\n- [pro 2]\nCons:\n- [con 1]\n- [con 2]\nComplexity: [Low/Medium/High]\n\n**Option 2: [Name]**\nPros:\n- [pro 1]\n- [pro 2]\nCons:\n- [con 1]\n- [con 2]\nComplexity: [Low/Medium/High]\n\n**⭐ Recommended: Option [X]**\nReasoning: [why this is best]\n\n### Implementation Plan\n\n**Phase 1: [Phase Name]**\n1. [Step 1 with file references]\n2. [Step 2 with file references]\n\n**Phase 2: [Phase Name]**\n1. [Step 1 with file references]\n2. [Step 2 with file references]\n\n**Phase 3: Testing & Validation**\n1. [Testing steps]\n2. [Validation steps]\n\n### Files to Create/Modify\n- `path/to/file1.ext` - [what changes]\n- `path/to/file2.ext` - [what changes]\n\n### Risk Assessment\n**Potential Issues:**\n1. [Issue 1] - Mitigation: [strategy]\n2. [Issue 2] - Mitigation: [strategy]\n\n### Success Criteria\n- [Criterion 1]\n- [Criterion 2]\n\n### Estimated Complexity\n[Overall complexity assessment with reasoning]\n```\n\nProvide detailed, actionable guidance."
+    },
+    "lead_agent_orchestrator": {
+      "name": "Lead Agent Orchestrator",
+      "description": "Coordinates multi-agent research with iteration management",
+      "agent": "LeadAgent",
+      "model": "sonnet",
+      "prompt_template": "Coordinate multi-agent research for:\n\n\"{user_prompt}\"\n\n**Research Scope:** {scope}\n**Strategy:** {strategy}\n**Focus Areas:** {focus_areas}\n\n## Your Orchestration Responsibilities:\n\n1. **Load External Memory**\n   - Read project-knowledge.md for existing knowledge\n   - Read architectural-context.md for system understanding\n   - Identify gaps that need research\n\n2. **Plan Agent Cohort**\n   - Select 2-5 specialized agents based on focus areas\n   - Always include: ExploreAgent, CitationAgent\n   - Conditionally include: SecurityAgent, PerformanceAgent, PatternAgent\n\n3. **Coordinate Iterations**\n   - Monitor coverage and confidence across iterations\n   - Identify gaps for refinement\n   - Decide when research has converged\n\n4. **Invoke Result Aggregator**\n   - When convergence is met, trigger aggregation\n   - Ensure all findings are properly synthesized\n\nRefer to: .claude/library/orchestration/lead-agent-core.md"
+    },
+    "security_audit_specialist": {
+      "name": "Security Audit Specialist",
+      "description": "Comprehensive security vulnerability detection and OWASP analysis",
+      "agent": "Security",
+      "model": "sonnet",
+      "prompt_template": "Perform security audit for:\n\n\"{user_prompt}\"\n\n**Scope:** {scope}\n**Focus:** Security vulnerabilities, authentication, authorization, data protection\n\n## Your Security Analysis Tasks:\n\n1. **OWASP Top 10 Compliance**\n   - Check each OWASP category\n   - Identify vulnerabilities\n   - Assess severity (Critical/High/Medium/Low)\n\n2. **Authentication Analysis**\n   - Password hashing (BCrypt, Argon2, etc.)\n   - Token management (JWT, sessions)\n   - MFA implementation\n\n3. **Authorization Analysis**\n   - Role-based access control\n   - Privilege escalation risks\n   - Endpoint protection\n\n4. **Data Protection**\n   - Encryption at rest and in transit\n   - Sensitive data handling\n   - Secrets management\n\n5. **Provide Severity Ratings**\n   - Use CVSS scores where applicable\n   - Prioritize findings (Critical > High > Medium > Low)\n\nRefer to: .claude/library/agents/security-agent.md"
+    },
+    "performance_analysis_specialist": {
+      "name": "Performance Analysis Specialist",
+      "description": "Bottleneck detection and optimization opportunity identification",
+      "agent": "Performance",
+      "model": "sonnet",
+      "prompt_template": "Analyze performance for:\n\n\"{user_prompt}\"\n\n**Scope:** {scope}\n**Focus:** Bottlenecks, N+1 queries, caching, async patterns\n\n## Your Performance Analysis Tasks:\n\n1. **Database Performance**\n   - Detect N+1 query patterns\n   - Identify missing indexes\n   - Find inefficient queries\n\n2. **Caching Analysis**\n   - Identify cacheable data\n   - Validate cache usage\n   - Recommend caching strategies\n\n3. **Async/Await Patterns**\n   - Detect blocking operations (.Result, .Wait())\n   - Validate async usage\n   - Recommend async improvements\n\n4. **Resource Management**\n   - Memory leak detection\n   - Connection pooling review\n   - Disposable pattern validation\n\n5. **Estimate Impact**\n   - Provide performance improvement estimates (2x, 10x, 50x)\n   - Prioritize by impact (Critical: 50x+, Important: 10-50x, Info: <10x)\n\nRefer to: .claude/library/agents/performance-agent.md"
+    },
+    "pattern_detection_specialist": {
+      "name": "Pattern Detection Specialist",
+      "description": "Code pattern and convention detection for consistency analysis",
+      "agent": "Pattern",
+      "model": "haiku",
+      "prompt_template": "Detect patterns and conventions for:\n\n\"{user_prompt}\"\n\n**Scope:** {scope}\n**Focus:** Naming conventions, file organization, architectural patterns, code style\n\n## Your Pattern Analysis Tasks:\n\n1. **Naming Conventions**\n   - Interfaces: [Pattern] (e.g., I{Name})\n   - Classes: [Pattern] (e.g., {Entity}{Purpose})\n   - Methods: [Pattern] (e.g., {Verb}{Noun}Async)\n   - Variables: [Pattern] (e.g., camelCase)\n   - Calculate consistency scores (% adherence)\n\n2. **File Organization**\n   - Directory structure patterns\n   - File placement rules\n   - One class per file?\n\n3. **Architectural Patterns**\n   - Repository pattern\n   - Service layer\n   - Dependency injection\n   - Factory pattern\n   - Other patterns detected\n\n4. **Code Style**\n   - Error handling patterns\n   - Validation patterns\n   - Logging patterns\n\n5. **Provide Consistency Scores**\n   - Calculate % adherence for each pattern\n   - Flag outliers\n   - Recommend corrections\n\nRefer to: .claude/library/agents/pattern-agent.md"
+    },
+    "citation_specialist": {
+      "name": "Citation Specialist",
+      "description": "Source attribution with file:line precision and code snippets",
+      "agent": "Citation",
+      "model": "haiku",
+      "prompt_template": "Provide citations for findings from:\n\n\"{research_scope}\"\n\n**Findings to Cite:** {findings_count}\n\n## Your Citation Tasks:\n\n1. **Extract Source Locations**\n   - File path (absolute)\n   - Line numbers (exact range)\n   - Code snippets (5 lines context before/after)\n\n2. **Confidence Scoring**\n   - Direct evidence: 0.90\n   - Supporting evidence: 0.75\n   - Indirect evidence: 0.60\n   - Inference: 0.50\n\n3. **Citation Format**\n   - [ID] File:Lines\n   - Code snippet with line numbers\n   - Evidence type\n   - Confidence contribution\n\n4. **Cross-Reference**\n   - Link to knowledge graph\n   - Link to architectural context\n   - Link to related findings\n\n5. **Update Citation Index**\n   - Add to .claude/memory/citation-index.md\n   - Include all metadata\n\nRefer to: .claude/library/agents/citation-agent.md"
     }
   },
   "trigger_mappings": {
@@ -37,6 +72,13 @@
     "implementation_planning": "plan_implementation",
     "multi_file_scope": "explore_codebase_context",
     "cross_cutting_concerns": "explore_codebase_context",
-    "refactoring_task": "plan_implementation"
+    "refactoring_task": "plan_implementation",
+    "security_audit": "security_audit_specialist",
+    "performance_investigation": "performance_analysis_specialist",
+    "architecture_analysis": "lead_agent_orchestrator",
+    "pattern_discovery": "pattern_detection_specialist",
+    "codebase_exploration": "lead_agent_orchestrator",
+    "technical_debt_assessment": "lead_agent_orchestrator",
+    "compliance_review": "security_audit_specialist"
   }
 }
