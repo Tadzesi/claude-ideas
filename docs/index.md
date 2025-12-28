@@ -17,6 +17,10 @@ hero:
       link: https://github.com/Tadzesi/claude-ideas
 
 features:
+  - icon: 🔬
+    title: Multi-Agent Research System
+    details: NEW v3.0 - Deep codebase research with 2-5 specialized agents, iterative refinement, and persistent knowledge graph
+
   - icon: ⚡
     title: Prompt Perfection
     details: Analyze and refine any prompt to be clear and unambiguous with Phase 0 validation flow
@@ -59,6 +63,9 @@ features:
 # Intelligent prompt perfection with agent support
 /prompt-hybrid Implement payment processing following existing patterns
 
+# Deep multi-agent research (NEW v3.0)
+/prompt-research Perform comprehensive security audit
+
 # Technical implementation analysis
 /prompt-technical Add caching layer with Redis
 
@@ -91,16 +98,28 @@ Agent result caching provides 10-20x speed improvement for repeated or similar p
 
 The system learns from your patterns and suggests smart defaults, improving over time.
 
-## What's New in v2.0
+## What's New in v3.0 🔬
 
-Version 2.0 introduces a **unified library system** that dramatically improves maintainability:
+Version 3.0 introduces the **Multi-Agent Research System** for enterprise-grade codebase analysis:
 
-- ✅ **Eliminated Code Duplication** - ~500 lines of duplicate Phase 0 logic removed
-- ✅ **Single Source of Truth** - All commands reference canonical library
-- ✅ **Better Maintainability** - Update once, all commands benefit
-- ✅ **Enhanced Documentation** - Comprehensive guides and references
+- 🔬 **NEW: `/prompt-research` Command** - Deep multi-agent research with 2-5 specialized agents
+- 🔄 **Iterative Refinement** - 2-4 iteration cycles with intelligent gap detection
+- 📍 **Source Attribution** - Every finding includes file:line citations with code snippets
+- 🧠 **External Memory** - Persistent knowledge graph that improves over time
+- 📊 **Comprehensive Reports** - 15-20 page research reports with priority classification
+- 🎯 **Use Cases** - Security audits, performance analysis, architecture understanding
 
-[Learn more about v2.0 →](/migration/v2-migration)
+[Learn more about /prompt-research →](/guide/commands/prompt-research)
+
+### What Was New in v2.0
+
+Version 2.0 introduced a **unified library system** with agent caching and learning:
+
+- ✅ **Hybrid Intelligence** - Smart complexity detection with agent assistance
+- ⚡ **Agent Caching** - 10-20x faster for repeated prompts
+- 📚 **Learning System** - Pattern tracking and smart defaults
+
+[Learn about v2.0 features →](/migration/v2-migration)
 
 ## Commands Overview
 
@@ -108,6 +127,7 @@ Version 2.0 introduces a **unified library system** that dramatically improves m
 |---------|---------|------|------------|
 | `/prompt` | Basic prompt perfection | ~2s | Simple |
 | `/prompt-hybrid` | Intelligent with agent support | 2-50s | Advanced |
+| `/prompt-research` | Deep multi-agent research 🆕 | 60-180s | Expert |
 | `/prompt-technical` | Implementation analysis | 5-30s | Advanced |
 | `/prompt-article` | Interactive article wizard | 2-5min | Medium |
 | `/prompt-article-readme` | README generator | 10-30s | Medium |

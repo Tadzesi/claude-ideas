@@ -48,7 +48,8 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: 'Library System', link: '/guide/architecture/library-system' },
-            { text: 'Hybrid Architecture', link: '/guide/architecture/hybrid-architecture' }
+            { text: 'Hybrid Architecture', link: '/guide/architecture/hybrid-architecture' },
+            { text: 'Research System (v3.0)', link: '/guide/architecture/research-system' }
           ]
         },
         {
