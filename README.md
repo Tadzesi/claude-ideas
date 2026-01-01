@@ -6,10 +6,15 @@
 
 A collection of Claude Code slash commands for prompt engineering, refinement, and content generation. Transform vague ideas into precise, executable prompts with intelligent agent assistance, caching, and learning.
 
-**Version 3.0** - December 2025
+**Version 4.0** - January 2026
 
 ## Features
 
+- 🔮 **Predictive Intelligence** - See 2 steps ahead with proactive guidance (NEW v4.0)
+- ⚠️ **Proactive Warnings** - Prevent problems BEFORE coding starts (NEW v4.0)
+- 📐 **Pattern Recognition** - Auto-detect project conventions and architectural patterns (NEW v4.0)
+- 🔗 **Relationship Mapping** - Connect current work to previous tasks (NEW v4.0)
+- ⏭️ **Next-Steps Prediction** - Forecast logical followups with priority levels (NEW v4.0)
 - ⚡ **Prompt Perfection** - Analyze and refine any prompt to be clear and unambiguous
 - 🤖 **Intelligent Agent Assistance** - Automatic codebase analysis for complex tasks
 - 🔍 **Multi-Agent Verification** - Cross-validate critical operations with 3 agents
@@ -45,35 +50,53 @@ npm run docs:preview
 
 ---
 
-## What's New in Version 3.0 🎉
+## What's New in Version 4.0 🔮
 
-**Major Release - Multi-Agent Research System (December 2025)**
+**Major Release - Predictive Intelligence System (January 2026)**
 
-Version 3.0 introduces a **comprehensive multi-agent research system** aligned with Anthropic's research architecture, enabling deep codebase analysis with orchestrated agents and iterative refinement.
+Version 4.0 introduces **Predictive Intelligence** - a revolutionary system that makes Claude Code see "2 steps ahead" by providing proactive guidance, anticipating user needs, and preventing problems before they occur.
 
 ### Headline Features
 
-🔬 **NEW: `/prompt-research` Command**
-- Deep multi-agent research with 2-5 specialized agents
-- Iterative refinement (2-4 cycles) with smart convergence
-- Source attribution with file:line citations and code snippets
-- Persistent knowledge graph across sessions
-- 15-20 page comprehensive research reports
-- Security audits, performance analysis, architecture understanding
+🔮 **NEW: Phase 0.15 Predictive Intelligence**
+- Journey stage detection (6 stages: exploring, planning, implementing, debugging, refactoring, reviewing)
+- Proactive warnings - prevent problems BEFORE coding starts
+- Domain risk analysis (20+ risks across 6 domains: auth, payment, database, API, security, performance)
+- Project pattern recognition - auto-detect naming conventions and architectural patterns
+- Relationship mapping - connect current work to previous tasks
+- Next-steps prediction - forecast logical followups with P0-P3 priorities
+- Smart scoping - Focused/Balanced/Comprehensive options
 
-🤖 **5 Specialized Research Agents**
-- **ExploreAgent** - Codebase discovery and architecture mapping
-- **CitationAgent** - Source attribution with precision
-- **SecurityAgent** - OWASP Top 10 compliance checks
-- **PerformanceAgent** - Bottleneck detection and optimization
-- **PatternAgent** - Convention and consistency analysis
+⚡ **Enhanced Commands with Predictive Intelligence**
+- `/prompt-hybrid` - FULL predictive intelligence integration
+- `/prompt-technical` - FULL predictive intelligence (via core library)
+- `/prompt` - LITE predictive intelligence (warnings + next steps)
+- `/prompt-research` - CUSTOM predictive scoping
 
-🧠 **External Memory System**
-- Persistent knowledge base (`project-knowledge.md`)
-- Architectural context (`architectural-context.md`)
-- Citation index with evidence tracking
+🎯 **Before vs After:**
+- **Before (v3.0):** Reactive - fix problems after they occur
+- **After (v4.0):** Proactive - prevent problems before coding starts
 
-See [CHANGELOG.md](CHANGELOG.md) for complete v3.0 details.
+📊 **Impact:**
+- Security warnings prevent vulnerabilities (authentication, payment, database risks)
+- Next-steps prediction ensures complete features (no missing functionality)
+- Pattern recognition maintains codebase consistency
+- Relationship mapping prevents breaking changes
+
+See [v4.0 Release Notes](.claude/docs/v4.0-RELEASE-NOTES.md) for complete details and [Demo](.claude/docs/DEMO-predictive-intelligence.md) for examples.
+
+---
+
+## What Was New in Version 3.0
+
+**Multi-Agent Research System (December 2025)**
+
+Version 3.0 introduced a **comprehensive multi-agent research system** with orchestrated agents and iterative refinement.
+
+- 🔬 `/prompt-research` - Deep multi-agent research with 2-5 specialized agents
+- 🤖 5 Specialized Research Agents (Explore, Citation, Security, Performance, Pattern)
+- 🧠 External Memory System with persistent knowledge graph
+- 📄 15-20 page comprehensive research reports
 
 ---
 
@@ -211,14 +234,15 @@ See **[README-INSTALL.md](README-INSTALL.md)** for detailed installation instruc
 
 | Command | Purpose | Time | Complexity |
 |---------|---------|------|------------|
-| `/prompt` | Basic prompt perfection | ~2s | Simple |
-| `/prompt-hybrid` ⚡🔍📚 | Intelligent with agent support, caching, multi-agent verification, learning | 2-50s | Advanced |
+| `/prompt` | Basic prompt perfection + LITE predictive intelligence 🔮 | ~2s | Simple |
+| `/prompt-hybrid` ⚡🔍📚🔮 | Intelligent with FULL predictive intelligence, agent support, caching, multi-agent verification, learning | 2-50s | Advanced |
+| `/prompt-research` 🔬 | Deep multi-agent research with predictive scoping | 60-180s | Research |
 
 ### Technical Analysis
 
 | Command | Purpose | Time | Complexity |
 |---------|---------|------|------------|
-| `/prompt-technical` 🤖 | Implementation analysis with hybrid intelligence | 5-30s | Advanced |
+| `/prompt-technical` 🤖🔮 | Implementation analysis with FULL predictive intelligence and hybrid intelligence | 5-30s | Advanced |
 
 ### Content Creation
 
