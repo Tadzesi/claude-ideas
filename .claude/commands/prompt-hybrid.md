@@ -25,6 +25,14 @@ This command combines the proven Phase 0 flow with intelligent complexity detect
 - 🔍 **Consensus analysis** - Aggregate findings from multiple agents
 - 📚 **Pattern tracking** - Learn from successful transformations
 
+**Predictive Intelligence:** 🔮 **NEW v4.0 (January 2026)**
+- 🔮 **Journey stage detection** - Understand where you are (exploring/implementing/debugging)
+- ⚠️  **Proactive warnings** - Prevent problems BEFORE they occur
+- 📐 **Pattern recognition** - Auto-detect project conventions
+- 🔗 **Relationship mapping** - Connect to previous work
+- ⏭️  **Next-steps prediction** - Forecast logical followups
+- 🎯 **Smart scoping** - Focused/Balanced/Comprehensive options
+
 ---
 
 ## Phase 0: Prompt Perfection with Hybrid Intelligence
@@ -91,6 +99,147 @@ Category: [Simple / Moderate / Complex / Very High]
   - If no → Continue with standard Phase 0 (Simple Path)
 - IF score >= 10 → Go to Enhanced Step 0.2 (Complex Path)
 - IF score >= 15 → Go to Enhanced Step 0.2 + Multi-Agent Verification
+
+---
+
+### Enhanced Step 0.15: Predictive Intelligence 🔮 **NEW v4.0**
+
+**Import:** Use Predictive Intelligence from `.claude/library/intelligence/predictive-intelligence-core.md`
+
+**Configuration:** Read from `.claude/config/predictive-intelligence.json`
+
+**When to Execute:** After complexity detection, before path selection (optional, can be disabled)
+
+**Process:**
+
+IF predictive_intelligence.enabled == true:
+
+**Execute 6-step predictive analysis:**
+
+1. **Journey Stage Detection** - Understand where user is in development cycle
+2. **Domain Risk Analysis** - Identify security/compliance risks
+3. **Project Pattern Recognition** - Detect existing conventions
+4. **Relationship Mapping** - Connect to previous work
+5. **Proactive Warning System** - Warn BEFORE problems occur
+6. **Next-Steps Prediction** - Forecast logical followups
+
+**Output Predictive Intelligence Report:**
+
+```markdown
+---
+
+## 🔮 PREDICTIVE INTELLIGENCE ANALYSIS
+
+### Journey Stage: [EXPLORING/PLANNING/IMPLEMENTING/DEBUGGING/REFACTORING/REVIEWING]
+
+**You are:** [Stage description]
+**Recommended approach:** [Stage-specific guidance]
+
+---
+
+### ⚠️  Domain Risks & Security
+
+**Risk Level:** [Critical/High/Medium/Low]
+
+[IF Critical or High]:
+🚨 **CRITICAL WARNINGS:**
+- **[Risk Name]:** [Description]
+  - **Impact:** [What could go wrong]
+  - **Prevention:** [How to avoid]
+  - **Priority:** [P0/P1]
+
+---
+
+### 📐 Project Patterns
+
+**Detected Conventions:**
+- **[Pattern Category]:** [Pattern description]
+  - **Consistency:** [X%] across [N] files
+  - **Recommendation:** [Follow this / Deviation justified]
+
+[IF pattern conflict]:
+⚠️  **PATTERN CONFLICT DETECTED:**
+Your approach vs Project standard
+**Recommendation:** [Follow standard / Establish new pattern]
+
+---
+
+### 🔗 Related Work & Context
+
+[IF similar work found]:
+**Previous Related Tasks:**
+- **[Date]:** [Task description]
+  - **Relevance:** [How it relates]
+  - **Lesson:** [What was learned]
+
+**Affected Areas:**
+- [Component]: [Why affected]
+
+**Similar Implementations:**
+- [File]:[Line] - [Pattern to follow]
+
+---
+
+### 🚨 Proactive Warnings
+
+[IF critical warnings]:
+🚨 **CRITICAL - Address Before Proceeding:**
+- [Warning with prevention steps]
+
+[IF important warnings]:
+⚠️  **IMPORTANT CONSIDERATIONS:**
+- [Warning with recommendations]
+
+💡 **COMMON MISTAKES TO AVOID:**
+- [X%] of developers forget: [Mistake]
+  - **Prevention:** [How to avoid]
+
+---
+
+### ⏭️  Recommended Next Steps
+
+After implementing [current task], you'll likely need:
+
+**🔴 Immediate (Required - P0):**
+1. **[Task]** - [Why needed] (~[X] hours)
+
+**🟡 Short-term (Highly Recommended - P1):**
+2. **[Task]** - [X%] of projects need this
+
+**🟢 Long-term (Nice to Have - P2):**
+3. **[Task]** - [Benefit]
+
+---
+
+**📊 SCOPE OPTIONS:**
+
+**Option A: Focused** (~[X] hours)
+- Just [current task]
+- Risk: [Gaps that might need filling later]
+
+**Option B: Balanced** (~[Y] hours) ⭐ RECOMMENDED
+- [Current + Required followups]
+- Benefit: Complete core functionality
+
+**Option C: Comprehensive** (~[Z] hours)
+- [Current + Required + Recommended]
+- Benefit: Fully-featured, best UX
+
+---
+
+**RECOMMENDATION:**
+[Synthesized recommendation based on all analysis]
+
+**How would you like to proceed?**
+- `focused` - Minimum scope
+- `balanced` - Recommended scope ⭐
+- `comprehensive` - Full feature
+- `explain` - More details on analysis
+
+---
+```
+
+**After Predictive Intelligence, continue with complexity-based path selection.**
 
 ---
 
@@ -1003,6 +1152,20 @@ cat .claude/memory/prompt-patterns.md
 ---
 
 ## Version History
+
+**v4.0 (2026-01-01):** 🔮 **PREDICTIVE INTELLIGENCE RELEASE**
+- ✨ **NEW:** Phase 0.15 - Predictive Intelligence System
+- ✨ **NEW:** Journey stage detection (6 stages)
+- ✨ **NEW:** Proactive warning system (prevent problems before they occur)
+- ✨ **NEW:** Domain risk analysis (security, compliance, performance)
+- ✨ **NEW:** Project pattern recognition (auto-detect conventions)
+- ✨ **NEW:** Relationship mapping (connect to previous work)
+- ✨ **NEW:** Next-steps prediction (forecast logical followups)
+- ✨ **NEW:** Smart scoping (Focused/Balanced/Comprehensive options)
+- ✨ Enhanced complexity detection with user-based factors
+- ✨ Risk assessment scoring
+- Backward compatible (predictive intelligence can be disabled)
+- All v2.0 and v1.0 features maintained
 
 **v2.0 (2024-12-20):**
 - ✨ Migrated to unified library system

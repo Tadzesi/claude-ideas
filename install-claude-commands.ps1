@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
-# Version: 3.0.0
-# Description: Installs/updates Claude commands and libraries from GitHub repository (v3.0 with multi-agent research system)
+# Version: 4.0.0
+# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.0 with Predictive Intelligence)
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -52,7 +52,7 @@ function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -Foregr
 
 # Banner
 Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host " Claude Commands Library Installer v3.0.0" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v4.0.0" -ForegroundColor Cyan
 Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
@@ -336,26 +336,26 @@ function Show-Summary {
     Write-Host "`n" -NoNewline
     Write-Success "Installation complete!"
 
-    # v3.0 Feature Announcement
+    # v4.0 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  NEW IN VERSION 3.0 (December 2025)" -ForegroundColor Magenta
+    Write-Host "  NEW IN VERSION 4.0 (January 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`nMulti-Agent Research System:" -ForegroundColor White
-    Write-Host "  - NEW: /prompt-research command" -ForegroundColor Green
-    Write-Host "  - 5 specialized research agents" -ForegroundColor Gray
-    Write-Host "  - Iterative refinement (2-4 cycles)" -ForegroundColor Gray
-    Write-Host "  - Source attribution (file:line citations)" -ForegroundColor Gray
-    Write-Host "  - Persistent knowledge graph" -ForegroundColor Gray
-    Write-Host "  - Comprehensive 15-20 page reports" -ForegroundColor Gray
-    Write-Host "`nResearch Agents:" -ForegroundColor White
-    Write-Host "  - ExploreAgent (codebase discovery)" -ForegroundColor Green
-    Write-Host "  - CitationAgent (source attribution)" -ForegroundColor Green
-    Write-Host "  - SecurityAgent (OWASP Top 10 audits)" -ForegroundColor Green
-    Write-Host "  - PerformanceAgent (bottleneck detection)" -ForegroundColor Green
-    Write-Host "  - PatternAgent (convention analysis)" -ForegroundColor Green
-    Write-Host "`nUse Cases: Security audits, performance analysis," -ForegroundColor Cyan
-    Write-Host "           architecture understanding, pattern discovery" -ForegroundColor Cyan
-    Write-Host "`nSee CHANGELOG.md for complete details" -ForegroundColor Cyan
+    Write-Host "`nPredictive Intelligence System:" -ForegroundColor White
+    Write-Host "  - NEW: See 2 steps ahead with proactive guidance" -ForegroundColor Green
+    Write-Host "  - Journey stage detection (6 stages)" -ForegroundColor Gray
+    Write-Host "  - Proactive warnings (prevent problems before coding)" -ForegroundColor Gray
+    Write-Host "  - Domain risk analysis (security, compliance, performance)" -ForegroundColor Gray
+    Write-Host "  - Project pattern recognition (auto-detect conventions)" -ForegroundColor Gray
+    Write-Host "  - Relationship mapping (connect to previous work)" -ForegroundColor Gray
+    Write-Host "  - Next-steps prediction (forecast followups)" -ForegroundColor Gray
+    Write-Host "  - Smart scoping (Focused/Balanced/Comprehensive)" -ForegroundColor Gray
+    Write-Host "`nEnhanced Commands:" -ForegroundColor White
+    Write-Host "  - /prompt-hybrid (FULL predictive intelligence)" -ForegroundColor Green
+    Write-Host "  - /prompt-technical (FULL predictive intelligence)" -ForegroundColor Green
+    Write-Host "  - /prompt (LITE predictive intelligence)" -ForegroundColor Green
+    Write-Host "`nFrom v3.0: Multi-Agent Research System" -ForegroundColor White
+    Write-Host "  - /prompt-research (deep multi-agent analysis)" -ForegroundColor Gray
+    Write-Host "`nSee .claude/docs/v4.0-RELEASE-NOTES.md for details" -ForegroundColor Cyan
     Write-Host "========================================`n" -ForegroundColor Magenta
 
     Write-Host "`nNext Steps:" -ForegroundColor Cyan
@@ -364,10 +364,10 @@ function Show-Summary {
     Write-Host "  3. Run this script again to update to the latest version" -ForegroundColor Gray
 
     Write-Host "`nAvailable Commands:" -ForegroundColor Cyan
-    Write-Host "  /prompt           - Basic prompt perfection" -ForegroundColor Gray
-    Write-Host "  /prompt-hybrid    - Advanced with agent support" -ForegroundColor Gray
-    Write-Host "  /prompt-technical - Technical implementation analysis" -ForegroundColor Gray
-    Write-Host "  /prompt-research  - Deep multi-agent research (NEW v3.0)" -ForegroundColor Green
+    Write-Host "  /prompt           - Basic prompt perfection (NEW: LITE predictive intelligence)" -ForegroundColor Green
+    Write-Host "  /prompt-hybrid    - Advanced with predictive intelligence (NEW v4.0)" -ForegroundColor Green
+    Write-Host "  /prompt-technical - Technical analysis with predictive intelligence (NEW v4.0)" -ForegroundColor Green
+    Write-Host "  /prompt-research  - Deep multi-agent research (v3.0)" -ForegroundColor Gray
     Write-Host "  /prompt-article   - Article creation wizard" -ForegroundColor Gray
     Write-Host "  /session-start    - Load session context" -ForegroundColor Gray
     Write-Host "  /session-end      - Save session context" -ForegroundColor Gray

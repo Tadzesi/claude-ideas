@@ -313,5 +313,141 @@
       "timeout": 60000,
       "description": "Implementation planning"
     }
+  },
+  "user_factors": {
+    "description": "User-based and context-based factors that modify complexity score",
+    "enabled": true,
+    "risk_multipliers": {
+      "security_critical": {
+        "multiplier": 1.5,
+        "description": "Task involves security-sensitive areas",
+        "keywords": [
+          "authentication",
+          "authorization",
+          "password",
+          "token",
+          "security",
+          "payment",
+          "credit card",
+          "sensitive data",
+          "encryption"
+        ]
+      },
+      "high_impact": {
+        "multiplier": 1.3,
+        "description": "Changes affect critical or high-traffic systems",
+        "keywords": [
+          "production",
+          "database migration",
+          "schema change",
+          "breaking change",
+          "api change",
+          "drop table",
+          "delete data"
+        ]
+      },
+      "multi_team": {
+        "multiplier": 1.2,
+        "description": "Changes affect multiple teams or services",
+        "keywords": [
+          "microservices",
+          "multiple services",
+          "cross-team",
+          "shared library",
+          "breaking api"
+        ]
+      },
+      "external_dependency": {
+        "multiplier": 1.1,
+        "description": "Depends on external systems or third-party services",
+        "keywords": [
+          "third-party",
+          "external api",
+          "integration",
+          "webhook",
+          "api client"
+        ]
+      }
+    },
+    "familiarity_discounts": {
+      "repeated_pattern": {
+        "discount": 0.8,
+        "description": "User has done similar task recently",
+        "detection": "Check session history for similar tasks within last 5 sessions"
+      },
+      "team_expertise": {
+        "discount": 0.9,
+        "description": "Project has strong patterns in this area",
+        "detection": "Project has 10+ similar implementations"
+      }
+    },
+    "project_maturity": {
+      "description": "Adjust complexity based on project maturity",
+      "startup_phase": {
+        "age_months": 6,
+        "multiplier": 0.9,
+        "rationale": "Early projects prioritize speed over perfection"
+      },
+      "growth_phase": {
+        "age_months_min": 6,
+        "age_months_max": 24,
+        "multiplier": 1.0,
+        "rationale": "Growing projects balance speed and quality"
+      },
+      "mature_phase": {
+        "age_months": 24,
+        "multiplier": 1.2,
+        "rationale": "Mature projects require careful compatibility considerations"
+      }
+    }
+  },
+  "risk_assessment": {
+    "description": "Risk-based complexity adjustment for predictive intelligence",
+    "enabled": true,
+    "high_risk_keywords": {
+      "data_loss_risk": [
+        "drop table",
+        "delete all",
+        "truncate",
+        "remove data",
+        "clear database"
+      ],
+      "security_risk": [
+        "disable security",
+        "skip validation",
+        "allow all",
+        "public access",
+        "no authentication"
+      ],
+      "breaking_change_risk": [
+        "breaking change",
+        "incompatible",
+        "remove endpoint",
+        "change api"
+      ],
+      "performance_risk": [
+        "no cache",
+        "synchronous",
+        "blocking",
+        "full table scan"
+      ]
+    },
+    "risk_scoring": {
+      "critical_risk": {
+        "score_addition": 10,
+        "triggers": ["data_loss_risk", "security_risk"],
+        "recommendation": "Use /prompt-research for comprehensive analysis"
+      },
+      "high_risk": {
+        "score_addition": 5,
+        "triggers": ["breaking_change_risk"],
+        "recommendation": "Plan carefully, consider impact analysis"
+      },
+      "medium_risk": {
+        "score_addition": 3,
+        "triggers": ["performance_risk"],
+        "recommendation": "Consider performance implications"
+      }
+    }
   }
 }

@@ -71,6 +71,48 @@ When Claude reads your command, it will:
 
 ---
 
+### Step 0.15: Predictive Intelligence (OPTIONAL - NEW v4.0)
+
+**Purpose:** Provide proactive guidance and anticipate user needs BEFORE asking for missing information
+
+**When to use:** When predictive intelligence is enabled in configuration
+
+**Import:** Use Predictive Intelligence from `.claude/library/intelligence/predictive-intelligence-core.md`
+
+**Configuration:** Check `.claude/config/predictive-intelligence.json` → `enabled`
+
+**Process:**
+
+IF predictive_intelligence.enabled == true:
+  1. **Journey Stage Detection** - Understand where user is (exploring/implementing/debugging)
+  2. **Domain Risk Analysis** - Identify security/compliance risks specific to domain
+  3. **Project Pattern Recognition** - Detect existing project conventions
+  4. **Relationship Mapping** - Connect to previous work and related areas
+  5. **Proactive Warning System** - Warn about problems BEFORE user makes mistakes
+  6. **Next-Steps Prediction** - Forecast logical followup tasks
+
+**Output:**
+```markdown
+## 🔮 PREDICTIVE INTELLIGENCE ANALYSIS
+
+[Comprehensive proactive guidance - see predictive-intelligence-core.md for full template]
+
+**Journey Stage:** [Stage] - [Guidance]
+**Domain Risks:** [Warnings and mitigations]
+**Project Patterns:** [Detected conventions]
+**Related Work:** [Connections to previous work]
+**Proactive Warnings:** [Problems to avoid]
+**Next Steps:** [Recommended followups]
+
+---
+```
+
+**After Predictive Intelligence, continue with Step 0.2** (now enhanced with predictive context)
+
+**Note:** This step is OPTIONAL and can be disabled in configuration. When disabled, proceed directly to Step 0.2.
+
+---
+
 ### Step 0.2: Completeness Check
 
 **Purpose:** Identify missing critical information
@@ -462,6 +504,17 @@ File: `.claude/library/adapters/session-adapter.md`
 
 ## Version History
 
+**v1.1 (2026-01-01):**
+- ✨ Added Phase 0.15: Predictive Intelligence (OPTIONAL)
+- ✨ Proactive guidance system
+- ✨ Journey stage detection
+- ✨ Domain risk analysis
+- ✨ Project pattern recognition
+- ✨ Relationship mapping
+- ✨ Proactive warnings
+- ✨ Next-steps prediction
+- Backward compatible (can be disabled)
+
 **v1.0 (2024-12-19):**
 - Initial release
 - Core Phase 0 flow (Steps 0.1-0.6)
@@ -479,6 +532,13 @@ File: `.claude/library/adapters/session-adapter.md`
 - **Session Adapter:** `.claude/library/adapters/session-adapter.md`
 - **Complexity Detection:** `.claude/config/complexity-rules.json`
 - **Agent Templates:** `.claude/config/agent-templates.json`
+
+**NEW - Predictive Intelligence (v1.1):**
+- **Predictive Intelligence Core:** `.claude/library/intelligence/predictive-intelligence-core.md`
+- **Relationship Mapper:** `.claude/library/intelligence/relationship-mapper.md`
+- **Warning System:** `.claude/library/intelligence/warning-system.md`
+- **Next-Steps Predictor:** `.claude/library/intelligence/next-steps-predictor.md`
+- **Configuration:** `.claude/config/predictive-intelligence.json`
 
 ---
 
