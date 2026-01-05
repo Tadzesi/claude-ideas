@@ -50,11 +50,19 @@ Commands reference the library instead of duplicating Phase 0 logic, ensuring co
 
 ---
 
-## Current Version: v4.0 (January 2026)
+## Current Version: v4.1 (January 2026)
 
-**Predictive Intelligence System** - Claude Code now sees "2 steps ahead" with proactive guidance, anticipating user needs and preventing problems before they occur.
+**Skill Reflection System** - Actively analyze conversations and propose skill improvements based on corrections, successes, and user preferences.
 
-**NEW in v4.0: Predictive Intelligence (Phase 0.15)**
+**NEW in v4.1: /reflect Command**
+- `/reflect` - Analyze session and propose skill improvements (5-15s)
+- Signal detection (corrections, successes, edge cases, preferences)
+- Priority-coded change proposals (HIGH/MED/LOW)
+- Direct skill file modifications with user approval
+- Observation persistence for later review
+- Integration with learning system
+
+**From v4.0: Predictive Intelligence (Phase 0.15)**
 - Journey stage detection (6 stages: exploring/planning/implementing/debugging/refactoring/reviewing)
 - Proactive warnings (prevent problems BEFORE they occur)
 - Domain risk analysis (security, compliance, performance)
@@ -69,9 +77,9 @@ Commands reference the library instead of duplicating Phase 0 logic, ensuring co
 - External memory: Persistent knowledge across sessions
 - Comprehensive reports: 15-20 pages with file:line citations
 
-**Backward Compatible:** All v3.0, v2.0, and v1.0 commands work unchanged.
+**Backward Compatible:** All v4.0, v3.0, v2.0, and v1.0 commands work unchanged.
 
-**See:** `.claude/docs/v4.0-RELEASE-NOTES.md` for full changelog.
+**See:** `.claude/docs/v4.1-RELEASE-NOTES.md` for full changelog.
 
 ---
 
@@ -138,6 +146,14 @@ See `README-INSTALL.md` for details.
 - Captures 10 sections: decisions, code changes, features, insights, etc.
 - Appends to `.claude/memory/sessions.md`
 
+### Skill Improvement
+
+**`/reflect`** - Analyze session and improve skills (5-15s) **NEW v4.1**
+- Signal detection (corrections, successes, edge cases, preferences)
+- Priority-coded change proposals (HIGH/MED/LOW)
+- Direct skill file modifications with user approval
+- Observation persistence for later review
+
 ---
 
 ## Command Selection
@@ -150,6 +166,7 @@ See `README-INSTALL.md` for details.
 | Technical impl | `/prompt-technical` | 5-30s |
 | Article | `/prompt-article` | Interactive |
 | README | `/prompt-article-readme` | 30s |
+| Improve skills | `/reflect` | 5-15s |
 
 **See:** `.claude/docs/comparisons.md` for detailed decision trees and workflows.
 
@@ -282,6 +299,6 @@ docs-archive/           # Legacy documentation (v2.0 and earlier)
 
 ---
 
-**Current Version:** v3.0 (Multi-Agent Research System)
+**Current Version:** v4.1 (Skill Reflection System)
 **Documentation:** https://tadzesi.github.io/claude-ideas/
 **Repository:** https://github.com/Tadzesi/claude-ideas

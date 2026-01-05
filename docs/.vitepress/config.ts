@@ -40,7 +40,8 @@ export default defineConfig({
             { text: '/prompt-research', link: '/guide/commands/prompt-research' },
             { text: '/prompt-technical', link: '/guide/commands/prompt-technical' },
             { text: '/prompt-article', link: '/guide/commands/prompt-article' },
-            { text: 'Session Management', link: '/guide/commands/session-management' }
+            { text: 'Session Management', link: '/guide/commands/session-management' },
+            { text: '/reflect', link: '/guide/commands/reflect' }
           ]
         },
         {

@@ -1,5 +1,79 @@
 # Version History
 
+## Version 4.1 - January 2026 Skill Reflection System
+
+**Major Enhancement: Active Skill Improvement through Conversation Analysis**
+
+The v4.1 release introduces the Skill Reflection System, transforming passive pattern tracking into active skill improvement.
+
+### What's New in v4.1
+
+**New Command: `/reflect`**
+- Signal detection (corrections, successes, edge cases, preferences)
+- Priority-coded change proposals (HIGH/MED/LOW)
+- Direct skill file modifications with user approval
+- Observation persistence for later review
+- Integration with learning system
+
+**New Library Component:**
+- `.claude/library/intelligence/reflection-analyzer.md`
+  - Signal detection engine
+  - Confidence scoring
+  - Priority classification
+  - Output formatting
+
+**New Memory File:**
+- `.claude/memory/observations.md`
+  - Pending observation storage
+  - Applied/dismissed tracking
+
+**Enhanced Configuration:**
+- `.claude/config/learning-config.json` - Added `reflection_analysis` section
+
+### Key Features
+
+1. **Signal Detection**
+   - Corrections: "no", "not like that", explicit fixes
+   - Successes: "perfect", "great", accepted outputs
+   - Edge Cases: missing features, workarounds needed
+   - Preferences: repeated choices, style patterns
+
+2. **Priority Classification**
+   - HIGH: Direct corrections, apply first
+   - MEDIUM: Patterns, recommend applying
+   - LOW: Observations, review before applying
+
+3. **Change Application**
+   - Proposes specific changes with evidence
+   - Modifies skill files directly
+   - Requires user approval
+   - Saves to pattern memory
+
+### Migration Guide (v4.0 to v4.1)
+
+v4.1 is **fully backward compatible** - all existing commands continue to work exactly as before.
+
+**What's New:**
+- New `/reflect` command (opt-in)
+- Enhanced learning configuration
+- Observation storage
+
+**Adoption Path:**
+1. Update to v4.1
+2. Continue using existing commands
+3. Run `/reflect` after skill-heavy sessions
+4. Review and apply proposed improvements
+
+---
+
+## Version 4.0 - January 2026 Predictive Intelligence System
+
+**Major Enhancement: Proactive Guidance with 2-Step Ahead Prediction**
+
+See: `.claude/docs/v4.0-RELEASE-NOTES.md` for full details.
+
+---
+
 ## Version 3.0 - December 2025 Multi-Agent Research System
 
 **Major Enhancement: Deep Multi-Agent Research with Iterative Refinement**

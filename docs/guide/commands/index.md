@@ -1,6 +1,6 @@
 # Commands Overview
 
-The Claude Commands Library provides 8 powerful slash commands organized into four categories.
+The Claude Commands Library provides 9 powerful slash commands organized into five categories.
 
 ## All Commands
 
@@ -14,6 +14,7 @@ The Claude Commands Library provides 8 powerful slash commands organized into fo
 | `/prompt-article-readme` | Content Creation | README generator | 10-30s | Medium |
 | `/session-start` | Session Management | Load session context | 2-5s | Simple |
 | `/session-end` | Session Management | Save session context | 5-10s | Simple |
+| `/reflect` | Skill Improvement | Analyze and improve skills | 5-15s | Medium |
 
 ## Command Categories
 
@@ -133,6 +134,23 @@ Zero information loss between sessions:
 
 [Learn more →](/guide/commands/session-management)
 
+### 🔄 Skill Improvement
+
+Analyze sessions and improve skills based on feedback:
+
+#### `/reflect`
+- **Purpose:** Analyze conversation and propose skill improvements **NEW v4.1**
+- **Time:** 5-15 seconds
+- **Best for:** After corrections, end of skill-heavy sessions
+- **Features:**
+  - Signal detection (corrections, successes, edge cases)
+  - Priority-coded change proposals (HIGH/MED/LOW)
+  - Direct skill file modifications
+  - Observation persistence for later review
+  - Integration with learning system
+
+[Learn more →](/guide/commands/reflect)
+
 ## Which Command Should I Use?
 
 ### Quick Selection Guide
@@ -147,6 +165,7 @@ Zero information loss between sessions:
 | Generate README | `/prompt-article-readme` | Auto-detects tech stack |
 | Start session | `/session-start` | Load previous context |
 | End session | `/session-end` | Save current context |
+| Improve skills | `/reflect` | Learn from corrections and feedback |
 
 ### Decision Flow
 
@@ -168,6 +187,11 @@ Research & Analysis?
 Session management?
 ├─ Starting work → /session-start
 └─ Ending work → /session-end
+
+Skill improvement?
+├─ After corrections → /reflect
+├─ Skill keeps missing preferences → /reflect
+└─ End of skill-heavy session → /reflect
 ```
 
 ## Command Comparison
