@@ -6,21 +6,22 @@
 
 A collection of Claude Code slash commands for prompt engineering, refinement, and content generation. Transform vague ideas into precise, executable prompts with intelligent agent assistance, caching, and learning.
 
-**Version 4.0** - January 2026
+**Version 4.1** - January 2026
 
 ## Features
 
-- 🔮 **Predictive Intelligence** - See 2 steps ahead with proactive guidance (NEW v4.0)
-- ⚠️ **Proactive Warnings** - Prevent problems BEFORE coding starts (NEW v4.0)
-- 📐 **Pattern Recognition** - Auto-detect project conventions and architectural patterns (NEW v4.0)
-- 🔗 **Relationship Mapping** - Connect current work to previous tasks (NEW v4.0)
-- ⏭️ **Next-Steps Prediction** - Forecast logical followups with priority levels (NEW v4.0)
+- 🔄 **Skill Reflection** - Actively improve skills from conversation feedback (NEW v4.1)
+- 🔮 **Predictive Intelligence** - See 2 steps ahead with proactive guidance (v4.0)
+- ⚠️ **Proactive Warnings** - Prevent problems BEFORE coding starts (v4.0)
+- 📐 **Pattern Recognition** - Auto-detect project conventions and architectural patterns (v4.0)
+- 🔗 **Relationship Mapping** - Connect current work to previous tasks (v4.0)
+- ⏭️ **Next-Steps Prediction** - Forecast logical followups with priority levels (v4.0)
 - ⚡ **Prompt Perfection** - Analyze and refine any prompt to be clear and unambiguous
 - 🤖 **Intelligent Agent Assistance** - Automatic codebase analysis for complex tasks
 - 🔍 **Multi-Agent Verification** - Cross-validate critical operations with 3 agents
 - 🔬 **Multi-Agent Research** - Deep codebase research with orchestrated agents and iterative refinement
 - ⚡ **Agent Result Caching** - 10-20x faster for repeated prompts
-- 📚 **Learning System** - Tracks patterns and suggests smart defaults over time
+- 📚 **Learning System** - Tracks patterns, suggests smart defaults, and improves skills with /reflect
 - 🔧 **Technical Analysis** - Deep dive into implementation options with code scaffolding
 - 📝 **Article Generation** - Interactive wizard for multi-platform content creation
 - 📄 **README Generation** - Auto-generate professional documentation from project analysis
@@ -50,40 +51,56 @@ npm run docs:preview
 
 ---
 
-## What's New in Version 4.0 🔮
+## What's New in Version 4.1 🔄
 
-**Major Release - Predictive Intelligence System (January 2026)**
+**Major Release - Skill Reflection System (January 2026)**
 
-Version 4.0 introduces **Predictive Intelligence** - a revolutionary system that makes Claude Code see "2 steps ahead" by providing proactive guidance, anticipating user needs, and preventing problems before they occur.
+Version 4.1 introduces **Skill Reflection** - an active learning system that analyzes conversation signals to propose skill improvements.
 
 ### Headline Features
 
-🔮 **NEW: Phase 0.15 Predictive Intelligence**
-- Journey stage detection (6 stages: exploring, planning, implementing, debugging, refactoring, reviewing)
-- Proactive warnings - prevent problems BEFORE coding starts
-- Domain risk analysis (20+ risks across 6 domains: auth, payment, database, API, security, performance)
-- Project pattern recognition - auto-detect naming conventions and architectural patterns
-- Relationship mapping - connect current work to previous tasks
-- Next-steps prediction - forecast logical followups with P0-P3 priorities
-- Smart scoping - Focused/Balanced/Comprehensive options
-
-⚡ **Enhanced Commands with Predictive Intelligence**
-- `/prompt-hybrid` - FULL predictive intelligence integration
-- `/prompt-technical` - FULL predictive intelligence (via core library)
-- `/prompt` - LITE predictive intelligence (warnings + next steps)
-- `/prompt-research` - CUSTOM predictive scoping
+🔄 **NEW: `/reflect` Command**
+- Signal detection - analyzes corrections, successes, edge cases, and preferences
+- Priority classification - HIGH/MED/LOW coded change proposals
+- Direct skill modifications - apply changes to skill files with user approval
+- Observation persistence - save declined changes for later review
+- Learning integration - connects with existing learning system
 
 🎯 **Before vs After:**
-- **Before (v3.0):** Reactive - fix problems after they occur
-- **After (v4.0):** Proactive - prevent problems before coding starts
+- **Before (v4.0):** Passive pattern tracking
+- **After (v4.1):** Active skill improvement from feedback
 
-📊 **Impact:**
-- Security warnings prevent vulnerabilities (authentication, payment, database risks)
-- Next-steps prediction ensures complete features (no missing functionality)
-- Pattern recognition maintains codebase consistency
-- Relationship mapping prevents breaking changes
+📊 **Example:**
+```bash
+# After using /prompt-hybrid and making corrections
+/reflect prompt-hybrid
 
-See [v4.0 Release Notes](.claude/docs/v4.0-RELEASE-NOTES.md) for complete details and [Demo](.claude/docs/DEMO-predictive-intelligence.md) for examples.
+# Output:
+# Skill Reflection: prompt-hybrid
+# Signals: 2 corrections, 3 successes
+#
+# [HIGH] + Constraints/NEVER: "Use gradients unless requested"
+# [MED]  + Smart Default: "Default to TypeScript"
+#
+# Apply these changes? [Y/n]
+```
+
+See [v4.1 Release Notes](.claude/docs/v4.1-RELEASE-NOTES.md) for complete details.
+
+---
+
+## What Was New in Version 4.0 🔮
+
+**Predictive Intelligence System (January 2026)**
+
+Version 4.0 introduced **Predictive Intelligence** - see "2 steps ahead" with proactive guidance.
+
+- 🔮 **Phase 0.15 Predictive Intelligence** - Journey stage detection, proactive warnings, next-steps prediction
+- ⚠️ **Domain Risk Analysis** - 20+ risks across 6 domains (auth, payment, database, API, security, performance)
+- 📐 **Pattern Recognition** - Auto-detect naming conventions and architectural patterns
+- 🔗 **Relationship Mapping** - Connect current work to previous tasks
+
+See [v4.0 Release Notes](.claude/docs/v4.0-RELEASE-NOTES.md) for complete details.
 
 ---
 
@@ -177,13 +194,16 @@ See [CLAUDE.md](CLAUDE.md) for complete v2.0 details and migration guide.
 # 3. Technical implementation analysis
 /prompt-technical Add caching layer with Redis
 
-# 4. Create an article
+# 4. Skill reflection - improve skills from feedback (NEW v4.1)
+/reflect prompt-hybrid
+
+# 5. Create an article
 /prompt-article Write about CI/CD pipelines
 
-# 5. Generate README
+# 6. Generate README
 /prompt-article-readme
 
-# 6. Session management
+# 7. Session management
 /session-start    # Load previous context
 /session-end      # Save current work
 ```
@@ -228,13 +248,13 @@ ls .claude\commands\*.md
 
 See **[README-INSTALL.md](README-INSTALL.md)** for detailed installation instructions.
 
-## Available Commands (7 Total)
+## Available Commands (9 Total)
 
 ### Prompt Engineering
 
 | Command | Purpose | Time | Complexity |
 |---------|---------|------|------------|
-| `/prompt` | Basic prompt perfection + LITE predictive intelligence 🔮 | ~2s | Simple |
+| `/prompt` | Basic prompt perfection + LITE predictive intelligence | ~2s | Simple |
 | `/prompt-hybrid` ⚡🔍📚🔮 | Intelligent with FULL predictive intelligence, agent support, caching, multi-agent verification, learning | 2-50s | Advanced |
 | `/prompt-research` 🔬 | Deep multi-agent research with predictive scoping | 60-180s | Research |
 
@@ -250,6 +270,12 @@ See **[README-INSTALL.md](README-INSTALL.md)** for detailed installation instruc
 |---------|---------|------|------------|
 | `/prompt-article` | Interactive article wizard | 2-5min | Medium |
 | `/prompt-article-readme` | README generator | 10-30s | Medium |
+
+### Skill Improvement
+
+| Command | Purpose | Time | Complexity |
+|---------|---------|------|------------|
+| `/reflect` 🔄 | Analyze session and propose skill improvements (NEW v4.1) | 5-15s | Medium |
 
 ### Session Management
 
@@ -445,6 +471,50 @@ What would you like to work on today?
 
 ---
 
+### `/reflect`
+
+**Purpose:** Analyze conversation sessions and propose skill improvements based on feedback signals.
+
+**What it does:**
+1. Detects conversation signals:
+   - Corrections (HIGH): "no", "not like that", explicit fixes
+   - Successes (MEDIUM): "perfect", "great", accepted outputs
+   - Edge cases (MEDIUM): missing features, workarounds
+   - Preferences (accumulative): repeated choices, styles
+2. Proposes priority-coded changes (HIGH/MED/LOW)
+3. Applies changes to skill files with user approval
+4. Saves observations for later review
+
+**Usage:**
+```
+/reflect prompt-hybrid
+/reflect prompt-technical
+/reflect
+```
+
+**Best used:** After a skill-heavy session, especially when you made corrections.
+
+**Output:**
+```
+Skill Reflection: prompt-hybrid
+
+Signals: 2 corrections, 3 successes
+
+Proposed changes:
+
+[HIGH] + Constraints/NEVER:
+        "Use gradients unless requested"
+        Evidence: User said "no" twice
+
+[MED]  + Smart Default:
+        "Default to TypeScript"
+        Evidence: Chose TS 3/3 times
+
+Apply these changes? [Y/n]
+```
+
+---
+
 ## Recent Improvements (December 2025)
 
 ### Phase 0: Prompt Perfection Framework
@@ -633,6 +703,7 @@ Not sure which command to use? See the decision tree in [Quick Reference](doc/Qu
 | Fix/improve a prompt (simple) | `/prompt` |
 | Fix/improve a prompt (complex, needs codebase analysis) | `/prompt-hybrid` |
 | Technical implementation help | `/prompt-technical` |
+| Improve skills from feedback | `/reflect` |
 | Write article/blog post | `/prompt-article` |
 | Generate/update README | `/prompt-article-readme` |
 | Start work session | `/session-start` |
