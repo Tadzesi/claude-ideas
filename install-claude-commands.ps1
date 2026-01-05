@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
-# Version: 4.0.0
-# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.0 with Predictive Intelligence)
+# Version: 4.1.0
+# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.1 with Skill Reflection)
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -52,7 +52,7 @@ function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -Foregr
 
 # Banner
 Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host " Claude Commands Library Installer v4.0.0" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v4.1.0" -ForegroundColor Cyan
 Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
@@ -336,26 +336,24 @@ function Show-Summary {
     Write-Host "`n" -NoNewline
     Write-Success "Installation complete!"
 
-    # v4.0 Feature Announcement
+    # v4.1 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  NEW IN VERSION 4.0 (January 2026)" -ForegroundColor Magenta
+    Write-Host "  NEW IN VERSION 4.1 (January 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`nPredictive Intelligence System:" -ForegroundColor White
-    Write-Host "  - NEW: See 2 steps ahead with proactive guidance" -ForegroundColor Green
+    Write-Host "`nSkill Reflection System:" -ForegroundColor White
+    Write-Host "  - NEW: /reflect - Active skill improvement from feedback" -ForegroundColor Green
+    Write-Host "  - Signal detection (corrections, successes, edge cases)" -ForegroundColor Gray
+    Write-Host "  - Priority-coded change proposals (HIGH/MED/LOW)" -ForegroundColor Gray
+    Write-Host "  - Direct skill file modifications with approval" -ForegroundColor Gray
+    Write-Host "  - Observation persistence for later review" -ForegroundColor Gray
+    Write-Host "`nFrom v4.0: Predictive Intelligence System" -ForegroundColor White
+    Write-Host "  - See 2 steps ahead with proactive guidance" -ForegroundColor Gray
     Write-Host "  - Journey stage detection (6 stages)" -ForegroundColor Gray
-    Write-Host "  - Proactive warnings (prevent problems before coding)" -ForegroundColor Gray
-    Write-Host "  - Domain risk analysis (security, compliance, performance)" -ForegroundColor Gray
-    Write-Host "  - Project pattern recognition (auto-detect conventions)" -ForegroundColor Gray
-    Write-Host "  - Relationship mapping (connect to previous work)" -ForegroundColor Gray
-    Write-Host "  - Next-steps prediction (forecast followups)" -ForegroundColor Gray
-    Write-Host "  - Smart scoping (Focused/Balanced/Comprehensive)" -ForegroundColor Gray
-    Write-Host "`nEnhanced Commands:" -ForegroundColor White
-    Write-Host "  - /prompt-hybrid (FULL predictive intelligence)" -ForegroundColor Green
-    Write-Host "  - /prompt-technical (FULL predictive intelligence)" -ForegroundColor Green
-    Write-Host "  - /prompt (LITE predictive intelligence)" -ForegroundColor Green
+    Write-Host "  - Domain risk analysis and proactive warnings" -ForegroundColor Gray
+    Write-Host "  - Pattern recognition and relationship mapping" -ForegroundColor Gray
     Write-Host "`nFrom v3.0: Multi-Agent Research System" -ForegroundColor White
     Write-Host "  - /prompt-research (deep multi-agent analysis)" -ForegroundColor Gray
-    Write-Host "`nSee .claude/docs/v4.0-RELEASE-NOTES.md for details" -ForegroundColor Cyan
+    Write-Host "`nSee .claude/docs/v4.1-RELEASE-NOTES.md for details" -ForegroundColor Cyan
     Write-Host "========================================`n" -ForegroundColor Magenta
 
     Write-Host "`nNext Steps:" -ForegroundColor Cyan
@@ -364,11 +362,12 @@ function Show-Summary {
     Write-Host "  3. Run this script again to update to the latest version" -ForegroundColor Gray
 
     Write-Host "`nAvailable Commands:" -ForegroundColor Cyan
-    Write-Host "  /prompt           - Basic prompt perfection (NEW: LITE predictive intelligence)" -ForegroundColor Green
-    Write-Host "  /prompt-hybrid    - Advanced with predictive intelligence (NEW v4.0)" -ForegroundColor Green
-    Write-Host "  /prompt-technical - Technical analysis with predictive intelligence (NEW v4.0)" -ForegroundColor Green
+    Write-Host "  /prompt           - Basic prompt perfection (LITE predictive intelligence)" -ForegroundColor Gray
+    Write-Host "  /prompt-hybrid    - Advanced with predictive intelligence (v4.0)" -ForegroundColor Gray
+    Write-Host "  /prompt-technical - Technical analysis with predictive intelligence (v4.0)" -ForegroundColor Gray
     Write-Host "  /prompt-research  - Deep multi-agent research (v3.0)" -ForegroundColor Gray
     Write-Host "  /prompt-article   - Article creation wizard" -ForegroundColor Gray
+    Write-Host "  /reflect          - Skill reflection and improvement (NEW v4.1)" -ForegroundColor Green
     Write-Host "  /session-start    - Load session context" -ForegroundColor Gray
     Write-Host "  /session-end      - Save session context" -ForegroundColor Gray
 

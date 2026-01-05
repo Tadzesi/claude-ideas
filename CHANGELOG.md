@@ -5,6 +5,94 @@ All notable changes to the Claude Commands Library will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0] - 2026-01-05
+
+### Major Release - Skill Reflection System
+
+Version 4.1 introduces active skill improvement through conversation analysis, transforming passive pattern tracking into actionable skill enhancements.
+
+### Added
+
+#### New Command: `/reflect`
+- **Signal detection** - Analyzes conversation for corrections, successes, edge cases, and preferences
+- **Priority classification** - HIGH/MED/LOW coded change proposals
+- **Direct skill modifications** - Apply changes to skill files with user approval
+- **Observation persistence** - Save declined changes for later review
+- **Learning integration** - Connects with existing learning system
+
+#### New Library Component
+- **NEW:** `.claude/library/intelligence/reflection-analyzer.md` - Signal detection engine with confidence scoring
+
+#### New Memory File
+- **NEW:** `.claude/memory/observations.md` - Stores pending observations for review
+
+#### Enhanced Configuration
+- **UPDATED:** `.claude/config/learning-config.json` - Added `reflection_analysis` section with signal patterns and thresholds
+
+### Documentation
+
+- Full VitePress documentation for `/reflect` command
+- Updated commands index with new Skill Improvement category
+- Enhanced learning system documentation
+
+### Performance
+
+- **Analysis time:** 5-15 seconds
+- **Change application:** 2-5 seconds
+
+---
+
+## [4.0.0] - 2026-01-01
+
+### Major Release - Predictive Intelligence System
+
+Version 4.0 introduces Predictive Intelligence - see 2 steps ahead with proactive guidance, anticipating user needs and preventing problems before they occur.
+
+### Added
+
+#### New Feature: Phase 0.15 Predictive Intelligence
+- **Journey stage detection** - 6 stages (exploring/planning/implementing/debugging/refactoring/reviewing)
+- **Proactive warnings** - Prevent problems BEFORE they occur
+- **Domain risk analysis** - Security, compliance, performance risks
+- **Project pattern recognition** - Auto-detect conventions
+- **Relationship mapping** - Connect to previous work
+- **Next-steps prediction** - Forecast logical followups
+- **Smart scoping** - Focused/Balanced/Comprehensive options
+
+#### New Configuration
+- **NEW:** `.claude/config/predictive-intelligence.json` - Journey stages, domain risks, followup patterns
+
+#### New Library Components
+- **NEW:** `.claude/library/intelligence/predictive-intelligence-core.md`
+- **NEW:** `.claude/library/intelligence/relationship-mapper.md`
+- **NEW:** `.claude/library/intelligence/warning-system.md`
+- **NEW:** `.claude/library/intelligence/next-steps-predictor.md`
+
+### Enhanced
+
+#### Commands Updated
+- **`/prompt-hybrid`** - FULL predictive intelligence integration
+- **`/prompt-technical`** - FULL predictive intelligence integration
+- **`/prompt`** - LITE predictive intelligence integration
+- **`/prompt-research`** - CUSTOM predictive integration
+
+#### Complexity Detection
+- **UPDATED:** `.claude/config/complexity-rules.json` - Added user factors and risk assessment
+
+### Performance
+
+- **Simple prompts:** +1-2 seconds
+- **Complex prompts:** +3-5 seconds
+- **Research mode:** +10-15 seconds
+
+### Documentation
+
+- Comprehensive predictive intelligence documentation
+- Integration guide for custom commands
+- Release notes with examples
+
+---
+
 ## [3.0.0] - 2025-12-28
 
 ### Major Release - Multi-Agent Research System
@@ -394,6 +482,9 @@ Original structure with inline Phase 0 implementations:
 
 | Version | Date | Key Changes | Lines Changed |
 |---------|------|-------------|---------------|
+| 4.1.0 | 2026-01-05 | Skill Reflection System | +2000 new |
+| 4.0.0 | 2026-01-01 | Predictive Intelligence | +3500 new |
+| 3.0.0 | 2025-12-28 | Multi-Agent Research | +2500 new |
 | 2.0.0 | 2024-12-20 | Unified library system | -500 duplicates, +450 library |
 | 1.0.0 | 2024-11-15 | Initial release | +8000 initial |
 
