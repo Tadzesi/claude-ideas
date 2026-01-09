@@ -1,5 +1,6 @@
 # Claude Code Status Line Script (Enhanced)
-# Displays: Folder, Git Branch, Progress Bar, Tokens, API Duration
+# Displays: Folder, Git Branch, Progress Bar, Tokens, Global API Duration
+# API Duration: Cumulative across all sessions with delta indicator (+last call)
 
 # Read JSON from stdin
 $jsonInput = [Console]::In.ReadToEnd()
@@ -48,38 +49,62 @@ if ($data.context_window.current_usage) {
 $totalInput = if ($data.context_window.total_input_tokens) { $data.context_window.total_input_tokens } else { 0 }
 $totalOutput = if ($data.context_window.total_output_tokens) { $data.context_window.total_output_tokens } else { 0 }
 
-# --- API Duration (last call only, calculated from difference) ---
-$stateFile = "$env:USERPROFILE\.claude\.statusline-state"
+# --- API Duration (global cumulative with delta indicator) ---
+$stateFile = "$env:USERPROFILE\.claude\.statusline-state.json"
 $apiDuration = ""
 
 if ($data.cost -and $data.cost.total_api_duration_ms) {
-    $currentTotal = $data.cost.total_api_duration_ms
-    $previousTotal = 0
+    $currentSessionTotal = $data.cost.total_api_duration_ms
 
-    # Read previous total from state file
+    # Default state
+    $state = @{
+        global_cumulative_ms = 0
+        last_session_total_ms = 0
+        last_call_ms = 0
+    }
+
+    # Read previous state from JSON file
     if (Test-Path $stateFile) {
         try {
-            $previousTotal = [long](Get-Content $stateFile -Raw)
-        } catch { $previousTotal = 0 }
+            $state = Get-Content $stateFile -Raw | ConvertFrom-Json -AsHashtable
+        } catch { }
     }
 
-    # Calculate last call duration (difference)
-    $lastDurationMs = $currentTotal - $previousTotal
+    # Calculate last call duration (difference within session)
+    $lastCallMs = $currentSessionTotal - $state.last_session_total_ms
 
-    # If negative or zero, this is first call or session reset
-    if ($lastDurationMs -le 0) {
-        $lastDurationMs = $currentTotal
+    # Detect new session (current total < previous session total)
+    if ($lastCallMs -lt 0) {
+        # New session started - add previous session to global
+        $state.global_cumulative_ms += $state.last_session_total_ms
+        $lastCallMs = $currentSessionTotal
     }
 
-    # Save current total for next time
-    $currentTotal | Out-File $stateFile -Force -NoNewline
+    # Update state
+    $state.last_session_total_ms = $currentSessionTotal
+    $state.last_call_ms = $lastCallMs
 
-    # Format duration
-    if ($lastDurationMs -ge 1000) {
-        $apiDuration = "{0:N1}s" -f ($lastDurationMs / 1000)
-    } else {
-        $apiDuration = "{0}ms" -f $lastDurationMs
+    # Calculate display values
+    $globalTotalMs = $state.global_cumulative_ms + $currentSessionTotal
+
+    # Save state
+    $state | ConvertTo-Json | Out-File $stateFile -Force
+
+    # Format duration helper
+    function Format-Duration($ms) {
+        if ($ms -ge 60000) {
+            return "{0:N1}m" -f ($ms / 60000)
+        }
+        if ($ms -ge 1000) {
+            return "{0:N1}s" -f ($ms / 1000)
+        }
+        return "{0}ms" -f $ms
     }
+
+    # Format: "API:45.2s (+1.2s)"
+    $globalFormatted = Format-Duration $globalTotalMs
+    $deltaFormatted = Format-Duration $lastCallMs
+    $apiDuration = "${globalFormatted} (+${deltaFormatted})"
 }
 
 # --- Helper Functions ---

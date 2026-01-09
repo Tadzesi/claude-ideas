@@ -1,5 +1,6 @@
 # Claude Code Statusline Setup Script
-# Installs enhanced statusline with folder, git, tokens, and API duration
+# Installs enhanced statusline with folder, git, tokens, and global API duration
+# Features: Global cumulative API time across all sessions with delta indicator
 # Usage: .\setup-statusline.ps1
 
 param(
@@ -72,7 +73,8 @@ Write-Host "This script will install an enhanced statusline with:"
 Write-Host "  - Folder name and git branch"
 Write-Host "  - Context usage progress bar"
 Write-Host "  - Token counts (current and total)"
-Write-Host "  - API call duration"
+Write-Host "  - Global API duration (cumulative across all sessions)"
+Write-Host "  - Delta indicator showing last API call time"
 Write-Host ""
 
 # --- Verify Source File ---
@@ -176,7 +178,7 @@ Write-Host ""
 Write-Host "Features:"
 Write-Host "  - Folder and git branch display"
 Write-Host "  - Context usage with progress bar"
-Write-Host "  - API duration shows response time"
+Write-Host "  - Global API time with delta: API:2.5m (+15.2s)"
 Write-Host ""
 Write-Host "To uninstall: .\setup-statusline.ps1 -Uninstall"
 Write-Host ""
