@@ -1,0 +1,72 @@
+{
+  "name": "reflect",
+  "version": "1.0.0",
+  "description": "Analyze session and propose skill improvements based on conversation signals",
+  "command": "/reflect",
+  "aliases": ["/improve", "/learn"],
+  "category": "skill-improvement",
+  "timing": {
+    "typical": "5-15s"
+  },
+  "arguments": {
+    "skill_name": {
+      "type": "string",
+      "required": false,
+      "description": "Specific skill to analyze (optional, will ask if not provided)"
+    }
+  },
+  "capabilities": {
+    "signal_detection": true,
+    "pattern_analysis": true,
+    "skill_modification": true,
+    "observation_persistence": true
+  },
+  "signals": {
+    "corrections": {
+      "confidence": 0.9,
+      "patterns": ["no,? (?:not |don't)", "I (?:meant|wanted)", "(?:change|fix|update)"],
+      "priority": "HIGH"
+    },
+    "successes": {
+      "confidence": 0.7,
+      "patterns": ["(?:perfect|great|excellent)", "(?:yes|yeah|correct)"],
+      "priority": "MEDIUM"
+    },
+    "edge_cases": {
+      "confidence": 0.6,
+      "patterns": ["Can you also", "What about", "Is there a way"],
+      "priority": "MEDIUM"
+    },
+    "preferences": {
+      "confidence": 0.5,
+      "patterns": ["I prefer", "I always", "I usually"],
+      "priority": "LOW"
+    }
+  },
+  "outputs": {
+    "signal_summary": "Count of detected signals by category",
+    "proposed_changes": "Priority-coded change proposals (HIGH/MED/LOW)",
+    "commit_message": "Suggested commit message for changes",
+    "observations": "Saved observations for future review"
+  },
+  "dependencies": {
+    "config": [
+      "@.claude/config/learning-config.json"
+    ],
+    "memory": [
+      "@.claude/memory/prompt-patterns.md",
+      "@.claude/memory/observations.md"
+    ],
+    "library": [
+      "@.claude/library/intelligence/reflection-analyzer.md"
+    ]
+  },
+  "workflow": [
+    "1. Identify skill to analyze",
+    "2. Scan conversation for signals",
+    "3. Classify by confidence and priority",
+    "4. Propose changes with evidence",
+    "5. Wait for user approval",
+    "6. Apply changes or save observations"
+  ]
+}

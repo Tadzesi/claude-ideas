@@ -1,0 +1,121 @@
+{
+  "$schema": "https://claude.ai/schemas/plugin.json",
+  "name": "claude-commands-library",
+  "displayName": "Claude Commands Library",
+  "version": "4.1.0",
+  "description": "Reusable slash commands for Claude Code that enhance prompt engineering, content creation, and session management",
+  "author": {
+    "name": "Tadzesi",
+    "url": "https://github.com/Tadzesi"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tadzesi/claude-ideas"
+  },
+  "homepage": "https://tadzesi.github.io/claude-ideas/",
+  "documentation": "PLUGIN.md",
+  "changelog": ".claude/docs/version-history.md",
+  "keywords": [
+    "prompt-engineering",
+    "slash-commands",
+    "productivity",
+    "session-management",
+    "article-writing",
+    "code-analysis"
+  ],
+  "engines": {
+    "claude-code": ">=1.0.0"
+  },
+  "main": ".claude/",
+  "skills": [
+    {
+      "name": "prompt",
+      "command": "/prompt",
+      "description": "Quick prompt cleanup and validation (2s)",
+      "file": ".claude/commands/prompt.md"
+    },
+    {
+      "name": "prompt-hybrid",
+      "command": "/prompt-hybrid",
+      "description": "Intelligent prompt perfection with agents (2-30s)",
+      "file": ".claude/commands/prompt-hybrid.md"
+    },
+    {
+      "name": "prompt-technical",
+      "command": "/prompt-technical",
+      "description": "Technical implementation analysis with hybrid intelligence (5-30s)",
+      "file": ".claude/commands/prompt-technical.md"
+    },
+    {
+      "name": "prompt-research",
+      "command": "/prompt-research",
+      "description": "Deep multi-agent research analysis (60-180s)",
+      "file": ".claude/commands/prompt-research.md"
+    },
+    {
+      "name": "prompt-article",
+      "command": "/prompt-article",
+      "description": "Interactive article writing wizard",
+      "file": ".claude/commands/prompt-article.md"
+    },
+    {
+      "name": "prompt-article-readme",
+      "command": "/prompt-article-readme",
+      "description": "README generator with tech stack detection",
+      "file": ".claude/commands/prompt-article-readme.md"
+    },
+    {
+      "name": "session-start",
+      "command": "/session-start",
+      "description": "Load previous session context",
+      "file": ".claude/commands/session-start.md"
+    },
+    {
+      "name": "session-end",
+      "command": "/session-end",
+      "description": "Save comprehensive session context",
+      "file": ".claude/commands/session-end.md"
+    },
+    {
+      "name": "reflect",
+      "command": "/reflect",
+      "description": "Analyze session and propose skill improvements (5-15s)",
+      "file": ".claude/commands/reflect.md"
+    }
+  ],
+  "configuration": {
+    "complexity-rules": {
+      "description": "Complexity detection triggers and thresholds",
+      "file": ".claude/config/complexity-rules.json"
+    },
+    "agent-templates": {
+      "description": "Agent prompt templates",
+      "file": ".claude/config/agent-templates.json"
+    },
+    "learning-config": {
+      "description": "Learning system settings",
+      "file": ".claude/config/learning-config.json"
+    },
+    "predictive-intelligence": {
+      "description": "Predictive intelligence configuration",
+      "file": ".claude/config/predictive-intelligence.json"
+    }
+  },
+  "memory": {
+    "sessions": ".claude/memory/sessions.md",
+    "patterns": ".claude/memory/prompt-patterns.md",
+    "observations": ".claude/memory/observations.md"
+  },
+  "rules": [
+    ".claude/rules/technical-patterns.md",
+    ".claude/rules/command-conventions.md",
+    ".claude/rules/library-standards.md",
+    ".claude/rules/config-validation.md"
+  ],
+  "library": {
+    "core": ".claude/library/prompt-perfection-core.md",
+    "adapters": ".claude/library/adapters/",
+    "intelligence": ".claude/library/intelligence/"
+  }
+}

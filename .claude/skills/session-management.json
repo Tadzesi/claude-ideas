@@ -1,0 +1,49 @@
+{
+  "name": "session-management",
+  "version": "2.0.0",
+  "description": "Session context management commands for seamless continuity",
+  "commands": {
+    "session-start": {
+      "command": "/session-start",
+      "aliases": ["/start", "/load"],
+      "description": "Load previous session context",
+      "file": ".claude/commands/session-start.md",
+      "outputs": [
+        "Active work in progress",
+        "Pending next steps",
+        "Recent decisions",
+        "Tech stack context",
+        "User preferences"
+      ]
+    },
+    "session-end": {
+      "command": "/session-end",
+      "aliases": ["/end", "/save"],
+      "description": "Save comprehensive session context",
+      "file": ".claude/commands/session-end.md",
+      "captures": [
+        "Decisions made",
+        "Code changes",
+        "Features implemented",
+        "Problems solved",
+        "Technical stack & architecture",
+        "Key insights",
+        "User preferences & patterns",
+        "Active work in progress",
+        "Project structure notes",
+        "Next steps"
+      ]
+    }
+  },
+  "memory_files": {
+    "sessions": "@.claude/memory/sessions.md",
+    "patterns": "@.claude/memory/prompt-patterns.md",
+    "knowledge": "@.claude/memory/project-knowledge.md"
+  },
+  "features": {
+    "git_awareness": "Tracks branch and recent commits",
+    "file_tracking": "Records modified/created files",
+    "decision_capture": "Preserves architectural choices",
+    "preference_learning": "Adapts to user patterns"
+  }
+}

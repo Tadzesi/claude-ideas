@@ -33,8 +33,9 @@ This command provides deep technical analysis for programming and development ta
 
 ## Phase 0: Prompt Perfection with Complexity Detection
 
-**Import:** Use Phase 0 from `.claude/library/prompt-perfection-core.md`
-**Adaptation:** Technical with Hybrid Intelligence (from `.claude/library/adapters/technical-adapter.md`)
+**Import:** Use Phase 0 from @.claude/library/prompt-perfection-core.md
+**Adaptation:** Technical with Hybrid Intelligence (from @.claude/library/adapters/technical-adapter.md)
+**Rules:** Path-specific rules from @.claude/rules/technical-patterns.md
 
 **Enhanced Flow:** This command enhances Phase 0 with automatic complexity detection and intelligent agent spawning for complex tasks.
 
@@ -732,13 +733,27 @@ See `/prompt-hybrid` documentation for details on advanced features.
 
 ## Library Integration
 
-This command uses the **Unified Library System:**
-- **Core:** `.claude/library/prompt-perfection-core.md` (canonical Phase 0)
-- **Adapter:** `.claude/library/adapters/technical-adapter.md` (technical domain)
-- **Enhancement:** Hybrid Intelligence (complexity detection, agents)
-- **Benefits:** Consistent validation, proven flow, easy maintenance
+This command uses the **Unified Library System** with native Claude Code @ imports:
 
-For details on the library system, see: `doc/Unified_Library_System_Guide.md`
+**Core Dependencies:**
+- @.claude/library/prompt-perfection-core.md (canonical Phase 0)
+- @.claude/library/adapters/technical-adapter.md (technical domain)
+- @.claude/library/adapters/hybrid-adapter.md (complexity detection, agents)
+
+**Path-Specific Rules:**
+- @.claude/rules/technical-patterns.md (auto-loaded for this file)
+- @.claude/rules/command-conventions.md (command standards)
+
+**Configuration:**
+- @.claude/config/complexity-rules.json (triggers and thresholds)
+- @.claude/config/agent-templates.json (agent prompts)
+- @.claude/config/cache-config.json (result caching)
+
+**Memory:**
+- @.claude/memory/prompt-patterns.md (learning patterns)
+- @.claude/memory/observations.md (reflection signals)
+
+For details on the library system, see: @docs/library-guide.md
 
 ---
 
