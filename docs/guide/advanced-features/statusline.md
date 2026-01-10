@@ -147,6 +147,95 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Tadzesi/claude-ideas/m
 
 Or manually remove the `statusLine` section from `settings.json`.
 
+## How It Works
+
+### Trigger Mechanism
+
+Claude Code has a built-in statusline hook. When configured in `settings.json`:
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File statusline.ps1"
+  }
+}
+```
+
+Claude Code automatically executes this command **after each API response** and displays the output at the bottom of the terminal.
+
+### Data Flow
+
+```
+┌─────────────┐     JSON via stdin     ┌──────────────────┐     stdout     ┌─────────────┐
+│ Claude Code │ ──────────────────────>│ statusline.ps1   │ ─────────────> │  Terminal   │
+│   (Host)    │                        │ (PowerShell)     │                │  Display    │
+└─────────────┘                        └──────────────────┘                └─────────────┘
+```
+
+1. Claude Code pipes JSON data to the script via **stdin**
+2. Script reads: `$jsonInput = [Console]::In.ReadToEnd()`
+3. Script parses: `$data = $jsonInput | ConvertFrom-Json`
+4. Script outputs formatted string to **stdout**
+5. Claude Code displays it at bottom of terminal
+
+### JSON Data Structure
+
+Claude Code provides this JSON structure to the statusline script:
+
+```json
+{
+  "cwd": "C:\\Projects\\my-project",
+  "session_id": "abc123",
+  "context_window": {
+    "context_window_size": 200000,
+    "current_usage": {
+      "input_tokens": 45000,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 12000
+    },
+    "total_input_tokens": 89000,
+    "total_output_tokens": 15000
+  },
+  "cost": {
+    "total_api_duration_ms": 32000
+  }
+}
+```
+
+### Data Sources
+
+| Field | Source | Description |
+|-------|--------|-------------|
+| `cwd` | Claude Code | Current working directory |
+| `session_id` | Claude Code | Unique session identifier |
+| `context_window_size` | Claude Code | Total context (200k for Opus) |
+| `current_usage.input_tokens` | Last API call | Tokens in last request |
+| `total_input_tokens` | Claude Code | Cumulative input tokens |
+| `total_output_tokens` | Claude Code | Cumulative output tokens |
+| `total_api_duration_ms` | Claude Code | Session API time (ms) |
+| Git branch | Local git | Retrieved via `git rev-parse` |
+
+### State Persistence
+
+API duration tracking across sessions uses a state file:
+
+**Location:** `~\.claude\.statusline-state.json`
+
+```json
+{
+  "global_cumulative_ms": 180000,
+  "last_session_total_ms": 32000,
+  "last_call_ms": 1100,
+  "session_id": "abc123"
+}
+```
+
+This enables:
+- **Global cumulative time** - Total API time across all sessions
+- **Delta indicator** - Time spent in the last API call (+Xs)
+- **Session detection** - Detects new sessions by ID change or time reset
+
 ## Technical Details
 
 ### Context Calculation
