@@ -11,6 +11,7 @@ A collection of Claude Code slash commands for prompt engineering, refinement, a
 ## Features
 
 - 🔄 **Skill Reflection** - Actively improve skills from conversation feedback (NEW v4.1)
+- 📊 **Enhanced Statusline** - Color-coded context bar, tokens, API duration with icons (NEW v4.1)
 - 🔮 **Predictive Intelligence** - See 2 steps ahead with proactive guidance (v4.0)
 - ⚠️ **Proactive Warnings** - Prevent problems BEFORE coding starts (v4.0)
 - 📐 **Pattern Recognition** - Auto-detect project conventions and architectural patterns (v4.0)
@@ -53,11 +54,17 @@ npm run docs:preview
 
 ## What's New in Version 4.1 🔄
 
-**Major Release - Skill Reflection System (January 2026)**
+**Major Release - Skill Reflection System + Enhanced Statusline (January 2026)**
 
-Version 4.1 introduces **Skill Reflection** - an active learning system that analyzes conversation signals to propose skill improvements.
+Version 4.1 introduces **Skill Reflection** and an **Enhanced Statusline** with icons and colors.
 
 ### Headline Features
+
+📊 **NEW: Enhanced Statusline**
+- Color-coded context usage bar (green/yellow/orange/red)
+- Icons for folder, git branch, tokens, API time
+- Global cumulative API duration with delta indicator
+- One-line install: `iwr -useb https://raw.githubusercontent.com/Tadzesi/claude-ideas/main/install-claude-statusline.ps1 | iex`
 
 🔄 **NEW: `/reflect` Command**
 - Signal detection - analyzes corrections, successes, edge cases, and preferences
@@ -247,6 +254,30 @@ ls .claude\commands\*.md
 ```
 
 See **[README-INSTALL.md](README-INSTALL.md)** for detailed installation instructions.
+
+## Enhanced Statusline (NEW v4.1)
+
+A beautiful, informative statusline for Claude Code with icons and color-coded metrics.
+
+```
+■ my-project | ⎇ main | ████████░░ 45% | ● 27k/200k | ▶ 89k/15k | ◆ 3.2s (+1.1s)
+```
+
+**Features:**
+- 📁 Folder name and git branch with icons
+- 📊 Color-coded context bar (green → yellow → orange → red)
+- 📈 Context tokens and cumulative totals
+- ⏱️ Global API duration with delta indicator
+
+### Quick Install
+
+```powershell
+iwr -useb https://raw.githubusercontent.com/Tadzesi/claude-ideas/main/install-claude-statusline.ps1 | iex
+```
+
+Then restart Claude Code.
+
+See **[Statusline Installation Guide](.claude/docs/statusline-install.md)** for detailed options.
 
 ## Available Commands (9 Total)
 
