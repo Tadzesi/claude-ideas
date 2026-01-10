@@ -59,7 +59,8 @@ export default defineConfig({
           items: [
             { text: 'Agent Caching', link: '/guide/advanced-features/caching' },
             { text: 'Multi-Agent Verification', link: '/guide/advanced-features/multi-agent' },
-            { text: 'Learning System', link: '/guide/advanced-features/learning-system' }
+            { text: 'Learning System', link: '/guide/advanced-features/learning-system' },
+            { text: 'Enhanced Statusline', link: '/guide/advanced-features/statusline' }
           ]
         }
       ],
