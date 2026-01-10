@@ -1,32 +1,40 @@
 # Installation
 
-::: tip Interactive Documentation
-This installation guide is part of our comprehensive [VitePress Documentation Site](https://tadzesi.github.io/claude-ideas/). Browse the full documentation with search, navigation, and interactive examples!
-:::
+Get Claude Commands Library running in your project in under 2 minutes.
 
 ## Prerequisites
 
 Before installing, ensure you have:
 
-- [Claude Code CLI](https://claude.ai/code) installed and configured
-- Windows 11 (or compatible environment)
-- Git installed (`git --version` to check)
+- **Claude Code CLI** - [Install from claude.ai/code](https://claude.ai/code)
+- **Windows 10/11** - PowerShell 5.1 or later (pre-installed)
+- **Git** - [Download from git-scm.com](https://git-scm.com/download/win)
+
+Verify your setup:
+
+```powershell
+claude --version    # Should show Claude Code version
+git --version       # Should show Git version
+```
 
 ## Quick Installation
 
 ### One-Line Install
 
 ```powershell
-# Download installer
+# Download and run the installer
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Tadzesi/claude-ideas/main/install-claude-commands.ps1" -OutFile "install-claude-commands.ps1"
-
-# Run installer
 .\install-claude-commands.ps1
 ```
 
-That's it! The script will install all Claude commands and libraries to your current directory.
+The installer will:
 
-## Installation Methods
+1. Clone the repository
+2. Deploy `.claude/` directory to your project
+3. Preserve any existing memory files
+4. Display available commands
+
+## Installation Options
 
 ### Install to Current Directory
 
@@ -35,127 +43,149 @@ cd C:\YourProject
 .\install-claude-commands.ps1
 ```
 
-The `.claude` directory will be created in your project.
-
 ### Install to Specific Directory
 
 ```powershell
-.\install-claude-commands.ps1 -InstallPath "C:\MyProjects\MyProject"
+.\install-claude-commands.ps1 -InstallPath "C:\Projects\MyApp"
 ```
 
 ### Force Reinstall
+
+If you have a corrupted installation:
 
 ```powershell
 .\install-claude-commands.ps1 -Force
 ```
 
-Useful for fixing corrupted installations.
-
 ## What Gets Installed
 
-The installer deploys the following structure:
+```
+your-project/
+├── .claude/
+│   ├── commands/           # Slash commands
+│   │   ├── prompt.md
+│   │   ├── prompt-hybrid.md
+│   │   ├── prompt-technical.md
+│   │   ├── prompt-research.md
+│   │   ├── prompt-article.md
+│   │   ├── prompt-article-readme.md
+│   │   ├── session-start.md
+│   │   ├── session-end.md
+│   │   └── reflect.md
+│   ├── library/            # Core library system
+│   │   ├── prompt-perfection-core.md
+│   │   ├── adapters/
+│   │   └── intelligence/
+│   ├── config/             # Configuration files
+│   │   ├── complexity-rules.json
+│   │   ├── agent-templates.json
+│   │   └── learning-config.json
+│   ├── memory/             # Your session data
+│   │   ├── sessions.md
+│   │   └── prompt-patterns.md
+│   ├── rules/              # Path-specific rules
+│   └── skills/             # Skill configurations
+├── CLAUDE.md               # Project instructions
+└── plugin.json             # Plugin manifest
+```
 
+## Verify Installation
+
+After installation, verify everything works:
+
+```powershell
+# Check .claude directory exists
+Test-Path ".claude"
+
+# List installed commands
+Get-ChildItem ".claude\commands"
 ```
-.claude/
-├── commands/                 # Slash commands (7 total)
-│   ├── prompt.md
-│   ├── prompt-hybrid.md
-│   ├── prompt-technical.md
-│   ├── prompt-article.md
-│   ├── prompt-article-readme.md
-│   ├── session-start.md
-│   └── session-end.md
-├── library/                  # Reusable Phase 0 library
-│   ├── prompt-perfection-core.md
-│   └── adapters/
-│       ├── technical-adapter.md
-│       ├── article-adapter.md
-│       ├── session-adapter.md
-│       └── hybrid-adapter.md
-├── config/                   # Configuration files
-│   ├── complexity-rules.json
-│   ├── agent-templates.json
-│   ├── cache-config.json
-│   ├── verification-config.json
-│   └── learning-config.json
-├── memory/                   # Your session data (PRESERVED on update)
-│   ├── sessions.md
-│   └── prompt-patterns.md
-└── cache/                    # Agent result cache
-    └── agent-results/
+
+Start Claude Code in your project:
+
+```powershell
+claude
 ```
+
+Then try a command:
+
+```bash
+/prompt Hello, test installation
+```
+
+You should see Claude run the prompt through Phase 0 validation.
 
 ## Updating
 
-Simply run the installer again:
+To update to the latest version:
 
 ```powershell
 .\install-claude-commands.ps1
 ```
 
-The script will:
-1. Detect existing installation
-2. Create backup
-3. Pull latest changes from GitHub
-4. Deploy updates while **preserving your memory files**
+The installer automatically:
 
-## Data Preservation
+1. Detects existing installation
+2. Creates backup of current files
+3. Pulls latest from GitHub
+4. **Preserves your memory files** (sessions.md, prompt-patterns.md)
 
-### What Gets Preserved (During Updates)
-
-✅ `.claude/memory/sessions.md` - Your session history
-✅ `.claude/memory/prompt-patterns.md` - Learning system data
-✅ Any custom files in `.claude/memory/`
-
-### What Gets Updated
-
-🔄 `.claude/commands/` - All slash commands
-🔄 `.claude/library/` - Core library and adapters
-🔄 `.claude/config/` - Configuration files
-
-::: warning
+::: warning Config Customizations
 If you've customized config files, back them up before updating:
 
 ```powershell
-Copy-Item ".claude\config\complexity-rules.json" "complexity-rules-custom.json"
+Copy-Item ".claude\config\complexity-rules.json" "my-complexity-rules.json"
 ```
 :::
 
+## Optional: Enhanced Statusline
+
+Add real-time metrics to your terminal:
+
+```powershell
+iwr -useb https://raw.githubusercontent.com/Tadzesi/claude-ideas/main/install-claude-statusline.ps1 | iex
+```
+
+This displays:
+
+```
+■ my-project | ⎇ main | ████████░░ 45% | ● 27k/155k | ▶ 89k/15k | ◆ 3.2s
+```
+
+[Learn more about the statusline →](/architecture/statusline)
+
 ## Troubleshooting
 
-### Git Not Installed
+### "Git is not recognized"
 
-Install Git from [git-scm.com](https://git-scm.com/download/win), restart PowerShell, and try again.
+Install Git from [git-scm.com](https://git-scm.com/download/win), then restart PowerShell.
 
-### GitHub Authentication Failed
-
-Configure credential helper:
-
-```powershell
-git config --global credential.helper wincred
-```
-
-Clone repo manually to authenticate:
-
-```powershell
-git clone https://github.com/Tadzesi/claude-ideas.git
-```
-
-Enter your GitHub username and Personal Access Token.
-
-### Permission Denied
-
-Run PowerShell as Administrator, or:
+### "Execution policy" error
 
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
-### Deployment Failed
+### "Access denied" error
 
 1. Close Claude Code if running
-2. Run with Force flag: `.\install-claude-commands.ps1 -Force`
-3. If still fails, manually delete `.claude` and reinstall
+2. Run PowerShell as Administrator
+3. Try installation again
+
+### Commands not appearing
+
+1. Verify `.claude/commands/` exists
+2. Restart Claude Code
+3. Check CLAUDE.md is in project root
+
+### GitHub authentication failed
+
+```powershell
+git config --global credential.helper wincred
+git clone https://github.com/Tadzesi/claude-ideas.git
+```
+
+Enter your GitHub username and Personal Access Token when prompted.
 
 ## Uninstallation
 
@@ -165,12 +195,17 @@ To completely remove:
 # Remove .claude directory
 Remove-Item -Path ".claude" -Recurse -Force
 
+# Remove project files (optional)
+Remove-Item "CLAUDE.md", "plugin.json", "PLUGIN.md" -Force
+
 # Remove backups (optional)
 Remove-Item -Path ".claude-backup" -Recurse -Force
 ```
 
 ## Next Steps
 
-- [Quick Start Guide](/getting-started/quick-start)
-- [Explore Commands](/guide/commands/)
-- [Configuration Reference](/reference/configuration)
+Installation complete! Continue with:
+
+- [Quick Start Guide](/getting-started/quick-start) - Try your first commands
+- [Your First Prompt](/getting-started/first-prompt) - Detailed walkthrough
+- [Commands Overview](/commands/) - See all available commands

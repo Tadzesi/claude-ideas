@@ -4,7 +4,7 @@ layout: home
 hero:
   name: Claude Commands Library
   text: Transform Ideas into Precise Prompts
-  tagline: Intelligent prompt engineering with agent assistance, caching, and learning for Claude Code
+  tagline: Stop guessing. Start executing. Intelligent prompt engineering for Claude Code.
   image:
     src: /logo.svg
     alt: Claude Commands Library
@@ -13,143 +13,182 @@ hero:
       text: Get Started
       link: /getting-started/
     - theme: alt
-      text: View on GitHub
+      text: View Commands
+      link: /commands/
+    - theme: alt
+      text: GitHub
       link: https://github.com/Tadzesi/claude-ideas
 
 features:
-  - icon: 🔄
-    title: Skill Reflection
-    details: NEW v4.1 - Actively improve skills from conversation feedback. Detect corrections, successes, and preferences to propose changes.
-
-  - icon: 🔮
-    title: Predictive Intelligence
-    details: v4.0 - See 2 steps ahead with proactive guidance, warnings, and next-steps prediction. Prevent problems BEFORE coding starts.
-
-  - icon: ⚠️
-    title: Proactive Warnings
-    details: Domain risk analysis across authentication, payment, database, API, security, and performance. Critical warnings before you code.
-
-  - icon: 📐
-    title: Pattern Recognition
-    details: Auto-detect project naming conventions, architectural patterns, and identify inconsistencies automatically.
-
-  - icon: 🔬
-    title: Multi-Agent Research System
-    details: v3.0 - Deep codebase research with 2-5 specialized agents, iterative refinement, and persistent knowledge graph
-
-  - icon: ⚡
-    title: Prompt Perfection
-    details: Analyze and refine any prompt to be clear and unambiguous with Phase 0 validation flow
+  - icon: 🎯
+    title: Zero-Ambiguity Prompts
+    details: Every prompt goes through Phase 0 validation - detecting missing information, asking clarifying questions, and structuring requests before execution.
+    link: /architecture/phase-0
+    linkText: Learn about Phase 0
 
   - icon: 🤖
     title: Intelligent Agent Assistance
-    details: Automatic codebase analysis for complex tasks with smart complexity detection
+    details: Complex tasks automatically spawn specialized agents for codebase exploration, pattern detection, and implementation planning.
+    link: /architecture/hybrid-intelligence
+    linkText: Explore Hybrid Intelligence
 
-  - icon: 🔍
-    title: Multi-Agent Verification
-    details: Cross-validate critical operations with 3 agents running in parallel
+  - icon: 🔮
+    title: Predictive Intelligence
+    details: See problems before they happen. Proactive warnings, domain risk analysis, and next-steps prediction guide your development.
+    link: /architecture/predictive-intelligence
+    linkText: Discover Predictions
+
+  - icon: 📊
+    title: Enhanced Statusline
+    details: Real-time context tracking with visual progress bars, token usage, and API duration monitoring directly in your terminal.
+    link: /architecture/statusline
+    linkText: Setup Statusline
+
+  - icon: 🔬
+    title: Multi-Agent Research
+    details: Deep codebase analysis with 2-5 specialized agents working in parallel, iterative refinement, and comprehensive reports.
+    link: /architecture/multi-agent
+    linkText: Research System
 
   - icon: 📚
     title: Learning System
-    details: Tracks patterns, suggests smart defaults, and now actively improves skills with /reflect
+    details: The library learns from your patterns, suggests smart defaults, and actively improves skills through the /reflect command.
+    link: /architecture/learning
+    linkText: See Learning
 ---
+
+## The Problem
+
+You write a prompt. Claude guesses what you meant. You get something close but not quite right. You clarify. Claude tries again. Repeat.
+
+**This wastes time and tokens.**
+
+## The Solution
+
+Claude Commands Library ensures every prompt is **perfect before execution**:
+
+```bash
+# Before: Vague prompt leads to wrong implementation
+"Add login to my app"
+
+# After: Phase 0 asks what you actually need
+/prompt-technical Add login to my app
+
+# Claude asks:
+# - Which authentication method? (JWT / OAuth / Session)
+# - Which database stores users?
+# - What UI framework for the login form?
+# - Should I add password reset functionality?
+
+# Result: Precise implementation matching your exact needs
+```
 
 ## Quick Start
 
-```bash
-# Simple prompt perfection with LITE predictive intelligence
-/prompt Fix the login bug in my app
+### 1. Install
 
-# Intelligent prompt perfection with FULL predictive intelligence
-/prompt-hybrid Implement payment processing following existing patterns
-
-# Deep multi-agent research with predictive scoping
-/prompt-research Perform comprehensive security audit
-
-# Technical implementation with FULL predictive intelligence
-/prompt-technical Add caching layer with Redis
-
-# Skill reflection - improve skills from feedback (NEW v4.1)
-/reflect prompt-hybrid
-
-# Create an article
-/prompt-article Write about CI/CD pipelines
-
-# Generate README
-/prompt-article-readme
-
-# Session management
-/session-start    # Load previous context
-/session-end      # Save current work
+```powershell
+# Download and run installer
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Tadzesi/claude-ideas/main/install-claude-commands.ps1" -OutFile "install.ps1"
+.\install.ps1
 ```
 
-## Why Claude Commands Library?
+### 2. Use Commands
 
-### 🎯 Zero-Guessing Execution
+```bash
+# Perfect any prompt (2 seconds)
+/prompt Fix the authentication bug
 
-Every prompt is analyzed, clarified, and perfected before execution. No more ambiguous requests that lead to wrong implementations.
+# Technical analysis with agent assistance (5-30 seconds)
+/prompt-technical Implement caching with Redis
 
-### 🚀 Smart Complexity Detection
+# Deep multi-agent research (1-3 minutes)
+/prompt-research Perform security audit of payment system
 
-Automatically detects when tasks need deep codebase analysis and spawns intelligent agents only when necessary.
+# Save your work
+/session-end
+```
 
-### ⚡ Performance Optimized
+### 3. Track Progress
 
-Agent result caching provides 10-20x speed improvement for repeated or similar prompts.
+Install the [Enhanced Statusline](/architecture/statusline) to see real-time metrics:
 
-### 📚 Continuous Learning
+```
+■ my-project | ⎇ main | ████████░░ 45% | ● 27k/155k | ▶ 89k/15k | ◆ 3.2s
+```
 
-The system learns from your patterns and suggests smart defaults, improving over time.
+## Command Overview
 
-## What's New in v4.1 🔄
+| Command | Purpose | Speed | When to Use |
+|---------|---------|-------|-------------|
+| `/prompt` | Basic prompt perfection | ~2s | Quick fixes, simple tasks |
+| `/prompt-hybrid` | Intelligent with agents | 2-30s | Complex tasks, codebase changes |
+| `/prompt-technical` | Implementation analysis | 5-30s | New features, refactoring |
+| `/prompt-research` | Deep multi-agent research | 60-180s | Security audits, architecture review |
+| `/prompt-article` | Article writing wizard | Interactive | Blog posts, documentation |
+| `/session-start` | Load previous context | ~2s | Beginning of session |
+| `/session-end` | Save current context | ~5s | End of session |
+| `/reflect` | Improve skills from feedback | 5-15s | After using a command |
 
-Version 4.1 introduces **Skill Reflection** - actively improve skills from conversation feedback:
+## How It Works
 
-- 🔄 **NEW: `/reflect` Command** - Analyze sessions and propose skill improvements
-- 🎯 **Signal Detection** - Detect corrections, successes, edge cases, and preferences
-- 📊 **Priority Classification** - HIGH/MED/LOW coded change proposals
-- ✏️ **Direct Modifications** - Apply changes to skill files with user approval
-- 💾 **Observation Persistence** - Save declined changes for later review
+### Phase 0: Prompt Perfection
 
-**Before v4.1:** Passive pattern tracking
-**After v4.1:** Active skill improvement from feedback
+Every command runs your prompt through validation:
 
-[Read v4.1 Release Notes →](https://github.com/Tadzesi/claude-ideas/blob/main/.claude/docs/v4.1-RELEASE-NOTES.md) | [Learn about /reflect →](/guide/commands/reflect)
+1. **Detect** - Language, type, and intent
+2. **Check** - 6 completeness criteria (Goal, Context, Scope, Requirements, Constraints, Expected Result)
+3. **Ask** - Clarifying questions for missing information
+4. **Structure** - Transform into executable format
+5. **Approve** - Wait for your confirmation
 
-### What Was New in v4.0 🔮
+### Hybrid Intelligence
 
-Version 4.0 introduced **Predictive Intelligence** - see 2 steps ahead with proactive guidance:
+Tasks are scored for complexity (0-50+):
 
-- 🔮 **Phase 0.15 Predictive Intelligence** - Journey stage detection, proactive warnings, next-steps prediction
-- ⚠️ **Domain Risk Analysis** - 20+ risks across 6 domains (auth, payment, database, API, security, performance)
-- 📐 **Pattern Recognition** - Auto-detect naming conventions and architectural patterns
+- **Simple (0-4)**: Fast inline validation
+- **Moderate (5-9)**: Optional agent assistance
+- **Complex (10-19)**: Automatic agent exploration
+- **Research (20+)**: Multi-agent deep analysis
 
-[Read v4.0 Release Notes →](https://github.com/Tadzesi/claude-ideas/blob/main/.claude/docs/v4.0-RELEASE-NOTES.md)
+### Continuous Learning
 
-### What Was New in v3.0 🔬
+The system tracks:
 
-Version 3.0 introduced the **Multi-Agent Research System** for enterprise-grade codebase analysis:
+- Successful transformations
+- Your modification patterns
+- Common missing information
+- Agent effectiveness
 
-- 🔬 **`/prompt-research` Command** - Deep multi-agent research with 2-5 specialized agents
-- 🔄 **Iterative Refinement** - 2-4 iteration cycles with intelligent gap detection
-- 📍 **Source Attribution** - Every finding includes file:line citations with code snippets
+After 3+ occurrences, it suggests smart defaults.
 
-[Learn more about /prompt-research →](/guide/commands/prompt-research)
+## What's New
 
-## Commands Overview
+### v4.1 - Skill Reflection
 
-| Command | Purpose | Time | Complexity |
-|---------|---------|------|------------|
-| `/prompt` | Basic perfection + LITE predictive intelligence | ~2s | Simple |
-| `/prompt-hybrid` | Intelligent with FULL predictive intelligence | 2-50s | Advanced |
-| `/prompt-research` | Deep multi-agent research with predictive scoping | 60-180s | Expert |
-| `/prompt-technical` | Implementation analysis + FULL predictive intelligence | 5-30s | Advanced |
-| `/prompt-article` | Interactive article wizard | 2-5min | Medium |
-| `/prompt-article-readme` | README generator | 10-30s | Medium |
-| `/reflect` | Skill reflection and improvement 🔄 NEW | 5-15s | Medium |
-| `/session-start` | Load session context | 2-5s | Simple |
-| `/session-end` | Save session context | 5-10s | Simple |
+```bash
+/reflect prompt-technical
+```
 
-## Get Started
+Analyzes your session and proposes improvements to commands based on corrections, successes, and preferences.
 
-Ready to transform your prompts? [Install the library →](/getting-started/installation)
+### v4.0 - Predictive Intelligence
+
+- Journey stage detection (exploring → implementing → debugging)
+- Proactive warnings before you make mistakes
+- Domain risk analysis (security, payment, performance)
+
+### v3.0 - Multi-Agent Research
+
+- 2-5 specialized agents in parallel
+- Iterative refinement with gap detection
+- Comprehensive reports with file:line citations
+
+## Ready to Start?
+
+<div class="custom-block tip">
+  <p><strong>New to Claude Commands?</strong></p>
+  <p>Follow the <a href="/getting-started/">Getting Started Guide</a> for a complete walkthrough.</p>
+</div>
+
+[Install Now →](/getting-started/installation) | [Browse Commands →](/commands/) | [Understand Architecture →](/architecture/)
