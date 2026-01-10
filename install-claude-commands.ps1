@@ -180,7 +180,12 @@ function Deploy-ClaudeDirectory {
         }
 
         # Deploy directories that should be updated
-        $directoriesToDeploy = @("commands", "library", "config")
+        $directoriesToDeploy = @("commands", "library", "config", "rules", "scripts", "docs")
+
+        # Create parent directory if needed
+        if (-not (Test-Path $targetClaudeDir)) {
+            New-Item -ItemType Directory -Path $targetClaudeDir -Force | Out-Null
+        }
 
         foreach ($dir in $directoriesToDeploy) {
             $sourceDir = Join-Path $sourceClaudeDir $dir
@@ -194,17 +199,40 @@ function Deploy-ClaudeDirectory {
                     Remove-Item -Path $targetDir -Recurse -Force
                 }
 
-                # Create parent directory if needed
-                if (-not (Test-Path $targetClaudeDir)) {
-                    New-Item -ItemType Directory -Path $targetClaudeDir -Force | Out-Null
-                }
-
                 # Copy new directory
                 Copy-Item -Path $sourceDir -Destination $targetDir -Recurse -Force
                 Write-Success "$dir deployed"
             } else {
                 Write-Warning "$dir not found in repository"
             }
+        }
+
+        # Deploy CLAUDE.md file (memory imports)
+        $sourceClaudeMd = Join-Path $sourceClaudeDir "CLAUDE.md"
+        $targetClaudeMd = Join-Path $targetClaudeDir "CLAUDE.md"
+        if (Test-Path $sourceClaudeMd) {
+            Copy-Item -Path $sourceClaudeMd -Destination $targetClaudeMd -Force
+            Write-Success "CLAUDE.md deployed"
+        }
+
+        # Clean up directories that should not exist (removed in newer versions)
+        $obsoleteDirs = @("skills", "tasks")
+        foreach ($dir in $obsoleteDirs) {
+            $obsoleteDir = Join-Path $targetClaudeDir $dir
+            if (Test-Path $obsoleteDir) {
+                Write-Info "Removing obsolete directory: $dir..."
+                Remove-Item -Path $obsoleteDir -Recurse -Force
+                Write-Success "Removed obsolete: $dir"
+            }
+        }
+
+        # Clear cache on update to avoid stale results
+        $targetCacheDir = Join-Path $targetClaudeDir "cache"
+        if (Test-Path $targetCacheDir) {
+            Write-Info "Clearing cache for fresh start..."
+            Remove-Item -Path $targetCacheDir -Recurse -Force
+            New-Item -ItemType Directory -Path $targetCacheDir -Force | Out-Null
+            Write-Success "Cache cleared"
         }
 
         # Restore memory directory
@@ -224,14 +252,10 @@ function Deploy-ClaudeDirectory {
             }
         }
 
-        # Copy cache directory if it exists and target doesn't have it
-        $sourceCacheDir = Join-Path $sourceClaudeDir "cache"
-        $targetCacheDir = Join-Path $targetClaudeDir "cache"
-
-        if ((Test-Path $sourceCacheDir) -and -not (Test-Path $targetCacheDir)) {
-            Copy-Item -Path $sourceCacheDir -Destination $targetCacheDir -Recurse -Force
-            Write-Success "Cache directory initialized"
-        }
+        # Create version file to track installed version
+        $versionFile = Join-Path $targetClaudeDir "VERSION"
+        "4.1.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
+        Write-Success "Version file created (v4.1.0)"
 
         return $true
     } catch {
@@ -248,7 +272,7 @@ function Test-Installation {
 
     Write-Info "Verifying installation..."
 
-    $requiredDirs = @("commands", "library")
+    $requiredDirs = @("commands", "library", "config", "rules")
     $missingDirs = @()
 
     foreach ($dir in $requiredDirs) {
@@ -268,6 +292,13 @@ function Test-Installation {
     if (-not (Test-Path $coreLibrary)) {
         Write-Error "Core library not found: $coreLibrary"
         return $false
+    }
+
+    # Check version file
+    $versionFile = Join-Path $targetClaudeDir "VERSION"
+    if (Test-Path $versionFile) {
+        $installedVersion = Get-Content $versionFile -Raw
+        Write-Info "Installed version: $installedVersion"
     }
 
     # Count commands
