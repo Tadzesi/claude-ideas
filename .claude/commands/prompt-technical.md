@@ -4,6 +4,33 @@ This command provides deep technical analysis for programming and development ta
 
 ---
 
+## Arguments
+
+```
+/prompt-technical [task] [--flags]
+```
+
+**Supported Flags:**
+- `--manual` - Force manual analysis (skip agent even for complex tasks)
+- `--agent` - Force agent analysis (use agent even for simple tasks)
+- `--no-cache` - Skip cache lookup, run fresh analysis
+- `--no-predict` - Skip predictive intelligence (Phase 0.15)
+- `--verbose` - Show detailed complexity scoring breakdown
+
+**Examples:**
+```
+/prompt-technical Add user authentication
+/prompt-technical --agent Add input validation
+/prompt-technical --manual --no-cache Refactor UserService
+```
+
+**Flag Parsing:**
+1. Extract flags from $ARGUMENTS before processing
+2. Store in execution context for path selection
+3. Flags override automatic complexity-based decisions
+
+---
+
 ## Phase 0: Prompt Perfection with Complexity Detection
 
 **Import:** Use Phase 0 from `.claude/library/prompt-perfection-core.md`
@@ -266,6 +293,48 @@ Task(
 ```
 
 **Wait for agent results.**
+
+---
+
+### Error Handling
+
+**Agent Timeout (30 seconds):**
+```markdown
+Agent analysis timed out after 30 seconds.
+
+Options:
+1. Retry agent analysis
+2. Continue with manual scan
+3. Cancel analysis
+
+What would you like to do? [1/2/3]
+```
+
+**Agent Failure:**
+```markdown
+Agent analysis failed: [error message]
+
+Falling back to manual scan...
+[Continue with Path A logic]
+```
+
+**Cache Corruption:**
+- Detect: JSON parse error or schema mismatch
+- Action: Clear corrupted cache entry
+- Recovery: Re-run agent analysis
+- Log: Record in `.claude/memory/observations.md` for review
+
+**No Results Found:**
+```markdown
+Agent completed but found no relevant files or patterns.
+
+This might mean:
+- The task doesn't match existing codebase patterns
+- Different search terms needed
+- Codebase is new/empty in this area
+
+Proceeding with manual analysis...
+```
 
 ---
 
@@ -640,13 +709,20 @@ See `/prompt-hybrid` documentation for details on advanced features.
 
 ## Version History
 
-**v2.0 (2024-12-20):**
-- ✨ Added explicit library reference
-- ✨ References prompt-perfection-core.md and technical-adapter.md
-- ✨ Enhanced documentation with advanced features reference
+**v2.1 (2026-01-10):**
+- Added arguments parsing with override flags (--manual, --agent, --no-cache, --no-predict, --verbose)
+- Added comprehensive error handling section (timeout, failure, cache corruption, no results)
+- Standardized terminology (Explore Agent, Complexity Score)
+- Aligned with Claude Code native patterns
+- Improved documentation clarity
+
+**v2.0 (2025-12-20):**
+- Added explicit library reference
+- References prompt-perfection-core.md and technical-adapter.md
+- Enhanced documentation with advanced features reference
 - Maintains all hybrid intelligence functionality
 
-**v1.0 (Previous):**
+**v1.0 (2025-11-01):**
 - Initial release with hybrid intelligence
 - Complexity detection
 - Agent-powered analysis
