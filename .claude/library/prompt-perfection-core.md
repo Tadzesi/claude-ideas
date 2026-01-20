@@ -1,8 +1,10 @@
 # Prompt Perfection Core Library
 
-**Version:** 1.0
-**Last Updated:** 2024-12-19
+**Version:** 1.2
+**Last Updated:** 2026-01-10
 **Purpose:** Canonical Phase 0 implementation for all prompt commands
+
+**Import Syntax:** Reference this file using @.claude/library/prompt-perfection-core.md
 
 ---
 
@@ -504,18 +506,24 @@ File: `.claude/library/adapters/session-adapter.md`
 
 ## Version History
 
+**v1.2 (2026-01-10):**
+- Added @ import syntax documentation
+- Aligned with Claude Code native memory hierarchy
+- Added path-specific rules support via .claude/rules/
+- Updated integration examples with @ imports
+
 **v1.1 (2026-01-01):**
-- ✨ Added Phase 0.15: Predictive Intelligence (OPTIONAL)
-- ✨ Proactive guidance system
-- ✨ Journey stage detection
-- ✨ Domain risk analysis
-- ✨ Project pattern recognition
-- ✨ Relationship mapping
-- ✨ Proactive warnings
-- ✨ Next-steps prediction
+- Added Phase 0.15: Predictive Intelligence (OPTIONAL)
+- Proactive guidance system
+- Journey stage detection
+- Domain risk analysis
+- Project pattern recognition
+- Relationship mapping
+- Proactive warnings
+- Next-steps prediction
 - Backward compatible (can be disabled)
 
-**v1.0 (2024-12-19):**
+**v1.0 (2025-11-01):**
 - Initial release
 - Core Phase 0 flow (Steps 0.1-0.6)
 - Universal 6-criteria completeness check
@@ -526,19 +534,28 @@ File: `.claude/library/adapters/session-adapter.md`
 
 ## Related Files
 
-- **Core Library:** `.claude/library/prompt-perfection-core.md` (this file)
-- **Technical Adapter:** `.claude/library/adapters/technical-adapter.md`
-- **Article Adapter:** `.claude/library/adapters/article-adapter.md`
-- **Session Adapter:** `.claude/library/adapters/session-adapter.md`
-- **Complexity Detection:** `.claude/config/complexity-rules.json`
-- **Agent Templates:** `.claude/config/agent-templates.json`
+**Core Library (@ import syntax):**
+- @.claude/library/prompt-perfection-core.md (this file)
+- @.claude/library/adapters/technical-adapter.md
+- @.claude/library/adapters/article-adapter.md
+- @.claude/library/adapters/session-adapter.md
 
-**NEW - Predictive Intelligence (v1.1):**
-- **Predictive Intelligence Core:** `.claude/library/intelligence/predictive-intelligence-core.md`
-- **Relationship Mapper:** `.claude/library/intelligence/relationship-mapper.md`
-- **Warning System:** `.claude/library/intelligence/warning-system.md`
-- **Next-Steps Predictor:** `.claude/library/intelligence/next-steps-predictor.md`
-- **Configuration:** `.claude/config/predictive-intelligence.json`
+**Configuration:**
+- @.claude/config/complexity-rules.json
+- @.claude/config/agent-templates.json
+
+**Path-Specific Rules (v1.2):**
+- @.claude/rules/technical-patterns.md
+- @.claude/rules/command-conventions.md
+- @.claude/rules/library-standards.md
+- @.claude/rules/config-validation.md
+
+**Predictive Intelligence (v1.1):**
+- @.claude/library/intelligence/predictive-intelligence-core.md
+- @.claude/library/intelligence/relationship-mapper.md
+- @.claude/library/intelligence/warning-system.md
+- @.claude/library/intelligence/next-steps-predictor.md
+- @.claude/config/predictive-intelligence.json
 
 ---
 

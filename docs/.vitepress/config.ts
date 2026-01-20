@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: 'Claude Commands Library',
-  description: 'Transform vague ideas into precise, executable prompts with intelligent agent assistance',
+  description: 'Transform ideas into precise, executable prompts with intelligent agent assistance, caching, and learning',
 
   base: '/claude-ideas/',
 
@@ -12,8 +12,9 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Getting Started', link: '/getting-started/' },
-      { text: 'Guide', link: '/guide/commands/' },
-      { text: 'Reference', link: '/reference/configuration' },
+      { text: 'Commands', link: '/commands/' },
+      { text: 'Architecture', link: '/architecture/' },
+      { text: 'Reference', link: '/reference/' },
       { text: 'GitHub', link: 'https://github.com/Tadzesi/claude-ideas' }
     ],
 
@@ -22,44 +23,77 @@ export default defineConfig({
         {
           text: 'Getting Started',
           items: [
-            { text: 'Overview', link: '/getting-started/' },
+            { text: 'Introduction', link: '/getting-started/' },
             { text: 'Installation', link: '/getting-started/installation' },
-            { text: 'Quick Start', link: '/getting-started/quick-start' }
+            { text: 'Quick Start', link: '/getting-started/quick-start' },
+            { text: 'Your First Prompt', link: '/getting-started/first-prompt' }
           ]
         }
       ],
 
-      '/guide/': [
+      '/commands/': [
         {
-          text: 'Commands',
+          text: 'Prompt Commands',
           collapsed: false,
           items: [
-            { text: 'Overview', link: '/guide/commands/' },
-            { text: '/prompt', link: '/guide/commands/prompt' },
-            { text: '/prompt-hybrid', link: '/guide/commands/prompt-hybrid' },
-            { text: '/prompt-research', link: '/guide/commands/prompt-research' },
-            { text: '/prompt-technical', link: '/guide/commands/prompt-technical' },
-            { text: '/prompt-article', link: '/guide/commands/prompt-article' },
-            { text: 'Session Management', link: '/guide/commands/session-management' },
-            { text: '/reflect', link: '/guide/commands/reflect' }
+            { text: 'Overview', link: '/commands/' },
+            { text: '/prompt', link: '/commands/prompt' },
+            { text: '/prompt-hybrid', link: '/commands/prompt-hybrid' },
+            { text: '/prompt-technical', link: '/commands/prompt-technical' },
+            { text: '/prompt-research', link: '/commands/prompt-research' }
           ]
         },
         {
-          text: 'Architecture',
+          text: 'Content Commands',
           collapsed: false,
           items: [
-            { text: 'Library System', link: '/guide/architecture/library-system' },
-            { text: 'Hybrid Architecture', link: '/guide/architecture/hybrid-architecture' },
-            { text: 'Research System (v3.0)', link: '/guide/architecture/research-system' }
+            { text: '/prompt-article', link: '/commands/prompt-article' },
+            { text: '/prompt-article-readme', link: '/commands/prompt-article-readme' }
+          ]
+        },
+        {
+          text: 'Session Commands',
+          collapsed: false,
+          items: [
+            { text: '/session-start', link: '/commands/session-start' },
+            { text: '/session-end', link: '/commands/session-end' }
+          ]
+        },
+        {
+          text: 'Utility Commands',
+          collapsed: false,
+          items: [
+            { text: '/reflect', link: '/commands/reflect' }
+          ]
+        }
+      ],
+
+      '/architecture/': [
+        {
+          text: 'Core Concepts',
+          collapsed: false,
+          items: [
+            { text: 'Overview', link: '/architecture/' },
+            { text: 'Phase 0 Flow', link: '/architecture/phase-0' },
+            { text: 'Library System', link: '/architecture/library-system' }
+          ]
+        },
+        {
+          text: 'Intelligence Systems',
+          collapsed: false,
+          items: [
+            { text: 'Hybrid Intelligence', link: '/architecture/hybrid-intelligence' },
+            { text: 'Predictive Intelligence', link: '/architecture/predictive-intelligence' },
+            { text: 'Multi-Agent Research', link: '/architecture/multi-agent' }
           ]
         },
         {
           text: 'Advanced Features',
           collapsed: false,
           items: [
-            { text: 'Agent Caching', link: '/guide/advanced-features/caching' },
-            { text: 'Multi-Agent Verification', link: '/guide/advanced-features/multi-agent' },
-            { text: 'Learning System', link: '/guide/advanced-features/learning-system' }
+            { text: 'Agent Caching', link: '/architecture/caching' },
+            { text: 'Learning System', link: '/architecture/learning' },
+            { text: 'Enhanced Statusline', link: '/architecture/statusline' }
           ]
         }
       ],
@@ -68,27 +102,11 @@ export default defineConfig({
         {
           text: 'Reference',
           items: [
+            { text: 'Overview', link: '/reference/' },
             { text: 'Configuration', link: '/reference/configuration' },
-            { text: 'Best Practices', link: '/reference/best-practices' }
-          ]
-        }
-      ],
-
-      '/migration/': [
-        {
-          text: 'Migration',
-          items: [
-            { text: 'v2.0 Migration', link: '/migration/v2-migration' },
-            { text: 'Custom Commands', link: '/migration/custom-commands' }
-          ]
-        }
-      ],
-
-      '/testing/': [
-        {
-          text: 'Testing',
-          items: [
-            { text: 'Advanced Features', link: '/testing/advanced-features' }
+            { text: 'Best Practices', link: '/reference/best-practices' },
+            { text: 'Troubleshooting', link: '/reference/troubleshooting' },
+            { text: 'Changelog', link: '/reference/changelog' }
           ]
         }
       ]
@@ -104,7 +122,7 @@ export default defineConfig({
 
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2024-2025 Claude Commands Library'
+      copyright: 'Copyright © 2024-2026 Claude Commands Library'
     },
 
     editLink: {
@@ -138,6 +156,6 @@ export default defineConfig({
     ['meta', { property: 'og:title', content: 'Claude Commands Library' }],
     ['meta', { property: 'og:site_name', content: 'Claude Commands Library' }],
     ['meta', { property: 'og:image', content: 'https://tadzesi.github.io/claude-ideas/logo.svg' }],
-    ['meta', { property: 'og:description', content: 'Transform vague ideas into precise, executable prompts' }]
+    ['meta', { property: 'og:description', content: 'Transform ideas into precise, executable prompts' }]
   ]
 })

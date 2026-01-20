@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Extended Context:** See @.claude/CLAUDE.md for memory imports and active context.
+
 ## Project Overview
 
 **Claude Commands Library** - A collection of reusable slash commands for Claude Code that enhance prompt engineering, content creation, and session management using a library-based architecture.
