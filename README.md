@@ -54,11 +54,20 @@ npm run docs:preview
 
 ## What's New in Version 4.1 🔄
 
-**Major Release - Skill Reflection System + Enhanced Statusline (January 2026)**
+**Major Release - AI Fluency Framework + Skill Reflection (January 2026)**
 
-Version 4.1 introduces **Skill Reflection** and an **Enhanced Statusline** with icons and colors.
+Version 4.1 integrates **Anthropic's AI Fluency Framework** (the 4Ds model) and **Skill Reflection** with an **Enhanced Statusline**.
 
 ### Headline Features
+
+🤝 **NEW: AI Fluency Framework Integration**
+- **Delegation Assessment** - Explicitly decide what AI vs humans should handle
+- **Interaction Mode Detection** - Automation, Augmentation, or Agency mode
+- **Performance Description** - Control AI behavior (concise/detailed, formal/casual)
+- **Discernment Hints** - Evaluation criteria for AI outputs
+- **Diligence Summary** - Track AI-generated content requiring verification
+
+Based on Anthropic's official AI Fluency research: effective, efficient, ethical, and safe AI collaboration.
 
 📊 **NEW: Enhanced Statusline**
 - Color-coded context usage bar (green/yellow/orange/red)

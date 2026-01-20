@@ -64,7 +64,8 @@ Claude Commands Library is built on a modular, extensible architecture that comb
 │   ├── complexity-rules.json
 │   ├── agent-templates.json
 │   ├── cache-config.json
-│   └── learning-config.json
+│   ├── learning-config.json
+│   └── ai-fluency.json       # NEW v4.1
 │
 ├── memory/             # Persistent data
 │   ├── sessions.md
@@ -84,13 +85,24 @@ Claude Commands Library is built on a modular, extensible architecture that comb
 
 ## Key Concepts
 
-### 1. Phase 0: The Foundation
+### 1. AI Fluency Framework (NEW v4.1)
+
+Aligned with Anthropic's 4Ds model for effective human-AI collaboration:
+
+- **Delegation**: Explicit human vs AI task distribution
+- **Description**: 9 criteria (Product, Process, Performance)
+- **Discernment**: Evaluation hints for AI outputs
+- **Diligence**: Track AI content requiring verification
+
+[Learn about AI Fluency →](/architecture/ai-fluency)
+
+### 2. Phase 0: The Foundation
 
 Every command starts with Phase 0 - the prompt perfection process. This ensures clarity before execution.
 
 [Learn about Phase 0 →](/architecture/phase-0)
 
-### 2. Library System
+### 3. Library System
 
 Commands don't duplicate logic. They reference a shared library:
 
@@ -100,7 +112,7 @@ Commands don't duplicate logic. They reference a shared library:
 
 [Explore the Library System →](/architecture/library-system)
 
-### 3. Hybrid Intelligence
+### 4. Hybrid Intelligence
 
 Automatic complexity detection determines when to use agents:
 
@@ -110,7 +122,7 @@ Automatic complexity detection determines when to use agents:
 
 [Understand Hybrid Intelligence →](/architecture/hybrid-intelligence)
 
-### 4. Predictive Intelligence
+### 5. Predictive Intelligence
 
 Phase 0.15 provides proactive guidance:
 
@@ -121,7 +133,7 @@ Phase 0.15 provides proactive guidance:
 
 [Discover Predictive Intelligence →](/architecture/predictive-intelligence)
 
-### 5. Multi-Agent Research
+### 6. Multi-Agent Research
 
 Deep analysis using 2-5 specialized agents:
 
@@ -203,6 +215,7 @@ All behavior is configuration-driven:
 | `cache-config.json` | Caching settings |
 | `learning-config.json` | Pattern tracking |
 | `predictive-intelligence.json` | Proactive guidance |
+| `ai-fluency.json` | 4Ds framework settings (NEW v4.1) |
 
 [See Configuration Reference →](/reference/configuration)
 
@@ -210,6 +223,7 @@ All behavior is configuration-driven:
 
 Dive deeper into specific systems:
 
+- [AI Fluency Framework](/architecture/ai-fluency) (NEW v4.1)
 - [Phase 0: Prompt Perfection](/architecture/phase-0)
 - [Library System](/architecture/library-system)
 - [Hybrid Intelligence](/architecture/hybrid-intelligence)

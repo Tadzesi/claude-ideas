@@ -1,8 +1,9 @@
 # Prompt Perfection Core Library
 
-**Version:** 1.2
-**Last Updated:** 2026-01-10
+**Version:** 1.3
+**Last Updated:** 2026-01-20
 **Purpose:** Canonical Phase 0 implementation for all prompt commands
+**AI Fluency:** Aligned with Anthropic's 4Ds Framework (Delegation, Description, Discernment, Diligence)
 
 **Import Syntax:** Reference this file using @.claude/library/prompt-perfection-core.md
 
@@ -73,6 +74,57 @@ When Claude reads your command, it will:
 
 ---
 
+### Step 0.12: Interaction Mode Detection *(AI Fluency - NEW v1.3)*
+
+**Purpose:** Determine the optimal human-AI collaboration mode for this task
+
+**Based on Anthropic's AI Fluency Framework, detect one of three modes:**
+
+**Automation Mode:**
+- AI performs specific tasks based on specific human instructions
+- Human defines WHAT, AI executes
+- Best for: Simple tasks, clear instructions, single-file changes
+- Indicators: "Fix X", "Add Y to Z", "Change A to B"
+
+**Augmentation Mode:**
+- Human and AI collaborate as thinking partners
+- Iterative back-and-forth where both contribute
+- Best for: Complex analysis, design decisions, problem-solving
+- Indicators: "Help me understand", "What's the best approach", "Let's figure out"
+
+**Agency Mode:**
+- Human configures AI to work independently
+- AI establishes knowledge and behavior patterns
+- Best for: Research tasks, codebase exploration, multi-agent work
+- Indicators: "Research X", "Explore the codebase", "Find all instances"
+
+**Detection Logic:**
+```
+IF prompt contains direct commands AND clear scope:
+    → Automation Mode
+ELSE IF prompt requests collaboration OR decision-making:
+    → Augmentation Mode
+ELSE IF prompt requests independent research OR exploration:
+    → Agency Mode
+DEFAULT:
+    → Augmentation Mode (most flexible)
+```
+
+**Output Format:**
+```markdown
+**Interaction Mode:** [Automation / Augmentation / Agency]
+**Rationale:** [Why this mode fits the task]
+**Implications:**
+- [How AI will approach the task in this mode]
+```
+
+**Mode-Specific Adjustments:**
+- **Automation:** Skip optional questions, execute directly
+- **Augmentation:** Engage in dialogue, offer options, iterate
+- **Agency:** Spawn agents if needed, work independently, report back
+
+---
+
 ### Step 0.15: Predictive Intelligence (OPTIONAL - NEW v4.0)
 
 **Purpose:** Provide proactive guidance and anticipate user needs BEFORE asking for missing information
@@ -119,15 +171,24 @@ IF predictive_intelligence.enabled == true:
 
 **Purpose:** Identify missing critical information
 
-**Universal Criteria (6 Components):**
+**Universal Criteria (9 Components):**
 
 Check for presence of:
+
+**Product Description (WHAT):**
 - [ ] **Goal:** Clear desired outcome (What should happen?)
 - [ ] **Context:** Environment, technology, background (Where/when/why?)
 - [ ] **Scope:** Specific files, components, areas (What exactly to touch?)
 - [ ] **Requirements:** Specific needs or features (What must be included?)
 - [ ] **Constraints:** Limitations, rules, compatibility (What to avoid/respect?)
 - [ ] **Expected Result:** Success criteria (How to verify it's done?)
+
+**Process Description (HOW):** *(AI Fluency - NEW)*
+- [ ] **Approach:** Step-by-step instructions or methodology (How should AI work?)
+
+**Performance Description (AI BEHAVIOR):** *(AI Fluency - NEW)*
+- [ ] **Interaction Style:** Concise/detailed, challenging/supportive, autonomous/collaborative
+- [ ] **Communication Tone:** Technical/casual, formal/conversational
 
 **Output Format:**
 ```markdown
@@ -301,6 +362,11 @@ Or: *None specified*
 [Clear description of what success looks like]
 - How to verify: [specific test/check]
 - How to measure: [metrics if applicable]
+
+**Discernment Hints:** *(AI Fluency - Optional)*
+- **Product Evaluation:** [How to evaluate output quality - accuracy, appropriateness]
+- **Process Evaluation:** [How to verify reasoning - check for logical errors]
+- **Performance Evaluation:** [Communication style feedback - was it helpful?]
 
 **Changes Made:**
 - [List of corrections and improvements for transparency]
@@ -506,6 +572,15 @@ File: `.claude/library/adapters/session-adapter.md`
 
 ## Version History
 
+**v1.3 (2026-01-20):**
+- ✨ **NEW:** AI Fluency Framework alignment (Anthropic's 4Ds)
+- ✨ **NEW:** Step 0.12 - Interaction Mode Detection (Automation/Augmentation/Agency)
+- ✨ **NEW:** Performance Description criteria (AI behavior preferences)
+- ✨ **NEW:** Process Description criteria (approach methodology)
+- ✨ **NEW:** Discernment Hints in output template
+- Expanded completeness check from 6 to 9 components
+- Added configuration reference: .claude/config/ai-fluency.json
+
 **v1.2 (2026-01-10):**
 - Added @ import syntax documentation
 - Aligned with Claude Code native memory hierarchy
@@ -543,6 +618,7 @@ File: `.claude/library/adapters/session-adapter.md`
 **Configuration:**
 - @.claude/config/complexity-rules.json
 - @.claude/config/agent-templates.json
+- @.claude/config/ai-fluency.json *(AI Fluency Framework - NEW v1.3)*
 
 **Path-Specific Rules (v1.2):**
 - @.claude/rules/technical-patterns.md

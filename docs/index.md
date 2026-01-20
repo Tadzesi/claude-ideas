@@ -20,9 +20,15 @@ hero:
       link: https://github.com/Tadzesi/claude-ideas
 
 features:
+  - icon: 🤝
+    title: AI Fluency Framework
+    details: Aligned with Anthropic's 4Ds model - Delegation, Description, Discernment, Diligence. Explicit human vs AI task distribution.
+    link: /architecture/ai-fluency
+    linkText: Learn about AI Fluency
+
   - icon: 🎯
     title: Zero-Ambiguity Prompts
-    details: Every prompt goes through Phase 0 validation - detecting missing information, asking clarifying questions, and structuring requests before execution.
+    details: Every prompt goes through Phase 0 validation with 9 criteria - detecting missing information, asking clarifying questions, and structuring requests.
     link: /architecture/phase-0
     linkText: Learn about Phase 0
 
@@ -164,13 +170,23 @@ After 3+ occurrences, it suggests smart defaults.
 
 ## What's New
 
-### v4.1 - Skill Reflection
+### v4.1 - AI Fluency Framework + Skill Reflection
 
 ```bash
+# AI Fluency: Delegation Assessment in action
+/prompt-hybrid Implement payment processing
+
+# Skill Reflection: Learn from feedback
 /reflect prompt-technical
 ```
 
-Analyzes your session and proposes improvements to commands based on corrections, successes, and preferences.
+**AI Fluency Framework** - Aligned with Anthropic's 4Ds model:
+- **Delegation** - Explicit human vs AI task distribution
+- **Description** - Expanded to 9 criteria (Product, Process, Performance)
+- **Discernment** - Evaluation hints for AI outputs
+- **Diligence** - Track AI content requiring verification
+
+**Skill Reflection** - Analyzes sessions and proposes improvements based on corrections, successes, and preferences.
 
 ### v4.0 - Predictive Intelligence
 

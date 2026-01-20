@@ -102,6 +102,99 @@ Category: [Simple / Moderate / Complex / Very High]
 
 ---
 
+### Enhanced Step 0.13: Delegation Assessment 🤝 **NEW v4.1 (AI Fluency)**
+
+**Import:** Uses Delegation concepts from Anthropic's AI Fluency Framework
+
+**Purpose:** Explicitly decide what work should be done by humans vs AI
+
+**Configuration:** Read from `.claude/config/ai-fluency.json`
+
+**When to Execute:** After complexity detection, before agent spawning
+
+**Three Delegation Components:**
+
+**1. Problem Awareness** - Understand the task before involving AI:
+```markdown
+**Problem Assessment:**
+- Goal Clarity: [Clear / Needs Clarification / Ambiguous]
+- Scope Definition: [Well-defined / Partial / Undefined]
+- Success Criteria: [Measurable / Qualitative / Missing]
+```
+
+**2. Platform Awareness** - Match task to AI capabilities:
+```markdown
+**AI Capability Match:**
+- Code Analysis: [Excellent - use Agent]
+- Pattern Detection: [Excellent - use Agent]
+- Creative Design: [Good - collaborate with human]
+- Business Decisions: [Limited - human must decide]
+- Security Judgments: [Good analysis - human must approve]
+```
+
+**3. Task Delegation** - Distribute work thoughtfully:
+```markdown
+**Delegation Plan:**
+
+**AI Should Handle Autonomously:**
+- [Task that AI excels at - no human needed]
+- [Task that AI excels at - no human needed]
+
+**AI Should Handle with Human Review:**
+- [Task AI can do but human should verify]
+- [Task AI can do but human should verify]
+
+**Human Must Handle:**
+- [Task requiring human judgment/decision]
+- [Task requiring human judgment/decision]
+
+**Collaboration Required (Augmentation):**
+- [Task best done together iteratively]
+```
+
+**Output Format:**
+```markdown
+---
+
+## 🤝 DELEGATION ASSESSMENT (AI Fluency)
+
+### Problem Awareness
+- **Goal:** [Clear / Needs Clarification]
+- **Scope:** [Well-defined / Partial]
+- **Success Criteria:** [Defined / Missing]
+
+### Platform Capabilities
+This task involves: [list task types]
+AI strengths: [relevant capabilities]
+Human input needed for: [areas requiring judgment]
+
+### Recommended Delegation
+
+**AI Autonomous (Automation Mode):**
+- [Tasks AI will complete independently]
+
+**AI with Review (Agency Mode):**
+- [Tasks AI will do, human reviews]
+
+**Collaborative (Augmentation Mode):**
+- [Tasks done together]
+
+**Human Only:**
+- [Tasks requiring human decision]
+
+---
+
+**Proceed with this delegation? (yes / adjust)**
+```
+
+**Delegation Rules:**
+- Never delegate security approvals to AI alone
+- Never delegate business policy decisions to AI alone
+- Always flag irreversible actions for human confirmation
+- Complex architectural decisions require human-AI collaboration
+
+---
+
 ### Enhanced Step 0.15: Predictive Intelligence 🔮 **NEW v4.0**
 
 **Import:** Use Predictive Intelligence from `.claude/library/intelligence/predictive-intelligence-core.md`
@@ -1152,6 +1245,14 @@ cat .claude/memory/prompt-patterns.md
 ---
 
 ## Version History
+
+**v4.1 (2026-01-20):** 🤝 **AI FLUENCY FRAMEWORK RELEASE**
+- ✨ **NEW:** Step 0.13 - Delegation Assessment (AI Fluency Framework)
+- ✨ **NEW:** Problem Awareness, Platform Awareness, Task Delegation
+- ✨ **NEW:** Configuration file: .claude/config/ai-fluency.json
+- ✨ Aligned with Anthropic's 4Ds Model
+- ✨ Explicit human vs AI task distribution
+- Backward compatible with all previous features
 
 **v4.0 (2026-01-01):** 🔮 **PREDICTIVE INTELLIGENCE RELEASE**
 - ✨ **NEW:** Phase 0.15 - Predictive Intelligence System

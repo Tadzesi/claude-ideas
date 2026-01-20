@@ -41,10 +41,27 @@ Initial Analysis:
 - Intent: Add user authentication to web application
 ```
 
+### Step 0.12: Interaction Mode Detection (NEW v4.1)
+
+Based on **Anthropic's AI Fluency Framework**, Claude detects the optimal collaboration mode:
+
+| Mode | Description | Best For |
+|------|-------------|----------|
+| **Automation** | AI executes specific instructions | Simple tasks, clear commands |
+| **Augmentation** | Human and AI collaborate iteratively | Complex analysis, decision-making |
+| **Agency** | AI works independently | Research, exploration, multi-agent |
+
+```
+Interaction Mode: Augmentation
+Rationale: Task requires decision-making collaboration
+Implications: Will engage in dialogue, offer options, iterate
+```
+
 ### Step 0.2: Completeness Check
 
-Every prompt is validated against 6 criteria:
+Every prompt is validated against 9 criteria (expanded from 6 in v4.1):
 
+**Product Description (WHAT):**
 | Criterion | Question | Example |
 |-----------|----------|---------|
 | **Goal** | What do you want to achieve? | "Add user login" |
@@ -53,6 +70,17 @@ Every prompt is validated against 6 criteria:
 | **Requirements** | Specific needs? | "Support email + password" |
 | **Constraints** | Limitations? | "Must work with mobile app" |
 | **Expected Result** | How will you know it's done? | "Users can log in and receive token" |
+
+**Process Description (HOW) - NEW v4.1:**
+| Criterion | Question | Example |
+|-----------|----------|---------|
+| **Approach** | How should AI work? | "Step-by-step, test each change" |
+
+**Performance Description (AI BEHAVIOR) - NEW v4.1:**
+| Criterion | Question | Example |
+|-----------|----------|---------|
+| **Interaction Style** | Concise or detailed? | "Detailed explanations" |
+| **Communication Tone** | Formal or casual? | "Technical, professional" |
 
 ```
 Completeness Check:
@@ -233,8 +261,44 @@ Questions are ordered by impact:
 3. **Test completeness** - Ensure all 6 criteria are checked
 4. **Preserve approval gate** - Never auto-proceed
 
+## AI Fluency Framework (NEW v4.1)
+
+Phase 0 is now aligned with **Anthropic's AI Fluency Framework** - the 4Ds:
+
+| D | Purpose | Implementation |
+|---|---------|----------------|
+| **Delegation** | Decide human vs AI tasks | Step 0.13 in `/prompt-hybrid` |
+| **Description** | Define outputs, process, behavior | Expanded to 9 criteria |
+| **Discernment** | Evaluate AI outputs | Discernment Hints in output |
+| **Diligence** | Verify and take responsibility | Diligence Summary in `/session-end` |
+
+### Discernment Hints (NEW v4.1)
+
+The perfected prompt now includes evaluation criteria:
+
+```
+Discernment Hints:
+- Product Evaluation: Check accuracy of implementation
+- Process Evaluation: Verify logical reasoning steps
+- Performance Evaluation: Was the communication style helpful?
+```
+
+### Configuration
+
+AI Fluency settings are in `.claude/config/ai-fluency.json`:
+
+```json
+{
+  "delegation": { "enabled": true },
+  "description": { "enabled": true },
+  "discernment": { "include_hints_in_output": true },
+  "diligence": { "track_in_session_end": true }
+}
+```
+
 ## Related
 
 - [Library System](/architecture/library-system) - How Phase 0 is shared
 - [Hybrid Intelligence](/architecture/hybrid-intelligence) - Complexity detection
 - [Predictive Intelligence](/architecture/predictive-intelligence) - Phase 0.15
+- [AI Fluency Framework](/architecture/ai-fluency) - The 4Ds model

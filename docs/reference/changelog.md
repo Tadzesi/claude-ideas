@@ -6,6 +6,17 @@ All notable changes to the Claude Commands Library.
 
 ### Added
 
+- **AI Fluency Framework Integration** (Anthropic's 4Ds Model)
+  - **Delegation Assessment** - Explicit human vs AI task distribution
+    - Problem Awareness (goal clarity, scope definition, success criteria)
+    - Platform Awareness (AI capabilities matching)
+    - Task Delegation (autonomous, review, collaborative, human-only modes)
+  - **Interaction Mode Detection** - Automation, Augmentation, or Agency modes
+  - **Performance Description** - AI behavior preferences (concise/detailed, formal/casual)
+  - **Discernment Hints** - Product, Process, and Performance evaluation criteria
+  - **Diligence Summary** - Track AI-generated content requiring verification
+  - New configuration: `.claude/config/ai-fluency.json`
+
 - **Skill Reflection System** (`/reflect`)
   - Analyze conversations and propose skill improvements
   - Signal detection: corrections, successes, edge cases, preferences
@@ -16,8 +27,10 @@ All notable changes to the Claude Commands Library.
 
 ### Improved
 
+- Phase 0 completeness check expanded from 6 to 9 criteria
 - Learning system now tracks reflection signals
 - Better integration between commands
+- `/session-end` now includes Diligence Summary section
 
 ---
 
