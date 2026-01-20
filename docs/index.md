@@ -170,23 +170,41 @@ After 3+ occurrences, it suggests smart defaults.
 
 ## What's New
 
-### v4.1 - AI Fluency Framework + Skill Reflection
+### v4.2 - Full AI Fluency Integration
 
 ```bash
-# AI Fluency: Delegation Assessment in action
-/prompt-hybrid Implement payment processing
+# Quick Delegation Check ensures AI appropriateness
+/prompt Implement payment processing
 
-# Skill Reflection: Learn from feedback
+# Post-execution evaluation closes the feedback loop
+# After completion: "How was this output? good/partial/wrong"
+
+# Diligence reminders throughout
+# "You remain responsible for any output generated..."
+```
+
+**Full 4Ds Implementation:**
+- **Delegation** - Step 0.11 Quick Delegation Check in all commands
+- **Description** - 9 criteria completeness check (already excellent)
+- **Discernment** - Step 0.7 Post-Execution Evaluation with feedback loop
+- **Diligence** - Responsibility reminders in Approval Gate
+
+**New Features:**
+- Common Mistakes to Avoid section
+- AI Limitations Awareness
+- The Feedback Loop pattern (Describe → Evaluate → Refine)
+- Secret Weapon tip for meta-prompting
+
+### v4.1 - Skill Reflection System
+
+```bash
+# Learn from your interactions
 /reflect prompt-technical
 ```
 
-**AI Fluency Framework** - Aligned with Anthropic's 4Ds model:
-- **Delegation** - Explicit human vs AI task distribution
-- **Description** - Expanded to 9 criteria (Product, Process, Performance)
-- **Discernment** - Evaluation hints for AI outputs
-- **Diligence** - Track AI content requiring verification
-
-**Skill Reflection** - Analyzes sessions and proposes improvements based on corrections, successes, and preferences.
+- Signal detection (corrections, successes, edge cases)
+- Priority-coded change proposals (HIGH/MED/LOW)
+- Direct skill file modifications with approval
 
 ### v4.0 - Predictive Intelligence
 

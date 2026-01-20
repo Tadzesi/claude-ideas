@@ -74,6 +74,56 @@ When Claude reads your command, it will:
 
 ---
 
+### Step 0.11: Quick Delegation Check *(AI Fluency - NEW v1.4)*
+
+**Purpose:** Verify this task is appropriate for AI before proceeding
+
+**Based on Anthropic's AI Fluency Framework - Delegation Competency:**
+
+**Quick Assessment (3 checks):**
+
+1. **Task Appropriateness:**
+   - Is this task suitable for AI assistance?
+   - Does it require human-only judgment (ethics, policy, irreversible decisions)?
+
+2. **AI Capability Match:**
+   - Does this match AI strengths (code analysis, text generation, pattern detection)?
+   - Or does it exceed AI limitations (recent events, complex math, personal decisions)?
+
+3. **Responsibility Awareness:**
+   - Does the user understand they remain responsible for the output?
+   - Are there safety/security implications requiring human oversight?
+
+**Decision Logic:**
+```
+IF task requires ONLY human judgment (ethics, policy, personal):
+    → Flag: "This requires human decision. I can help analyze, but you must decide."
+    → Proceed with advisory mode
+
+IF task involves irreversible actions (delete, deploy, publish):
+    → Flag: "⚠️ Irreversible action detected. Requires explicit confirmation."
+    → Add extra confirmation step
+
+IF task matches AI strengths AND user accepts responsibility:
+    → Proceed to Step 0.12
+
+IF uncertain about appropriateness:
+    → Ask: "This task involves [X]. Should I proceed with AI assistance, or would you prefer to handle this yourself?"
+```
+
+**Output (only when flags triggered):**
+```markdown
+**⚠️ Delegation Check:**
+- Task Type: [Type]
+- AI Appropriate: [Yes / Partial / Advisory Only]
+- Note: [Any flags or concerns]
+- Proceed? [Waiting for confirmation if flagged]
+```
+
+**Note:** For most tasks, this check passes silently. Only surface when concerns exist.
+
+---
+
 ### Step 0.12: Interaction Mode Detection *(AI Fluency - NEW v1.3)*
 
 **Purpose:** Determine the optimal human-AI collaboration mode for this task
@@ -395,6 +445,12 @@ Or: *None specified*
 **What happens next:**
 After you approve, I will [execute task / answer question / generate content / etc.]
 
+**⚖️ Diligence Reminder (AI Fluency):**
+You remain responsible for any output generated from this prompt.
+- Verify key facts before deployment
+- Review AI-generated code before committing
+- Test thoroughly before production use
+
 **Reply with:**
 - `y` or `yes` — Execute this perfected prompt
 - `n` or `no` — Cancel
@@ -412,6 +468,90 @@ After you approve, I will [execute task / answer question / generate content / e
 | `modify [X]` | Apply changes, re-display perfected prompt, wait for approval |
 | `explain [X]` | Provide detailed explanation, re-prompt for approval |
 | `options` | Show alternative approaches if multiple exist, wait for selection |
+
+---
+
+## Step 0.7: Post-Execution Evaluation *(AI Fluency - NEW v1.4)*
+
+**Purpose:** Close the feedback loop by evaluating output quality
+
+**Based on Anthropic's AI Fluency Framework - Discernment Competency:**
+
+After task execution completes, prompt for evaluation:
+
+**Quick Evaluation Prompt:**
+```markdown
+---
+
+**📊 Quick Evaluation (Discernment Check)**
+
+How was this output?
+
+- `good` — Accurate, appropriate, useful ✅
+- `partial` — Mostly good, needs minor adjustments ⚠️
+- `wrong` — Significant issues, needs rework ❌
+- `explain` — Show me your reasoning 🔍
+
+*Your feedback helps improve future interactions.*
+```
+
+**Handle Responses:**
+
+| Response | Action |
+|----------|--------|
+| `good` | Record success, offer next steps |
+| `partial` | Ask: "What needs adjustment?" → Apply changes |
+| `wrong` | Ask: "What specifically was wrong?" → Record for learning, offer retry |
+| `explain` | Show reasoning/process, re-prompt for evaluation |
+
+**If `partial` or `wrong`:**
+1. Identify what went wrong (Product/Process/Performance Discernment)
+2. Record observation in `.claude/memory/observations.md`
+3. Suggest: "Consider running `/reflect` to capture this learning"
+
+**Discernment Types (AI Fluency):**
+- **Product Discernment:** Is the output accurate, appropriate, coherent, relevant?
+- **Process Discernment:** Was the reasoning sound? Any logical errors?
+- **Performance Discernment:** Was the communication style effective?
+
+**Note:** This step is optional for quick tasks. Always offer for complex tasks or when output quality is uncertain.
+
+---
+
+## The Feedback Loop *(AI Fluency Pattern)*
+
+**The core AI Fluency workflow:**
+
+```
+    DESCRIBE          EVALUATE
+   (what you want) → (what you got)
+         ↑               ↓
+         └─── REFINE ←──┘
+           (improve prompt)
+```
+
+**Effective AI use is iterative.** Don't expect perfection on the first try. The skill is in the conversation, not the single prompt.
+
+**After any output, consider:**
+1. **Evaluate:** Does this meet the goal?
+2. **If not:** Identify what's wrong (accuracy? relevance? style?)
+3. **Refine:** Adjust your request with specific feedback
+4. **Repeat:** Until satisfied
+
+**Useful follow-up phrases:**
+- "Make it more [concise/detailed/formal/casual]"
+- "Focus more on [specific aspect]"
+- "Remove the section about [topic]"
+- "Add examples for [concept]"
+- "Explain this for [audience type]"
+- "This is wrong because [reason], please fix"
+
+**Common Iteration Patterns:**
+- Too long → "Make it more concise, focus on [key points]"
+- Too vague → "Be more specific about [aspect]"
+- Wrong tone → "Use a more [formal/casual/technical] tone"
+- Missing context → "Also consider [additional context]"
+- Incorrect facts → "Check [specific claim], I believe it should be [correction]"
 
 ---
 
@@ -571,6 +711,15 @@ File: `.claude/library/adapters/session-adapter.md`
 ---
 
 ## Version History
+
+**v1.4 (2026-01-20):**
+- ✨ **NEW:** Step 0.11 - Quick Delegation Check (AI Fluency - Delegation competency)
+- ✨ **NEW:** Step 0.7 - Post-Execution Evaluation (AI Fluency - Discernment competency)
+- ✨ **NEW:** The Feedback Loop section (Describe → Evaluate → Refine pattern)
+- ✨ **NEW:** Diligence Reminder in Approval Gate (AI Fluency - Diligence competency)
+- ✨ **NEW:** Common Iteration Patterns for refinement
+- Full alignment with all 4Ds of AI Fluency Framework
+- Enhanced responsibility awareness throughout flow
 
 **v1.3 (2026-01-20):**
 - ✨ **NEW:** AI Fluency Framework alignment (Anthropic's 4Ds)

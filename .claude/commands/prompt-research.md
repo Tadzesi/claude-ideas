@@ -95,6 +95,52 @@ Transform user input into a comprehensive research specification.
 **Import:** Uses Phase 0 from `.claude/library/prompt-perfection-core.md`
 **Adaptation:** Research-specific (from `.claude/library/adapters/research-adapter.md`)
 
+### Step 0.11: Delegation Assessment *(AI Fluency - NEW v1.1)*
+
+**Purpose:** Verify research task delegation is appropriate
+
+**Before starting research, assess:**
+
+```markdown
+## 🤝 DELEGATION ASSESSMENT (AI Fluency)
+
+### Problem Awareness
+- **Research Goal:** [Clear / Needs Clarification]
+- **Scope Definition:** [Well-defined / Broad / Undefined]
+- **Success Criteria:** [Measurable findings / Qualitative understanding]
+
+### Platform Capabilities
+**This research involves:**
+- Code analysis: ✅ AI Excellent
+- Pattern detection: ✅ AI Excellent
+- Architecture understanding: ✅ AI Good
+- Security assessment: ✅ AI Good (human must approve remediations)
+- Business decisions: ⚠️ Human Required
+
+### Recommended Delegation
+
+**AI Autonomous (Agency Mode):**
+- Codebase exploration and mapping
+- Pattern detection and consistency analysis
+- Technical documentation generation
+- Citation gathering and evidence collection
+
+**AI with Human Review:**
+- Security vulnerability assessment (human approves severity)
+- Architecture recommendations (human validates fit)
+- Performance optimization suggestions (human prioritizes)
+
+**Human Must Decide:**
+- Business priority of findings
+- Resource allocation for fixes
+- Architectural direction changes
+- Security policy decisions
+
+---
+```
+
+**Note:** For research tasks, AI operates primarily in **Agency Mode** - working independently and reporting back. Human reviews findings and makes decisions.
+
 ### Process
 
 **Step 1: Understand the Request**
@@ -944,6 +990,13 @@ Solution: Expected behavior - cache invalidates on changes
 ---
 
 ## 📝 Version History
+
+### v1.1.0 - 2026-01-20 (AI Fluency Alignment)
+- ✨ **NEW:** Step 0.11 - Delegation Assessment (AI Fluency Framework)
+- ✨ **NEW:** Problem Awareness, Platform Capabilities, Delegation Plan
+- ✨ **NEW:** Agency Mode documentation for research tasks
+- Aligned with Anthropic's 4Ds model
+- Enhanced responsibility awareness
 
 ### v1.0.0 - 2025-12-28 (Phase 5 Complete)
 - Initial release of /prompt-research command

@@ -147,6 +147,47 @@ You can now use this perfected prompt for your task.
 
 ---
 
+## Common Mistakes to Avoid *(AI Fluency)*
+
+Based on Anthropic's AI Fluency training, these are the most common pitfalls:
+
+1. **Being too vague** - "Help me with this" → Be specific about what you need
+2. **Not providing context** - AI can't read your mind or see your screen
+3. **Accepting first output** - Iterate! Use feedback to refine results
+4. **Not verifying facts** - AI can hallucinate (confidently state incorrect info)
+5. **Over-trusting AI** - You're responsible for the output you use
+6. **Under-using AI** - Don't spend hours on what AI does in seconds
+7. **Sharing sensitive data** - Be mindful of what you include in prompts
+8. **Not disclosing AI use** - Follow your organization's policies on disclosure
+
+---
+
+## AI Limitations Awareness *(AI Fluency)*
+
+Know what AI can and cannot do well:
+
+**AI Strengths (Good For):**
+- ✅ Versatile language tasks (writing, editing, summarizing)
+- ✅ Code analysis, generation, and debugging
+- ✅ Pattern detection and consistency checking
+- ✅ Learning from examples you provide
+- ✅ Explaining complex concepts
+
+**AI Limitations (Be Careful):**
+- ⚠️ **Knowledge cutoff** - May not know recent events or updates
+- ⚠️ **Hallucinations** - Can confidently state incorrect information
+- ⚠️ **Context window limits** - Can only consider so much at once
+- ⚠️ **Complex reasoning** - Multi-step logic can have errors
+- ⚠️ **Personal decisions** - Cannot make ethical/policy judgments for you
+
+**💡 Secret Weapon (AI Fluency Tip):**
+> If your prompt still feels incomplete, ask:
+> *"Can you help me craft a more effective prompt for [goal]?"*
+>
+> AI can help improve your prompts! This meta-approach often yields better results.
+
+---
+
 ## Examples
 
 ### Example 1: Vague Prompt
@@ -220,6 +261,13 @@ You can now use this perfected prompt for your task.
 ---
 
 ## Version History
+
+**v2.1 (2026-01-20):**
+- ✨ **NEW:** Common Mistakes to Avoid section (AI Fluency alignment)
+- ✨ **NEW:** AI Limitations Awareness section (Platform Awareness)
+- ✨ **NEW:** Secret Weapon tip (meta-prompting)
+- Enhanced with AI Fluency Framework concepts
+- Full alignment with Anthropic's 4Ds model
 
 **v2.0 (2024-12-19):**
 - ✨ Migrated to unified library system

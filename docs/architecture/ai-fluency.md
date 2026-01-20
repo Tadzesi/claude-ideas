@@ -1,6 +1,15 @@
 # AI Fluency Framework
 
-**New in v4.1** - Claude Commands Library is now aligned with Anthropic's official AI Fluency Framework.
+**Updated in v4.2** - Claude Commands Library is now **fully aligned** with Anthropic's official AI Fluency Framework, implementing all 4Ds across every command.
+
+::: tip What's New in v4.2
+- **Step 0.11:** Quick Delegation Check in all commands
+- **Step 0.7:** Post-Execution Evaluation with feedback loop
+- **Diligence Reminder:** Added to Approval Gate
+- **Feedback Loop:** Describe → Evaluate → Refine pattern
+- **Common Mistakes:** AI Fluency pitfalls documentation
+- **AI Limitations:** Platform awareness for users
+:::
 
 ## What is AI Fluency?
 
@@ -16,11 +25,47 @@ Deciding what work should be done by humans, what work should be done by AI, and
 
 **Implementation in Claude Commands:**
 
-- **Step 0.13: Delegation Assessment** in `/prompt-hybrid`
+- **Step 0.11: Quick Delegation Check** - Universal check in ALL commands (v4.2)
+- **Step 0.13: Full Delegation Assessment** - Detailed assessment in `/prompt-hybrid`
 - Three components:
   - **Problem Awareness** - Understanding goals before involving AI
   - **Platform Awareness** - Matching tasks to AI capabilities
   - **Task Delegation** - Distributing work thoughtfully
+
+**Step 0.11: Quick Delegation Check (NEW in v4.2)**
+
+Every command now includes a quick check before proceeding:
+
+```
+Quick Delegation Check:
+
+1. Task Appropriateness:
+   - Is this suitable for AI assistance?
+   - Does it require human-only judgment?
+
+2. AI Capability Match:
+   - Does this match AI strengths?
+   - Or exceed AI limitations?
+
+3. Responsibility Awareness:
+   - Does user understand they remain responsible?
+   - Any safety/security implications?
+```
+
+**Decision Logic:**
+
+```
+IF task requires ONLY human judgment (ethics, policy):
+    → Flag: "This requires human decision. I can help analyze, but you must decide."
+
+IF task involves irreversible actions (delete, deploy, publish):
+    → Flag: "⚠️ Irreversible action detected. Requires explicit confirmation."
+
+IF task matches AI strengths AND user accepts responsibility:
+    → Proceed to next step
+```
+
+**Full Delegation Assessment (prompt-hybrid):**
 
 ```
 Delegation Assessment:
@@ -81,7 +126,51 @@ Thoughtfully evaluating AI outputs, processes, and behaviors:
 
 **Implementation:**
 
-Discernment Hints in perfected prompt output:
+**Step 0.7: Post-Execution Evaluation (NEW in v4.2)**
+
+After task completion, the system prompts for feedback:
+
+```
+📊 Quick Evaluation (Discernment Check)
+
+How was this output?
+
+- `good` — Accurate, appropriate, useful ✅
+- `partial` — Mostly good, needs minor adjustments ⚠️
+- `wrong` — Significant issues, needs rework ❌
+- `explain` — Show me your reasoning 🔍
+
+Your feedback helps improve future interactions.
+```
+
+**Feedback Handling:**
+
+| Response | Action |
+|----------|--------|
+| `good` | Record success, offer next steps |
+| `partial` | Ask: "What needs adjustment?" → Apply changes |
+| `wrong` | Ask: "What specifically was wrong?" → Record for learning |
+| `explain` | Show reasoning/process, re-prompt |
+
+**The Feedback Loop (NEW in v4.2)**
+
+Effective AI use is iterative:
+
+```
+    DESCRIBE          EVALUATE
+   (what you want) → (what you got)
+         ↑               ↓
+         └─── REFINE ←──┘
+           (improve prompt)
+```
+
+**Useful follow-up phrases:**
+- "Make it more [concise/detailed/formal/casual]"
+- "Focus more on [specific aspect]"
+- "Remove the section about [topic]"
+- "This is wrong because [reason], please fix"
+
+**Discernment Hints in Output:**
 
 ```
 Discernment Hints:
@@ -102,7 +191,25 @@ Using AI responsibly and ethically:
 
 **Implementation:**
 
-Diligence Summary in `/session-end`:
+**Diligence Reminder in Approval Gate (NEW in v4.2)**
+
+Every approval gate now includes a responsibility reminder:
+
+```
+⏸️ Perfected Prompt Ready - Awaiting Your Approval
+
+...
+
+⚖️ Diligence Reminder (AI Fluency):
+You remain responsible for any output generated from this prompt.
+- Verify key facts before deployment
+- Review AI-generated code before committing
+- Test thoroughly before production use
+
+Reply with: y/yes, n/no, modify, explain, options
+```
+
+**Diligence Summary in `/session-end`:**
 
 ```
 Diligence Summary:
@@ -205,21 +312,74 @@ AI Fluency settings in `.claude/config/ai-fluency.json`:
 }
 ```
 
+## Common Mistakes to Avoid
+
+Based on AI Fluency research, these are the most common pitfalls:
+
+| Mistake | Problem | Solution |
+|---------|---------|----------|
+| **Being too vague** | "Help me with this" | Be specific about what you need |
+| **Not providing context** | AI can't read your mind | Include technologies, frameworks, environment |
+| **Accepting first output** | Missing improvements | Iterate! Use feedback to refine |
+| **Not verifying facts** | AI can hallucinate | Always verify critical information |
+| **Over-trusting AI** | Errors slip through | You're responsible for the output |
+| **Under-using AI** | Wasting time | Let AI handle repetitive tasks |
+| **Sharing sensitive data** | Privacy risk | Be mindful of what you include |
+| **Not disclosing AI use** | Policy violation | Follow organization's policies |
+
+## AI Limitations Awareness
+
+Know what AI can and cannot do well:
+
+**AI Strengths (Good For):**
+- ✅ Versatile language tasks (writing, editing, summarizing)
+- ✅ Code analysis, generation, and debugging
+- ✅ Pattern detection and consistency checking
+- ✅ Learning from examples you provide
+- ✅ Explaining complex concepts
+
+**AI Limitations (Be Careful):**
+- ⚠️ **Knowledge cutoff** - May not know recent events
+- ⚠️ **Hallucinations** - Can confidently state incorrect info
+- ⚠️ **Context window limits** - Can only consider so much at once
+- ⚠️ **Complex reasoning** - Multi-step logic can have errors
+- ⚠️ **Personal decisions** - Cannot make ethical judgments for you
+
+::: tip Secret Weapon
+If your prompt still feels incomplete, ask:
+
+*"Can you help me craft a more effective prompt for [goal]?"*
+
+AI can help improve your prompts! This meta-approach often yields better results.
+:::
+
 ## Integration Points
 
-### `/prompt` Command
+### `/prompt` Command (v2.1)
 
+- Step 0.11: Quick Delegation Check
 - Interaction Mode Detection
 - Expanded 9-criteria completeness check
-- Discernment Hints in output
+- Step 0.7: Post-Execution Evaluation
+- Common Mistakes section
+- AI Limitations awareness
+- Secret Weapon tip
 
 ### `/prompt-hybrid` Command
 
+- Step 0.11: Quick Delegation Check
 - Full Delegation Assessment (Step 0.13)
 - Platform Awareness for agent spawning
 - Task Delegation recommendations
+- Diligence Reminder in Approval Gate
 
-### `/session-end` Command
+### `/prompt-research` Command (v1.1)
+
+- Step 0.11: Delegation Assessment
+- Agency Mode focus for research tasks
+- Recommended delegation for AI vs human tasks
+
+### `/session-end` Command (v2.1)
 
 - Diligence Summary section
 - AI-generated content tracking

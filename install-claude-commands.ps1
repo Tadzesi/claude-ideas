@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
-# Version: 4.1.0
-# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.1 with Skill Reflection)
+# Version: 4.2.0
+# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.2 with AI Fluency Framework)
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -52,7 +52,7 @@ function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -Foregr
 
 # Banner
 Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host " Claude Commands Library Installer v4.1.0" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v4.2.0" -ForegroundColor Cyan
 Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
@@ -254,8 +254,8 @@ function Deploy-ClaudeDirectory {
 
         # Create version file to track installed version
         $versionFile = Join-Path $targetClaudeDir "VERSION"
-        "4.1.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
-        Write-Success "Version file created (v4.1.0)"
+        "4.2.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
+        Write-Success "Version file created (v4.2.0)"
 
         return $true
     } catch {
@@ -367,24 +367,25 @@ function Show-Summary {
     Write-Host "`n" -NoNewline
     Write-Success "Installation complete!"
 
-    # v4.1 Feature Announcement
+    # v4.2 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  NEW IN VERSION 4.1 (January 2026)" -ForegroundColor Magenta
+    Write-Host "  NEW IN VERSION 4.2 (January 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`nSkill Reflection System:" -ForegroundColor White
-    Write-Host "  - NEW: /reflect - Active skill improvement from feedback" -ForegroundColor Green
-    Write-Host "  - Signal detection (corrections, successes, edge cases)" -ForegroundColor Gray
-    Write-Host "  - Priority-coded change proposals (HIGH/MED/LOW)" -ForegroundColor Gray
-    Write-Host "  - Direct skill file modifications with approval" -ForegroundColor Gray
-    Write-Host "  - Observation persistence for later review" -ForegroundColor Gray
+    Write-Host "`nAI Fluency Framework Alignment:" -ForegroundColor White
+    Write-Host "  - NEW: Full alignment with Anthropic's 4Ds Model" -ForegroundColor Green
+    Write-Host "  - Delegation Check (Step 0.11) - Task appropriateness" -ForegroundColor Gray
+    Write-Host "  - Post-Execution Evaluation (Step 0.7) - Feedback loop" -ForegroundColor Gray
+    Write-Host "  - Diligence Reminders - Responsibility awareness" -ForegroundColor Gray
+    Write-Host "  - Common Mistakes & AI Limitations awareness" -ForegroundColor Gray
+    Write-Host "`nFrom v4.1: Skill Reflection System" -ForegroundColor White
+    Write-Host "  - /reflect - Active skill improvement from feedback" -ForegroundColor Gray
+    Write-Host "  - Signal detection and priority-coded proposals" -ForegroundColor Gray
     Write-Host "`nFrom v4.0: Predictive Intelligence System" -ForegroundColor White
     Write-Host "  - See 2 steps ahead with proactive guidance" -ForegroundColor Gray
-    Write-Host "  - Journey stage detection (6 stages)" -ForegroundColor Gray
-    Write-Host "  - Domain risk analysis and proactive warnings" -ForegroundColor Gray
-    Write-Host "  - Pattern recognition and relationship mapping" -ForegroundColor Gray
+    Write-Host "  - Journey stage detection and domain risk analysis" -ForegroundColor Gray
     Write-Host "`nFrom v3.0: Multi-Agent Research System" -ForegroundColor White
     Write-Host "  - /prompt-research (deep multi-agent analysis)" -ForegroundColor Gray
-    Write-Host "`nSee .claude/docs/v4.1-RELEASE-NOTES.md for details" -ForegroundColor Cyan
+    Write-Host "`nSee .claude/docs/ for detailed release notes" -ForegroundColor Cyan
     Write-Host "========================================`n" -ForegroundColor Magenta
 
     Write-Host "`nNext Steps:" -ForegroundColor Cyan
@@ -393,14 +394,14 @@ function Show-Summary {
     Write-Host "  3. Run this script again to update to the latest version" -ForegroundColor Gray
 
     Write-Host "`nAvailable Commands:" -ForegroundColor Cyan
-    Write-Host "  /prompt           - Basic prompt perfection (LITE predictive intelligence)" -ForegroundColor Gray
-    Write-Host "  /prompt-hybrid    - Advanced with predictive intelligence (v4.0)" -ForegroundColor Gray
-    Write-Host "  /prompt-technical - Technical analysis with predictive intelligence (v4.0)" -ForegroundColor Gray
-    Write-Host "  /prompt-research  - Deep multi-agent research (v3.0)" -ForegroundColor Gray
+    Write-Host "  /prompt           - Basic prompt perfection with AI Fluency (v4.2)" -ForegroundColor Gray
+    Write-Host "  /prompt-hybrid    - Advanced with AI Fluency + predictive intelligence (v4.2)" -ForegroundColor Gray
+    Write-Host "  /prompt-technical - Technical analysis with predictive intelligence" -ForegroundColor Gray
+    Write-Host "  /prompt-research  - Deep multi-agent research with Delegation (v4.2)" -ForegroundColor Gray
     Write-Host "  /prompt-article   - Article creation wizard" -ForegroundColor Gray
-    Write-Host "  /reflect          - Skill reflection and improvement (NEW v4.1)" -ForegroundColor Green
+    Write-Host "  /reflect          - Skill reflection and improvement (v4.1)" -ForegroundColor Gray
     Write-Host "  /session-start    - Load session context" -ForegroundColor Gray
-    Write-Host "  /session-end      - Save session context" -ForegroundColor Gray
+    Write-Host "  /session-end      - Save session context with Diligence tracking (v4.2)" -ForegroundColor Gray
 
     Write-Host ""
 }

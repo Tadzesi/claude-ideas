@@ -12,6 +12,7 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Getting Started', link: '/getting-started/' },
+      { text: 'Tutorial', link: '/guide/tutorial-best-results' },
       { text: 'Commands', link: '/commands/' },
       { text: 'Architecture', link: '/architecture/' },
       { text: 'Reference', link: '/reference/' },
@@ -74,6 +75,7 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: 'Overview', link: '/architecture/' },
+            { text: 'AI Fluency Framework', link: '/architecture/ai-fluency' },
             { text: 'Phase 0 Flow', link: '/architecture/phase-0' },
             { text: 'Library System', link: '/architecture/library-system' }
           ]
@@ -94,6 +96,16 @@ export default defineConfig({
             { text: 'Agent Caching', link: '/architecture/caching' },
             { text: 'Learning System', link: '/architecture/learning' },
             { text: 'Enhanced Statusline', link: '/architecture/statusline' }
+          ]
+        }
+      ],
+
+      '/guide/': [
+        {
+          text: 'Tutorials',
+          collapsed: false,
+          items: [
+            { text: 'Getting Best Results', link: '/guide/tutorial-best-results' }
           ]
         }
       ],

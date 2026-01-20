@@ -5,6 +5,57 @@ All notable changes to the Claude Commands Library will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.0] - 2026-01-20
+
+### Major Release - AI Fluency Framework Alignment
+
+Version 4.2 fully aligns the command library with Anthropic's AI Fluency Framework (4Ds: Delegation, Description, Discernment, Diligence), ensuring best practices for human-AI collaboration are built into every command.
+
+### Added
+
+#### AI Fluency Core Integration
+- **NEW:** Step 0.11 - Quick Delegation Check (task appropriateness, AI capability match, responsibility awareness)
+- **NEW:** Step 0.7 - Post-Execution Evaluation (feedback loop with good/partial/wrong options)
+- **NEW:** The Feedback Loop section - Describe → Evaluate → Refine pattern
+- **NEW:** Diligence Reminder in Approval Gate - "You remain responsible..."
+- **NEW:** Common Iteration Patterns for refining AI outputs
+
+#### Enhanced Commands
+- **UPDATED:** `/prompt` (v2.1) - Added Common Mistakes, AI Limitations, Secret Weapon tip
+- **UPDATED:** `/prompt-hybrid` (v4.1) - Full Delegation Assessment step
+- **UPDATED:** `/prompt-research` (v1.1) - Delegation Assessment with Agency Mode focus
+- **UPDATED:** `/session-end` (v2.1) - Already had Diligence Summary
+
+#### Documentation
+- **NEW:** AI Fluency concepts in all command outputs
+- **NEW:** Configuration reference: `.claude/config/ai-fluency.json`
+
+### Changed
+
+#### Core Library
+- **UPDATED:** `.claude/library/prompt-perfection-core.md` (v1.3 → v1.4)
+  - Added Step 0.11: Quick Delegation Check
+  - Added Step 0.7: Post-Execution Evaluation
+  - Added Feedback Loop section
+  - Enhanced Approval Gate with Diligence Reminder
+
+### AI Fluency Coverage
+
+| Competency | Before | After | Implementation |
+|------------|--------|-------|----------------|
+| **Delegation** | 80% | 95% | Step 0.11 + all commands |
+| **Description** | 95% | 95% | Already excellent |
+| **Discernment** | 55% | 85% | Step 0.7 + feedback loop |
+| **Diligence** | 45% | 80% | Reminders + session tracking |
+
+### Documentation
+
+- Updated CLAUDE.md with AI Fluency config reference
+- Updated install script to v4.2.0 with AI Fluency announcement
+- Added AI Fluency Framework alignment notes to all updated commands
+
+---
+
 ## [4.1.0] - 2026-01-05
 
 ### Major Release - Skill Reflection System
@@ -482,6 +533,7 @@ Original structure with inline Phase 0 implementations:
 
 | Version | Date | Key Changes | Lines Changed |
 |---------|------|-------------|---------------|
+| 4.2.0 | 2026-01-20 | AI Fluency Framework | +800 new |
 | 4.1.0 | 2026-01-05 | Skill Reflection System | +2000 new |
 | 4.0.0 | 2026-01-01 | Predictive Intelligence | +3500 new |
 | 3.0.0 | 2025-12-28 | Multi-Agent Research | +2500 new |

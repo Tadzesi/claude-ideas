@@ -43,6 +43,7 @@ Load path-specific rules automatically:
 - Complexity rules: @.claude/config/complexity-rules.json
 - Agent templates: @.claude/config/agent-templates.json
 - Learning config: @.claude/config/learning-config.json
+- AI Fluency: @.claude/config/ai-fluency.json
 
 ---
 
@@ -54,8 +55,9 @@ Load path-specific rules automatically:
 - Library: kebab-case (prompt-perfection-core.md)
 
 **Version Format:**
-- Use semantic versioning (v2.1, v3.0, v4.1)
+- Use semantic versioning (v4.2.0)
 - Include date in version history (YYYY-MM-DD)
+- Current version: 4.2.0 (AI Fluency Framework)
 
 **Terminology:**
 - "Explore Agent" (not ExploreAgent)

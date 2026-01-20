@@ -2,19 +2,27 @@
 
 Claude Commands Library provides 10 slash commands organized into four categories.
 
+::: tip Version 4.2 - AI Fluency Framework
+All commands now include AI Fluency features:
+- **Quick Delegation Check** - Task appropriateness validation
+- **Post-Execution Evaluation** - Feedback loop
+- **Diligence Reminders** - Responsibility awareness
+- [Learn more →](/architecture/ai-fluency)
+:::
+
 ## Quick Reference
 
-| Command | Purpose | Speed | Complexity |
-|---------|---------|-------|------------|
-| [/prompt](/commands/prompt) | Basic prompt perfection | ~2s | Simple |
-| [/prompt-hybrid](/commands/prompt-hybrid) | Intelligent with agents | 2-30s | Advanced |
-| [/prompt-technical](/commands/prompt-technical) | Implementation analysis | 5-30s | Advanced |
-| [/prompt-research](/commands/prompt-research) | Multi-agent research | 60-180s | Expert |
-| [/prompt-article](/commands/prompt-article) | Article writing | Interactive | Medium |
-| [/prompt-article-readme](/commands/prompt-article-readme) | README generation | ~30s | Medium |
-| [/session-start](/commands/session-start) | Load session context | ~2s | Simple |
-| [/session-end](/commands/session-end) | Save session context | ~5s | Simple |
-| [/reflect](/commands/reflect) | Improve skills | 5-15s | Medium |
+| Command | Purpose | Speed | Version |
+|---------|---------|-------|---------|
+| [/prompt](/commands/prompt) | Basic prompt perfection | ~2s | v2.1 |
+| [/prompt-hybrid](/commands/prompt-hybrid) | Intelligent with agents | 2-30s | v4.1 |
+| [/prompt-technical](/commands/prompt-technical) | Implementation analysis | 5-30s | v4.0 |
+| [/prompt-research](/commands/prompt-research) | Multi-agent research | 60-180s | v1.1 |
+| [/prompt-article](/commands/prompt-article) | Article writing | Interactive | v2.0 |
+| [/prompt-article-readme](/commands/prompt-article-readme) | README generation | ~30s | v2.0 |
+| [/session-start](/commands/session-start) | Load session context | ~2s | v2.0 |
+| [/session-end](/commands/session-end) | Save session context | ~5s | v2.1 |
+| [/reflect](/commands/reflect) | Improve skills | 5-15s | v1.0 |
 
 ## Categories
 
@@ -92,7 +100,7 @@ Analyzes session and proposes improvements based on corrections and preferences.
 
 ### Phase 0: Every Command Starts Here
 
-All prompt commands run Phase 0 validation:
+All prompt commands run Phase 0 validation (AI Fluency aligned):
 
 ```
 Step 0.1: Initial Analysis
@@ -100,28 +108,39 @@ Step 0.1: Initial Analysis
 - Identify prompt type (Task, Question, Bug Fix, etc.)
 - Extract core intent
 
-Step 0.2: Completeness Check
-- Goal: What do you want to achieve?
-- Context: What's the current state?
-- Scope: What files/components are involved?
-- Requirements: What specific needs exist?
-- Constraints: What limitations apply?
-- Expected Result: How will you know it's done?
+Step 0.11: Quick Delegation Check (NEW v4.2)
+- Task Appropriateness: Is this suitable for AI?
+- AI Capability Match: Does this match AI strengths?
+- Responsibility Awareness: User remains responsible
+
+Step 0.12: Interaction Mode Detection
+- Automation Mode: "Fix X", "Add Y"
+- Augmentation Mode: "Help me understand", "What's best"
+- Agency Mode: "Research X", "Explore"
+
+Step 0.2: Completeness Check (9 criteria)
+- Product: Goal, Context, Scope, Requirements, Constraints, Expected Result
+- Process: Approach methodology
+- Performance: Interaction style, Communication tone
 
 Step 0.3: Clarification Questions
 - Ask about missing information
 - Present options where needed
 - Prioritize by criticality
 
-Step 0.4: Perfect the Prompt
+Step 0.4-0.5: Perfect the Prompt
 - Structure into clear format
 - Add detected context
 - Include constraints
 
-Step 0.5: Approval Gate
+Step 0.6: Approval Gate
 - Show perfected prompt
+- Diligence Reminder: "You remain responsible..."
 - Wait for user confirmation
-- Allow modifications
+
+Step 0.7: Post-Execution Evaluation (NEW v4.2)
+- Prompt: "How was this output? good/partial/wrong"
+- Feedback loop for iteration
 ```
 
 ### Complexity Detection
@@ -201,6 +220,8 @@ When complexity warrants, specialized agents help:
 
 ## Next Steps
 
+- [Tutorial: Getting Best Results](/guide/tutorial-best-results) - Complete guide
 - [Learn /prompt](/commands/prompt) - The foundation
 - [Learn /prompt-technical](/commands/prompt-technical) - For implementation
+- [AI Fluency Framework](/architecture/ai-fluency) - The 4Ds explained
 - [Understand the architecture](/architecture/) - How it all works

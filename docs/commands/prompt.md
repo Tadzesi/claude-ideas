@@ -2,11 +2,21 @@
 
 The foundational command for basic prompt perfection. Fast, simple, and effective.
 
+::: tip What's New in v2.1 (AI Fluency)
+- **Step 0.11:** Quick Delegation Check
+- **Step 0.7:** Post-Execution Evaluation
+- **Diligence Reminder:** In approval gate
+- **Common Mistakes:** AI Fluency pitfalls
+- **AI Limitations:** Platform awareness
+- **Secret Weapon:** Meta-prompting tip
+:::
+
 ## Overview
 
 | Aspect | Details |
 |--------|---------|
 | **Speed** | ~2 seconds |
+| **Version** | v2.1 (AI Fluency) |
 | **Complexity** | Simple |
 | **Agent** | None |
 | **Best For** | Quick fixes, simple questions, single-file changes |
@@ -191,8 +201,79 @@ throw UserNotFoundError with descriptive message.
 Proceed? [Yes / Modify / Cancel]
 ```
 
+## AI Fluency Features (v2.1)
+
+### Quick Delegation Check
+
+Before processing, validates task appropriateness:
+
+```
+Quick Delegation Check:
+- Task Appropriateness: ✓ Suitable for AI
+- AI Capability Match: ✓ Code analysis (excellent)
+- Responsibility Awareness: ✓ User remains responsible
+```
+
+### Post-Execution Evaluation
+
+After completion, prompts for feedback:
+
+```
+📊 Quick Evaluation (Discernment Check)
+
+How was this output?
+- `good` — Accurate, appropriate, useful ✅
+- `partial` — Mostly good, needs adjustments ⚠️
+- `wrong` — Significant issues, needs rework ❌
+- `explain` — Show me your reasoning 🔍
+```
+
+### Diligence Reminder
+
+In approval gate:
+
+```
+⚖️ Diligence Reminder (AI Fluency):
+You remain responsible for any output generated.
+- Verify key facts before deployment
+- Review AI-generated code before committing
+```
+
+## Common Mistakes to Avoid
+
+| Mistake | Solution |
+|---------|----------|
+| Being too vague | Be specific about what you need |
+| Not providing context | Include tech stack, environment |
+| Accepting first output | Iterate with `partial` feedback |
+| Not verifying facts | AI can hallucinate |
+| Over-trusting AI | You're responsible for output |
+
+## AI Limitations Awareness
+
+**AI Strengths:**
+- ✅ Code analysis and debugging
+- ✅ Pattern detection
+- ✅ Explaining concepts
+
+**AI Limitations:**
+- ⚠️ Knowledge cutoff (may not know recent events)
+- ⚠️ Hallucinations (confident but incorrect)
+- ⚠️ Complex reasoning (multi-step logic)
+
+::: tip Secret Weapon
+If unsure how to phrase something:
+
+```
+/prompt Help me craft a prompt for [goal]
+```
+
+AI can help you write better prompts!
+:::
+
 ## Related Commands
 
 - [/prompt-hybrid](/commands/prompt-hybrid) - When you need agent assistance
 - [/prompt-technical](/commands/prompt-technical) - For implementation planning
 - [/session-end](/commands/session-end) - Save your work
+- [Tutorial](/guide/tutorial-best-results) - Getting best results
