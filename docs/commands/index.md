@@ -108,7 +108,7 @@ Step 0.1: Initial Analysis
 - Identify prompt type (Task, Question, Bug Fix, etc.)
 - Extract core intent
 
-Step 0.11: Quick Delegation Check (NEW v4.2)
+Step 0.11: Quick Delegation Check
 - Task Appropriateness: Is this suitable for AI?
 - AI Capability Match: Does this match AI strengths?
 - Responsibility Awareness: User remains responsible
@@ -119,12 +119,14 @@ Step 0.12: Interaction Mode Detection
 - Agency Mode: "Research X", "Explore"
 
 Step 0.2: Completeness Check (9 criteria)
-- Product: Goal, Context, Scope, Requirements, Constraints, Expected Result
+- Recall known facts from project profile (v4.2)
+- Product: Goal, Context (pre-filled), Scope, Requirements, Constraints (pre-filled), Expected Result
 - Process: Approach methodology
 - Performance: Interaction style, Communication tone
 
 Step 0.3: Clarification Questions
-- Ask about missing information
+- Skip questions answered by project profile
+- Ask only genuinely unknown information
 - Present options where needed
 - Prioritize by criticality
 

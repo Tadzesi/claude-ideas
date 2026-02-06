@@ -68,6 +68,7 @@ Claude Commands Library is built on a modular, extensible architecture that comb
 │   └── ai-fluency.json       # NEW v4.1
 │
 ├── memory/             # Persistent data
+│   ├── project-profile.md     # Structured fact store (v4.2)
 │   ├── sessions.md
 │   ├── prompt-patterns.md
 │   └── observations.md
@@ -75,9 +76,6 @@ Claude Commands Library is built on a modular, extensible architecture that comb
 ├── rules/              # Path-specific rules
 │   ├── technical-patterns.md
 │   └── command-conventions.md
-│
-├── skills/             # Skill configurations
-│   └── prompt-technical.json
 │
 └── cache/              # Cached results
     └── agent-results/
@@ -161,9 +159,9 @@ User Input: "/prompt-technical Add authentication"
 │         Phase 0: Prompt Perfection       │
 │                                          │
 │  1. Detect language, type, intent       │
-│  2. Calculate complexity score          │
+│  2. Recall facts from project profile   │
 │  3. Check completeness (6 criteria)     │
-│  4. Ask clarifying questions            │
+│  4. Ask only unknown information        │
 │  5. Structure perfected prompt          │
 │  6. Wait for approval                   │
 └──────────────────┬──────────────────────┘

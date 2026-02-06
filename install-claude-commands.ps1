@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
 # Version: 4.2.0
-# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.2 with AI Fluency Framework)
+# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.2 with Memory Recall & AI Fluency)
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -235,8 +235,11 @@ function Deploy-ClaudeDirectory {
             Write-Success "Cache cleared"
         }
 
-        # Restore memory directory
+        # Restore memory directory and deploy new memory files
+        $sourceMemoryDir = Join-Path $sourceClaudeDir "memory"
+
         if ($memoryBackup -and (Test-Path $memoryBackup)) {
+            # Update: restore user memory, then add new files from repo
             Write-Info "Restoring memory files..."
             if (Test-Path $targetMemoryDir) {
                 Remove-Item -Path $targetMemoryDir -Recurse -Force
@@ -244,9 +247,28 @@ function Deploy-ClaudeDirectory {
             Copy-Item -Path $memoryBackup -Destination $targetMemoryDir -Recurse -Force
             Remove-Item -Path $memoryBackup -Recurse -Force
             Write-Success "Memory files restored"
+
+            # Deploy new memory files that don't exist yet (e.g. project-profile.md)
+            if (Test-Path $sourceMemoryDir) {
+                $newFiles = 0
+                Get-ChildItem -Path $sourceMemoryDir -File | ForEach-Object {
+                    $targetFile = Join-Path $targetMemoryDir $_.Name
+                    if (-not (Test-Path $targetFile)) {
+                        Copy-Item -Path $_.FullName -Destination $targetFile -Force
+                        $newFiles++
+                        Write-Info "  New memory file: $($_.Name)"
+                    }
+                }
+                if ($newFiles -gt 0) {
+                    Write-Success "$newFiles new memory file(s) added"
+                }
+            }
         } else {
-            # Create memory directory if it doesn't exist
-            if (-not (Test-Path $targetMemoryDir)) {
+            # Fresh install: deploy all memory templates from repo
+            if (Test-Path $sourceMemoryDir) {
+                Copy-Item -Path $sourceMemoryDir -Destination $targetMemoryDir -Recurse -Force
+                Write-Success "Memory templates deployed"
+            } else {
                 New-Item -ItemType Directory -Path $targetMemoryDir -Force | Out-Null
                 Write-Success "Memory directory created"
             }
@@ -369,23 +391,22 @@ function Show-Summary {
 
     # v4.2 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  NEW IN VERSION 4.2 (January 2026)" -ForegroundColor Magenta
+    Write-Host "  NEW IN VERSION 4.2 (February 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`nAI Fluency Framework Alignment:" -ForegroundColor White
-    Write-Host "  - NEW: Full alignment with Anthropic's 4Ds Model" -ForegroundColor Green
-    Write-Host "  - Delegation Check (Step 0.11) - Task appropriateness" -ForegroundColor Gray
-    Write-Host "  - Post-Execution Evaluation (Step 0.7) - Feedback loop" -ForegroundColor Gray
-    Write-Host "  - Diligence Reminders - Responsibility awareness" -ForegroundColor Gray
-    Write-Host "  - Common Mistakes & AI Limitations awareness" -ForegroundColor Gray
+    Write-Host "`nMemory Recall System:" -ForegroundColor White
+    Write-Host "  - Commands remember project facts between sessions" -ForegroundColor Green
+    Write-Host "  - Phase 0 pre-fills answers from project profile" -ForegroundColor Gray
+    Write-Host "  - /session-end extracts facts automatically" -ForegroundColor Gray
+    Write-Host "`nAI Fluency Framework:" -ForegroundColor White
+    Write-Host "  - Full 4Ds alignment (Delegation, Description, Discernment, Diligence)" -ForegroundColor Green
+    Write-Host "  - Delegation Check, Post-Execution Evaluation, Feedback Loop" -ForegroundColor Gray
     Write-Host "`nFrom v4.1: Skill Reflection System" -ForegroundColor White
     Write-Host "  - /reflect - Active skill improvement from feedback" -ForegroundColor Gray
-    Write-Host "  - Signal detection and priority-coded proposals" -ForegroundColor Gray
     Write-Host "`nFrom v4.0: Predictive Intelligence System" -ForegroundColor White
     Write-Host "  - See 2 steps ahead with proactive guidance" -ForegroundColor Gray
-    Write-Host "  - Journey stage detection and domain risk analysis" -ForegroundColor Gray
     Write-Host "`nFrom v3.0: Multi-Agent Research System" -ForegroundColor White
     Write-Host "  - /prompt-research (deep multi-agent analysis)" -ForegroundColor Gray
-    Write-Host "`nSee .claude/docs/ for detailed release notes" -ForegroundColor Cyan
+    Write-Host "`nSee .claude/docs/version-history.md for details" -ForegroundColor Cyan
     Write-Host "========================================`n" -ForegroundColor Magenta
 
     Write-Host "`nNext Steps:" -ForegroundColor Cyan

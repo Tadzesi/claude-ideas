@@ -31,7 +31,7 @@ The installer will:
 
 1. Clone the repository
 2. Deploy `.claude/` directory to your project
-3. Preserve any existing memory files
+3. Preserve existing memory files, deploy new ones (e.g. `project-profile.md`)
 4. Display available commands
 
 ## Installation Options
@@ -81,12 +81,12 @@ your-project/
 │   │   ├── agent-templates.json
 │   │   └── learning-config.json
 │   ├── memory/             # Your session data
+│   │   ├── project-profile.md   # Project facts (v4.2)
 │   │   ├── sessions.md
 │   │   └── prompt-patterns.md
 │   ├── rules/              # Path-specific rules
-│   └── skills/             # Skill configurations
+│   └── scripts/            # Helper scripts
 ├── CLAUDE.md               # Project instructions
-└── plugin.json             # Plugin manifest
 ```
 
 ## Verify Installation
@@ -128,7 +128,8 @@ The installer automatically:
 1. Detects existing installation
 2. Creates backup of current files
 3. Pulls latest from GitHub
-4. **Preserves your memory files** (sessions.md, prompt-patterns.md)
+4. **Preserves your memory files** (sessions.md, project-profile.md, etc.)
+5. **Adds new memory files** from latest version without overwriting existing ones
 
 ::: warning Config Customizations
 If you've customized config files, back them up before updating:
@@ -196,7 +197,7 @@ To completely remove:
 Remove-Item -Path ".claude" -Recurse -Force
 
 # Remove project files (optional)
-Remove-Item "CLAUDE.md", "plugin.json", "PLUGIN.md" -Force
+Remove-Item "CLAUDE.md" -Force
 
 # Remove backups (optional)
 Remove-Item -Path ".claude-backup" -Recurse -Force

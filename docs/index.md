@@ -56,6 +56,12 @@ features:
     link: /architecture/multi-agent
     linkText: Research System
 
+  - icon: 🧠
+    title: Memory Recall
+    details: Commands remember your project facts between sessions. Tech stack, infrastructure, and preferences are pre-filled automatically - no repeat questions.
+    link: /architecture/phase-0#memory-recall
+    linkText: How Memory Works
+
   - icon: 📚
     title: Learning System
     details: The library learns from your patterns, suggests smart defaults, and actively improves skills through the /reflect command.
@@ -142,11 +148,12 @@ Install the [Enhanced Statusline](/architecture/statusline) to see real-time met
 
 Every command runs your prompt through validation:
 
-1. **Detect** - Language, type, and intent
-2. **Check** - 6 completeness criteria (Goal, Context, Scope, Requirements, Constraints, Expected Result)
-3. **Ask** - Clarifying questions for missing information
-4. **Structure** - Transform into executable format
-5. **Approve** - Wait for your confirmation
+1. **Recall** - Load known facts from project profile
+2. **Detect** - Language, type, and intent
+3. **Check** - 6 completeness criteria, pre-filling from memory
+4. **Ask** - Only truly unknown information
+5. **Structure** - Transform into executable format
+6. **Approve** - Wait for your confirmation
 
 ### Hybrid Intelligence
 
@@ -170,35 +177,24 @@ After 3+ occurrences, it suggests smart defaults.
 
 ## What's New
 
-### v4.2 - Full AI Fluency Integration
+### v4.2 - Memory Recall & AI Fluency
 
-```bash
-# Quick Delegation Check ensures AI appropriateness
-/prompt Implement payment processing
+**Memory Recall** - Commands remember your project between sessions:
 
-# Post-execution evaluation closes the feedback loop
-# After completion: "How was this output? good/partial/wrong"
-
-# Diligence reminders throughout
-# "You remain responsible for any output generated..."
+```
+Session 1: "What framework?" → "Express + TypeScript"
+Session 2: Context: Express + TypeScript (from project profile) ✓
 ```
 
-**Full 4Ds Implementation:**
-- **Delegation** - Step 0.11 Quick Delegation Check in all commands
-- **Description** - 9 criteria completeness check (already excellent)
-- **Discernment** - Step 0.7 Post-Execution Evaluation with feedback loop
+**AI Fluency** - Full 4Ds Framework integration:
+- **Delegation** - Quick Delegation Check in all commands
+- **Description** - 9 criteria completeness check
+- **Discernment** - Post-Execution Evaluation with feedback loop
 - **Diligence** - Responsibility reminders in Approval Gate
 
-**New Features:**
-- Common Mistakes to Avoid section
-- AI Limitations Awareness
-- The Feedback Loop pattern (Describe → Evaluate → Refine)
-- Secret Weapon tip for meta-prompting
-
-### v4.1 - Skill Reflection System
+### v4.1 - Skill Reflection
 
 ```bash
-# Learn from your interactions
 /reflect prompt-technical
 ```
 

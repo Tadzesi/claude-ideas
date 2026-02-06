@@ -2,6 +2,41 @@
 
 All notable changes to the Claude Commands Library.
 
+## [4.2.0] - February 2026
+
+### Added
+
+- **Memory Recall System**
+  - New `.claude/memory/project-profile.md` structured fact store
+  - Phase 0 Step 0.2a reads profile before completeness check
+  - Pre-fills known facts with "(from project profile)" attribution
+  - Step 0.3 skips questions already answered by profile
+  - First-use opt-in prompt for profile creation
+
+- **Profile Extraction in `/session-end`** (v3.0)
+  - New Step 1.5 extracts structured facts from session
+  - Categories: Infrastructure, Tech Stack, Deployment, Project Structure, User Preferences, Workflows
+  - Merges without duplicating existing facts
+  - Shows extraction summary
+
+- **Memory Recall in CLAUDE.md**
+  - Root CLAUDE.md instructs Claude to check profile for all interactions
+  - Works outside slash commands too
+
+### Changed
+
+- `project-knowledge.md` slimmed from 440 to ~40 lines (headers only, grows on use)
+- `architectural-context.md` slimmed from 653 to ~45 lines (headers only, grows on use)
+- Installer (v4.2.0) now deploys new memory files on update without overwriting existing ones
+- Installer deploys all memory templates on fresh install
+
+### Improved
+
+- All Phase 0 commands gain memory recall automatically (no individual command changes needed)
+- Fewer repeat questions across sessions
+
+---
+
 ## [4.1.0] - January 2026
 
 ### Added
@@ -174,6 +209,7 @@ All notable changes to the Claude Commands Library.
 
 | Version | Date | Highlight |
 |---------|------|-----------|
+| 4.2 | Feb 2026 | Memory Recall System |
 | 4.1 | Jan 2026 | Skill Reflection System |
 | 4.0 | Jan 2026 | Predictive Intelligence |
 | 3.0 | Dec 2025 | Multi-Agent Research |
@@ -184,11 +220,22 @@ All notable changes to the Claude Commands Library.
 
 ## Upgrade Guide
 
+### From 4.1 to 4.2
+
+1. Re-run installer:
+   ```powershell
+   .\install-claude-commands.ps1
+   ```
+
+2. The installer automatically adds new `project-profile.md` to your memory directory
+
+3. All existing commands work unchanged - memory recall activates on first use
+
 ### From 3.x to 4.x
 
 1. Update library files:
    ```powershell
-   .\install-claude-commands.ps1 -Update
+   .\install-claude-commands.ps1
    ```
 
 2. Add new config file:
@@ -239,9 +286,10 @@ All notable changes to the Claude Commands Library.
 ## Backward Compatibility
 
 All versions maintain backward compatibility:
-- v1.0 commands work in v4.1
+- v1.0 commands work in v4.2
 - Configuration is additive (new files, not breaking changes)
 - Memory files persist across upgrades
+- Project profile is opt-in (commands work without it)
 
 ## Deprecation Notices
 

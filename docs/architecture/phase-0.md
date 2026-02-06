@@ -57,9 +57,30 @@ Rationale: Task requires decision-making collaboration
 Implications: Will engage in dialogue, offer options, iterate
 ```
 
-### Step 0.2: Completeness Check
+### Step 0.2: Completeness Check {#memory-recall}
 
-Every prompt is validated against 9 criteria (expanded from 6 in v4.1):
+#### Memory Recall (v4.2)
+
+Before checking completeness, Phase 0 loads known facts from `.claude/memory/project-profile.md`:
+
+- If a profile exists, known facts are pre-filled into the completeness criteria
+- Pre-filled items show `(from project profile)` attribution
+- If no profile exists, Claude offers to create one on first use
+
+```
+Completeness Check:
+✓ Goal: Add user authentication
+✓ Context: Express.js application (from project profile)
+✓ Context: PostgreSQL with Prisma (from project profile)
+? Scope: Which files need changes?
+? Requirements: Which auth method?
+✓ Constraints: TypeScript strict mode (from project profile)
+? Expected Result: What should happen after login?
+```
+
+#### 9 Completeness Criteria
+
+Every prompt is validated against 9 criteria:
 
 **Product Description (WHAT):**
 | Criterion | Question | Example |
@@ -82,19 +103,9 @@ Every prompt is validated against 9 criteria (expanded from 6 in v4.1):
 | **Interaction Style** | Concise or detailed? | "Detailed explanations" |
 | **Communication Tone** | Formal or casual? | "Technical, professional" |
 
-```
-Completeness Check:
-✓ Goal: Add user authentication
-✓ Context: Express.js application
-? Scope: Which files need changes?
-? Requirements: Which auth method?
-✓ Constraints: None specified
-? Expected Result: What should happen after login?
-```
-
 ### Step 0.3: Clarification Questions
 
-Missing information triggers questions. Questions are prioritized:
+Questions already answered by the project profile are skipped. Only genuinely unknown information triggers questions. Questions are prioritized:
 
 1. **Critical** - Blocks understanding (asked first)
 2. **Important** - Affects implementation quality

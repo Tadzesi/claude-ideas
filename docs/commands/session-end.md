@@ -234,6 +234,27 @@ If you want to improve skills from this session:
 /session-end
 ```
 
+## Project Profile Extraction (v4.2)
+
+After saving the session, `/session-end` automatically extracts structured facts into `.claude/memory/project-profile.md`:
+
+```
+Profile Updated:
+- New facts: 4
+- Updated facts: 1
+- Categories: Tech Stack, Infrastructure, User Preferences
+
+Extracted:
+- Tech Stack: Express 4.18, TypeScript 5.0, Prisma 5.0
+- Infrastructure: PostgreSQL 14, Redis 7.0
+- User Preferences: async/await, explicit error types
+- Updated: Node.js version 18 → 20
+```
+
+These facts are recalled by Phase 0 in future sessions, so commands don't ask the same questions again.
+
+On first run, Claude asks permission before creating the profile. If you decline, this step is skipped.
+
 ## Data Storage
 
 Saves to `.claude/memory/sessions.md`:
