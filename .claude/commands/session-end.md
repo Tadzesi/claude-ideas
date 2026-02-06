@@ -124,7 +124,8 @@ After approval, I will:
 1. Analyze the current session
 2. Generate summary based on your scope
 3. Append to .claude/memory/sessions.md
-4. Show confirmation of what was saved
+4. Extract facts to project profile (for memory recall)
+5. Show confirmation of what was saved
 
 **Reply with:**
 - `y` or `yes` — Capture session with this configuration
@@ -269,7 +270,47 @@ If user specified "most important thing", ensure it's:
 
 Append the generated summary to `.claude/memory/sessions.md`
 
-### Step 1.5: Confirm Completion
+### Step 1.5: Extract Facts to Project Profile (NEW v3.0)
+
+**Purpose:** Extract structured facts from the session and save them to the project profile for memory recall in future sessions.
+
+**Process:**
+
+1. **Check if profile exists:** Read `.claude/memory/project-profile.md`
+   - If it does not exist: Ask user "I can create a project profile to remember facts (tech stack, infrastructure, preferences) between sessions. Create one? (yes/no)"
+   - If user declines: skip this step
+   - If it does exist or user approves creation: continue
+
+2. **Scan session for extractable facts** in these categories:
+   - **Infrastructure:** Servers, databases, cloud providers, CI/CD, Docker, hosting
+   - **Tech Stack:** Languages, frameworks, libraries, versions, package managers
+   - **Deployment:** Environments, URLs, deploy processes, staging/production
+   - **Project Structure:** Key directories, entry points, config file locations
+   - **User Preferences:** Coding style, naming conventions, preferred tools, workflow habits
+   - **Workflows:** Build commands, test commands, deploy steps, common tasks
+
+3. **Read existing profile** and merge new facts:
+   - Do not duplicate facts already in the profile
+   - Update facts that have changed (e.g., version upgrade)
+   - Append new facts under the appropriate section header
+   - Use simple `key: value` format (one fact per line, prefixed with `- `)
+
+4. **Write updated profile** to `.claude/memory/project-profile.md`
+
+5. **Show extraction summary:**
+```markdown
+**Profile Updated:**
+- New facts: [count]
+- Updated facts: [count]
+- Categories: [list of sections that changed]
+```
+
+**If no facts were discovered this session:**
+```markdown
+**Profile:** No new facts to extract this session.
+```
+
+### Step 1.6: Confirm Completion
 
 Show comprehensive confirmation:
 
@@ -483,18 +524,24 @@ Priority: Login timeout issue ongoing
 
 ## Version History
 
+**v3.0 (2026-02-06):**
+- Added Step 1.5: Extract Facts to Project Profile
+- Session facts are now saved to `.claude/memory/project-profile.md`
+- First run prompts user to opt in to project profile
+- Merged facts avoid duplication with existing profile entries
+
 **v2.1 (2026-01-20):**
-- ✨ **NEW:** Diligence Summary section (AI Fluency Framework)
-- ✨ Tracks AI-assisted content requiring verification
-- ✨ Transparency notes for human vs AI work
-- ✨ Deployment checklist for AI outputs
+- Diligence Summary section (AI Fluency Framework)
+- Tracks AI-assisted content requiring verification
+- Transparency notes for human vs AI work
+- Deployment checklist for AI outputs
 - Aligned with Anthropic's AI Fluency 4Ds
 
 **v2.0 (2024-12-19):**
-- ✨ Added Phase 0 prompt perfection
-- ✨ User-controlled capture scope
-- ✨ Priority highlighting
-- ✨ Git branch awareness
+- Added Phase 0 prompt perfection
+- User-controlled capture scope
+- Priority highlighting
+- Git branch awareness
 - Enhanced with session adapter
 
 **v1.0 (Previous):**

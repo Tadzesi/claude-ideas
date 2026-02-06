@@ -9,6 +9,7 @@ This file aggregates project-specific memory and context using Claude Code's nat
 Load persistent context from memory files:
 
 - Session history: @.claude/memory/sessions.md
+- Project profile: @.claude/memory/project-profile.md
 - Learning patterns: @.claude/memory/prompt-patterns.md
 - Project knowledge: @.claude/memory/project-knowledge.md
 - Architecture context: @.claude/memory/architectural-context.md

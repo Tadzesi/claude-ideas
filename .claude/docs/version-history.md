@@ -1,5 +1,52 @@
 # Version History
 
+## Version 4.2 - February 2026 Memory Recall System
+
+**Enhancement: Commands remember project facts between sessions**
+
+Commands used to ask the same questions every session ("what database?", "where is server?") because Phase 0 never consulted persistent memory. The v4.2 release adds a structured fact store and memory recall so commands pre-fill known answers automatically.
+
+### What's New in v4.2
+
+**New Memory File: Project Profile**
+- `.claude/memory/project-profile.md` - Structured key-value fact store
+- Sections: Infrastructure, Tech Stack, Deployment, Project Structure, User Preferences, Workflows
+- Grows over time as `/session-end` extracts facts
+
+**Enhanced Phase 0: Memory Recall (prompt-perfection-core.md v1.3)**
+- Step 0.2a reads project profile before completeness check
+- Pre-fills known facts with "(from project profile)" attribution
+- Step 0.3 skips questions already answered by profile
+- Missing profile triggers opt-in prompt on first encounter
+- ALL commands using Phase 0 gain memory recall automatically
+
+**Enhanced `/session-end` (v3.0)**
+- Step 1.5 extracts structured facts from session into project profile
+- Scans for infrastructure, tech stack, deployment, structure, preferences, workflows
+- Merges without duplicating existing facts
+- Shows extraction summary
+
+**Slimmed Memory Files**
+- `project-knowledge.md` reduced from 440 to ~40 lines (headers only, grows on use)
+- `architectural-context.md` reduced from 653 to ~45 lines (headers only, grows on use)
+
+### Migration Guide (v4.1 to v4.2)
+
+v4.2 is **fully backward compatible** - all existing commands work without changes.
+
+**Adoption Path:**
+1. Update to v4.2
+2. Run any `/prompt*` command - it will offer to create a project profile
+3. Run `/session-end` - it will extract facts into the profile
+4. Next session: commands pre-fill answers from profile
+
+**First-Time Experience:**
+- Phase 0 detects missing profile and asks to create one
+- User can decline (commands work as before)
+- `/session-end` also asks before first profile creation
+
+---
+
 ## Version 4.1 - January 2026 Skill Reflection System
 
 **Major Enhancement: Active Skill Improvement through Conversation Analysis**

@@ -1,7 +1,7 @@
 # Prompt Perfection Core Library
 
-**Version:** 1.3
-**Last Updated:** 2026-01-20
+**Version:** 1.5
+**Last Updated:** 2026-02-06
 **Purpose:** Canonical Phase 0 implementation for all prompt commands
 **AI Fluency:** Aligned with Anthropic's 4Ds Framework (Delegation, Description, Discernment, Diligence)
 
@@ -219,11 +219,28 @@ IF predictive_intelligence.enabled == true:
 
 ### Step 0.2: Completeness Check
 
-**Purpose:** Identify missing critical information
+**Purpose:** Identify missing critical information, pre-filling from project memory
+
+**Step 0.2a: Memory Recall (NEW v1.3)**
+
+Before checking completeness, load known facts from the project profile:
+
+1. **Read** `.claude/memory/project-profile.md` (if it exists)
+2. **If profile exists and has content:**
+   - Extract facts that match the 6 completeness criteria
+   - Pre-fill Context (tech stack, environment), Scope (project structure), and Constraints (user preferences) from profile
+   - Mark pre-filled items with attribution: `(from project profile)`
+3. **If profile does not exist or is empty:**
+   - Show notice: "No project profile found. I can create one to remember your project details (tech stack, infrastructure, preferences) between sessions so I ask fewer repeat questions."
+   - Ask: "Create a project profile? (yes/no)"
+   - If yes: create `.claude/memory/project-profile.md` with standard headers, then continue to completeness check (answers gathered in Step 0.3 will be saved to profile)
+   - If no: proceed without profile (current behavior)
+
+**Step 0.2b: Completeness Evaluation**
 
 **Universal Criteria (9 Components):**
 
-Check for presence of:
+Check for presence of (including pre-filled facts from memory):
 
 **Product Description (WHAT):**
 - [ ] **Goal:** Clear desired outcome (What should happen?)
@@ -248,6 +265,10 @@ Check for presence of:
 - Goal: [extracted from user input]
 - Context: [extracted from user input]
 
+✅ **Present (from project profile):**
+- Context: Tech stack is Node.js + PostgreSQL
+- Constraints: Prefers TypeScript strict mode
+
 ❌ **Missing:**
 - Scope: Need to know which files/components
 - Expected Result: Need to know how to verify success
@@ -257,21 +278,28 @@ Check for presence of:
 ```
 
 **Decision Point:**
-- If ALL required components present → **Go to Step 0.4 (Correction)**
+- If ALL required components present (from user input + profile) → **Go to Step 0.4 (Correction)**
 - If ANY required components missing → **Go to Step 0.3 (Clarification)**
 
 ---
 
 ### Step 0.3: Clarification Questions
 
-**Purpose:** Gather missing information without guessing
+**Purpose:** Gather missing information without guessing, skipping what the profile already knows
 
 **Rules:**
 1. **Never assume** - Always ask when uncertain
-2. **Prioritize questions** - Critical first, then important, then optional
-3. **Provide context** - Explain why you're asking
-4. **Offer options** - When multiple valid approaches exist
-5. **One round preferred** - Ask all questions together when possible
+2. **Skip known facts** - Do not ask questions already answered by the project profile
+3. **Prioritize questions** - Critical first, then important, then optional
+4. **Provide context** - Explain why you're asking
+5. **Offer options** - When multiple valid approaches exist
+6. **One round preferred** - Ask all questions together when possible
+
+**Memory-Aware Filtering (v1.3):**
+- Before asking, check if the project profile already provides the answer
+- If a fact is in the profile, show it as pre-filled rather than asking
+- Only ask for genuinely unknown information
+- If the user opted in to a new profile (Step 0.2a), save new answers to the profile after this step
 
 **Question Priority Levels:**
 
@@ -712,21 +740,27 @@ File: `.claude/library/adapters/session-adapter.md`
 
 ## Version History
 
+**v1.5 (2026-02-06):**
+- Added Step 0.2a: Memory Recall - pre-fills completeness check from project profile
+- Step 0.3 now skips questions answered by project profile
+- Missing profile triggers opt-in prompt for first-time creation
+- All commands using Phase 0 gain memory recall automatically
+- Backward compatible: works without project-profile.md
+
 **v1.4 (2026-01-20):**
-- ✨ **NEW:** Step 0.11 - Quick Delegation Check (AI Fluency - Delegation competency)
-- ✨ **NEW:** Step 0.7 - Post-Execution Evaluation (AI Fluency - Discernment competency)
-- ✨ **NEW:** The Feedback Loop section (Describe → Evaluate → Refine pattern)
-- ✨ **NEW:** Diligence Reminder in Approval Gate (AI Fluency - Diligence competency)
-- ✨ **NEW:** Common Iteration Patterns for refinement
+- Step 0.11 - Quick Delegation Check (AI Fluency - Delegation competency)
+- Step 0.7 - Post-Execution Evaluation (AI Fluency - Discernment competency)
+- The Feedback Loop section (Describe → Evaluate → Refine pattern)
+- Diligence Reminder in Approval Gate (AI Fluency - Diligence competency)
+- Common Iteration Patterns for refinement
 - Full alignment with all 4Ds of AI Fluency Framework
-- Enhanced responsibility awareness throughout flow
 
 **v1.3 (2026-01-20):**
-- ✨ **NEW:** AI Fluency Framework alignment (Anthropic's 4Ds)
-- ✨ **NEW:** Step 0.12 - Interaction Mode Detection (Automation/Augmentation/Agency)
-- ✨ **NEW:** Performance Description criteria (AI behavior preferences)
-- ✨ **NEW:** Process Description criteria (approach methodology)
-- ✨ **NEW:** Discernment Hints in output template
+- AI Fluency Framework alignment (Anthropic's 4Ds)
+- Step 0.12 - Interaction Mode Detection (Automation/Augmentation/Agency)
+- Performance Description criteria (AI behavior preferences)
+- Process Description criteria (approach methodology)
+- Discernment Hints in output template
 - Expanded completeness check from 6 to 9 components
 - Added configuration reference: .claude/config/ai-fluency.json
 
@@ -763,6 +797,9 @@ File: `.claude/library/adapters/session-adapter.md`
 - @.claude/library/adapters/technical-adapter.md
 - @.claude/library/adapters/article-adapter.md
 - @.claude/library/adapters/session-adapter.md
+
+**Memory (v1.3):**
+- @.claude/memory/project-profile.md
 
 **Configuration:**
 - @.claude/config/complexity-rules.json
