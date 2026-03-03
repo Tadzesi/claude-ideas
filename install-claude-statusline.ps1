@@ -204,8 +204,9 @@ if (Test-Path $settingsFile) {
     }
 }
 
-# Build the command string
-$statusLineCommand = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$targetStatusline`""
+# Build the command string - use forward slashes so Claude Code's bash shell handles the path correctly
+$targetStatuslineForward = $targetStatusline -replace '\\', '/'
+$statusLineCommand = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$targetStatuslineForward`""
 
 # Create or update settings object
 if ($null -eq $settings) {

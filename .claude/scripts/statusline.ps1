@@ -2,10 +2,13 @@
 # Displays: Folder, Git Branch, Progress Bar, Tokens, Global API Duration
 # API Duration: Cumulative across all sessions with delta indicator (+last call)
 #
-# NOTE: Context percentage is an approximation. Claude Code's statusline JSON
-# provides cumulative session tokens, not actual context window usage.
-# The /context command shows accurate values. See:
-# https://github.com/anthropics/claude-code/issues/13783
+# Context percentage: uses context_window.used_percentage from JSON (most accurate).
+# Falls back to token calculation against full context_window_size if not available.
+# Autocompact triggers at ~95% by default (CLAUDE_AUTOCOMPACT_PCT_OVERRIDE to change).
+
+# Force UTF-8 output encoding
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+$OutputEncoding = [System.Text.UTF8Encoding]::new($false)
 
 # Read JSON from stdin
 $jsonInput = [Console]::In.ReadToEnd()
@@ -31,20 +34,12 @@ $barYellow = "$esc[38;2;229;192;123m"  # 50-75%
 $barOrange = "$esc[38;2;209;154;102m"  # 75-90%
 $barRed = "$esc[38;2;224;108;117m"     # 90%+
 
-# --- Icons (Unicode) ---
-$iconFolder = [char]0xF07B    # Folder icon (nerd font) or fallback
-$iconBranch = [char]0xE725    # Git branch icon (nerd font) or fallback
-$iconContext = [char]0xF200   # Chart icon or fallback
-$iconTokens = [char]0xF15C    # Document icon or fallback
-$iconApi = [char]0xF253       # Hourglass/timer icon or fallback
-
-# Fallback to simpler icons if nerd fonts not available
-# Using more universal Unicode symbols
-$iconFolder = [char]0x25A0    # Small square
-$iconBranch = [char]0x2387    # Branch symbol alternative
-$iconContext = [char]0x25CF   # Filled circle
-$iconTokens = [char]0x25B6    # Triangle
-$iconApi = [char]0x25C6       # Diamond
+# --- Icons (ASCII-safe) ---
+$iconFolder = ">"
+$iconBranch = "*"
+$iconContext = "#"
+$iconTokens = "~"
+$iconApi = "^"
 
 # --- Folder Name ---
 $cwd = $data.cwd
@@ -64,25 +59,24 @@ if ($cwd -and (Test-Path $cwd)) {
 }
 
 # --- Context Usage ---
-# Note: Claude Code statusline JSON provides message tokens, not full context.
-# Full context includes: system prompt, tools, MCP tools, memory files, and messages.
-# We estimate total context by adding typical overhead to message tokens.
+# Use used_percentage from JSON directly - most accurate (Claude Code calculates this).
+# Autocompact triggers at ~95% by default (CLAUDE_AUTOCOMPACT_PCT_OVERRIDE to change).
 $contextSize = $data.context_window.context_window_size
 $percentUsed = 0
 $contextTokens = 0
 $hasContextData = $false
 
-# Autocompact buffer percentage (context reserved, not usable)
-# Opus: 22.5%, Sonnet: ~20%, Haiku: ~15%
-$autocompactBuffer = 0.225
-
-# Note: The input_tokens from current_usage already includes message history
-# but does NOT include system prompt, tools, MCP tools, memory files.
-# We don't add overhead here because it would double-count.
-# The percentage is calculated against usable context to match Claude's warnings.
-
-# Try to get context from current_usage first
-if ($data.context_window.current_usage) {
+# Prefer used_percentage from JSON (accurate, includes system prompt + tools overhead)
+if ($data.context_window.used_percentage -ne $null -and $data.context_window.used_percentage -gt 0) {
+    $percentUsed = [math]::Round($data.context_window.used_percentage, 1)
+    # Derive token count from percentage for display
+    if ($contextSize -gt 0) {
+        $contextTokens = [math]::Round($contextSize * $percentUsed / 100)
+    }
+    $hasContextData = $true
+}
+# Fallback: calculate from current_usage tokens if used_percentage not available
+elseif ($data.context_window.current_usage) {
     $inputTokens = if ($data.context_window.current_usage.input_tokens) {
         $data.context_window.current_usage.input_tokens
     } else { 0 }
@@ -92,35 +86,20 @@ if ($data.context_window.current_usage) {
     $cacheRead = if ($data.context_window.current_usage.cache_read_input_tokens) {
         $data.context_window.current_usage.cache_read_input_tokens
     } else { 0 }
-
-    # Message tokens from last API call
-    $messageTokens = $inputTokens + $cacheCreation + $cacheRead
-
-    if ($messageTokens -gt 0) {
-        $hasContextData = $true
-        $contextTokens = $messageTokens
-
-        if ($contextSize -gt 0) {
-            # Calculate usable context (total minus autocompact buffer)
-            $usableContext = $contextSize * (1 - $autocompactBuffer)
-
-            # Calculate percentage of usable context to match Claude's warnings
-            $percentUsed = [math]::Round(($contextTokens / $usableContext) * 100, 1)
-
-            # Cap at 100% to avoid confusion
-            if ($percentUsed -gt 100) { $percentUsed = 100 }
-        }
-    }
-}
-
-# Fallback: use total_input_tokens if current_usage is empty (first load)
-if (-not $hasContextData -and $data.context_window.total_input_tokens) {
-    $contextTokens = $data.context_window.total_input_tokens
+    $contextTokens = $inputTokens + $cacheCreation + $cacheRead
 
     if ($contextTokens -gt 0 -and $contextSize -gt 0) {
         $hasContextData = $true
-        $usableContext = $contextSize * (1 - $autocompactBuffer)
-        $percentUsed = [math]::Round(($contextTokens / $usableContext) * 100, 1)
+        $percentUsed = [math]::Round(($contextTokens / $contextSize) * 100, 1)
+        if ($percentUsed -gt 100) { $percentUsed = 100 }
+    }
+}
+# Fallback: total_input_tokens
+elseif ($data.context_window.total_input_tokens) {
+    $contextTokens = $data.context_window.total_input_tokens
+    if ($contextTokens -gt 0 -and $contextSize -gt 0) {
+        $hasContextData = $true
+        $percentUsed = [math]::Round(($contextTokens / $contextSize) * 100, 1)
         if ($percentUsed -gt 100) { $percentUsed = 100 }
     }
 }
@@ -244,9 +223,7 @@ function Get-ProgressBar($percent, $width) {
 }
 
 # --- Build Status Line ---
-# Calculate usable context for display (total minus autocompact buffer)
-$usableContextSize = [math]::Round($contextSize * (1 - $autocompactBuffer))
-$fmtUsableSize = Format-Tokens $usableContextSize
+$fmtContextSize = Format-Tokens $contextSize
 $fmtTotalIn = Format-Tokens $totalInput
 $fmtTotalOut = Format-Tokens $totalOutput
 
@@ -266,14 +243,13 @@ if ($hasContextData) {
     $progressBar = Get-ProgressBar $percentUsed 10
     $barColor = Get-ProgressBarColor $percentUsed
     $fmtContextTokens = Format-Tokens $contextTokens
-    # Show context vs usable context (not total)
     $parts += "$progressBar $barColor${percentUsed}%$reset"
-    $parts += "$gray$iconContext$reset $white$fmtContextTokens$gray/$fmtUsableSize$reset"
+    $parts += "$gray$iconContext$reset $white$fmtContextTokens$gray/$fmtContextSize$reset"
 } else {
     # No data yet - show waiting indicator
     $emptyBar = "$gray" + ([char]0x2591).ToString() * 10 + "$reset"
     $parts += "$emptyBar ${gray}---%$reset"
-    $parts += "$gray$iconContext$reset ${gray}---/$fmtUsableSize$reset"
+    $parts += "$gray$iconContext$reset ${gray}---/$fmtContextSize$reset"
 }
 
 # Cumulative tokens
