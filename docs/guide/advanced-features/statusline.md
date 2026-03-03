@@ -212,7 +212,7 @@ Claude Code provides this JSON structure to the statusline script:
 | `cwd` | Claude Code | Current working directory |
 | `session_id` | Claude Code | Unique session identifier |
 | `context_window_size` | Claude Code | Total context window (200k) |
-| `used_percentage` | Claude Code | Exact usage % (includes all overhead) |
+| `used_percentage` | Claude Code | Approximate usage % (excludes system prompt + tool overhead) |
 | `current_usage.input_tokens` | Last API call | Tokens in last request |
 | `total_input_tokens` | Claude Code | Cumulative input tokens |
 | `total_output_tokens` | Claude Code | Cumulative output tokens |
@@ -243,7 +243,9 @@ This enables:
 
 ### Context Calculation
 
-The statusline uses **`context_window.used_percentage`** directly from Claude Code's JSON — the most accurate value, as Claude Code calculates it internally (including system prompt, tools, and MCP overhead that raw token counts miss).
+The statusline uses **`context_window.used_percentage`** directly from Claude Code's JSON. This is an **approximation** — the field excludes system prompt tokens, Claude Code's built-in tool definitions, and MCP tool schemas (e.g., playwright, claude-in-chrome). Actual context usage is typically **10–20% higher** than displayed, and the `~` prefix on the percentage reflects this.
+
+Color thresholds are shifted down by 15% relative to actual usage thresholds to compensate for the known under-reporting.
 
 **Fallback chain** (when `used_percentage` is unavailable):
 1. `current_usage` tokens / `context_window_size`
@@ -312,6 +314,6 @@ Copy-Item "$env:USERPROFILE\.claude\statusline.ps1.backup-XXXXXXXX-XXXXXX" "$env
 
 ## Known Limitations
 
-::: info
-The context percentage is an approximation. Claude Code's statusline JSON provides cumulative session tokens, not actual context window usage. The `/context` command shows accurate values. See [GitHub issue #13783](https://github.com/anthropics/claude-code/issues/13783) for details.
+::: warning Context percentage is an approximation
+`used_percentage` from the statusline JSON excludes system prompt, Claude Code tool definitions, and MCP tool schemas (playwright, claude-in-chrome, etc. can add 10–20% of overhead not counted). The `~` prefix on the displayed percentage and the downward-shifted color thresholds help compensate. For precise values, use `/context` inside Claude Code.
 :::

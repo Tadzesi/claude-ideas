@@ -130,13 +130,17 @@ Claude Code provides this data:
 
 ### Context Calculation
 
-The statusline uses **`context_window.used_percentage`** from the JSON provided by Claude Code — the most accurate value, as Claude Code calculates it directly (including system prompt, tools, and MCP overhead).
+The statusline uses **`context_window.used_percentage`** from the JSON provided by Claude Code. This is an **approximation** — it does not include system prompt tokens, Claude Code tool definitions, or MCP tool schemas (e.g., playwright, claude-in-chrome). Actual context usage is typically **10–20% higher** than displayed.
 
 | Field | Source | Accuracy |
 |-------|--------|----------|
-| `used_percentage` | Claude Code JSON | Exact — includes all overhead |
+| `used_percentage` | Claude Code JSON | Approximate — excludes system prompt + tool overhead |
 | `context_window_size` | Claude Code JSON | Exact — full context window |
 | Token fallback | `current_usage` tokens | Approximate (excludes overhead) |
+
+::: warning Discrepancy with `/context`
+The statusline percentage may differ significantly from Claude Code's internal "context left until auto-compact" indicator. This is expected — `/context` includes all overhead while `used_percentage` does not. Color thresholds are shifted down 15% to compensate. The `~` prefix on the percentage indicates it is an approximation.
+:::
 
 **Autocompact** triggers at **~95%** by default. Customizable via:
 ```bash
@@ -247,7 +251,11 @@ Enables:
 
 ## Known Limitations
 
-::: info
+::: warning Context percentage is an approximation
+`used_percentage` from the statusline JSON excludes system prompt, Claude Code tool definitions, and MCP tool schemas. Actual usage is 10–20% higher than displayed. The `~` prefix and downward-shifted color thresholds help compensate. For precise values, use `/context` inside Claude Code.
+:::
+
+::: info API duration state file
 API duration tracking requires a state file (`~/.claude/.statusline-state.json`) to persist across sessions. If this file is deleted, the global cumulative timer resets.
 :::
 

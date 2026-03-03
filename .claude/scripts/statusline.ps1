@@ -2,9 +2,11 @@
 # Displays: Folder, Git Branch, Progress Bar, Tokens, Global API Duration
 # API Duration: Cumulative across all sessions with delta indicator (+last call)
 #
-# Context percentage: uses context_window.used_percentage from JSON (most accurate).
-# Falls back to token calculation against full context_window_size if not available.
+# Context percentage: APPROXIMATION. used_percentage from JSON excludes system prompt,
+# tool definitions, and MCP tool schemas (~10-20% overhead not counted).
+# Actual usage is higher than displayed. Use /context for precise values.
 # Autocompact triggers at ~95% by default (CLAUDE_AUTOCOMPACT_PCT_OVERRIDE to change).
+# Thresholds are shifted down 15% to compensate for known under-reporting.
 
 # Force UTF-8 output encoding
 [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
@@ -66,7 +68,7 @@ $percentUsed = 0
 $contextTokens = 0
 $hasContextData = $false
 
-# Prefer used_percentage from JSON (accurate, includes system prompt + tools overhead)
+# Prefer used_percentage from JSON (approximate - excludes system prompt + MCP tool overhead)
 if ($data.context_window.used_percentage -ne $null -and $data.context_window.used_percentage -gt 0) {
     $percentUsed = [math]::Round($data.context_window.used_percentage, 1)
     # Derive token count from percentage for display
@@ -203,9 +205,11 @@ function Format-Tokens($count) {
 }
 
 function Get-ProgressBarColor($percent) {
-    if ($percent -ge 90) { return $barRed }
-    if ($percent -ge 75) { return $barOrange }
-    if ($percent -ge 50) { return $barYellow }
+    # Thresholds shifted -15% to compensate for known under-reporting in used_percentage
+    # (system prompt + MCP tool definitions not included in JSON field)
+    if ($percent -ge 75) { return $barRed }
+    if ($percent -ge 60) { return $barOrange }
+    if ($percent -ge 35) { return $barYellow }
     return $barGreen
 }
 
@@ -243,7 +247,7 @@ if ($hasContextData) {
     $progressBar = Get-ProgressBar $percentUsed 10
     $barColor = Get-ProgressBarColor $percentUsed
     $fmtContextTokens = Format-Tokens $contextTokens
-    $parts += "$progressBar $barColor${percentUsed}%$reset"
+    $parts += "$progressBar $barColor~${percentUsed}%$reset"
     $parts += "$gray$iconContext$reset $white$fmtContextTokens$gray/$fmtContextSize$reset"
 } else {
     # No data yet - show waiting indicator
