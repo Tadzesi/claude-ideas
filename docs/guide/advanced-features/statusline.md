@@ -5,7 +5,7 @@ Enhanced statusline for Claude Code with icons, colors, and comprehensive metric
 ## What You Get
 
 ```
-■ claude-ideas | ⎇ main | ████████░░ 45.2% | ● 27k/155k | ▶ 89.2k/15.6k | ◆ 3.2s (+1.1s)
+■ claude-ideas | ⎇ main | ████████░░ 45.2% | ● 90.4k/200k | ▶ 89.2k/15.6k | ◆ 3.2s (+1.1s)
 ```
 
 ### Components
@@ -97,13 +97,13 @@ cd claude-ideas
    {
      "statusLine": {
        "type": "command",
-       "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\YOUR_USERNAME\\.claude\\statusline.ps1"
+       "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/Users/YOUR_USERNAME/.claude/statusline.ps1"
      }
    }
    ```
 
    ::: warning
-   Replace `YOUR_USERNAME` with your actual Windows username.
+   Replace `YOUR_USERNAME` with your actual Windows username. Use **forward slashes** (`/`) in the path — Claude Code uses bash internally on Windows, and backslashes are silently dropped, causing the statusline to not appear.
    :::
 
 5. Restart Claude Code
@@ -189,6 +189,8 @@ Claude Code provides this JSON structure to the statusline script:
   "session_id": "abc123",
   "context_window": {
     "context_window_size": 200000,
+    "used_percentage": 45.2,
+    "remaining_percentage": 54.8,
     "current_usage": {
       "input_tokens": 45000,
       "cache_creation_input_tokens": 0,
@@ -209,7 +211,8 @@ Claude Code provides this JSON structure to the statusline script:
 |-------|--------|-------------|
 | `cwd` | Claude Code | Current working directory |
 | `session_id` | Claude Code | Unique session identifier |
-| `context_window_size` | Claude Code | Total context (200k for Opus) |
+| `context_window_size` | Claude Code | Total context window (200k) |
+| `used_percentage` | Claude Code | Exact usage % (includes all overhead) |
 | `current_usage.input_tokens` | Last API call | Tokens in last request |
 | `total_input_tokens` | Claude Code | Cumulative input tokens |
 | `total_output_tokens` | Claude Code | Cumulative output tokens |
@@ -240,13 +243,18 @@ This enables:
 
 ### Context Calculation
 
-The statusline calculates context usage against the **usable context window**, not the total. Claude Code reserves a portion of the context for autocompact operations:
+The statusline uses **`context_window.used_percentage`** directly from Claude Code's JSON — the most accurate value, as Claude Code calculates it internally (including system prompt, tools, and MCP overhead that raw token counts miss).
 
-- **Opus**: 22.5% reserved (200k total → 155k usable)
-- **Sonnet**: ~20% reserved
-- **Haiku**: ~15% reserved
+**Fallback chain** (when `used_percentage` is unavailable):
+1. `current_usage` tokens / `context_window_size`
+2. `total_input_tokens` / `context_window_size`
 
-This ensures the percentage shown matches Claude's context warnings.
+**Autocompact** triggers at **~95%** of the context window by default. Customize with:
+```bash
+CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=80  # trigger at 80%
+```
+
+The denominator in the token display is always the full `context_window_size` (200k), not an artificially reduced "usable" value.
 
 ### API Duration Tracking
 
@@ -273,8 +281,8 @@ State is stored in `~\.claude\.statusline-state.json`.
 ### Statusline not appearing
 
 1. Ensure Claude Code is restarted after installation
-2. Check that `settings.json` has correct path (double backslashes in JSON)
-3. Verify PowerShell execution policy allows script execution
+2. Check that `settings.json` uses **forward slashes** (`/`) in the path — backslashes are silently dropped by Claude Code's bash shell on Windows, causing the script to not run at all
+3. Verify PowerShell execution policy: `Get-ExecutionPolicy` (must be `RemoteSigned` or `Unrestricted`)
 
 ### Context shows "---%" on first load
 

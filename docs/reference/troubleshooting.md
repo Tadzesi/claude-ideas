@@ -208,17 +208,17 @@ iwr -useb https://raw.githubusercontent.com/Tadzesi/claude-ideas/main/install-cl
 
 ### Wrong Path in Settings
 
-**Symptom:** Statusline configured but not working
+**Symptom:** Statusline configured but not appearing at all
 
-**Cause:** Path uses wrong format
+**Cause:** Path uses backslashes — Claude Code uses bash internally on Windows, which silently drops backslashes, causing the script to not run
 
-**Solution:**
+**Solution:** Use forward slashes in the path:
 
 ```json
 {
   "statusLine": {
     "type": "command",
-    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\YOUR_USERNAME\\.claude\\statusline.ps1"
+    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/Users/YOUR_USERNAME/.claude/statusline.ps1"
   }
 }
 ```

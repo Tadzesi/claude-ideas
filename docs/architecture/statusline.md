@@ -5,7 +5,7 @@ Real-time context tracking with visual progress bars, token usage, and API durat
 ## What You Get
 
 ```
-■ my-project | ⎇ main | ████████░░ 45.2% | ● 27k/155k | ▶ 89.2k/15.6k | ◆ 3.2s (+1.1s)
+■ my-project | ⎇ main | ████████░░ 45.2% | ● 90.4k/200k | ▶ 89.2k/15.6k | ◆ 3.2s (+1.1s)
 ```
 
 ### Components
@@ -62,13 +62,13 @@ notepad "$env:USERPROFILE\.claude\settings.json"
 {
   "statusLine": {
     "type": "command",
-    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\YOUR_USERNAME\\.claude\\statusline.ps1"
+    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/Users/YOUR_USERNAME/.claude/statusline.ps1"
   }
 }
 ```
 
 ::: warning
-Replace `YOUR_USERNAME` with your actual Windows username.
+Replace `YOUR_USERNAME` with your actual Windows username. Use **forward slashes** (`/`) in the path — Claude Code uses bash internally on Windows, and backslashes are silently dropped, causing the statusline to not appear.
 :::
 
 5. Restart Claude Code
@@ -130,15 +130,18 @@ Claude Code provides this data:
 
 ### Context Calculation
 
-The statusline calculates context usage against **usable context**, not total:
+The statusline uses **`context_window.used_percentage`** from the JSON provided by Claude Code — the most accurate value, as Claude Code calculates it directly (including system prompt, tools, and MCP overhead).
 
-| Model | Total | Reserved | Usable |
-|-------|-------|----------|--------|
-| Opus | 200k | 22.5% | 155k |
-| Sonnet | 200k | ~20% | 160k |
-| Haiku | 200k | ~15% | 170k |
+| Field | Source | Accuracy |
+|-------|--------|----------|
+| `used_percentage` | Claude Code JSON | Exact — includes all overhead |
+| `context_window_size` | Claude Code JSON | Exact — full context window |
+| Token fallback | `current_usage` tokens | Approximate (excludes overhead) |
 
-This matches Claude's context warnings.
+**Autocompact** triggers at **~95%** by default. Customizable via:
+```bash
+CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=80  # trigger at 80%
+```
 
 ### API Duration Tracking
 
@@ -189,8 +192,8 @@ Or manually remove `statusLine` from `settings.json`.
 ### Statusline Not Appearing
 
 1. Restart Claude Code after installation
-2. Check `settings.json` has correct path (double backslashes)
-3. Verify PowerShell execution policy allows scripts
+2. Check `settings.json` uses **forward slashes** in the path (backslashes are dropped by Claude Code's bash shell on Windows)
+3. Verify PowerShell execution policy allows scripts: `Get-ExecutionPolicy`
 
 ### Shows "---%" on First Load
 
@@ -245,7 +248,7 @@ Enables:
 ## Known Limitations
 
 ::: info
-The context percentage is an approximation. Claude Code's statusline JSON provides cumulative session tokens, not actual context window usage. The `/context` command shows accurate values.
+API duration tracking requires a state file (`~/.claude/.statusline-state.json`) to persist across sessions. If this file is deleted, the global cumulative timer resets.
 :::
 
 ## Related
