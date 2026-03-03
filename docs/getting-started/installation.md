@@ -62,7 +62,7 @@ If you have a corrupted installation:
 ```
 your-project/
 ├── .claude/
-│   ├── commands/           # Slash commands
+│   ├── commands/           # Slash commands (old format, still works)
 │   │   ├── prompt.md
 │   │   ├── prompt-hybrid.md
 │   │   ├── prompt-technical.md
@@ -72,8 +72,14 @@ your-project/
 │   │   ├── session-start.md
 │   │   ├── session-end.md
 │   │   └── reflect.md
+│   ├── skills/             # Skills format (v4.3, with YAML frontmatter)
+│   │   ├── prompt/SKILL.md
+│   │   ├── prompt-hybrid/SKILL.md
+│   │   ├── session-start/SKILL.md
+│   │   ├── session-end/SKILL.md
+│   │   └── reflect/SKILL.md
 │   ├── library/            # Core library system
-│   │   ├── prompt-perfection-core.md
+│   │   ├── prompt-perfection-core.md   # v1.6 - always loads memory first
 │   │   ├── adapters/
 │   │   └── intelligence/
 │   ├── config/             # Configuration files
@@ -81,13 +87,18 @@ your-project/
 │   │   ├── agent-templates.json
 │   │   └── learning-config.json
 │   ├── memory/             # Your session data
-│   │   ├── project-profile.md   # Project facts (v4.2)
+│   │   ├── project-profile.md   # Project facts - POPULATE THIS for best results
 │   │   ├── sessions.md
 │   │   └── prompt-patterns.md
-│   ├── rules/              # Path-specific rules
-│   └── scripts/            # Helper scripts
+│   └── rules/              # Path-specific rules
 ├── CLAUDE.md               # Project instructions
 ```
+
+::: tip Populate Your Project Profile
+After installation, populate `.claude/memory/project-profile.md` with your project facts. Commands load this file automatically, so you never need to repeat your tech stack, preferences, or project structure.
+
+The file has pre-made sections. Fill in what applies to your project.
+:::
 
 ## Verify Installation
 

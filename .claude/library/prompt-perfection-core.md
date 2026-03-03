@@ -1,7 +1,7 @@
 # Prompt Perfection Core Library
 
-**Version:** 1.5
-**Last Updated:** 2026-02-06
+**Version:** 1.6
+**Last Updated:** 2026-03-03
 **Purpose:** Canonical Phase 0 implementation for all prompt commands
 **AI Fluency:** Aligned with Anthropic's 4Ds Framework (Delegation, Description, Discernment, Diligence)
 
@@ -221,20 +221,37 @@ IF predictive_intelligence.enabled == true:
 
 **Purpose:** Identify missing critical information, pre-filling from project memory
 
-**Step 0.2a: Memory Recall (NEW v1.3)**
+**Step 0.2a: Memory Recall (v1.6 - ALWAYS LOAD FIRST)**
 
-Before checking completeness, load known facts from the project profile:
+CRITICAL: Always read project memory before asking ANY questions.
+This prevents the user from having to repeat information across sessions.
 
-1. **Read** `.claude/memory/project-profile.md` (if it exists)
-2. **If profile exists and has content:**
-   - Extract facts that match the 6 completeness criteria
-   - Pre-fill Context (tech stack, environment), Scope (project structure), and Constraints (user preferences) from profile
-   - Mark pre-filled items with attribution: `(from project profile)`
-3. **If profile does not exist or is empty:**
-   - Show notice: "No project profile found. I can create one to remember your project details (tech stack, infrastructure, preferences) between sessions so I ask fewer repeat questions."
+1. **Read** `.claude/memory/project-profile.md` (ALWAYS - before any analysis)
+2. **Read** last 3 entries from `.claude/memory/sessions.md` (for recent activity)
+3. **Read** `.claude/memory/prompt-patterns.md` (for learned patterns if exists)
+
+**If profile exists and has content (expected state):**
+   - Extract ALL facts matching the 9 completeness criteria
+   - Pre-fill Context, Scope, Constraints, Preferences from profile
+   - Show a brief "CONTEXT LOADED" summary so user knows what is pre-filled
+   - Do NOT ask any questions already answered by the profile
+   - Check sessions.md for relevant recent work to mention
+
+**If profile does not exist or is empty:**
+   - Show notice: "No project profile found. I can create one to remember your project details between sessions so you never need to repeat context."
    - Ask: "Create a project profile? (yes/no)"
-   - If yes: create `.claude/memory/project-profile.md` with standard headers, then continue to completeness check (answers gathered in Step 0.3 will be saved to profile)
-   - If no: proceed without profile (current behavior)
+   - If yes: create `.claude/memory/project-profile.md` with standard headers, gather facts during Step 0.3, save to profile after
+   - If no: proceed without profile
+
+**Context Loaded Output (brief - only when profile has data):**
+```
+CONTEXT LOADED FROM PROJECT PROFILE
+Project: [name and version]
+Stack: [tech stack - brief]
+Platform: [OS/environment]
+Preferences: [key preferences]
+Recent: [one-line summary from sessions.md if relevant]
+```
 
 **Step 0.2b: Completeness Evaluation**
 
@@ -739,6 +756,13 @@ File: `.claude/library/adapters/session-adapter.md`
 ---
 
 ## Version History
+
+**v1.6 (2026-03-03):**
+- Step 0.2a: "ALWAYS LOAD FIRST" - stronger emphasis on reading memory before analysis
+- Added sessions.md and prompt-patterns.md to the startup reads
+- Added "CONTEXT LOADED" brief summary so user sees what was pre-filled
+- Project profile now populated with real data (v2.0 of project-profile.md)
+- Combined with new Skills format commands for full project awareness
 
 **v1.5 (2026-02-06):**
 - Added Step 0.2a: Memory Recall - pre-fills completeness check from project profile

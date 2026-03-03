@@ -59,13 +59,43 @@ Implications: Will engage in dialogue, offer options, iterate
 
 ### Step 0.2: Completeness Check {#memory-recall}
 
-#### Memory Recall (v4.2)
+#### Memory Recall (v1.6 - ALWAYS LOAD FIRST)
 
-Before checking completeness, Phase 0 loads known facts from `.claude/memory/project-profile.md`:
+**Critical:** Phase 0 reads memory files before any analysis. This prevents users from repeating context across sessions.
 
-- If a profile exists, known facts are pre-filled into the completeness criteria
-- Pre-filled items show `(from project profile)` attribution
-- If no profile exists, Claude offers to create one on first use
+Three sources are loaded on every invocation:
+
+| Source | Content | Purpose |
+|--------|---------|---------|
+| `.claude/memory/project-profile.md` | Tech stack, structure, preferences, conventions | Pre-fill completeness criteria |
+| `.claude/memory/sessions.md` | Recent session history | Reference past work |
+| `.claude/memory/prompt-patterns.md` | Learned patterns | Apply smart defaults |
+
+A brief "CONTEXT LOADED" summary is shown so users see exactly what was pre-filled:
+
+```
+CONTEXT LOADED FROM PROJECT PROFILE
+
+Project: My App v2.1
+Stack: Express.js + TypeScript + PostgreSQL/Prisma
+Platform: macOS, bash
+Preferences: strict TypeScript, 2-space indent, no auto-commit
+Recent: Implemented JWT auth middleware (from sessions.md)
+
+What I still need for this task:
+```
+
+**Known facts are never asked again.** Questions in Step 0.3 skip anything pre-filled from memory.
+
+If no profile exists, Claude offers to create one:
+
+```
+No project profile found. I can create one to remember your project
+details between sessions - no repeat questions.
+Create a project profile? (yes/no)
+```
+
+**After loading memory**, Phase 0 validates the remaining completeness criteria:
 
 ```
 Completeness Check:

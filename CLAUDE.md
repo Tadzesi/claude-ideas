@@ -51,7 +51,7 @@ User Input -> Phase 0 (core library) -> Domain Adapter -> Command-Specific Logic
 
 - **Core Library:** `.claude/library/prompt-perfection-core.md` - Canonical Phase 0 flow (analyze, clarify, correct, structure)
 - **Adapters:** `.claude/library/adapters/` - Domain customizations (technical, article, session, hybrid, research)
-- **Commands:** `.claude/commands/` - Reference library via `@.claude/library/...` import syntax
+- **Commands:** `.claude/commands/` - Old format (still works), OR `.claude/skills/` - New Skills format with YAML frontmatter
 - **Intelligence:** `.claude/library/intelligence/` - Predictive intelligence, reflection, warnings, next-steps prediction
 - **Orchestration:** `.claude/library/orchestration/` - Multi-agent research coordination (lead agent, iteration engine, result aggregator)
 - **Agents:** `.claude/library/agents/` - Specialized agent definitions (explore, citation, security, performance, pattern)
@@ -69,9 +69,17 @@ The hybrid system (`/prompt-hybrid`, `/prompt-technical`) uses a scoring engine 
 - `.claude/memory/project-knowledge.md` - Persistent knowledge graph
 - `.claude/memory/observations.md` - Pending observations from `/reflect`
 
-### Memory Recall (v4.2)
+### Memory Recall (v4.3)
 
-Before asking about tech stack, infrastructure, project structure, or user preferences, always check `.claude/memory/project-profile.md` first. Use known facts from the profile instead of re-asking. This applies to all interactions, not just slash commands.
+CRITICAL: Before asking about ANYTHING (tech stack, infrastructure, project structure, user preferences,
+recent work, decisions made), ALWAYS check these files first:
+1. `.claude/memory/project-profile.md` - Complete project facts (NOW POPULATED v2.0)
+2. `.claude/memory/sessions.md` - Recent session history
+3. `.claude/memory/prompt-patterns.md` - Learned patterns
+
+Use known facts instead of re-asking. This applies to ALL interactions, not just slash commands.
+The project-profile.md v2.0 contains: project identity, tech stack, infrastructure, structure,
+commands list, architecture, user preferences, workflows, and known gotchas.
 
 ### Rules (Path-Scoped)
 

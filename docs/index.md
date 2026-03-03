@@ -57,10 +57,16 @@ features:
     linkText: Research System
 
   - icon: 🧠
-    title: Memory Recall
-    details: Commands remember your project facts between sessions. Tech stack, infrastructure, and preferences are pre-filled automatically - no repeat questions.
+    title: Project-Aware Memory
+    details: Commands load your project profile, recent sessions, and learned patterns on every invocation. Tech stack, preferences, and past work are pre-filled automatically - zero repeated questions.
     link: /architecture/phase-0#memory-recall
     linkText: How Memory Works
+
+  - icon: 🎓
+    title: Skills Format (v4.3)
+    details: Commands use native Claude Code Skills format with YAML frontmatter. Claude auto-suggests the right skill based on your request. Fully backward-compatible with existing .claude/commands/ files.
+    link: /architecture/skills-format
+    linkText: Skills Format Guide
 
   - icon: 📚
     title: Learning System
@@ -177,6 +183,33 @@ After 3+ occurrences, it suggests smart defaults.
 
 ## What's New
 
+### v4.3 - Skills Format & Project-Aware Commands
+
+**Skills Format** - Commands now use the native Claude Code Skills format:
+
+```yaml
+---
+name: prompt
+description: Transform any prompt into an unambiguous, executable format...
+argument-hint: "[your prompt or task description]"
+---
+```
+
+Claude automatically suggests the right skill based on `description`. No more manual `/prompt` when Claude already knows what you need.
+
+**Project-Aware Startup** - Every command loads project context first:
+
+```
+CONTEXT LOADED FROM PROJECT PROFILE
+Project: My App v2.1 | Stack: Node.js + PostgreSQL
+Platform: macOS | Branch: feature/auth
+Recent work: Added JWT middleware (yesterday)
+
+What else do you need for this task?
+```
+
+**Zero Repeated Questions** - The populated `project-profile.md` eliminates asking the same questions across sessions. Tech stack, preferences, structure - all pre-filled automatically.
+
 ### v4.2 - Memory Recall & AI Fluency
 
 **Memory Recall** - Commands remember your project between sessions:
@@ -195,7 +228,7 @@ Session 2: Context: Express + TypeScript (from project profile) ✓
 ### v4.1 - Skill Reflection
 
 ```bash
-/reflect prompt-technical
+/reflect
 ```
 
 - Signal detection (corrections, successes, edge cases)

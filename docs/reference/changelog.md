@@ -2,6 +2,67 @@
 
 All notable changes to the Claude Commands Library.
 
+## [4.3.0] - March 2026
+
+### Added
+
+- **Skills Format** - Commands migrated to new `.claude/skills/` format
+  - YAML frontmatter: `name`, `description`, `disable-model-invocation`, `argument-hint`
+  - `description` field enables Claude to auto-invoke skills when contextually relevant
+  - `disable-model-invocation: true` on workflow commands (session-start, session-end, reflect)
+  - New skills: `prompt/SKILL.md`, `prompt-hybrid/SKILL.md`, `session-start/SKILL.md`,
+    `session-end/SKILL.md`, `reflect/SKILL.md`
+  - Old `.claude/commands/` files still work unchanged (backward compatible)
+
+- **STARTUP Section in all prompt skills** - Project context loaded before any analysis
+  - Reads `project-profile.md`, `sessions.md`, `prompt-patterns.md` on every invocation
+  - Shows "CONTEXT LOADED" summary so user sees what is pre-filled
+  - Eliminates repeated context questions across sessions
+
+- **project-profile.md v2.0** - Populated with real project data
+  - Previously contained only empty section headers
+  - Now includes: project identity, full tech stack, infrastructure, project structure,
+    command list, architecture overview, user preferences, workflows, known gotchas
+  - All Phase 0 commands immediately benefit via Step 0.2a Memory Recall
+
+- **Auto Memory** (`~/.claude/projects/.../memory/MEMORY.md`)
+  - Created MEMORY.md with project key facts for new session bootstrapping
+  - Follows Claude Code native auto-memory format (first 200 lines loaded per session)
+
+### Changed
+
+- **prompt-perfection-core.md → v1.6**
+  - Step 0.2a renamed to "ALWAYS LOAD FIRST" with stronger emphasis
+  - Now reads three memory sources: project-profile.md + sessions.md + prompt-patterns.md
+  - Shows "CONTEXT LOADED" brief summary on every invocation
+  - Backward compatible: still works without any memory files
+
+- **CLAUDE.md** - Memory Recall section updated
+  - References now-populated project-profile.md v2.0
+  - Lists all three memory files to check before asking questions
+  - Documents `.claude/skills/` as new preferred format
+
+- **session-end skill** - Now includes check for project-profile.md updates
+  - After each session, checks if new permanent facts should be added to profile
+  - Ensures project-profile.md stays current with project evolution
+
+### Improved
+
+- Commands no longer ask for project context the user has already provided
+- Skills with `description` field are suggested by Claude when contextually relevant
+- Session continuity improved through richer memory loading at startup
+
+### Upgrade Guide (4.2 → 4.3)
+
+No breaking changes. New `.claude/skills/` directory works alongside existing `.claude/commands/`.
+
+```powershell
+# Optional: re-run installer to get latest files
+.\install-claude-commands.ps1
+```
+
+---
+
 ## [4.2.0] - February 2026
 
 ### Added
@@ -209,6 +270,7 @@ All notable changes to the Claude Commands Library.
 
 | Version | Date | Highlight |
 |---------|------|-----------|
+| 4.3 | Mar 2026 | Skills Format + Project-Aware Commands |
 | 4.2 | Feb 2026 | Memory Recall System |
 | 4.1 | Jan 2026 | Skill Reflection System |
 | 4.0 | Jan 2026 | Predictive Intelligence |

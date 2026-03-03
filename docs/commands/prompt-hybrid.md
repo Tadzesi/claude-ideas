@@ -1,15 +1,24 @@
 # /prompt-hybrid
 
-Intelligent prompt perfection with automatic complexity detection and agent assistance.
+Intelligent prompt perfection with complexity detection, agent assistance, and full project context.
+
+::: tip What's New in v3.0 (Skills Format + Project-Aware)
+- **Skills Format** - YAML frontmatter with auto-invocation description
+- **STARTUP Section** - Loads project profile and sessions before any analysis
+- **Project-specific complexity scoring** - e.g. core library changes score higher automatically
+- **Contextualized agent output** - Agent findings presented in terms of your project structure
+:::
 
 ## Overview
 
 | Aspect | Details |
 |--------|---------|
 | **Speed** | 2-30 seconds |
+| **Version** | v3.0 (Skills Format) |
+| **Format** | `.claude/skills/prompt-hybrid/SKILL.md` |
 | **Complexity** | Advanced |
-| **Agent** | Automatic based on complexity |
-| **Best For** | Complex tasks, multi-file changes, pattern detection |
+| **Agent** | Automatic based on complexity score |
+| **Best For** | Complex tasks, multi-file changes, pattern detection across codebase |
 
 ## Usage
 

@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: 'Claude Commands Library',
-  description: 'Transform ideas into precise, executable prompts with intelligent agent assistance, caching, and learning',
+  description: 'Project-aware prompt engineering for Claude Code. Commands know your project - zero repeated context questions.',
 
   base: '/claude-ideas/',
 
@@ -77,7 +77,8 @@ export default defineConfig({
             { text: 'Overview', link: '/architecture/' },
             { text: 'AI Fluency Framework', link: '/architecture/ai-fluency' },
             { text: 'Phase 0 Flow', link: '/architecture/phase-0' },
-            { text: 'Library System', link: '/architecture/library-system' }
+            { text: 'Library System', link: '/architecture/library-system' },
+            { text: 'Skills Format (v4.3)', link: '/architecture/skills-format' }
           ]
         },
         {
