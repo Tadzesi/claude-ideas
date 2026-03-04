@@ -143,8 +143,8 @@ Install the [Enhanced Statusline](/architecture/statusline) to see real-time met
 | `/prompt-hybrid` | Intelligent with agents | 2-30s | Complex tasks, codebase changes |
 | `/prompt-technical` | Implementation analysis | 5-30s | New features, refactoring |
 | `/prompt-research` | Deep multi-agent research | 60-180s | Security audits, architecture review |
-| `/prompt-dotnet` | .NET project-aware perfection | ~3s | C# APIs, EF Core, .NET features |
-| `/prompt-react` | React project-aware perfection | ~3s | Components, hooks, Vite, routing |
+| [`/prompt-dotnet`](/commands/prompt-dotnet) | .NET project-aware perfection | ~3s | C# APIs, EF Core, .NET features |
+| [`/prompt-react`](/commands/prompt-react) | React project-aware perfection | ~3s | Components, hooks, Vite, routing |
 | `/prompt-article` | Article writing wizard | Interactive | Blog posts, documentation |
 | `/session-start` | Load previous context | ~2s | Beginning of session |
 | `/session-end` | Save current context | ~5s | End of session |

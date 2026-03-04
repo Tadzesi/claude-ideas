@@ -45,6 +45,14 @@ export default defineConfig({
           ]
         },
         {
+          text: 'Project-Aware Commands',
+          collapsed: false,
+          items: [
+            { text: '/prompt-dotnet', link: '/commands/prompt-dotnet' },
+            { text: '/prompt-react', link: '/commands/prompt-react' }
+          ]
+        },
+        {
           text: 'Content Commands',
           collapsed: false,
           items: [

@@ -18,8 +18,8 @@ New project-aware skills scan your codebase and pre-fill context automatically:
 | [/prompt-hybrid](/commands/prompt-hybrid) | Intelligent with agents | 2-30s | v4.1 |
 | [/prompt-technical](/commands/prompt-technical) | Implementation analysis | 5-30s | v4.0 |
 | [/prompt-research](/commands/prompt-research) | Multi-agent research | 60-180s | v1.1 |
-| /prompt-dotnet | .NET project-aware perfection | ~3s | v4.4 |
-| /prompt-react | React project-aware perfection | ~3s | v4.4 |
+| [/prompt-dotnet](/commands/prompt-dotnet) | .NET project-aware perfection | ~3s | v4.4 |
+| [/prompt-react](/commands/prompt-react) | React project-aware perfection | ~3s | v4.4 |
 | [/prompt-article](/commands/prompt-article) | Article writing | Interactive | v2.0 |
 | [/prompt-article-readme](/commands/prompt-article-readme) | README generation | ~30s | v2.0 |
 | [/session-start](/commands/session-start) | Load session context | ~2s | v2.0 |
