@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Claude Commands Library** (v4.2) - A collection of reusable slash commands for Claude Code that enhance prompt engineering, content creation, and session management. Commands use a library-based architecture where a shared core (Phase 0) handles prompt analysis/perfection, and domain-specific adapters customize behavior.
+**Claude Commands Library** (v4.4) - A collection of reusable slash commands for Claude Code that enhance prompt engineering, content creation, and session management. Commands use a library-based architecture where a shared core (Phase 0) handles prompt analysis/perfection, and domain-specific adapters customize behavior.
 
 ## Response Style Guidelines
 
@@ -93,6 +93,8 @@ Files in `.claude/rules/` use frontmatter `paths:` to scope rules to specific fi
 | `/prompt-hybrid` | Full complexity detection, agent spawning, caching, learning | 2-30s |
 | `/prompt-technical` | Technical implementation analysis with code scaffolding | 5-30s |
 | `/prompt-research` | Deep multi-agent research (2-5 agents, 2-4 iterations) | 60-180s |
+| `/prompt-dotnet` | .NET project-aware prompt perfection (scans .csproj, Program.cs) | ~3s |
+| `/prompt-react` | React project-aware prompt perfection (scans package.json, vite.config) | ~3s |
 | `/prompt-article` | Interactive article wizard (multi-platform) | Interactive |
 | `/prompt-article-readme` | README generator from project analysis | ~30s |
 | `/session-start` | Load accumulated context from all previous sessions | 2-5s |

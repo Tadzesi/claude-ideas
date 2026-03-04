@@ -2,12 +2,12 @@
 
 Claude Commands Library provides 10 slash commands organized into four categories.
 
-::: tip Version 4.2 - AI Fluency Framework
-All commands now include AI Fluency features:
-- **Quick Delegation Check** - Task appropriateness validation
-- **Post-Execution Evaluation** - Feedback loop
-- **Diligence Reminders** - Responsibility awareness
-- [Learn more →](/architecture/ai-fluency)
+::: tip Version 4.4 - .NET + React Project-Aware Skills
+New project-aware skills scan your codebase and pre-fill context automatically:
+- **`/prompt-dotnet`** - Detects framework, auth, ORM, Docker from project files
+- **`/prompt-react`** - Detects React version, router, state management, base path
+- All commands include AI Fluency features (Delegation, Discernment, Diligence)
+- [View Changelog →](/reference/changelog)
 :::
 
 ## Quick Reference
@@ -18,6 +18,8 @@ All commands now include AI Fluency features:
 | [/prompt-hybrid](/commands/prompt-hybrid) | Intelligent with agents | 2-30s | v4.1 |
 | [/prompt-technical](/commands/prompt-technical) | Implementation analysis | 5-30s | v4.0 |
 | [/prompt-research](/commands/prompt-research) | Multi-agent research | 60-180s | v1.1 |
+| /prompt-dotnet | .NET project-aware perfection | ~3s | v4.4 |
+| /prompt-react | React project-aware perfection | ~3s | v4.4 |
 | [/prompt-article](/commands/prompt-article) | Article writing | Interactive | v2.0 |
 | [/prompt-article-readme](/commands/prompt-article-readme) | README generation | ~30s | v2.0 |
 | [/session-start](/commands/session-start) | Load session context | ~2s | v2.0 |
@@ -53,6 +55,18 @@ Best for: New features, refactoring, architecture decisions.
 /prompt-research Perform security audit of payment system
 ```
 Best for: Security audits, performance analysis, architecture review.
+
+**`/prompt-dotnet`** - .NET project-aware prompt perfection
+```bash
+/prompt-dotnet Add JWT refresh token endpoint
+```
+Scans `.csproj`, `Program.cs`, `appsettings.json` — pre-fills framework, auth, ORM, Docker. Best for: C# APIs, EF Core migrations, middleware, .NET features.
+
+**`/prompt-react`** - React project-aware prompt perfection
+```bash
+/prompt-react Add a paginated item list with TanStack Query
+```
+Scans `package.json`, `vite.config`, `tsconfig` — pre-fills React version, router, state, base path. Best for: Components, hooks, routing, state management, Vite config.
 
 ### Content Creation
 

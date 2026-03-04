@@ -2,6 +2,40 @@
 
 All notable changes to the Claude Commands Library.
 
+## [4.4.0] - March 2026
+
+### Added
+
+- **`/prompt-dotnet`** - .NET project-aware prompt perfection skill
+  - Scans `.csproj`, `Program.cs`, `appsettings.json`, `Dockerfile`, `docker-compose.yml`
+  - Auto-detects: TargetFramework, architecture (Minimal API vs Controllers), auth, ORM, DB, Docker
+  - Applies .NET 10 best practices automatically based on detected stack (EF Core, PostgreSQL, JWT, CORS)
+  - Presents recommendations consistent with existing project patterns
+  - Related commands: `/prompt-react`, `/deploy`
+
+- **`/prompt-react`** - React project-aware prompt perfection skill
+  - Scans `package.json`, `vite.config.ts`, `tsconfig.json`, `src/` structure, `.env`
+  - Auto-detects: React version, TypeScript strict mode, router, state management, data fetching, base path
+  - Applies React best practices automatically (hooks, TS types, TanStack Query, Vite env vars, SPA subpath)
+  - Presents recommendations consistent with existing project patterns
+  - Related commands: `/prompt-dotnet`, `/deploy`
+
+### Fixed
+
+- **Installer critical bug** - `skills/` directory was listed in `$obsoleteDirs` and was deleted on every update
+  - `skills/` removed from `$obsoleteDirs`, added to `$directoriesToDeploy`
+  - All skills (prompt-dotnet, prompt-react, deploy, new-stack, etc.) now survive updates
+
+### Upgrade Guide (4.3 → 4.4)
+
+No breaking changes. Two new skills added.
+
+```powershell
+.\install-claude-commands.ps1
+```
+
+---
+
 ## [4.3.0] - March 2026
 
 ### Added
@@ -270,6 +304,7 @@ No breaking changes. New `.claude/skills/` directory works alongside existing `.
 
 | Version | Date | Highlight |
 |---------|------|-----------|
+| 4.4 | Mar 2026 | .NET + React Project-Aware Skills |
 | 4.3 | Mar 2026 | Skills Format + Project-Aware Commands |
 | 4.2 | Feb 2026 | Memory Recall System |
 | 4.1 | Jan 2026 | Skill Reflection System |

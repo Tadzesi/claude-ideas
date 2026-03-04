@@ -143,6 +143,8 @@ Install the [Enhanced Statusline](/architecture/statusline) to see real-time met
 | `/prompt-hybrid` | Intelligent with agents | 2-30s | Complex tasks, codebase changes |
 | `/prompt-technical` | Implementation analysis | 5-30s | New features, refactoring |
 | `/prompt-research` | Deep multi-agent research | 60-180s | Security audits, architecture review |
+| `/prompt-dotnet` | .NET project-aware perfection | ~3s | C# APIs, EF Core, .NET features |
+| `/prompt-react` | React project-aware perfection | ~3s | Components, hooks, Vite, routing |
 | `/prompt-article` | Article writing wizard | Interactive | Blog posts, documentation |
 | `/session-start` | Load previous context | ~2s | Beginning of session |
 | `/session-end` | Save current context | ~5s | End of session |
@@ -182,6 +184,35 @@ The system tracks:
 After 3+ occurrences, it suggests smart defaults.
 
 ## What's New
+
+### v4.4 - .NET + React Project-Aware Skills
+
+Two new project-aware skills that scan your codebase before asking any questions:
+
+**`/prompt-dotnet`** - Reads `.csproj`, `Program.cs`, `appsettings.json`, Docker files:
+
+```
+PROJECT SCAN COMPLETE
+Framework: net10.0
+Architecture: Minimal API
+Auth: JWT
+ORM: EF Core | DB: PostgreSQL — ConnectionStrings:Default
+Docker: yes — stack: myapp
+Packages: FluentValidation, Serilog, MediatR
+```
+
+**`/prompt-react`** - Reads `package.json`, `vite.config.ts`, `tsconfig.json`:
+
+```
+PROJECT SCAN COMPLETE
+React: 19.0.0 | TypeScript: yes, strict: yes
+Router: React Router v6
+State: Zustand
+Data fetching: TanStack Query
+Base path: /appname/
+```
+
+Both skills apply best practices for the detected stack automatically — no repeated questions.
 
 ### v4.3 - Skills Format & Project-Aware Commands
 

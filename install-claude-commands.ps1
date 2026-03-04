@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
-# Version: 4.2.0
-# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.2 with Memory Recall & AI Fluency)
+# Version: 4.4.0
+# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.4 with .NET + React project-aware skills)
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -52,7 +52,7 @@ function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -Foregr
 
 # Banner
 Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host " Claude Commands Library Installer v4.2.0" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v4.4.0" -ForegroundColor Cyan
 Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
@@ -180,7 +180,7 @@ function Deploy-ClaudeDirectory {
         }
 
         # Deploy directories that should be updated
-        $directoriesToDeploy = @("commands", "library", "config", "rules", "scripts", "docs")
+        $directoriesToDeploy = @("commands", "skills", "library", "config", "rules", "scripts", "docs")
 
         # Create parent directory if needed
         if (-not (Test-Path $targetClaudeDir)) {
@@ -216,7 +216,7 @@ function Deploy-ClaudeDirectory {
         }
 
         # Clean up directories that should not exist (removed in newer versions)
-        $obsoleteDirs = @("skills", "tasks")
+        $obsoleteDirs = @("tasks")
         foreach ($dir in $obsoleteDirs) {
             $obsoleteDir = Join-Path $targetClaudeDir $dir
             if (Test-Path $obsoleteDir) {
@@ -276,8 +276,8 @@ function Deploy-ClaudeDirectory {
 
         # Create version file to track installed version
         $versionFile = Join-Path $targetClaudeDir "VERSION"
-        "4.2.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
-        Write-Success "Version file created (v4.2.0)"
+        "4.4.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
+        Write-Success "Version file created (v4.4.0)"
 
         return $true
     } catch {
@@ -389,24 +389,25 @@ function Show-Summary {
     Write-Host "`n" -NoNewline
     Write-Success "Installation complete!"
 
-    # v4.2 Feature Announcement
+    # v4.4 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  NEW IN VERSION 4.2 (February 2026)" -ForegroundColor Magenta
+    Write-Host "  NEW IN VERSION 4.4 (March 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`nMemory Recall System:" -ForegroundColor White
-    Write-Host "  - Commands remember project facts between sessions" -ForegroundColor Green
-    Write-Host "  - Phase 0 pre-fills answers from project profile" -ForegroundColor Gray
-    Write-Host "  - /session-end extracts facts automatically" -ForegroundColor Gray
-    Write-Host "`nAI Fluency Framework:" -ForegroundColor White
-    Write-Host "  - Full 4Ds alignment (Delegation, Description, Discernment, Diligence)" -ForegroundColor Green
-    Write-Host "  - Delegation Check, Post-Execution Evaluation, Feedback Loop" -ForegroundColor Gray
-    Write-Host "`nFrom v4.1: Skill Reflection System" -ForegroundColor White
-    Write-Host "  - /reflect - Active skill improvement from feedback" -ForegroundColor Gray
-    Write-Host "`nFrom v4.0: Predictive Intelligence System" -ForegroundColor White
-    Write-Host "  - See 2 steps ahead with proactive guidance" -ForegroundColor Gray
-    Write-Host "`nFrom v3.0: Multi-Agent Research System" -ForegroundColor White
-    Write-Host "  - /prompt-research (deep multi-agent analysis)" -ForegroundColor Gray
-    Write-Host "`nSee .claude/docs/version-history.md for details" -ForegroundColor Cyan
+    Write-Host "`n.NET Project-Aware Skill (NEW):" -ForegroundColor White
+    Write-Host "  - /prompt-dotnet - Scans .csproj, Program.cs, appsettings.json" -ForegroundColor Green
+    Write-Host "  - Auto-detects framework, auth, ORM, Docker without asking" -ForegroundColor Gray
+    Write-Host "  - Applies .NET 10 best practices based on your stack" -ForegroundColor Gray
+    Write-Host "`nReact Project-Aware Skill (NEW):" -ForegroundColor White
+    Write-Host "  - /prompt-react - Scans package.json, vite.config, tsconfig" -ForegroundColor Green
+    Write-Host "  - Auto-detects React version, router, state management, base path" -ForegroundColor Gray
+    Write-Host "  - Applies React best practices based on your detected stack" -ForegroundColor Gray
+    Write-Host "`nFrom v4.3: Skills Format + Project-Aware Commands" -ForegroundColor White
+    Write-Host "  - YAML frontmatter, auto-invocation by Claude, .claude/skills/ dir" -ForegroundColor Gray
+    Write-Host "`nFrom v4.2: Memory Recall + AI Fluency Framework" -ForegroundColor White
+    Write-Host "  - Commands remember project facts between sessions" -ForegroundColor Gray
+    Write-Host "`nFrom v4.0: Predictive Intelligence + Multi-Agent Research" -ForegroundColor White
+    Write-Host "  - See 2 steps ahead, deep multi-agent analysis" -ForegroundColor Gray
+    Write-Host "`nSee docs/reference/changelog.md for full history" -ForegroundColor Cyan
     Write-Host "========================================`n" -ForegroundColor Magenta
 
     Write-Host "`nNext Steps:" -ForegroundColor Cyan
@@ -415,14 +416,16 @@ function Show-Summary {
     Write-Host "  3. Run this script again to update to the latest version" -ForegroundColor Gray
 
     Write-Host "`nAvailable Commands:" -ForegroundColor Cyan
-    Write-Host "  /prompt           - Basic prompt perfection with AI Fluency (v4.2)" -ForegroundColor Gray
-    Write-Host "  /prompt-hybrid    - Advanced with AI Fluency + predictive intelligence (v4.2)" -ForegroundColor Gray
+    Write-Host "  /prompt           - Basic prompt perfection with AI Fluency" -ForegroundColor Gray
+    Write-Host "  /prompt-hybrid    - Advanced with AI Fluency + predictive intelligence" -ForegroundColor Gray
     Write-Host "  /prompt-technical - Technical analysis with predictive intelligence" -ForegroundColor Gray
-    Write-Host "  /prompt-research  - Deep multi-agent research with Delegation (v4.2)" -ForegroundColor Gray
+    Write-Host "  /prompt-research  - Deep multi-agent research" -ForegroundColor Gray
+    Write-Host "  /prompt-dotnet    - .NET project-aware prompt perfection (v4.4)" -ForegroundColor Green
+    Write-Host "  /prompt-react     - React project-aware prompt perfection (v4.4)" -ForegroundColor Green
     Write-Host "  /prompt-article   - Article creation wizard" -ForegroundColor Gray
-    Write-Host "  /reflect          - Skill reflection and improvement (v4.1)" -ForegroundColor Gray
+    Write-Host "  /reflect          - Skill reflection and improvement" -ForegroundColor Gray
     Write-Host "  /session-start    - Load session context" -ForegroundColor Gray
-    Write-Host "  /session-end      - Save session context with Diligence tracking (v4.2)" -ForegroundColor Gray
+    Write-Host "  /session-end      - Save session context" -ForegroundColor Gray
 
     Write-Host ""
 }
