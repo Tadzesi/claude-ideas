@@ -64,7 +64,7 @@ The hybrid system (`/prompt-hybrid`, `/prompt-technical`) uses a scoring engine 
 ### Memory System
 
 - `.claude/memory/project-profile.md` - Structured fact store (tech stack, infrastructure, preferences)
-- `.claude/memory/sessions.md` - Session history (written by `/session-end`, read by `/session-start`)
+- `.claude/memory/sessions.md` - Session history (legacy, maintained manually or via `/reflect`)
 - `.claude/memory/prompt-patterns.md` - Learning system patterns
 - `.claude/memory/project-knowledge.md` - Persistent knowledge graph
 - `.claude/memory/observations.md` - Pending observations from `/reflect`
@@ -97,8 +97,8 @@ Files in `.claude/rules/` use frontmatter `paths:` to scope rules to specific fi
 | `/prompt-react` | React project-aware prompt perfection (scans package.json, vite.config) | ~3s |
 | `/prompt-article` | Interactive article wizard (multi-platform) | Interactive |
 | `/prompt-article-readme` | README generator from project analysis | ~30s |
-| `/session-start` | Load accumulated context from all previous sessions | 2-5s |
-| `/session-end` | Save 10-section comprehensive session context | 5-10s |
+| `/deploy` | Project-aware deployment workflow (reads personal-profile.md) | Interactive |
+| `/new-stack` | Docker stack scaffold (universal, reads personal-profile.md) | ~5s |
 | `/reflect` | Analyze session signals, propose skill file improvements | 5-15s |
 
 See `.claude/docs/comparisons.md` for decision trees.

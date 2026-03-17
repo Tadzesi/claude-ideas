@@ -14,13 +14,25 @@ disable-model-invocation: true
 Read `~/.claude/memory/personal-profile.md` for:
 - `SERVER_HOST`, `SERVER_USER`, `SERVER_STACKS_PATH`
 - `POSTGRES_STACK` — which stack hosts the shared PostgreSQL instance
+- `POSTGRES_CONTAINER` — container name of the PostgreSQL instance
+- `FRONTEND_NGINX_CONTAINER` — nginx container that handles public routing
 - `FRONTEND_NETWORK` — shared frontend network name
 - `INFRASTRUCTURE_NETWORK` — shared infrastructure network name
-- Next available port from `ALLOCATED_PORTS` list
+- Next available port from `ALLOCATED_PORTS` list (if present)
 
-If personal-profile.md missing:
+If personal-profile.md missing or required fields not found, stop and show:
 ```
-Run /install-personal-profile first to set up your server config.
+MISSING PERSONAL PROFILE
+Create ~/.claude/memory/personal-profile.md with your server details:
+  SERVER_HOST=your.server.ip
+  SERVER_USER=your-ssh-username
+  SERVER_STACKS_PATH=~/path/to/stacks
+  POSTGRES_STACK=name-of-postgres-stack
+  POSTGRES_CONTAINER=postgresql-container-name
+  FRONTEND_NGINX_CONTAINER=your-nginx-container-name
+  FRONTEND_NETWORK=your-frontend-network-name
+  ALLOCATED_PORTS=3000,3001,3002   (already-used ports to avoid)
+Then re-run /new-stack.
 ```
 
 ---
@@ -40,8 +52,8 @@ Ask only what's needed to scaffold correctly:
 - [ ] nginx reverse proxy (almost always yes)
 
 **3. Access:**
-- [ ] Public (via Cloudflare Tunnel — adds to `lab463-web` nginx config)
-- [ ] Local only (via `*.463.vinne` subdomain)
+- [ ] Public (via reverse proxy / Cloudflare Tunnel — adds location block to `[FRONTEND_NGINX_CONTAINER]`)
+- [ ] Local only (internal network only)
 - [ ] Both
 
 **4. Port** (suggest next available based on `ALLOCATED_PORTS`):
@@ -82,7 +94,7 @@ services:
       - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
     networks:
       - [stack-name]-internal
-      - linkvault-internal    # if using shared PostgreSQL
+      - [POSTGRES_STACK]-internal    # if using shared PostgreSQL
     restart: unless-stopped
 
 networks:
@@ -90,7 +102,7 @@ networks:
     external: true
   [stack-name]-internal:
     driver: bridge
-  linkvault-internal:   # if using shared PostgreSQL
+  [POSTGRES_STACK]-internal:   # if using shared PostgreSQL
     external: true
 ```
 
@@ -120,20 +132,22 @@ server {
 
 ### `Dockerfile.api`
 ```dockerfile
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:[detected-from-.csproj] AS runtime
 WORKDIR /app
 COPY ./publish .
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 ENTRYPOINT ["dotnet", "[AppName].Api.dll"]
 ```
+Note: Replace `[detected-from-.csproj]` with the TargetFramework version found in .csproj
+(e.g. net8.0 → 8.0, net9.0 → 9.0). If no .csproj found, ask user for .NET version.
 
 ### `.env`
 ```bash
 # [stack-name] environment variables
 # DO NOT COMMIT THIS FILE
 
-DB_CONNECTION_STRING=Host=postgresql-db;Database=[stack-name];Username=postgres;Password=YOUR_DB_PASSWORD
+DB_CONNECTION_STRING=Host=[POSTGRES_CONTAINER];Database=[stack-name];Username=postgres;Password=YOUR_DB_PASSWORD
 # Add other secrets below
 ```
 
@@ -186,17 +200,17 @@ scp docker-compose.yml nginx.conf Dockerfile.api .env \
 
 # 3. Create database on PostgreSQL (if using shared instance)
 ssh [SERVER_USER]@[SERVER_HOST] \
-  "docker exec postgresql-db psql -U postgres -c 'CREATE DATABASE [stack-name];'"
+  "docker exec [POSTGRES_CONTAINER] psql -U postgres -c 'CREATE DATABASE [stack-name];'"
 
 # 4. First deploy (after copying binaries and frontend)
 ssh [SERVER_USER]@[SERVER_HOST] \
   "cd [SERVER_STACKS_PATH]/[stack-name] && docker compose build && docker compose up -d"
 
-# 5. If public access — add to lab463-web nginx.conf:
+# 5. If public access — add to [FRONTEND_NGINX_CONTAINER] nginx.conf:
 #    location /[stack-name]/ {
 #        proxy_pass http://[stack-name]:80/;
 #    }
-# Then: docker exec lab463-web nginx -s reload
+# Then: docker exec [FRONTEND_NGINX_CONTAINER] nginx -s reload
 ```
 
 ---

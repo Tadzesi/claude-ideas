@@ -21,13 +21,23 @@ Before any analysis, read the project to understand what already exists:
 5. Check `docker-compose.yml` if exists — service name, ports, networks
 6. Read `project-profile.md` from `.claude/memory/` if exists
 
+If `.csproj` is not found in current directory or immediate subdirectories:
+```
+NO .CSPROJ FOUND
+This command is for .NET projects. Is this the right directory?
+Options:
+  - Provide path to .csproj: [path]
+  - Continue without scan (I'll describe my stack manually)
+  - Cancel
+```
+
 Display brief summary:
 ```
 PROJECT SCAN COMPLETE
-Framework: [e.g. net10.0]
-Architecture: [Minimal API / Controllers]
-Auth: [JWT / None / Cookie]
-ORM: [EF Core / Dapper / None]
+Framework: [from .csproj TargetFramework]
+Architecture: [Minimal API / Controllers — from Program.cs]
+Auth: [JWT / None / Cookie — from Program.cs]
+ORM: [EF Core / Dapper / None — from packages]
 DB: [PostgreSQL / MS SQL / None] — [connection string key]
 Docker: [yes/no] — stack: [name if found]
 Packages: [key ones: FluentValidation, Serilog, MediatR, etc.]
@@ -69,7 +79,7 @@ If multiple valid approaches exist for their stack, present options:
 
 Based on detected stack, apply these without asking:
 
-**General .NET 10:**
+**General .NET (apply based on detected TargetFramework):**
 - Async/await throughout — no `.Result` or `.Wait()`
 - `CancellationToken` on all async methods that touch IO
 - `ILogger<T>` injection, not static logging
@@ -141,7 +151,7 @@ After approval — proceed with implementation following the perfected prompt an
 
 ---
 
-## .NET 10 Quick Reference (apply without asking)
+## .NET Quick Reference (apply based on detected version)
 
 ### Minimal API endpoint pattern
 ```csharp

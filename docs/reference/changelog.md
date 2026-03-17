@@ -2,6 +2,62 @@
 
 All notable changes to the Claude Commands Library.
 
+## [4.5.0] - March 2026
+
+### Removed
+
+- **`/session-start` and `/session-end`** — deleted (both skills and old commands/ format)
+  - Replaced by Claude Code's built-in auto-memory system (`~/.claude/projects/.../memory/`)
+  - Auto-memory loads context into every conversation automatically without a command
+  - `session-adapter.md` library file also removed (orphaned after deletion)
+
+### Changed
+
+- **Universal skills** — all project-specific hardcoded values removed from all skills
+  - `/deploy` and `/new-stack`: removed `lab463-web`, `linkvault-internal`, `postgresql-db` hardcodes
+  - All server config now read dynamically from `~/.claude/memory/personal-profile.md`
+  - `personal-profile.md` now requires: `POSTGRES_CONTAINER`, `FRONTEND_NGINX_CONTAINER`
+  - `/new-stack` Docker network references use `[POSTGRES_STACK]-internal` (dynamic)
+  - `/new-stack` Dockerfile .NET version now detected from `.csproj` TargetFramework
+  - `/prompt-hybrid` context display: reads from `project-profile.md`, no hardcoded project facts
+  - `/prompt-hybrid` threshold corrected: Very High is 20+ (was 15+, mismatched CLAUDE.md)
+  - `/prompt-dotnet` best practices header: version-agnostic (was ".NET 10")
+  - `/prompt-dotnet` Quick Reference: version-agnostic (was ".NET 10 Quick Reference")
+
+- **`/deploy`**: safer defaults
+  - Default output is now `copy` (show script) — was ambiguous between copy and execute
+  - Explicit guard: commands are NOT auto-executed without `run` confirmation
+  - DB migrations detection added to Phase 1 pre-deploy checks (was a footnote)
+
+- **`/reflect`**: scope and quality limits
+  - Steps 2+3 merged (removed duplication)
+  - Max 5 observations per session
+  - Priority field added to each observation
+  - Grouped approval (HIGH/MEDIUM) replaces per-item yes/no loop
+
+### Fixed
+
+- **`/prompt-dotnet`**: scan fallback when `.csproj` not found (3 options presented to user)
+- **`/prompt-react`**: scan fallback when `package.json` not found; monorepo support
+  (searches `frontend/`, `client/`, `web/`, `app/` subdirectories before failing)
+- **`/session-start`**: removed hardcoded version `v4.2.0` and hardcoded stack info
+- **`/session-end`**: context limit warning added; sessions.md trimmed to max 10 entries;
+  pattern detection scoped to current session only (no cross-session inference)
+- **Installer**: removed "private repository" error message (repo is public)
+- **CLAUDE.md**: commands table updated — removed session commands, added `/deploy` and `/new-stack`
+
+### Upgrade Guide (4.4 → 4.5)
+
+`/session-start` and `/session-end` no longer exist. If you relied on them:
+- Context is now auto-loaded via Claude Code's built-in memory system
+- Historical `sessions.md` data is preserved (not deleted by installer)
+
+```powershell
+.\install-claude-commands.ps1
+```
+
+---
+
 ## [4.4.0] - March 2026
 
 ### Added

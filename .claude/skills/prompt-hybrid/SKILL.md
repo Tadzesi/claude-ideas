@@ -21,22 +21,20 @@ Before any analysis, load known facts:
 2. Read recent sessions from `.claude/memory/sessions.md` (last 3 entries)
 3. Read `.claude/memory/prompt-patterns.md` (learned patterns if exists)
 
-Display loaded context:
+Display loaded context — use ONLY facts read from files, do NOT add hardcoded values:
 
 ```
 PROJECT CONTEXT LOADED
 
-Project: Claude Commands Library (claude-ideas) v4.2.0
-Stack: Node.js, VitePress, Markdown commands, JSON config
-Commands: 9 commands in .claude/commands/ + 9 in .claude/skills/
-Library: prompt-perfection-core.md v1.5 + 5 adapters + intelligence + orchestration
-Config: 8 JSON config files in .claude/config/
-Memory: project-profile.md, sessions.md, prompt-patterns.md
-Language: Bilingual (Slovak/English)
+Project: [name and version from project-profile.md]
+Stack: [from project-profile.md]
+Structure: [key directories from project-profile.md]
 
-Recent work: [from sessions.md - brief summary]
-Learned patterns: [from prompt-patterns.md if relevant]
+Recent work: [from sessions.md - brief summary of last 1-2 sessions]
+Learned patterns: [from prompt-patterns.md if relevant, else omit]
 ```
+
+If project-profile.md does not exist, note: "No project profile found — proceeding without pre-loaded context."
 
 ---
 
@@ -72,9 +70,9 @@ Learned patterns: [from prompt-patterns.md if relevant]
 
 **Decision:**
 - 0-4: Simple path (no agent)
-- 5-9: Ask user ("Moderate complexity. Use agent for codebase analysis? yes/no")
-- 10+: Complex path (spawn agent automatically)
-- 15+: Very High (multi-agent verification)
+- 5-9: Ask user ("Moderate complexity detected. Use agent for codebase analysis? (y/n)")
+- 10+: Complex path — inform user before spawning: "High complexity. Spawning Explore Agent."
+- 20+: Very High (multi-agent verification — warn user this will take 60-180s)
 
 ---
 
@@ -126,9 +124,9 @@ PERFECTED PROMPT (Agent-Enhanced)
 Goal: [one clear sentence]
 
 Context (project auto-loaded):
-- Project: Claude Commands Library v4.2.0
-- Environment: Windows 11, bash, Node.js
-- Architecture: Library-based Phase 0 pattern
+- Project: [from project-profile.md]
+- Environment: [from project-profile.md]
+- Architecture: [from project-profile.md]
 - Agent findings: [what the agent discovered]
 
 Scope:
@@ -157,22 +155,6 @@ Technical Validation (Agent):
 
 Agent Recommendations: [key findings]
 ```
-
----
-
-## Version History
-
-**v3.0 (2026-03-03):**
-- Converted to Skills format with YAML frontmatter
-- STARTUP section loads project context before any analysis
-- Project-specific complexity scoring annotations
-- Agent output contextualized to project structure
-- Session-aware recommendations
-
-**v4.1 (2026-01-20):** AI Fluency Delegation Assessment
-**v4.0 (2026-01-01):** Predictive Intelligence
-**v2.0 (2024-12-20):** Unified library system
-**v1.0 (2024-12-15):** Initial release
 
 ---
 

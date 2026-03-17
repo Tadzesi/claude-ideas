@@ -36,8 +36,10 @@ Load path-specific rules automatically:
 - `/prompt-research` - Deep multi-agent research (60-180s)
 - `/prompt-article` - Article wizard
 - `/prompt-article-readme` - README generator
-- `/session-start` - Load session context
-- `/session-end` - Save session context
+- `/prompt-dotnet` - .NET project-aware prompt perfection
+- `/prompt-react` - React project-aware prompt perfection
+- `/deploy` - Project-aware deployment workflow
+- `/new-stack` - Docker stack scaffold
 - `/reflect` - Skill improvement analysis
 
 **Configuration:**
@@ -65,12 +67,3 @@ Load path-specific rules automatically:
 - "Complexity Score" (not just Score)
 - "Phase 0" for prompt perfection stage
 
----
-
-## Active Context
-
-This section is updated by /session-end:
-
-**Last Session:** See @.claude/memory/sessions.md
-**Active Work:** Check session memory for current tasks
-**Pending Items:** Review observations.md for unresolved items

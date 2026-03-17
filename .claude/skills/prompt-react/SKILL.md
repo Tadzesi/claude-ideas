@@ -12,7 +12,21 @@ disable-model-invocation: false
 
 ## STARTUP: Scan Project (ALWAYS FIRST)
 
-Before any analysis, read the project to understand what already exists:
+Before any analysis, read the project to understand what already exists.
+
+First: locate `package.json`. Check current directory, then common subdirectories
+(`frontend/`, `client/`, `web/`, `app/`). If found in a subdirectory, all subsequent
+paths are relative to that subdirectory.
+
+If `package.json` is not found anywhere:
+```
+NO PACKAGE.JSON FOUND
+This command is for React/Vite projects. Is this the right directory?
+Options:
+  - Provide path to package.json: [path]
+  - Continue without scan (I'll describe my stack manually)
+  - Cancel
+```
 
 1. Read `package.json` — React version, key dependencies (Router, Query, Zustand, etc.), scripts
 2. Read `vite.config.ts` / `vite.config.js` — base path, plugins, proxy config, build output

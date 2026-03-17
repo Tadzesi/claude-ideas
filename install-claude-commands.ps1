@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
-# Version: 4.4.0
-# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.4 with .NET + React project-aware skills)
+# Version: 4.5.0
+# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.5 with universal skills)
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -52,7 +52,7 @@ function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -Foregr
 
 # Banner
 Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host " Claude Commands Library Installer v4.4.0" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v4.5.0" -ForegroundColor Cyan
 Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
@@ -276,8 +276,8 @@ function Deploy-ClaudeDirectory {
 
         # Create version file to track installed version
         $versionFile = Join-Path $targetClaudeDir "VERSION"
-        "4.4.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
-        Write-Success "Version file created (v4.4.0)"
+        "4.5.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
+        Write-Success "Version file created (v4.5.0)"
 
         return $true
     } catch {
@@ -389,22 +389,22 @@ function Show-Summary {
     Write-Host "`n" -NoNewline
     Write-Success "Installation complete!"
 
-    # v4.4 Feature Announcement
+    # v4.5 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  NEW IN VERSION 4.4 (March 2026)" -ForegroundColor Magenta
+    Write-Host "  NEW IN VERSION 4.5 (March 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`n.NET Project-Aware Skill (NEW):" -ForegroundColor White
-    Write-Host "  - /prompt-dotnet - Scans .csproj, Program.cs, appsettings.json" -ForegroundColor Green
-    Write-Host "  - Auto-detects framework, auth, ORM, Docker without asking" -ForegroundColor Gray
-    Write-Host "  - Applies .NET 10 best practices based on your stack" -ForegroundColor Gray
-    Write-Host "`nReact Project-Aware Skill (NEW):" -ForegroundColor White
-    Write-Host "  - /prompt-react - Scans package.json, vite.config, tsconfig" -ForegroundColor Green
-    Write-Host "  - Auto-detects React version, router, state management, base path" -ForegroundColor Gray
-    Write-Host "  - Applies React best practices based on your detected stack" -ForegroundColor Gray
-    Write-Host "`nFrom v4.3: Skills Format + Project-Aware Commands" -ForegroundColor White
-    Write-Host "  - YAML frontmatter, auto-invocation by Claude, .claude/skills/ dir" -ForegroundColor Gray
-    Write-Host "`nFrom v4.2: Memory Recall + AI Fluency Framework" -ForegroundColor White
-    Write-Host "  - Commands remember project facts between sessions" -ForegroundColor Gray
+    Write-Host "`nUniversal Skills (all project-specific values removed):" -ForegroundColor White
+    Write-Host "  - /deploy and /new-stack now read config from personal-profile.md" -ForegroundColor Green
+    Write-Host "  - No hardcoded server names, container names, or versions" -ForegroundColor Gray
+    Write-Host "  - Works with any project, not just claude-ideas" -ForegroundColor Gray
+    Write-Host "`nSession commands removed (replaced by auto-memory):" -ForegroundColor White
+    Write-Host "  - /session-start and /session-end deleted" -ForegroundColor Gray
+    Write-Host "  - Claude Code auto-memory handles context persistence" -ForegroundColor Gray
+    Write-Host "`nScan fallbacks added to prompt-dotnet and prompt-react:" -ForegroundColor White
+    Write-Host "  - Clear error + options when .csproj or package.json not found" -ForegroundColor Gray
+    Write-Host "  - Monorepo support in /prompt-react (searches subdirectories)" -ForegroundColor Gray
+    Write-Host "`nFrom v4.4: .NET + React project-aware skills" -ForegroundColor White
+    Write-Host "  - /prompt-dotnet, /prompt-react, /deploy, /new-stack" -ForegroundColor Gray
     Write-Host "`nFrom v4.0: Predictive Intelligence + Multi-Agent Research" -ForegroundColor White
     Write-Host "  - See 2 steps ahead, deep multi-agent analysis" -ForegroundColor Gray
     Write-Host "`nSee docs/reference/changelog.md for full history" -ForegroundColor Cyan
@@ -420,12 +420,12 @@ function Show-Summary {
     Write-Host "  /prompt-hybrid    - Advanced with AI Fluency + predictive intelligence" -ForegroundColor Gray
     Write-Host "  /prompt-technical - Technical analysis with predictive intelligence" -ForegroundColor Gray
     Write-Host "  /prompt-research  - Deep multi-agent research" -ForegroundColor Gray
-    Write-Host "  /prompt-dotnet    - .NET project-aware prompt perfection (v4.4)" -ForegroundColor Green
-    Write-Host "  /prompt-react     - React project-aware prompt perfection (v4.4)" -ForegroundColor Green
+    Write-Host "  /prompt-dotnet    - .NET project-aware prompt perfection" -ForegroundColor Green
+    Write-Host "  /prompt-react     - React project-aware prompt perfection" -ForegroundColor Green
     Write-Host "  /prompt-article   - Article creation wizard" -ForegroundColor Gray
+    Write-Host "  /deploy           - Project-aware deployment workflow" -ForegroundColor Green
+    Write-Host "  /new-stack        - Docker stack scaffold" -ForegroundColor Green
     Write-Host "  /reflect          - Skill reflection and improvement" -ForegroundColor Gray
-    Write-Host "  /session-start    - Load session context" -ForegroundColor Gray
-    Write-Host "  /session-end      - Save session context" -ForegroundColor Gray
 
     Write-Host ""
 }
@@ -461,10 +461,10 @@ function Install-ClaudeCommands {
 
     if (-not (Test-GitHubAuth)) {
         Write-Error "GitHub authentication failed."
-        Write-Info "This is a private repository. Please configure Git authentication:"
-        Write-Info "  1. Generate Personal Access Token: https://github.com/settings/tokens"
-        Write-Info "  2. Run: git config --global credential.helper wincred"
-        Write-Info "  3. Try cloning the repo manually first: git clone $RepoUrl"
+        Write-Info "Could not reach the repository. Please check:"
+        Write-Info "  1. Internet connection is available"
+        Write-Info "  2. Git is configured: git config --global user.email and user.name"
+        Write-Info "  3. Try manually: git clone $RepoUrl"
         return $false
     }
     Write-Success "GitHub authentication OK"

@@ -34,44 +34,28 @@ Review the conversation for:
 
 ---
 
-## Step 2: Generate Observations
+## Step 2: Generate Observations and Proposals
 
-For each finding, create a structured observation:
+For each finding, create one structured entry. Group by target file.
 
 ```
-OBSERVATION [N]: [Category]
+OBSERVATION [N]: [Category] — [target file]
 
-Issue: [What happened]
+Issue: [What happened in this session]
 Impact: [Why this matters]
-Root cause: [Why it happened]
-
-Proposed fix:
-- File: [which file to change]
-- Change: [what to change]
-- Rationale: [why this helps]
+Proposed fix: [Specific change to make — file, line/section, new content]
+Priority: HIGH / MEDIUM / LOW
 ```
 
----
-
-## Step 3: Propose Changes
-
-Present proposals grouped by file:
-
-**project-profile.md updates:**
-- [Fact to add to the profile]
-
-**Command file improvements:**
-- [Command]: [specific improvement]
-
-**Library improvements:**
-- [Library file]: [specific improvement]
-
-**Config updates:**
-- [Config file]: [what to adjust]
+Rules:
+- Only include findings from THIS session's visible conversation
+- Do NOT infer patterns across sessions
+- Scope: max 5 observations per session (quality over quantity)
+- If no clear fix exists, note "needs investigation" and skip
 
 ---
 
-## Step 4: Save to Observations
+## Step 3: Save to Observations
 
 Append confirmed observations to `.claude/memory/observations.md`:
 
@@ -83,13 +67,15 @@ Append confirmed observations to `.claude/memory/observations.md`:
 
 ---
 
-## Step 5: Offer to Apply
+## Step 4: Offer to Apply
 
-For each proposal, ask:
-"Apply this change now? (yes/no/later)"
+Present all HIGH priority proposals together and ask once:
+"Apply HIGH priority changes now? (yes/no)"
 
-If yes, apply the change immediately.
-If later, it stays in observations.md for next session.
+If yes — apply all HIGH priority changes in sequence, confirm each file edited.
+MEDIUM/LOW priority items stay in observations.md for next session.
+
+Do NOT ask per-item — one decision for all HIGH, one for all MEDIUM.
 
 ---
 

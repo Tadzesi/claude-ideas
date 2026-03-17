@@ -1,8 +1,8 @@
 ---
 name: deploy
-description: Deploy a .NET + React application to the Linux home server. Scans the
-             project to determine what needs to be built and deployed, generates the
-             exact commands. Use when you are ready to deploy a stack update.
+description: Deploy a project to a remote Linux server. Scans the project to determine
+             what needs to be built and deployed, generates the exact commands.
+             Use when you are ready to deploy a stack update.
 argument-hint: "[stack-name or leave empty to auto-detect]"
 disable-model-invocation: true
 ---
@@ -17,11 +17,14 @@ Read `~/.claude/memory/personal-profile.md` for:
 - `SERVER_USER` — SSH username
 - `SERVER_STACKS_PATH` — path to stacks directory on server (e.g. `~/server/stacks/`)
 
-If file doesn't exist or fields are missing:
+If file doesn't exist or required fields are missing, stop and show:
 ```
 MISSING PERSONAL PROFILE
-Create ~/.claude/memory/personal-profile.md with your server details.
-Template: https://github.com/Tadzesi/claude-ideas/blob/main/.claude/templates/personal-profile.md
+Create ~/.claude/memory/personal-profile.md with:
+  SERVER_HOST=your.server.ip
+  SERVER_USER=your-ssh-username
+  SERVER_STACKS_PATH=~/path/to/stacks
+Then re-run /deploy.
 ```
 
 **Step 2 — Scan current project:**
@@ -60,8 +63,11 @@ Before generating commands, verify:
    - .NET: `dotnet build` passes?
    - React: TypeScript errors? (`npm run build` dry check)
 3. **Env vars** — does `.env` exist with required keys?
+4. **DB migrations** — if EF Core detected (`*.DbContext`, `Migrations/` folder),
+   flag explicitly: "DB migrations present — add `dotnet ef database update` to deploy sequence?"
 
-Show results, proceed only after user confirms: `y`
+Show results. If issues found, stop and ask user to resolve before proceeding.
+If clean, confirm: `Ready to generate deploy commands. Proceed? (y/n)`
 
 ### Phase 2 — Generate Deploy Commands
 
@@ -101,11 +107,17 @@ ssh [SERVER_USER]@[SERVER_HOST] "docker compose -f [SERVER_STACKS_PATH]/[stack-n
 
 ### Phase 3 — Execute or Copy
 
-Ask: **Execute commands now, or copy to clipboard?**
+Default: output as a copyable bash script. Ask only if user wants something different.
 
-- `run` → Execute each step sequentially, stop on error, show output
-- `copy` → Output full bash script ready to paste in terminal
-- `script` → Save as `deploy.sh` in project root
+```
+Generated deploy script for [stack-name].
+Options:
+  copy   — show full script to paste (DEFAULT)
+  run    — execute each step sequentially, stop on error
+  script — save as deploy.sh in project root
+```
+
+Do NOT run commands automatically without explicit `run` confirmation.
 
 ### Phase 4 — Post-deploy Verification
 
