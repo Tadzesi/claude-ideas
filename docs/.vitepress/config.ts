@@ -61,6 +61,14 @@ export default defineConfig({
           ]
         },
         {
+          text: 'Deployment & Infrastructure',
+          collapsed: false,
+          items: [
+            { text: '/deploy', link: '/commands/deploy' },
+            { text: '/new-stack', link: '/commands/new-stack' }
+          ]
+        },
+        {
           text: 'Utility Commands',
           collapsed: false,
           items: [

@@ -336,6 +336,6 @@ Claude will find the pattern in your profile or from the mentioned file.
 
 - [/prompt-hybrid](/commands/prompt-hybrid) - When you need agent assistance
 - [/prompt-technical](/commands/prompt-technical) - For implementation planning
-- [/session-end](/commands/session-end) - Save your work
+- [/reflect](/commands/reflect) - Improve skills after a session
 - [Skills Format](/architecture/skills-format) - How the new format works
 - [Phase 0](/architecture/phase-0) - The validation flow

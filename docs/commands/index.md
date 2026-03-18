@@ -1,12 +1,11 @@
 # Commands Overview
 
-Claude Commands Library provides 10 slash commands organized into four categories.
+Claude Commands Library provides 11 slash commands organized into five categories.
 
-::: tip Version 4.4 - .NET + React Project-Aware Skills
-New project-aware skills scan your codebase and pre-fill context automatically:
-- **`/prompt-dotnet`** - Detects framework, auth, ORM, Docker from project files
-- **`/prompt-react`** - Detects React version, router, state management, base path
-- All commands include AI Fluency features (Delegation, Discernment, Diligence)
+::: tip Version 4.5 - Universal Skills
+- **`/deploy`** - Project-aware deployment, reads server config from `personal-profile.md`
+- **`/new-stack`** - Docker stack scaffold, universal config (no hardcoded values)
+- Session commands removed — replaced by Claude Code's built-in auto-memory
 - [View Changelog →](/reference/changelog)
 :::
 
@@ -22,8 +21,8 @@ New project-aware skills scan your codebase and pre-fill context automatically:
 | [/prompt-react](/commands/prompt-react) | React project-aware perfection | ~3s | v4.4 |
 | [/prompt-article](/commands/prompt-article) | Article writing | Interactive | v2.0 |
 | [/prompt-article-readme](/commands/prompt-article-readme) | README generation | ~30s | v2.0 |
-| [/session-start](/commands/session-start) | Load session context | ~2s | v2.0 |
-| [/session-end](/commands/session-end) | Save session context | ~5s | v2.1 |
+| [/deploy](/commands/deploy) | Project-aware deployment | Interactive | v4.5 |
+| [/new-stack](/commands/new-stack) | Docker stack scaffold | ~5s | v4.5 |
 | [/reflect](/commands/reflect) | Improve skills | 5-15s | v1.0 |
 
 ## Categories
@@ -84,21 +83,23 @@ Interactive wizard for blog posts, Medium articles, LinkedIn content.
 ```
 Analyzes project and generates comprehensive README.
 
-### Session Management
+### Deployment & Infrastructure
 
-Commands for preserving context between work sessions.
+Commands for deploying and scaffolding Docker stacks.
 
-**[/session-start](/commands/session-start)** - Load context
+**[/deploy](/commands/deploy)** - Project-aware deployment
 ```bash
-/session-start
+/deploy
+/deploy my-app
 ```
-Loads previous session context including decisions, changes, and work in progress.
+Scans project, reads server config from `personal-profile.md`, generates complete deploy command sequence.
 
-**[/session-end](/commands/session-end)** - Save context
+**[/new-stack](/commands/new-stack)** - Docker stack scaffold
 ```bash
-/session-end
+/new-stack
+/new-stack my-app
 ```
-Saves comprehensive session context for continuity.
+Generates `docker-compose.yml`, `nginx.conf`, `Dockerfile.api`, `.env`, `deploy.sh` for a new stack.
 
 ### Utility
 
@@ -230,8 +231,8 @@ When complexity warrants, specialized agents help:
 | Architecture review | `/prompt-research` |
 | Write documentation | `/prompt-article` |
 | Generate README | `/prompt-article-readme` |
-| Start work session | `/session-start` |
-| End work session | `/session-end` |
+| Deploy to server | `/deploy` |
+| Scaffold Docker stack | `/new-stack` |
 | Improve a command | `/reflect` |
 
 ## Next Steps

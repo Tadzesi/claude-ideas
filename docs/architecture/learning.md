@@ -261,5 +261,5 @@ rm .claude/memory/prompt-patterns.md
 ## Related
 
 - [/reflect Command](/commands/reflect) - Active skill improvement
-- [Session Management](/commands/session-start) - Context continuity
+- [Auto-memory](/architecture/skills-format) - Context continuity via Claude Code
 - [Configuration](/reference/configuration) - Customize behavior

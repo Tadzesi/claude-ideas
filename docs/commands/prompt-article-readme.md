@@ -231,4 +231,4 @@ The generated README is a starting point. Customize:
 ## Related Commands
 
 - [/prompt-article](/commands/prompt-article) - For other written content
-- [/session-end](/commands/session-end) - Save after generating README
+- [/reflect](/commands/reflect) - Improve skills after a session

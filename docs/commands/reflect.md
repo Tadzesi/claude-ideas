@@ -233,4 +233,4 @@ Settings in `.claude/config/learning-config.json`:
 
 - [/prompt-technical](/commands/prompt-technical) - Common target for reflection
 - [/prompt-hybrid](/commands/prompt-hybrid) - Another common target
-- [/session-end](/commands/session-end) - Consider running /reflect first
+- [/reflect](/commands/reflect) - Run after any skill-heavy session
