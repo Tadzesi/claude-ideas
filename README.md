@@ -6,17 +6,18 @@
 
 A collection of Claude Code slash commands for prompt engineering, refinement, and content generation. Transform vague ideas into precise, executable prompts with intelligent agent assistance, caching, and learning.
 
-**Version 4.1** - January 2026
+**Version 4.5** - March 2026
 
 ## Features
 
-- 🔄 **Skill Reflection** - Actively improve skills from conversation feedback (NEW v4.1)
-- 📊 **Enhanced Statusline** - Color-coded context bar, tokens, API duration with icons (NEW v4.1)
+- 🌍 **Universal Skills** - All skills read config from personal-profile.md, no hardcoded values (NEW v4.5)
+- 🔵 **Project-Aware Commands** - /prompt-dotnet and /prompt-react scan your project automatically (NEW v4.4)
+- 🚀 **Deploy & Stack** - /deploy and /new-stack for project-aware deployment workflows (NEW v4.3)
+- 🔄 **Skill Reflection** - Actively improve skills from conversation feedback (v4.1)
+- 📊 **Enhanced Statusline** - Color-coded context bar, tokens, API duration with icons (v4.1)
 - 🔮 **Predictive Intelligence** - See 2 steps ahead with proactive guidance (v4.0)
 - ⚠️ **Proactive Warnings** - Prevent problems BEFORE coding starts (v4.0)
 - 📐 **Pattern Recognition** - Auto-detect project conventions and architectural patterns (v4.0)
-- 🔗 **Relationship Mapping** - Connect current work to previous tasks (v4.0)
-- ⏭️ **Next-Steps Prediction** - Forecast logical followups with priority levels (v4.0)
 - ⚡ **Prompt Perfection** - Analyze and refine any prompt to be clear and unambiguous
 - 🤖 **Intelligent Agent Assistance** - Automatic codebase analysis for complex tasks
 - 🔍 **Multi-Agent Verification** - Cross-validate critical operations with 3 agents
@@ -26,7 +27,6 @@ A collection of Claude Code slash commands for prompt engineering, refinement, a
 - 🔧 **Technical Analysis** - Deep dive into implementation options with code scaffolding
 - 📝 **Article Generation** - Interactive wizard for multi-platform content creation
 - 📄 **README Generation** - Auto-generate professional documentation from project analysis
-- 💾 **Session Management** - Save and load work context across sessions
 
 ## Documentation
 
@@ -52,54 +52,40 @@ npm run docs:preview
 
 ---
 
-## What's New in Version 4.1 🔄
+## What's New in Version 4.5 🌍
 
-**Major Release - AI Fluency Framework + Skill Reflection (January 2026)**
+**Universal Skills + Project-Aware Commands (March 2026)**
 
-Version 4.1 integrates **Anthropic's AI Fluency Framework** (the 4Ds model) and **Skill Reflection** with an **Enhanced Statusline**.
+Version 4.5 makes all skills fully universal - no hardcoded values anywhere. Skills read configuration dynamically from `personal-profile.md`.
 
 ### Headline Features
 
-🤝 **NEW: AI Fluency Framework Integration**
-- **Delegation Assessment** - Explicitly decide what AI vs humans should handle
-- **Interaction Mode Detection** - Automation, Augmentation, or Agency mode
-- **Performance Description** - Control AI behavior (concise/detailed, formal/casual)
-- **Discernment Hints** - Evaluation criteria for AI outputs
-- **Diligence Summary** - Track AI-generated content requiring verification
+🌍 **Universal Skills**
+- All skills removed hardcoded usernames, server addresses, paths
+- `/deploy` and `/new-stack` now read server config from `personal-profile.md`
+- Safer defaults - no accidental deploys to wrong servers
 
-Based on Anthropic's official AI Fluency research: effective, efficient, ethical, and safe AI collaboration.
+🔵 **Project-Aware Commands (v4.4)**
+- `/prompt-dotnet` - scans `.csproj`, `Program.cs`, detects framework version and patterns
+- `/prompt-react` - scans `package.json`, `vite.config`, detects React version and setup
+- Both include scan fallbacks when project files are missing
 
-📊 **NEW: Enhanced Statusline**
-- Color-coded context usage bar (green/yellow/orange/red)
-- Icons for folder, git branch, tokens, API time
-- Global cumulative API duration with delta indicator
-- One-line install: `iwr -useb https://raw.githubusercontent.com/Tadzesi/claude-ideas/main/install-claude-statusline.ps1 | iex`
+🚀 **Removed: /session-start and /session-end**
+- Replaced by Claude Code's built-in **auto-memory system**
+- No manual session saving needed - Claude Code handles context automatically
+- Cleaner workflow, one less step between sessions
 
-🔄 **NEW: `/reflect` Command**
-- Signal detection - analyzes corrections, successes, edge cases, and preferences
-- Priority classification - HIGH/MED/LOW coded change proposals
-- Direct skill modifications - apply changes to skill files with user approval
-- Observation persistence - save declined changes for later review
-- Learning integration - connects with existing learning system
+---
 
-🎯 **Before vs After:**
-- **Before (v4.0):** Passive pattern tracking
-- **After (v4.1):** Active skill improvement from feedback
+## What Was New in Version 4.1 🔄
 
-📊 **Example:**
-```bash
-# After using /prompt-hybrid and making corrections
-/reflect prompt-hybrid
+**AI Fluency Framework + Skill Reflection (January 2026)**
 
-# Output:
-# Skill Reflection: prompt-hybrid
-# Signals: 2 corrections, 3 successes
-#
-# [HIGH] + Constraints/NEVER: "Use gradients unless requested"
-# [MED]  + Smart Default: "Default to TypeScript"
-#
-# Apply these changes? [Y/n]
-```
+🤝 **AI Fluency Framework Integration** - Delegation Assessment, Interaction Mode Detection, Discernment Hints based on Anthropic's official AI Fluency research.
+
+📊 **Enhanced Statusline** - Color-coded context bar, tokens, API duration with delta indicator.
+
+🔄 **`/reflect` Command** - Analyze session signals, propose priority-coded skill improvements (HIGH/MED/LOW), apply with user approval.
 
 See [v4.1 Release Notes](.claude/docs/v4.1-RELEASE-NOTES.md) for complete details.
 
@@ -210,18 +196,18 @@ See [CLAUDE.md](CLAUDE.md) for complete v2.0 details and migration guide.
 # 3. Technical implementation analysis
 /prompt-technical Add caching layer with Redis
 
-# 4. Skill reflection - improve skills from feedback (NEW v4.1)
+# 4. Project-aware commands (NEW v4.4)
+/prompt-dotnet Add authentication to ASP.NET Core API
+/prompt-react Add a data table component with sorting
+
+# 5. Skill reflection - improve skills from feedback
 /reflect prompt-hybrid
 
-# 5. Create an article
+# 6. Create an article
 /prompt-article Write about CI/CD pipelines
 
-# 6. Generate README
+# 7. Generate README
 /prompt-article-readme
-
-# 7. Session management
-/session-start    # Load previous context
-/session-end      # Save current work
 ```
 
 ## Prerequisites
@@ -288,7 +274,7 @@ Then restart Claude Code.
 
 See **[Statusline Installation Guide](.claude/docs/statusline-install.md)** for detailed options.
 
-## Available Commands (9 Total)
+## Available Commands (11 Total)
 
 ### Prompt Engineering
 
@@ -304,6 +290,13 @@ See **[Statusline Installation Guide](.claude/docs/statusline-install.md)** for 
 |---------|---------|------|------------|
 | `/prompt-technical` 🤖🔮 | Implementation analysis with FULL predictive intelligence and hybrid intelligence | 5-30s | Advanced |
 
+### Project-Aware Commands
+
+| Command | Purpose | Time | Complexity |
+|---------|---------|------|------------|
+| `/prompt-dotnet` 🔵 | .NET project-aware prompt perfection (scans .csproj, Program.cs) | ~3s | Simple |
+| `/prompt-react` ⚛️ | React project-aware prompt perfection (scans package.json, vite.config) | ~3s | Simple |
+
 ### Content Creation
 
 | Command | Purpose | Time | Complexity |
@@ -311,18 +304,18 @@ See **[Statusline Installation Guide](.claude/docs/statusline-install.md)** for 
 | `/prompt-article` | Interactive article wizard | 2-5min | Medium |
 | `/prompt-article-readme` | README generator | 10-30s | Medium |
 
+### Deployment & Infrastructure
+
+| Command | Purpose | Time | Complexity |
+|---------|---------|------|------------|
+| `/deploy` 🚀 | Project-aware deployment workflow (reads personal-profile.md) | Interactive | Medium |
+| `/new-stack` 🐳 | Docker stack scaffold (universal, reads personal-profile.md) | ~5s | Simple |
+
 ### Skill Improvement
 
 | Command | Purpose | Time | Complexity |
 |---------|---------|------|------------|
-| `/reflect` 🔄 | Analyze session and propose skill improvements (NEW v4.1) | 5-15s | Medium |
-
-### Session Management
-
-| Command | Purpose | Time | Complexity |
-|---------|---------|------|------------|
-| `/session-start` | Load previous session context | 2-5s | Simple |
-| `/session-end` | Save current session context | 5-10s | Simple |
+| `/reflect` 🔄 | Analyze session and propose skill improvements | 5-15s | Medium |
 
 ## Command Overview
 
@@ -408,106 +401,6 @@ Best used after `/prompt` to get detailed implementation analysis.
 ```
 
 **Output:** Professional README.md tailored to your project type.
-
----
-
-### `/session-end`
-
-**Purpose:** Capture comprehensive session context to ensure zero information loss between sessions.
-
-**What it does:**
-1. Analyzes everything discussed, implemented, and learned in the current session
-2. Captures 10 comprehensive sections of context:
-   - Decisions Made (with rationale and trade-offs)
-   - Code Changes (files modified, created, deleted)
-   - Features Implemented (status: Complete/In Progress/Blocked)
-   - Problems Solved (root cause → solution)
-   - Technical Stack & Architecture (tech choices, patterns)
-   - Key Insights (codebase understanding, discoveries)
-   - User Preferences & Patterns (coding style, workflow)
-   - Active Work In Progress (current task, files, blockers)
-   - Project Structure Notes (important paths, organization)
-   - Next Steps (actionable TODOs with file paths)
-3. Appends structured summary to `.claude/memory/sessions.md`
-4. Shows confirmation with count of captured items
-
-**Usage:**
-```
-/session-end
-```
-
-**Best used:** Before ending a session to save all context for next time.
-
-**Output:**
-```
-✅ Session saved to memory.
-
-Captured:
-- Decisions: 3
-- Code Changes: 9 files
-- Features: 4 (3 complete, 1 in progress)
-- Problems Solved: 3
-- Technical Notes: 4
-- Insights: 4
-- Preferences: 4 new patterns
-- WIP: Documentation in progress
-- Next Steps: 4 pending
-
-Session State: Enhanced session memory with comprehensive capture
-```
-
----
-
-### `/session-start`
-
-**Purpose:** Load comprehensive context from previous sessions to continue work with full project knowledge.
-
-**What it does:**
-1. Reads ALL sessions from `.claude/memory/sessions.md`
-2. Aggregates cumulative context across sessions:
-   - Combines all User Preferences & Patterns
-   - Merges Project Structure Notes
-   - Builds complete Tech Stack understanding
-3. Highlights active work and pending items
-4. Presents organized summary with 7 key sections:
-   - Active Work In Progress (current task, files, blockers)
-   - Pending Next Steps (all uncompleted TODOs)
-   - Recent Session Summary (last session with key decisions)
-   - Project Context (tech stack, architecture, important locations)
-   - User Preferences & Patterns (accumulated across all sessions)
-   - Key Insights Library (codebase understanding built over time)
-   - Session History (total sessions, current branch, last active)
-5. Asks what to work on today
-
-**Usage:**
-```
-/session-start
-```
-
-**Best used:** At the beginning of a session to load full context and resume work seamlessly.
-
-**Output:**
-```
-🔄 Session Context Loaded
-
-## 📌 Active Work In Progress
-Current Task: Documentation updates for command reference
-Files: README.md, CLAUDE.md
-Status: Ready to continue
-
-## ✅ Pending Next Steps
-- [ ] Update README.md with session commands
-- [ ] Update CLAUDE.md with identical documentation
-- [ ] Verify no differences between files
-
-## 🎯 Recent Session Summary
-Last Session: 2024-12-15 - main
-Enhanced session memory system with 10-section comprehensive capture...
-
-[Additional sections with full context...]
-
-What would you like to work on today?
-```
 
 ---
 
@@ -666,11 +559,34 @@ This ensures:
 
 ```
 .claude/
-  commands/
-    prompt.md              # Prompt perfection command
-    prompt-technical.md    # Technical analysis command
-    prompt-article.md      # Article writing wizard
-    prompt-article-readme.md  # README generator
+  commands/               # Old format (still works)
+    prompt.md
+    prompt-hybrid.md
+    prompt-technical.md
+    prompt-research.md
+    prompt-article.md
+    prompt-article-readme.md
+    reflect.md
+  skills/                 # New Skills format (v4.5, YAML frontmatter)
+    prompt/SKILL.md
+    prompt-hybrid/SKILL.md
+    prompt-dotnet/SKILL.md
+    prompt-react/SKILL.md
+    deploy/SKILL.md
+    new-stack/SKILL.md
+    reflect/SKILL.md
+  library/                # Core library system
+    prompt-perfection-core.md
+    adapters/
+    intelligence/
+  memory/                 # Your session data
+    project-profile.md    # Populate for best results
+    sessions.md
+    prompt-patterns.md
+  config/                 # Configuration
+    complexity-rules.json
+    agent-templates.json
+    learning-config.json
 ```
 
 ## Workflow Example
@@ -701,8 +617,7 @@ This ensures:
 2. **Answer questions** - The wizards ask clarifying questions for a reason
 3. **Chain commands** - Use `/prompt` first, then `/prompt-technical` for implementation
 4. **Iterate** - Use modification options after generation to refine output
-5. **Use session management** - `/session-end` before breaks, `/session-start` when resuming
-6. **Trust complexity detection** - Let hybrid commands decide when to use agents
+5. **Trust complexity detection** - Let hybrid commands decide when to use agents
 7. **Leverage caching** - Repeated prompts are 10-20x faster with agent result caching
 
 ## Need More Help?
@@ -743,11 +658,13 @@ Not sure which command to use? See the decision tree in [Quick Reference](doc/Qu
 | Fix/improve a prompt (simple) | `/prompt` |
 | Fix/improve a prompt (complex, needs codebase analysis) | `/prompt-hybrid` |
 | Technical implementation help | `/prompt-technical` |
+| .NET / C# implementation help | `/prompt-dotnet` |
+| React / frontend implementation help | `/prompt-react` |
 | Improve skills from feedback | `/reflect` |
 | Write article/blog post | `/prompt-article` |
 | Generate/update README | `/prompt-article-readme` |
-| Start work session | `/session-start` |
-| End work session | `/session-end` |
+| Deploy to server | `/deploy` |
+| Scaffold Docker stack | `/new-stack` |
 
 ### 🤖 Advanced Features
 

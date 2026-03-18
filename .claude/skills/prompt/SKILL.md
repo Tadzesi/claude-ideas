@@ -26,7 +26,7 @@ This skill uses the **Unified Library System** with **Project Memory Integration
 ```
 PROJECT CONTEXT LOADED
 
-Project: Claude Commands Library (claude-ideas) v4.2.0
+Project: Claude Commands Library (claude-ideas) v4.5.0
 Stack: Node.js, VitePress, Markdown commands, JSON config
 Structure: .claude/commands/ (skills), .claude/library/ (core), .claude/memory/ (state)
 Language: Bilingual (Slovak input OK, English output)
@@ -151,7 +151,7 @@ Corrections to make:
 **Project-specific conventions to apply:**
 - File paths: `.claude/commands/`, `.claude/library/`, `.claude/memory/`
 - Command names: kebab-case, matching existing pattern
-- Version references: semantic (v4.2.0), with dates
+- Version references: semantic (v4.5.0), with dates
 
 ### Step 0.5: Output Perfect Prompt
 
@@ -161,7 +161,7 @@ PERFECTED PROMPT
 Goal: [One clear sentence]
 
 Context (from project profile):
-- Project: Claude Commands Library v4.2.0
+- Project: Claude Commands Library v4.5.0
 - Environment: Windows 11, bash, Node.js/VitePress
 - Architecture: Library-based, Phase 0 pattern
 - Relevant conventions: [project-specific rules that apply]
