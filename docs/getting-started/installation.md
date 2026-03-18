@@ -69,14 +69,14 @@ your-project/
 │   │   ├── prompt-research.md
 │   │   ├── prompt-article.md
 │   │   ├── prompt-article-readme.md
-│   │   ├── session-start.md
-│   │   ├── session-end.md
 │   │   └── reflect.md
-│   ├── skills/             # Skills format (v4.3, with YAML frontmatter)
+│   ├── skills/             # Skills format (v4.5, with YAML frontmatter)
 │   │   ├── prompt/SKILL.md
 │   │   ├── prompt-hybrid/SKILL.md
-│   │   ├── session-start/SKILL.md
-│   │   ├── session-end/SKILL.md
+│   │   ├── prompt-dotnet/SKILL.md
+│   │   ├── prompt-react/SKILL.md
+│   │   ├── deploy/SKILL.md
+│   │   ├── new-stack/SKILL.md
 │   │   └── reflect/SKILL.md
 │   ├── library/            # Core library system
 │   │   ├── prompt-perfection-core.md   # v1.6 - always loads memory first

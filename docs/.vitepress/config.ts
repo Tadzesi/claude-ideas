@@ -61,14 +61,6 @@ export default defineConfig({
           ]
         },
         {
-          text: 'Session Commands',
-          collapsed: false,
-          items: [
-            { text: '/session-start', link: '/commands/session-start' },
-            { text: '/session-end', link: '/commands/session-end' }
-          ]
-        },
-        {
           text: 'Utility Commands',
           collapsed: false,
           items: [
