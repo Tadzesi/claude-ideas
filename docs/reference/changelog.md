@@ -2,6 +2,46 @@
 
 All notable changes to the Claude Commands Library.
 
+## [4.6.0] - April 2026
+
+### Added
+
+- **Anti-Hallucination Contract** in `prompt-perfection-core.md` v2.0
+  - NEVER rules: prohibit inventing file paths, versions, config keys
+  - ALWAYS rules: require grounding every fact to a source file
+  - Grounding Protocol: map each stated fact to the file it was read from
+- **HARD-GATE blocks** in all 7 skills (prompt, prompt-hybrid, prompt-dotnet, prompt-react, reflect, deploy, new-stack)
+  - Each skill now has a pre-flight checklist that must pass before output
+  - Skill-specific checks (e.g. `.csproj` must be read before .NET facts)
+- **NEVER sections** in every skill — explicit per-domain hallucination prohibitions
+- **Mermaid flowchart** for Phase 0 flow in core library
+- **Chain-of-Thought REASONING block** required in Step 0.1 output
+- **Few-shot examples** in `/prompt` and `/prompt-hybrid` — correct vs incorrect output
+- **Version history** sections added to all skills that were missing them
+
+### Changed
+
+- `prompt-perfection-core.md`: v1.6 → v2.0
+- `skills/prompt/SKILL.md`: v3.0 → v4.0
+- `skills/prompt-hybrid/SKILL.md`: v3.0 → v4.0
+- All other skills: v1.0 → v2.0
+- Installer: v4.5.0 → v4.6.0, skills/ directory now verified, skills count shown in summary
+
+### Fixed
+
+- `/prompt` STARTUP template: removed hardcoded version `v4.5.0` — now reads from `project-profile.md`
+
+### Upgrade Guide (4.5 → 4.6)
+
+No breaking changes. Skills are backward compatible.
+Run the installer to get the latest version:
+
+```powershell
+.\install-claude-commands.ps1
+```
+
+---
+
 ## [4.5.0] - March 2026
 
 ### Removed

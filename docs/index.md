@@ -68,6 +68,12 @@ features:
     link: /architecture/skills-format
     linkText: Skills Format Guide
 
+  - icon: 🛡️
+    title: Anti-Hallucination Contract (v4.6)
+    details: Every skill has a HARD-GATE checklist and NEVER rules that prevent Claude from inventing file paths, versions, or facts. Chain-of-Thought REASONING block requires grounding every stated fact to a source file.
+    link: /reference/changelog#460-april-2026
+    linkText: What's New in v4.6
+
   - icon: 📚
     title: Learning System
     details: The library learns from your patterns, suggests smart defaults, and actively improves skills through the /reflect command.

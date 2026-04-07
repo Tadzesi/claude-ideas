@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
-# Version: 4.5.0
-# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.5 with universal skills)
+# Version: 4.6.0
+# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.6 with superprompting)
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -52,7 +52,7 @@ function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -Foregr
 
 # Banner
 Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host " Claude Commands Library Installer v4.5.0" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v4.6.0" -ForegroundColor Cyan
 Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
@@ -276,8 +276,8 @@ function Deploy-ClaudeDirectory {
 
         # Create version file to track installed version
         $versionFile = Join-Path $targetClaudeDir "VERSION"
-        "4.5.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
-        Write-Success "Version file created (v4.5.0)"
+        "4.6.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
+        Write-Success "Version file created (v4.6.0)"
 
         return $true
     } catch {
@@ -294,7 +294,7 @@ function Test-Installation {
 
     Write-Info "Verifying installation..."
 
-    $requiredDirs = @("commands", "library", "config", "rules")
+    $requiredDirs = @("commands", "skills", "library", "config", "rules")
     $missingDirs = @()
 
     foreach ($dir in $requiredDirs) {
@@ -332,8 +332,16 @@ function Test-Installation {
         return $false
     }
 
+    # Count skills
+    $skillsDir = Join-Path $targetClaudeDir "skills"
+    $skillCount = 0
+    if (Test-Path $skillsDir) {
+        $skillCount = (Get-ChildItem -Path $skillsDir -Directory | Measure-Object).Count
+    }
+
     Write-Success "Verification passed"
     Write-Info "  - Found $commandCount command(s)"
+    Write-Info "  - Found $skillCount skill(s)"
     Write-Info "  - Core library: OK"
     Write-Info "  - Directory structure: OK"
 
@@ -364,6 +372,17 @@ function Show-Summary {
         Write-Host "    - $($cmd.BaseName)" -ForegroundColor Gray
     }
 
+    # Skills
+    $skillsDir = Join-Path $targetClaudeDir "skills"
+    if (Test-Path $skillsDir) {
+        $skills = Get-ChildItem -Path $skillsDir -Directory -ErrorAction SilentlyContinue
+        Write-Host "`n  Skills (new format): " -NoNewline
+        Write-Host "$($skills.Count)" -ForegroundColor Yellow
+        foreach ($skill in $skills) {
+            Write-Host "    - /$($skill.Name)" -ForegroundColor Gray
+        }
+    }
+
     # Library
     $libraryDir = Join-Path $targetClaudeDir "library"
     Write-Host "`n  Library:" -ForegroundColor Cyan
@@ -389,9 +408,20 @@ function Show-Summary {
     Write-Host "`n" -NoNewline
     Write-Success "Installation complete!"
 
+    # v4.6 Feature Announcement
+    Write-Host "`n========================================" -ForegroundColor Magenta
+    Write-Host "  NEW IN VERSION 4.6 (April 2026)" -ForegroundColor Magenta
+    Write-Host "========================================" -ForegroundColor Magenta
+    Write-Host "`nSuperprompting revision — Anti-Hallucination:" -ForegroundColor White
+    Write-Host "  - Anti-Hallucination Contract in core library v2.0" -ForegroundColor Green
+    Write-Host "  - HARD-GATE blocks in all 7 skills" -ForegroundColor Green
+    Write-Host "  - NEVER rules prevent fact invention" -ForegroundColor Green
+    Write-Host "  - Chain-of-Thought REASONING block in every prompt" -ForegroundColor Green
+    Write-Host "  - Few-shot examples: correct vs incorrect output" -ForegroundColor Green
+
     # v4.5 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  NEW IN VERSION 4.5 (March 2026)" -ForegroundColor Magenta
+    Write-Host "  FROM VERSION 4.5 (March 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
     Write-Host "`nUniversal Skills (all project-specific values removed):" -ForegroundColor White
     Write-Host "  - /deploy and /new-stack now read config from personal-profile.md" -ForegroundColor Green

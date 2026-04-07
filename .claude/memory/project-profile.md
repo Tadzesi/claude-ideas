@@ -1,7 +1,7 @@
 # Project Profile
 
-**Version:** 2.0
-**Last Updated:** 2026-03-03
+**Version:** 2.1
+**Last Updated:** 2026-04-07
 **Purpose:** Structured fact store for memory recall across sessions - populated automatically
 
 ---
@@ -9,7 +9,7 @@
 ## Project Identity
 
 **Name:** Claude Commands Library (claude-ideas)
-**Version:** 4.2.0
+**Version:** 4.5.0
 **Repository:** https://github.com/Tadzesi/claude-ideas
 **License:** MIT
 **Live Docs:** https://tadzesi.github.io/claude-ideas/
@@ -103,7 +103,7 @@ claude-ideas/
 User Input -> Phase 0 (prompt-perfection-core.md) -> Domain Adapter -> Command Logic
 ```
 
-**Phase 0 Steps (canonical, in prompt-perfection-core.md v1.5):**
+**Phase 0 Steps (canonical, in prompt-perfection-core.md v1.6):**
 - 0.1: Initial Analysis (language, type, intent)
 - 0.11: Quick Delegation Check (AI Fluency)
 - 0.12: Interaction Mode Detection (Automation/Augmentation/Agency)
@@ -115,27 +115,32 @@ User Input -> Phase 0 (prompt-perfection-core.md) -> Domain Adapter -> Command L
 - 0.6: Approval Gate
 - 0.7: Post-Execution Evaluation
 
-**Complexity Scoring (prompt-hybrid.md):**
+**Complexity Scoring (prompt-hybrid/SKILL.md):**
 - 0-4: Simple (inline validation)
 - 5-9: Moderate (ask user if agent needed)
 - 10+: Complex (spawn agent)
-- 15+: Very High (multi-agent verification)
+- 20+: Very High (multi-agent verification, 60-180s)
 
 ---
 
 ## Commands
 
+Primary format: `.claude/skills/` (SKILL.md with YAML frontmatter)
+Legacy format: `.claude/commands/` (still works)
+
 | Command | File | Purpose | Speed |
 |---------|------|---------|-------|
-| `/prompt` | commands/prompt.md | Quick prompt cleanup, LITE intelligence | ~2s |
-| `/prompt-hybrid` | commands/prompt-hybrid.md | Full complexity detection, agent spawning | 2-30s |
+| `/prompt` | skills/prompt/SKILL.md | Quick prompt cleanup, project-aware | ~2s |
+| `/prompt-hybrid` | skills/prompt-hybrid/SKILL.md | Complexity detection, agent spawning | 2-30s |
+| `/prompt-dotnet` | skills/prompt-dotnet/SKILL.md | .NET/C# project-aware prompt perfection | ~3s |
+| `/prompt-react` | skills/prompt-react/SKILL.md | React/Vite project-aware prompt perfection | ~3s |
 | `/prompt-technical` | commands/prompt-technical.md | Technical analysis + code scaffolding | 5-30s |
 | `/prompt-research` | commands/prompt-research.md | Deep multi-agent research | 60-180s |
 | `/prompt-article` | commands/prompt-article.md | Interactive article wizard | Interactive |
 | `/prompt-article-readme` | commands/prompt-article-readme.md | README generator | ~30s |
-| `/session-start` | commands/session-start.md | Load accumulated session context | 2-5s |
-| `/session-end` | commands/session-end.md | Save 10-section comprehensive session | 5-10s |
-| `/reflect` | commands/reflect.md | Analyze session, propose improvements | 5-15s |
+| `/reflect` | skills/reflect/SKILL.md | Analyze session, propose improvements | 5-15s |
+| `/deploy` | skills/deploy/SKILL.md | Project-aware deployment workflow | Interactive |
+| `/new-stack` | skills/new-stack/SKILL.md | Docker stack scaffold | ~5s |
 
 ---
 
@@ -150,7 +155,7 @@ User Input -> Phase 0 (prompt-perfection-core.md) -> Domain Adapter -> Command L
 - **Approval workflow:** Appreciates Phase 0 prompt perfection with clarifying questions
 - **Documentation style:** Detailed explanations with concrete examples
 - **File naming:** kebab-case for everything
-- **Version format:** Semantic (v4.2.0) with dates (YYYY-MM-DD)
+- **Version format:** Semantic (v4.5.0) with dates (YYYY-MM-DD)
 - **NEVER commit to git** unless explicitly asked
 - **NEVER auto-run install scripts** without confirmation
 
@@ -192,6 +197,9 @@ User Input -> Phase 0 (prompt-perfection-core.md) -> Domain Adapter -> Command L
 - v4.0: Predictive Intelligence System (Jan 2026)
 - v4.1: AI Fluency Framework integration (Jan 2026)
 - v4.2: Memory Recall System, project-profile.md (Feb 2026)
+- v4.3: Skills Format, VitePress docs update (Mar 2026)
+- v4.5: Universal Skills, deploy/new-stack pridané (Mar 2026)
+- v4.5 current: Superprompting revízia schválená (Apr 2026) - design spec: docs/superpowers/specs/2026-04-07-superprompting-design.md
 
 ---
 
