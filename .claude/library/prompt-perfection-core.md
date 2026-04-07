@@ -1,11 +1,35 @@
 # Prompt Perfection Core Library
 
-**Version:** 1.6
-**Last Updated:** 2026-03-03
+**Version:** 2.0
+**Last Updated:** 2026-04-07
 **Purpose:** Canonical Phase 0 implementation for all prompt commands
 **AI Fluency:** Aligned with Anthropic's 4Ds Framework (Delegation, Description, Discernment, Diligence)
 
 **Import Syntax:** Reference this file using @.claude/library/prompt-perfection-core.md
+
+---
+
+## Anti-Hallucination Contract
+
+**HARD-GATE: These rules apply unconditionally to every skill using this library.**
+
+### NEVER
+- State the project version without reading `project-profile.md` in this session
+- Assume a file exists without verifying with Read or Glob
+- Invent file paths, class names, function names, or config keys
+- State tech stack without reading `project-profile.md` or the project's manifest file
+- Copy example values from instruction templates into actual output as if they were real facts
+
+### ALWAYS
+- Ground every stated fact: note which file you read it from in this session
+- If a file does not exist: explicitly state "File not found — proceeding without it"
+- If uncertain about any fact: ask the user, do not guess
+
+### Grounding Protocol
+Before any output containing project facts:
+1. List files read in this session
+2. Map each stated fact to its source file
+3. Flag any fact without a source as "UNVERIFIED — asking user"
 
 ---
 
@@ -14,6 +38,32 @@
 This library defines the **universal Phase 0 flow** for transforming any user input into a perfect, unambiguous prompt that Claude Code can execute without guessing.
 
 All prompt commands should use this library as their foundation, with optional domain-specific adaptations.
+
+---
+
+## Phase 0 Flowchart
+
+```mermaid
+flowchart TD
+    A[User Input] --> B[Anti-Hallucination Contract Check]
+    B --> C[Step 0.1: Initial Analysis + REASONING block]
+    C --> D[Step 0.11: Delegation Check]
+    D --> E[Step 0.12: Interaction Mode Detection]
+    E --> F{Predictive Intelligence enabled?}
+    F -->|yes| G[Step 0.15: Predictive Intelligence]
+    F -->|no| H[Step 0.2a: Memory Recall]
+    G --> H
+    H --> I[Step 0.2b: Completeness Check]
+    I --> J{All required info present?}
+    J -->|yes| K[Step 0.4: Correction and Structuring]
+    J -->|no| L[Step 0.3: Clarification Questions]
+    L --> K
+    K --> M[Step 0.5: Output Perfect Prompt]
+    M --> N[Step 0.6: Approval Gate]
+    N -->|approved| O[Execute Task]
+    N -->|modify| M
+    O --> P[Step 0.7: Post-Execution Evaluation]
+```
 
 ---
 
@@ -70,6 +120,17 @@ When Claude reads your command, it will:
 
 **Original Input:**
 > [user's exact words]
+```
+
+**Required REASONING Block (output before proceeding to Step 0.11):**
+
+```
+REASONING
+Prompt type selected: [type] — because [specific reason from input]
+Facts from files read this session:
+  - [fact 1] — source: [filename]
+  - [fact 2] — source: [filename]
+Facts I cannot determine without asking: [list or "none"]
 ```
 
 ---
@@ -756,6 +817,13 @@ File: `.claude/library/adapters/session-adapter.md`
 ---
 
 ## Version History
+
+**v2.0 (2026-04-07):**
+- Anti-Hallucination Contract: NEVER/ALWAYS/Grounding Protocol rules
+- Phase 0 Mermaid flowchart
+- Step 0.1: REASONING block required before proceeding to Step 0.11
+- Superpowers pattern alignment: HARD-GATE, rigid checklist
+- Version bump to reflect breaking change in expected output format
 
 **v1.6 (2026-03-03):**
 - Step 0.2a: "ALWAYS LOAD FIRST" - stronger emphasis on reading memory before analysis
