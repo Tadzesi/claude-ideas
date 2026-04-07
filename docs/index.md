@@ -191,6 +191,36 @@ After 3+ occurrences, it suggests smart defaults.
 
 ## What's New
 
+### v4.6 - Superprompting: Anti-Hallucination Contract
+
+Every skill now has a built-in contract that prevents Claude from inventing facts:
+
+**HARD-GATE blocks** — pre-flight checklist in every skill before any output:
+```
+- [ ] project-profile.md read this session
+- [ ] No version numbers copied from templates — all from read files
+- [ ] No file paths invented — all verified with Read or Glob
+```
+
+**NEVER rules** — explicit domain-specific prohibitions (e.g. `/prompt-dotnet` will never state a NuGet version without reading `.csproj`).
+
+**Chain-of-Thought REASONING block** — Step 0.1 now requires:
+```
+REASONING
+Prompt type: Task (Feature) — because input contains "add" + specific component name
+Facts from project-profile.md: Stack is Node.js/VitePress, kebab-case conventions
+Cannot determine: which specific file to edit
+```
+
+**Core library v2.0** with Mermaid flowchart and Grounding Protocol.
+
+### v4.5 - Universal Skills
+
+- `/session-start` and `/session-end` removed — replaced by Claude Code auto-memory
+- `/deploy` and `/new-stack` are now universal — all server config read from `personal-profile.md`
+- `/prompt-dotnet` and `/prompt-react` scan fallbacks added (monorepo support)
+- Very High complexity threshold corrected: 20+ (was 15+)
+
 ### v4.4 - .NET + React Project-Aware Skills
 
 Two new project-aware skills that scan your codebase before asking any questions:

@@ -5,6 +5,70 @@ All notable changes to the Claude Commands Library will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.6.0] - 2026-04-07
+
+### Added
+- Anti-Hallucination Contract in `prompt-perfection-core.md` v2.0 (NEVER/ALWAYS/Grounding Protocol)
+- HARD-GATE blocks in all 7 skills — pre-flight checklist before any output
+- NEVER sections in every skill — explicit per-domain hallucination prohibitions
+- Mermaid flowchart for Phase 0 flow in core library
+- Chain-of-Thought REASONING block required in Step 0.1
+- Few-shot examples in `/prompt` and `/prompt-hybrid` (correct vs incorrect output)
+- Version history sections added to all skills
+
+### Changed
+- `prompt-perfection-core.md`: v1.6 → v2.0
+- `skills/prompt/SKILL.md`: v3.0 → v4.0
+- `skills/prompt-hybrid/SKILL.md`: v3.0 → v4.0
+- All other skills: v1.0 → v2.0
+- Installer: v4.5.0 → v4.6.0, `skills/` directory now verified, skills count in summary
+
+### Fixed
+- `/prompt` STARTUP template: removed hardcoded version — now reads from `project-profile.md`
+
+---
+
+## [4.5.0] - 2026-03-14
+
+### Removed
+- `/session-start` and `/session-end` — replaced by Claude Code auto-memory system
+
+### Changed
+- Universal skills: all project-specific hardcoded values removed from `/deploy` and `/new-stack`
+- All server config now read from `~/.claude/memory/personal-profile.md`
+- `/deploy`: default output is `copy` (not auto-execute)
+- `/reflect`: max 5 observations, grouped approval (HIGH/MEDIUM)
+
+### Fixed
+- `/prompt-dotnet`: scan fallback when `.csproj` not found
+- `/prompt-react`: scan fallback + monorepo support
+- Very High complexity threshold corrected: 20+ (was 15+)
+
+---
+
+## [4.4.0] - 2026-02-15
+
+### Added
+- `/prompt-dotnet` — C# / .NET project-aware prompt perfection (scans `.csproj`, `Program.cs`)
+- `/prompt-react` — React / Vite project-aware prompt perfection (scans `package.json`, `vite.config`)
+- `/deploy` — project-aware deployment workflow (reads `personal-profile.md`)
+- `/new-stack` — Docker stack scaffold (reads `personal-profile.md`)
+
+---
+
+## [4.3.0] - 2026-03-03
+
+### Added
+- Skills format: all commands converted to YAML frontmatter (`.claude/skills/`)
+- STARTUP section in skills: loads project context before any analysis
+- `project-profile.md` v2.0 populated with real project data
+
+### Changed
+- `prompt-perfection-core.md`: v1.5 → v1.6 (stronger "ALWAYS LOAD FIRST" memory recall)
+- VitePress docs updated to reflect Skills format
+
+---
+
 ## [4.2.0] - 2026-01-20
 
 ### Major Release - AI Fluency Framework Alignment
