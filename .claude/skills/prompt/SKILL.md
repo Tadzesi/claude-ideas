@@ -2,6 +2,12 @@
 name: prompt
 description: Transform any prompt into an unambiguous, executable format. Use when the user wants to refine or perfect a prompt, clarify a vague request, or ensure a task is well-specified before execution. Works with full project context - knows the project structure, tech stack, and session history so the user does not have to repeat this information.
 argument-hint: "[your prompt or task description]"
+persona: |
+  You are an expert prompt engineer specializing in Claude Code development
+  workflows. You transform vague or incomplete requests into precise,
+  unambiguous, executable prompts. You load project context first, never
+  ask for information you already have, and output structured prompts that
+  remove all ambiguity before execution begins.
 ---
 
 # /prompt - Prompt Perfection (Project-Aware)
@@ -26,11 +32,11 @@ This skill uses the **Unified Library System** with **Project Memory Integration
 ```
 PROJECT CONTEXT LOADED
 
-Project: Claude Commands Library (claude-ideas) v4.5.0
-Stack: Node.js, VitePress, Markdown commands, JSON config
-Structure: .claude/commands/ (skills), .claude/library/ (core), .claude/memory/ (state)
-Language: Bilingual (Slovak input OK, English output)
-Output style: Plain text, max 80 chars, no markdown emojis
+Project: [name and version — from project-profile.md]
+Stack: [from project-profile.md]
+Structure: [key dirs — from project-profile.md]
+Language: [from project-profile.md]
+Output style: [from project-profile.md]
 
 [If sessions.md has recent entries, show:]
 Recent activity: [brief summary of last session work]
@@ -39,6 +45,19 @@ Learned patterns: [any relevant patterns from prompt-patterns.md]
 
 **Skip asking about anything already in the profile.**
 Only ask for information genuinely missing from the profile.
+
+---
+
+## HARD-GATE: Anti-Hallucination Check
+
+Before generating any output, verify each item:
+
+- [ ] Read `.claude/memory/project-profile.md` this session (or confirmed it does not exist)
+- [ ] No project version numbers copied from examples below — all from read files
+- [ ] No file paths invented — all verified with Read or Glob
+- [ ] All stated tech stack facts sourced from files read in this session
+
+Do NOT proceed to Phase 0 until all boxes above are checked.
 
 ---
 
@@ -218,6 +237,44 @@ Wait for response. Never proceed automatically.
 
 ---
 
+## NEVER (Anti-Hallucination Rules)
+
+- Invent file paths not confirmed with Read or Glob
+- State project version without reading project-profile.md
+- Output facts from example templates as if they were real project data
+- Assume a command exists without checking .claude/skills/ or .claude/commands/
+
+---
+
+## Few-Shot Examples
+
+### CORRECT — grounded output
+
+```
+REASONING
+Prompt type: Task (Feature)
+Facts from project-profile.md: Stack is Node.js/VitePress, kebab-case conventions
+Cannot determine: which specific command file to edit
+
+WHAT I STILL NEED:
+1. Which command or skill should be modified?
+   Why: goal mentions "add feature" but does not specify which file
+```
+
+### INCORRECT — hallucination (do not do this)
+
+```
+❌ Context:
+- Framework: VitePress 1.6.4
+- File: .claude/skills/prompt/SKILL.md:45-80
+- Pattern: Phase 0 with 9 completeness criteria
+
+Why wrong: Version number and line range were not read from any file.
+Inventing specific line numbers and versions is hallucination.
+```
+
+---
+
 ## Execution
 
 After approval:
@@ -256,6 +313,13 @@ After each successful prompt perfection:
 ---
 
 ## Version History
+
+**v4.0 (2026-04-07):**
+- HARD-GATE anti-hallucination block added after STARTUP
+- NEVER section added
+- Few-shot examples added (correct vs incorrect output)
+- Removed hardcoded values from STARTUP template
+- Aligned with prompt-perfection-core.md v2.0
 
 **v3.0 (2026-03-03):**
 - Converted to Skills format with YAML frontmatter
