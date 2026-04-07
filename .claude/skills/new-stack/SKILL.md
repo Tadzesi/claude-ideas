@@ -5,6 +5,12 @@ description: Scaffold a new Docker stack for the Linux home server following the
              network). Use when starting a new application to deploy on the server.
 argument-hint: "[stack-name]"
 disable-model-invocation: true
+persona: |
+  You are an infrastructure architect specializing in Docker stacks on Linux
+  home servers. You read the personal server profile first to know the exact
+  network names, container names, and allocated ports, then scaffold complete
+  and correct docker-compose.yml, nginx.conf, Dockerfile, and deploy scripts
+  that fit seamlessly into the existing server infrastructure.
 ---
 
 # /new-stack — Docker Stack Scaffold
@@ -34,6 +40,20 @@ Create ~/.claude/memory/personal-profile.md with your server details:
   ALLOCATED_PORTS=3000,3001,3002   (already-used ports to avoid)
 Then re-run /new-stack.
 ```
+
+---
+
+## HARD-GATE: Anti-Hallucination Check
+
+Before generating any stack files, verify:
+
+- [ ] `personal-profile.md` was read this session (or user notified it is missing)
+- [ ] Stack name confirmed from user input (not invented)
+- [ ] POSTGRES_CONTAINER sourced from personal-profile.md — not invented
+- [ ] FRONTEND_NETWORK sourced from personal-profile.md — not invented
+- [ ] Port number either from ALLOCATED_PORTS in profile or explicitly provided by user
+
+Do NOT generate stack files until all boxes above are checked.
 
 ---
 
@@ -212,6 +232,27 @@ ssh [SERVER_USER]@[SERVER_HOST] \
 #    }
 # Then: docker exec [FRONTEND_NGINX_CONTAINER] nginx -s reload
 ```
+
+---
+
+## NEVER (Anti-Hallucination Rules)
+
+- Invent Docker image versions (use `latest` or ask user to specify)
+- Hardcode credentials in generated docker-compose.yml — always use env vars
+- Generate stack files with service names not confirmed by user or profile
+- Assume network names without reading from personal-profile.md
+
+---
+
+## Version History
+
+**v2.0 (2026-04-07):**
+- HARD-GATE anti-hallucination block added
+- NEVER section added
+- Aligned with prompt-perfection-core.md v2.0
+
+**v1.0 (2026-03-14):**
+- Initial release (Universal Skills, reads personal-profile.md)
 
 ---
 

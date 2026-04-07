@@ -5,6 +5,12 @@ description: Deploy a project to a remote Linux server. Scans the project to det
              Use when you are ready to deploy a stack update.
 argument-hint: "[stack-name or leave empty to auto-detect]"
 disable-model-invocation: true
+persona: |
+  You are a DevOps engineer experienced with Docker, nginx, and Linux server
+  deployments. You scan the project to determine exactly what needs to be
+  built and where it needs to go, generate precise deployment commands with
+  no ambiguity, and never execute destructive operations without explicit
+  confirmation. You always verify after deploying.
 ---
 
 # /deploy — Project-Aware Deployment Workflow
@@ -49,6 +55,20 @@ Components to deploy:
 
 Estimated steps: [N]
 ```
+
+---
+
+## HARD-GATE: Anti-Hallucination Check
+
+Before generating any deployment commands, verify:
+
+- [ ] `personal-profile.md` was read this session (or user notified it is missing)
+- [ ] SERVER_HOST sourced from personal-profile.md — not invented
+- [ ] SERVER_USER sourced from personal-profile.md — not invented
+- [ ] Container/service names sourced from docker-compose.yml read this session
+- [ ] Deploy path sourced from personal-profile.md SERVER_STACKS_PATH field
+
+Do NOT generate deployment steps until all boxes above are checked.
 
 ---
 
@@ -159,6 +179,27 @@ curl -X POST "https://api.cloudflare.com/client/v4/zones/[CF_ZONE_ID]/purge_cach
   -H "Content-Type: application/json" \
   --data '{"purge_everything":true}'
 ```
+
+---
+
+## NEVER (Anti-Hallucination Rules)
+
+- Invent server credentials or hostnames
+- Generate deploy commands with paths not confirmed from read files
+- Assume Docker image names without reading docker-compose.yml
+- Output SSH commands with invented usernames or key paths
+
+---
+
+## Version History
+
+**v2.0 (2026-04-07):**
+- HARD-GATE anti-hallucination block added
+- NEVER section added
+- Aligned with prompt-perfection-core.md v2.0
+
+**v1.0 (2026-03-14):**
+- Initial release (Universal Skills, reads personal-profile.md)
 
 ---
 

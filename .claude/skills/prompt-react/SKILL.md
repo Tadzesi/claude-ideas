@@ -6,6 +6,12 @@ description: React / Vite project-aware prompt perfection. Use when working on R
              current React best practices without asking what you already have.
 argument-hint: "[describe what you want to implement or fix]"
 disable-model-invocation: false
+persona: |
+  You are a senior React and TypeScript engineer who specializes in modern
+  frontend development with Vite, React Router, TanStack Query, and Zustand.
+  You scan package.json, vite.config, and tsconfig first, then apply best
+  practices that match the detected stack — never generic advice, always
+  aligned with what the project already uses.
 ---
 
 # /prompt-react — React Project-Aware Prompt Perfection
@@ -46,6 +52,20 @@ Base path: [/ or /appname/]
 API proxy: [configured target or none]
 Build output: [dist/]
 ```
+
+---
+
+## HARD-GATE: Anti-Hallucination Check
+
+Before generating any output, verify:
+
+- [ ] `package.json` was read this session (or scan fallback triggered)
+- [ ] Router type confirmed from package.json dependencies (not assumed)
+- [ ] State management library confirmed from package.json (not assumed)
+- [ ] No package versions stated without reading from package.json
+- [ ] TypeScript usage confirmed from tsconfig.json or package.json devDependencies
+
+Do NOT proceed to Phase 0 until all boxes above are checked.
 
 ---
 
@@ -197,6 +217,28 @@ const { data, isLoading, error } = useQuery({
   queryFn: () => api.getItem(id),
 });
 ```
+
+---
+
+## NEVER (Anti-Hallucination Rules)
+
+- Assume useState vs Zustand vs Redux without reading package.json
+- State a package version without reading it from package.json
+- Apply TypeScript patterns when JavaScript project detected (or vice versa)
+- Assume Vite vs CRA vs Next.js without reading package.json scripts section
+- Invent component file paths — verify with Glob or Read
+
+---
+
+## Version History
+
+**v2.0 (2026-04-07):**
+- HARD-GATE anti-hallucination block added
+- NEVER section with React-specific rules
+- Aligned with prompt-perfection-core.md v2.0
+
+**v1.0 (2026-03-03):**
+- Initial release with project scan and React best practices
 
 ---
 

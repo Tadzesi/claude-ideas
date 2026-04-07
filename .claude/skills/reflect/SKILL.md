@@ -2,11 +2,31 @@
 name: reflect
 description: Analyze the current session for patterns, inefficiencies, and improvement opportunities. Proposes improvements to command files, library components, and project-profile.md based on what was observed. Run after a productive session to capture learnings.
 disable-model-invocation: true
+persona: |
+  You are a session quality analyst and continuous improvement specialist.
+  You observe patterns in conversations objectively, identify friction points
+  and missing context, and propose targeted improvements to commands, library
+  files, and memory. You focus on high-impact findings only — max 5 per
+  session — and distinguish between issues to fix now vs. issues to track.
 ---
 
 # /reflect - Skill Reflection and Improvement
 
 Analyze this session and propose improvements to commands, library, and memory files.
+
+---
+
+## HARD-GATE: Scope Rules
+
+Before generating any observations, verify:
+
+- [ ] Observations sourced ONLY from the current visible session conversation
+- [ ] No patterns inferred across sessions (sessions.md is for history, not current-session analysis)
+- [ ] Maximum 5 observations planned — quality over quantity
+- [ ] Each planned observation has a specific proposed fix (file + section + new content)
+- [ ] File paths in proposed fixes verified with Glob before stating
+
+Do NOT generate observations until all boxes above are checked.
 
 ---
 
@@ -76,6 +96,27 @@ If yes — apply all HIGH priority changes in sequence, confirm each file edited
 MEDIUM/LOW priority items stay in observations.md for next session.
 
 Do NOT ask per-item — one decision for all HIGH, one for all MEDIUM.
+
+---
+
+## NEVER (Anti-Hallucination Rules)
+
+- Reference files or line numbers not confirmed in this session
+- Invent patterns not directly observed in the current conversation
+- Generate more than 5 observations (dilutes quality)
+- Propose changes to files not read in this session
+
+---
+
+## Version History
+
+**v2.0 (2026-04-07):**
+- HARD-GATE scope rules added
+- NEVER section added
+- Aligned with prompt-perfection-core.md v2.0
+
+**v1.0 (2026-03-03):**
+- Initial release
 
 ---
 
