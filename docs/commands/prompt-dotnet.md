@@ -2,10 +2,11 @@
 
 .NET project-aware prompt perfection. Scans your project files before asking any questions — framework version, architecture, auth, ORM, and Docker are pre-filled automatically.
 
-::: tip New in v4.4
+::: tip Updated in v4.6
+- **HARD-GATE** — verifies `.csproj` was read before stating any .NET version or package names
 - **Project Scan on startup** — reads `.csproj`, `Program.cs`, `appsettings.json`, `Dockerfile`, `docker-compose.yml`
 - **Zero repeated questions** — detects framework, auth, ORM, DB, Docker without asking
-- **Stack-aware best practices** — applies .NET 10, EF Core, PostgreSQL, JWT rules based on what you actually have
+- **Stack-aware best practices** — applies detected .NET version, EF Core, PostgreSQL, JWT rules automatically
 - **Consistency-first recommendations** — suggests patterns already in use in your project
 :::
 
@@ -14,7 +15,7 @@
 | Aspect | Details |
 |--------|---------|
 | **Speed** | ~3 seconds |
-| **Version** | v4.4 |
+| **Version** | v2.0 |
 | **Format** | `.claude/skills/prompt-dotnet/SKILL.md` |
 | **Best For** | C# APIs, EF Core migrations, middleware, auth, .NET features |
 | **Related** | `/prompt-react` for the React frontend, `/prompt-technical` for architecture |

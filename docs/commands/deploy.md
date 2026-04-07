@@ -2,7 +2,8 @@
 
 Project-aware deployment workflow. Scans your project to detect components, reads server config from `personal-profile.md`, and generates the complete deploy command sequence.
 
-::: tip New in v4.5
+::: tip Updated in v4.6
+- **HARD-GATE** — verifies `personal-profile.md` was read and all server values sourced before generating any commands
 - **Universal config** — reads server details from `~/.claude/memory/personal-profile.md`, no hardcoded values
 - **Auto-detection** — detects .NET API, React frontend, Docker stack from project files
 - **Safer defaults** — confirms before executing, generates copyable script by default
@@ -13,7 +14,7 @@ Project-aware deployment workflow. Scans your project to detect components, read
 | Aspect | Details |
 |--------|---------|
 | **Speed** | Interactive |
-| **Version** | v4.5 |
+| **Version** | v2.0 |
 | **Format** | `.claude/skills/deploy/SKILL.md` |
 | **Best For** | Deploying .NET + React + Docker stacks to a Linux server |
 | **Related** | `/new-stack` to scaffold, `/prompt-dotnet` and `/prompt-react` to implement |

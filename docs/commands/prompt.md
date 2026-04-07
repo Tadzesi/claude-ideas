@@ -2,11 +2,12 @@
 
 The foundational command for prompt perfection. Project-aware, fast, and effective.
 
-::: tip What's New in v3.0 (Skills Format + Project-Aware)
-- **Skills Format** - YAML frontmatter, auto-invocation by Claude when relevant
-- **STARTUP Section** - Loads project-profile.md, sessions.md, prompt-patterns.md first
-- **CONTEXT LOADED** - Shows what is pre-filled so you see exactly what Claude knows
-- **Zero repeat questions** - Never asks about tech stack, platform, or preferences again
+::: tip What's New in v4.0 (Anti-Hallucination Contract)
+- **HARD-GATE** — pre-flight checklist verifies `project-profile.md` was read before any output
+- **NEVER rules** — explicit prohibitions: no invented file paths, no hardcoded versions
+- **Chain-of-Thought REASONING block** — every Step 0.1 requires grounding facts to source files
+- **STARTUP Section** — loads `project-profile.md`, `sessions.md`, `prompt-patterns.md` first
+- **Zero repeat questions** — never asks about tech stack, platform, or preferences again
 :::
 
 ## Overview
@@ -14,7 +15,7 @@ The foundational command for prompt perfection. Project-aware, fast, and effecti
 | Aspect | Details |
 |--------|---------|
 | **Speed** | ~2 seconds |
-| **Version** | v3.0 (Skills Format) |
+| **Version** | v4.0 |
 | **Format** | `.claude/skills/prompt/SKILL.md` |
 | **Complexity** | Simple |
 | **Agent** | None |
@@ -212,7 +213,7 @@ Approve?
 - options              - Show alternatives
 ```
 
-## Skills Format (v4.3)
+## Skills Format (v4.6)
 
 The `/prompt` skill uses native Claude Code Skills format:
 
@@ -327,6 +328,7 @@ Claude will find the pattern in your profile or from the mentioned file.
 
 | Version | Date | Changes |
 |---------|------|---------|
+| v4.0 | Apr 2026 | Anti-Hallucination Contract: HARD-GATE, NEVER rules, REASONING block |
 | v3.0 | Mar 2026 | Skills format, STARTUP section, project-aware, zero repeat questions |
 | v2.1 | Jan 2026 | AI Fluency: Delegation Check, Post-Execution Evaluation, Diligence |
 | v2.0 | Dec 2024 | Migrated to unified library system |

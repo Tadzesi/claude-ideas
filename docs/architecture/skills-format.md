@@ -1,4 +1,4 @@
-# Skills Format (v4.3)
+# Skills Format (v4.6)
 
 Claude Commands Library now uses the native **Claude Code Skills format** alongside the original `.claude/commands/` format. Both work — Skills add powerful new capabilities.
 
@@ -69,9 +69,9 @@ Use `disable-model-invocation: true` for workflow commands with side effects:
 
 ```yaml
 ---
-name: session-end
-description: Save session context to memory files
-disable-model-invocation: true  # Don't auto-save, user must decide when
+name: reflect
+description: Analyze session signals and propose skill file improvements
+disable-model-invocation: true  # Don't auto-reflect, user must trigger
 ---
 ```
 
@@ -109,10 +109,14 @@ This pattern ensures users **never need to repeat project context**.
     │   └── SKILL.md       # /prompt with YAML frontmatter
     ├── prompt-hybrid/
     │   └── SKILL.md       # /prompt-hybrid
-    ├── session-start/
-    │   └── SKILL.md       # /session-start
-    ├── session-end/
-    │   └── SKILL.md       # /session-end
+    ├── prompt-dotnet/
+    │   └── SKILL.md       # /prompt-dotnet
+    ├── prompt-react/
+    │   └── SKILL.md       # /prompt-react
+    ├── deploy/
+    │   └── SKILL.md       # /deploy
+    ├── new-stack/
+    │   └── SKILL.md       # /new-stack
     └── reflect/
         └── SKILL.md       # /reflect
 ```
@@ -272,4 +276,4 @@ Read `.claude/memory/project-profile.md` for:
 - [Phase 0 Flow](/architecture/phase-0) - Memory recall and completeness check
 - [Library System](/architecture/library-system) - How commands share core logic
 - [Commands Overview](/commands/) - All available commands
-- [Changelog](/reference/changelog) - v4.3 release notes
+- [Changelog](/reference/changelog) - v4.6 release notes

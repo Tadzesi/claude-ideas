@@ -4,7 +4,7 @@ This comprehensive tutorial teaches you how to use Claude Commands Library effec
 
 ## Prerequisites
 
-- Claude Commands Library v4.2+ installed
+- Claude Commands Library v4.6+ installed
 - Basic familiarity with Claude Code
 - A project to work with
 
@@ -42,8 +42,8 @@ Effective AI use is iterative. Don't expect perfection on first try:
 | New feature, architecture | `/prompt-technical` | Implementation analysis |
 | Security audit, deep analysis | `/prompt-research` | Multi-agent research |
 | Writing content | `/prompt-article` | Article wizard |
-| Starting work session | `/session-start` | Load context |
-| Ending work session | `/session-end` | Save context |
+| .NET project task | `/prompt-dotnet` | Scans .csproj, pre-fills stack |
+| React project task | `/prompt-react` | Scans package.json, pre-fills stack |
 | Improve from feedback | `/reflect` | Learn from session |
 
 ## Part 3: Writing Effective Prompts
@@ -290,19 +290,20 @@ Features:
 - Citations with file:line
 - Comprehensive reports
 
-### /session-start and /session-end
+### Auto-Memory (v4.5+)
 
-**Start of day:**
-```bash
-/session-start
-```
-Loads previous context, decisions, and work in progress.
+Context is now loaded automatically at the start of every session — no command needed.
 
-**End of day:**
-```bash
-/session-end
+Claude Code's built-in memory system reads `~/.claude/projects/.../memory/` and your `.claude/memory/project-profile.md` before the first message. You will see:
+
 ```
-Saves context for seamless resumption.
+CONTEXT LOADED FROM PROJECT PROFILE
+Project: My App v2.1 | Stack: Node.js + PostgreSQL
+Platform: Windows | Branch: feature/auth
+Recent work: Added JWT middleware (yesterday)
+```
+
+**No `/session-start` or `/session-end` commands required.**
 
 ### /reflect - Learn and Improve
 
@@ -410,19 +411,15 @@ Constraints:
 - Must follow existing patterns in codebase
 ```
 
-### Tip 5: Save Good Sessions
+### Tip 5: Capture Learnings
 
-After a productive session:
+After a productive session, run `/reflect` to improve the skills you used:
+
 ```bash
-/session-end
+/reflect prompt-hybrid
 ```
 
-Then:
-```bash
-/reflect [command-name]
-```
-
-This captures learnings for future improvements.
+This captures corrections and successes so commands improve over time.
 
 ## Part 9: Troubleshooting
 
@@ -453,12 +450,7 @@ Provide file paths explicitly:
 
 ### Scenario: Add User Profile Feature
 
-**1. Start Session**
-```bash
-/session-start
-```
-
-**2. Plan the Feature**
+**1. Plan the Feature**
 ```bash
 /prompt-technical Add user profile page with avatar upload
 
@@ -492,17 +484,7 @@ validation too for the API routes.
 **6. Refine**
 Claude adds server-side validation.
 
-**7. End Session**
-```bash
-/session-end
-```
-
-Saves:
-- Decisions made
-- Files created
-- Work in progress
-
-**8. Reflect**
+**7. Reflect**
 ```bash
 /reflect prompt-technical
 ```
@@ -516,8 +498,7 @@ Captures learnings for future features.
 3. **Review and approve** the perfected prompt
 4. **Iterate using feedback** (good/partial/wrong)
 5. **Remember your responsibility** for AI-generated output
-6. **Save your work** with /session-end
-7. **Learn from sessions** with /reflect
+6. **Learn from sessions** with /reflect
 
 ---
 

@@ -41,7 +41,7 @@ Initial Analysis:
 - Intent: Add user authentication to web application
 ```
 
-### Step 0.12: Interaction Mode Detection (NEW v4.1)
+### Step 0.12: Interaction Mode Detection
 
 Based on **Anthropic's AI Fluency Framework**, Claude detects the optimal collaboration mode:
 
@@ -59,7 +59,7 @@ Implications: Will engage in dialogue, offer options, iterate
 
 ### Step 0.2: Completeness Check {#memory-recall}
 
-#### Memory Recall (v1.6 - ALWAYS LOAD FIRST)
+#### Memory Recall (v2.0 - ALWAYS LOAD FIRST)
 
 **Critical:** Phase 0 reads memory files before any analysis. This prevents users from repeating context across sessions.
 
@@ -122,12 +122,12 @@ Every prompt is validated against 9 criteria:
 | **Constraints** | Limitations? | "Must work with mobile app" |
 | **Expected Result** | How will you know it's done? | "Users can log in and receive token" |
 
-**Process Description (HOW) - NEW v4.1:**
+**Process Description (HOW):**
 | Criterion | Question | Example |
 |-----------|----------|---------|
 | **Approach** | How should AI work? | "Step-by-step, test each change" |
 
-**Performance Description (AI BEHAVIOR) - NEW v4.1:**
+**Performance Description (AI BEHAVIOR):**
 | Criterion | Question | Example |
 |-----------|----------|---------|
 | **Interaction Style** | Concise or detailed? | "Detailed explanations" |
@@ -337,9 +337,54 @@ AI Fluency settings are in `.claude/config/ai-fluency.json`:
 }
 ```
 
+## Anti-Hallucination Contract (v4.6)
+
+Every skill has a built-in contract that prevents Claude from inventing facts:
+
+### HARD-GATE
+
+A pre-flight checklist that must pass before any output is generated:
+
+```
+- [ ] project-profile.md read this session
+- [ ] No version numbers copied from templates — all from read files
+- [ ] No file paths invented — all verified with Read or Glob
+```
+
+Skill-specific examples:
+- `/prompt-dotnet` — `.csproj` must be read before stating any .NET version
+- `/prompt-react` — `package.json` must be read before stating React version
+- `/deploy` / `/new-stack` — `personal-profile.md` must be read before generating commands
+
+### NEVER Rules
+
+Explicit domain-specific prohibitions embedded in each skill:
+
+| Skill | NEVER Rule |
+|-------|-----------|
+| All skills | Invent file paths not confirmed by Read or Glob |
+| All skills | State version numbers not read from a source file |
+| `/prompt-dotnet` | State NuGet package versions without reading `.csproj` |
+| `/prompt-react` | State npm dependency versions without reading `package.json` |
+| `/deploy`, `/new-stack` | Hardcode server credentials — always use env vars |
+
+### Chain-of-Thought REASONING Block
+
+Step 0.1 now requires an explicit REASONING block before any output:
+
+```
+REASONING
+Prompt type: Task (Feature) — input contains "add" + specific component name
+Facts from project-profile.md: Stack is Node.js/VitePress, kebab-case conventions
+Cannot determine: which specific file to edit
+```
+
+This grounding requirement forces every stated fact to be traceable to a source file.
+
 ## Related
 
 - [Library System](/architecture/library-system) - How Phase 0 is shared
 - [Hybrid Intelligence](/architecture/hybrid-intelligence) - Complexity detection
 - [Predictive Intelligence](/architecture/predictive-intelligence) - Phase 0.15
 - [AI Fluency Framework](/architecture/ai-fluency) - The 4Ds model
+- [Changelog](/reference/changelog) - v4.6 Anti-Hallucination Contract release notes

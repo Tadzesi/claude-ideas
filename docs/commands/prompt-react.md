@@ -2,10 +2,11 @@
 
 React project-aware prompt perfection. Scans your project files before asking any questions — React version, TypeScript config, router, state management, and base path are pre-filled automatically.
 
-::: tip New in v4.4
+::: tip Updated in v4.6
+- **HARD-GATE** — verifies `package.json` was read before stating any React version or dependency names
 - **Project Scan on startup** — reads `package.json`, `vite.config.ts`, `tsconfig.json`, `src/` structure, `.env`
 - **Zero repeated questions** — detects React version, TS strict mode, router, state, data fetching, base path
-- **Stack-aware best practices** — applies React, TanStack Query, Vite, SPA subpath rules based on what you actually use
+- **Stack-aware best practices** — applies detected React version, TanStack Query, Vite, SPA subpath rules automatically
 - **Consistency-first recommendations** — suggests libraries and patterns already in your project
 :::
 
@@ -14,7 +15,7 @@ React project-aware prompt perfection. Scans your project files before asking an
 | Aspect | Details |
 |--------|---------|
 | **Speed** | ~3 seconds |
-| **Version** | v4.4 |
+| **Version** | v2.0 |
 | **Format** | `.claude/skills/prompt-react/SKILL.md` |
 | **Best For** | Components, hooks, routing, state management, Vite config, API integration |
 | **Related** | `/prompt-dotnet` for the .NET backend, `/prompt-technical` for architecture |

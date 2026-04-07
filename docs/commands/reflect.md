@@ -9,7 +9,7 @@ Analyze sessions and actively improve skills based on conversation feedback.
 | **Speed** | 5-15 seconds |
 | **Complexity** | Medium |
 | **Purpose** | Skill improvement from feedback |
-| **New in** | v4.1 |
+| **Version** | v2.0 |
 
 ## Usage
 
@@ -19,7 +19,7 @@ Analyze sessions and actively improve skills based on conversation feedback.
 # Examples
 /reflect prompt-technical
 /reflect prompt-hybrid
-/reflect session-end
+/reflect prompt-dotnet
 ```
 
 ## How It Works
@@ -121,7 +121,7 @@ Y
 ```
 
 ```
-Applied to: .claude/commands/prompt-technical.md
+Applied to: .claude/skills/prompt-technical/SKILL.md
 
 Changes:
 - Added constraint: Must ask about error handling

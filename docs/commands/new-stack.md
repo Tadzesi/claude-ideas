@@ -2,7 +2,8 @@
 
 Scaffolds a new Docker stack following the established pattern: nginx + .NET API + React frontend + stack-internal network. Reads server config from `personal-profile.md` so no values need to be hardcoded.
 
-::: tip New in v4.5
+::: tip Updated in v4.6
+- **HARD-GATE** — verifies `personal-profile.md` was read and all network/container values sourced before generating files
 - **Universal config** — reads all server details from `~/.claude/memory/personal-profile.md`
 - **Port conflict prevention** — checks `ALLOCATED_PORTS` list to suggest the next free port
 - **Complete scaffold** — generates `docker-compose.yml`, `nginx.conf`, `Dockerfile.api`, `.env`, `.gitignore`, `deploy.sh`
@@ -13,7 +14,7 @@ Scaffolds a new Docker stack following the established pattern: nginx + .NET API
 | Aspect | Details |
 |--------|---------|
 | **Speed** | ~5 seconds |
-| **Version** | v4.5 |
+| **Version** | v2.0 |
 | **Format** | `.claude/skills/new-stack/SKILL.md` |
 | **Best For** | Starting a new application to deploy on a Linux home server |
 | **Related** | `/deploy` to deploy the stack, `/prompt-dotnet` and `/prompt-react` to implement |

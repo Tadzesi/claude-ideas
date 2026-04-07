@@ -2,10 +2,12 @@
 
 Claude Commands Library provides 11 slash commands organized into five categories.
 
-::: tip Version 4.5 - Universal Skills
-- **`/deploy`** - Project-aware deployment, reads server config from `personal-profile.md`
-- **`/new-stack`** - Docker stack scaffold, universal config (no hardcoded values)
-- Session commands removed — replaced by Claude Code's built-in auto-memory
+::: tip Version 4.6 - Anti-Hallucination Contract
+- **HARD-GATE blocks** in all skills — pre-flight checklist before any output
+- **NEVER rules** — explicit per-domain prohibitions (no invented paths, versions, or facts)
+- **Chain-of-Thought REASONING block** required in every Step 0.1 output
+- **`/deploy`** and **`/new-stack`** — universal config from `personal-profile.md`
+- Session commands removed in v4.5 — replaced by Claude Code's built-in auto-memory
 - [View Changelog →](/reference/changelog)
 :::
 
@@ -13,17 +15,17 @@ Claude Commands Library provides 11 slash commands organized into five categorie
 
 | Command | Purpose | Speed | Version |
 |---------|---------|-------|---------|
-| [/prompt](/commands/prompt) | Basic prompt perfection | ~2s | v2.1 |
-| [/prompt-hybrid](/commands/prompt-hybrid) | Intelligent with agents | 2-30s | v4.1 |
+| [/prompt](/commands/prompt) | Basic prompt perfection | ~2s | v4.0 |
+| [/prompt-hybrid](/commands/prompt-hybrid) | Intelligent with agents | 2-30s | v4.0 |
 | [/prompt-technical](/commands/prompt-technical) | Implementation analysis | 5-30s | v4.0 |
-| [/prompt-research](/commands/prompt-research) | Multi-agent research | 60-180s | v1.1 |
-| [/prompt-dotnet](/commands/prompt-dotnet) | .NET project-aware perfection | ~3s | v4.4 |
-| [/prompt-react](/commands/prompt-react) | React project-aware perfection | ~3s | v4.4 |
+| [/prompt-research](/commands/prompt-research) | Multi-agent research | 60-180s | v4.0 |
+| [/prompt-dotnet](/commands/prompt-dotnet) | .NET project-aware perfection | ~3s | v2.0 |
+| [/prompt-react](/commands/prompt-react) | React project-aware perfection | ~3s | v2.0 |
 | [/prompt-article](/commands/prompt-article) | Article writing | Interactive | v2.0 |
 | [/prompt-article-readme](/commands/prompt-article-readme) | README generation | ~30s | v2.0 |
-| [/deploy](/commands/deploy) | Project-aware deployment | Interactive | v4.5 |
-| [/new-stack](/commands/new-stack) | Docker stack scaffold | ~5s | v4.5 |
-| [/reflect](/commands/reflect) | Improve skills | 5-15s | v1.0 |
+| [/deploy](/commands/deploy) | Project-aware deployment | Interactive | v2.0 |
+| [/new-stack](/commands/new-stack) | Docker stack scaffold | ~5s | v2.0 |
+| [/reflect](/commands/reflect) | Improve skills | 5-15s | v2.0 |
 
 ## Categories
 
