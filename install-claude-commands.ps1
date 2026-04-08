@@ -412,7 +412,7 @@ function Show-Summary {
     Write-Host "`n========================================" -ForegroundColor Magenta
     Write-Host "  NEW IN VERSION 4.6 (April 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`nSuperprompting revision — Anti-Hallucination:" -ForegroundColor White
+    Write-Host "`nSuperprompting revision - Anti-Hallucination:" -ForegroundColor White
     Write-Host "  - Anti-Hallucination Contract in core library v2.0" -ForegroundColor Green
     Write-Host "  - HARD-GATE blocks in all 7 skills" -ForegroundColor Green
     Write-Host "  - NEVER rules prevent fact invention" -ForegroundColor Green
