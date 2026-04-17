@@ -91,11 +91,21 @@ Use scan results to pre-fill what's already known:
 | **Component location** | ❓ inferred or ask | |
 | **Expected behavior** | ❓ from user | |
 
+### Step 0.25 — Curiosity Gate (v2.1)
+
+Confidence scoring per
+`.claude/library/prompt-perfection-core.md#step-025-curiosity-gate`.
+If confidence < 90%, publish the assumption ledger before proceeding.
+
 ### Step 0.3 — Clarification (only truly unknown)
 
-Skip anything the scan already answered. If multiple valid approaches exist:
-- Mark ⭐ recommended based on what's already in the project (match existing patterns)
-- E.g., if project uses TanStack Query, recommend that over raw fetch
+Skip anything the scan already answered.
+
+### Step 0.35 — Options-First (v2.1, default ON for non-trivial tasks)
+
+Present 2-3 alternatives with What/How/Pros/Cons/Model tier. Recommend
+based on existing project patterns (consistency > preference). Example:
+if TanStack Query is installed, recommend that over raw fetch.
 
 ### Step 0.4 — Apply React Best Practices Automatically
 
@@ -170,9 +180,20 @@ Based on detected stack, apply these without asking:
 [What it should look like / how to verify]
 ```
 
+### Step 0.55 — Execution Plan + Model Selection (v2.1, mandatory)
+
+Emit the full plan from `.claude/library/execution-plan-template.md`:
+Goal, Files, Steps, Tools, MODEL HINT (from `model-router.md`),
+Risks/rollback, Verification, Estimated effort, Assumptions.
+
+React-specific routing hints:
+- Single component tweak, prop rename, style fix → haiku
+- Feature: new page + route + hook + API call → sonnet
+- State architecture redesign, router overhaul, major refactor → opus
+
 ### Step 0.6 — Approval Gate
 
-Wait for: `y` (execute) | `modify` (adjust) | `no` (cancel)
+Wait for: `y` (execute) | `modify` (adjust) | `no` (cancel) | `switch [tier]`
 
 After approval — implement following perfected prompt and project conventions.
 
@@ -231,6 +252,13 @@ const { data, isLoading, error } = useQuery({
 ---
 
 ## Version History
+
+**v2.1 (2026-04-16):**
+- Step 0.25 Curiosity Gate reference
+- Step 0.35 Options-First default for React tasks
+- Step 0.55 Execution Plan + MODEL HINT with React-specific routing
+- `switch [tier]` response in approval gate
+- Aligned with prompt-perfection-core.md v2.1
 
 **v2.0 (2026-04-07):**
 - HARD-GATE anti-hallucination block added

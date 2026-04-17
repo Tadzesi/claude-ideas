@@ -9,6 +9,15 @@ This command provides an interactive wizard for writing articles in Slovak or En
 **Import:** Use Phase 0 from `.claude/library/prompt-perfection-core.md`
 **Adaptation:** Article (from `.claude/library/adapters/article-adapter.md`)
 
+**Phase 0 v2.1 Add-ons (mandatory):**
+- Step 0.25 Curiosity Gate (confidence + assumption ledger)
+- Step 0.35 Options-First: present 2-3 article angles/styles before writing
+- Step 0.55 Execution Plan + MODEL HINT
+  (see `.claude/library/execution-plan-template.md`
+   and `.claude/library/model-router.md`)
+- MODEL HINT default for article writing: sonnet (creative generation)
+- Approval gate adds `switch [haiku|sonnet|opus]` response
+
 **Before starting the article wizard, first perfect the user's prompt.**
 
 ### Step 0.1: Initial Analysis

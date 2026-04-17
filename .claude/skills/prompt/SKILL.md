@@ -115,9 +115,28 @@ WHAT I STILL NEED FOR THIS TASK:
 [Only list genuinely missing items]
 ```
 
+### Step 0.25: Curiosity Gate (v4.1)
+
+Score confidence 0-100 using rules in
+`.claude/library/prompt-perfection-core.md#step-025-curiosity-gate`.
+
+- >= 90: proceed silently to Step 0.35
+- 70-89: ask ONE targeted question + publish assumption ledger
+- < 70: full Step 0.3 round (MIN 2 questions)
+
+Always emit the assumption ledger when confidence < 100:
+
+```
+ASSUMPTIONS I AM MAKING (correct me if wrong)
+- [assumption 1 — what I will do if not corrected]
+- [assumption 2]
+
+Confidence: [N%]
+```
+
 ### Step 0.3: Targeted Clarification
 
-Ask ONLY for genuinely missing information. Do not ask what the profile already answers.
+Ask for genuinely missing information. Profile answers are pre-filled.
 
 **Priority order:**
 
@@ -133,29 +152,39 @@ Ask ONLY for genuinely missing information. Do not ask what the profile already 
 - Constraints beyond project conventions
 - Performance or compatibility edge cases
 
-**When multiple valid approaches exist:**
-Present options clearly:
+### Step 0.35: Options-First (v4.1 — default ON for Task/Feature/Bug Fix/Refactor/Config)
+
+For any non-trivial task, present 2-3 alternatives BEFORE choosing one.
+Skip only for pure Question prompts or when one path is obviously the
+single viable route (say so explicitly).
 
 ```
-APPROACHES FOR THIS TASK:
+APPROACHES FOR THIS TASK
 
-Option 1: [Name] - [brief description]
-  Pros: [advantages]  Cons: [disadvantages]
+Option 1: [Name]
+  What:      [one line]
+  How:       [one line]
+  Pros:      [advantages]
+  Cons:      [disadvantages]
+  Model:     [haiku/sonnet/opus from model-router.md]
+  Cost:      [low/medium/high]
   Best when: [use case]
 
-Option 2: [Name] - [brief description]
-  Pros: [advantages]  Cons: [disadvantages]
-  Best when: [use case]
+Option 2: [Name]
+  ...
+
+Option 3: [Name — optional, only if meaningfully different]
+  ...
 
 RECOMMENDED: Option [X]
-Reason: [why this fits the project conventions best]
+Reason: [references concrete project-profile.md fact]
 
-Select: 1, 2, or describe your preference
+Select: 1 / 2 / 3 / modify / describe your own
 ```
 
 **Project-specific option guidance:**
 - Changes to `.claude/library/prompt-perfection-core.md` affect ALL commands
-- Changes to `.claude/commands/` affect only that command
+- Changes to `.claude/commands/` or `.claude/skills/` affect only that one
 - New features should be optional and backwards compatible
 - See `.claude/docs/comparisons.md` for decision trees
 
@@ -214,6 +243,51 @@ Changes Made:
 - [Session history noted if relevant]
 ```
 
+### Step 0.55: Execution Plan + Model Selection (v4.1)
+
+Emit the full plan using the template in
+`.claude/library/execution-plan-template.md`. All blocks filled, no
+placeholders. Include MODEL HINT from `.claude/library/model-router.md`.
+
+```
+EXECUTION PLAN
+
+Goal: [one sentence]
+
+Files (verified):
+  CREATE: [paths]
+  EDIT:   [paths]
+  READ:   [paths]
+
+Steps:
+  1. [tool + file + action]
+  2. [...]
+
+Tools: Read, Edit, Write, Glob, Grep, Bash (as applicable)
+Agents: [Explore | Citation | Security | Performance | Pattern | none]
+
+MODEL HINT: [tier] ([id]) — [one-sentence reason].
+Savings vs current: ~[N]% (or "current tier is appropriate").
+
+Risks and rollback:
+  - [risk]: [mitigation]
+  - Reversibility: [easy | moderate | hard]
+
+Verification:
+  - [command or check]
+
+Estimated effort:
+  - Token cost tier: [low | medium | high]
+  - Wall-clock: [~Ns]
+  - Tool calls: [N]
+
+Assumptions (correct me if wrong):
+  - [actionable assumption 1]
+  - [actionable assumption 2]
+```
+
+Skip only if prompt type is pure Question AND no files are touched.
+
 ### Step 0.6: Approval Gate
 
 ```
@@ -222,15 +296,21 @@ PERFECTED PROMPT READY
 Type: [prompt type]
 Goal: [brief summary]
 Scope: [files/commands affected]
-Project context: Auto-loaded from profile
-Confidence: [High/Medium]
+Confidence: [N%]
+MODEL HINT: [one-line from Step 0.55]
+
+What happens next (concrete):
+  1. [first numbered action from the plan]
+  2. [second]
+  3. [verification]
 
 Approve?
-- y / yes - Execute this perfected prompt
-- n / no  - Cancel
-- modify [description] - Adjust the prompt
-- explain [part] - Explain a decision
-- options - Show alternative approaches
+- y / yes — Execute with current model
+- n / no  — Cancel
+- modify [description] — Adjust the prompt
+- explain [part] — Explain a decision
+- options — Show alternative approaches
+- switch [haiku|sonnet|opus] — I will ask you to run /model first
 ```
 
 Wait for response. Never proceed automatically.
@@ -313,6 +393,14 @@ After each successful prompt perfection:
 ---
 
 ## Version History
+
+**v4.1 (2026-04-16):**
+- Step 0.25 Curiosity Gate: confidence scoring + mandatory assumption ledger
+- Step 0.35 Options-First: 2-3 alternatives by default (not only "when multiple exist")
+- Step 0.55 Execution Plan + Model Selection: mandatory for non-Question prompts
+- Approval gate: concrete numbered "What happens next" + `switch [tier]` response
+- References: model-router.md, execution-plan-template.md, model-tiers.json
+- Aligned with prompt-perfection-core.md v2.1
 
 **v4.0 (2026-04-07):**
 - HARD-GATE anti-hallucination block added after STARTUP

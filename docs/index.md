@@ -74,6 +74,12 @@ features:
     link: /reference/changelog#460-april-2026
     linkText: What's New in v4.6
 
+  - icon: ⚡
+    title: Dynamic Model Routing (v4.7)
+    details: Skills now suggest the optimal Claude tier (haiku/sonnet/opus) per task, emit an Execution Plan before any file is touched, and present 2-3 alternatives by default. Curiosity Gate publishes an assumption ledger whenever confidence is below 100%. Estimated 30-45% token savings.
+    link: /reference/changelog#470-april-2026
+    linkText: What's New in v4.7
+
   - icon: 📚
     title: Learning System
     details: The library learns from your patterns, suggests smart defaults, and actively improves skills through the /reflect command.
@@ -190,6 +196,38 @@ The system tracks:
 After 3+ occurrences, it suggests smart defaults.
 
 ## What's New
+
+### v4.7 - Dynamic Model Routing + Smarter Phase 0
+
+Three major additions to Phase 0 that make every prompt cheaper to run and clearer to approve:
+
+**Curiosity Gate (Step 0.25)** — confidence score 0-100 with a mandatory
+assumption ledger whenever confidence drops below 100%. No more silent guessing:
+```
+ASSUMPTIONS I AM MAKING (correct me if wrong)
+- Block goes BEFORE Step 0.6, not after.
+- Minor version bump (v4.1) is appropriate.
+
+Confidence: 85%
+```
+
+**Options-First (Step 0.35)** — 2-3 alternatives shown BY DEFAULT for
+Task/Feature/Bug Fix/Refactor/Config prompts. Each option carries a model tier
+(haiku/sonnet/opus) and token-cost estimate so you choose knowing the tradeoff.
+
+**Execution Plan + MODEL HINT (Step 0.55)** — mandatory block before the
+approval gate. Lists verified files, numbered steps, tools, risks, verification,
+effort, and assumptions. Plus one line:
+```
+MODEL HINT: sonnet (claude-sonnet-4-6) — multi-step single-file edit.
+Savings vs current: ~80% (switch from opus).
+```
+
+**Approval gate** adds a new response: `switch [haiku|sonnet|opus]` — change
+model before approving to cut cost.
+
+**Estimated token savings: 30-45%** through Haiku default for simple tasks
+(memory recall, single-file edits, deploy scaffolds, README generation).
 
 ### v4.6 - Superprompting: Anti-Hallucination Contract
 

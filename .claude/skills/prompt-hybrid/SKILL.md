@@ -112,6 +112,33 @@ Using loaded project-profile.md, only check for task-specific unknowns:
 
 ---
 
+### Step 0.25: Curiosity Gate (v4.1)
+
+Score confidence 0-100. See
+`.claude/library/prompt-perfection-core.md#step-025-curiosity-gate`.
+
+- >= 90: proceed silently to Options-First
+- 70-89: ONE targeted question + assumption ledger
+- < 70: full clarification (MIN 2 questions)
+
+Always emit the assumption ledger when confidence < 100 so the user can
+correct before agents are spawned (which is expensive).
+
+### Step 0.35: Options-First (v4.1)
+
+For Task / Feature / Bug Fix / Refactor / Config: present 2-3 alternatives
+BEFORE spawning an agent. Each option carries:
+
+- What / How / Pros / Cons
+- Model tier (haiku / sonnet / opus from model-router.md)
+- Token cost estimate (low / medium / high)
+- Whether an agent is needed
+
+Options drive different model and agent decisions, so the user should pick
+BEFORE we commit to a complexity path.
+
+---
+
 ### Agent-Enhanced Flow (when complexity >= 10)
 
 When spawning an agent for codebase analysis:
@@ -178,6 +205,53 @@ Agent Recommendations: [key findings]
 
 ---
 
+### Step 0.55: Execution Plan + Model Selection (v4.1)
+
+Emit the full plan using `.claude/library/execution-plan-template.md`. All
+blocks filled, no placeholders. MODEL HINT from `.claude/library/model-router.md`.
+
+```
+EXECUTION PLAN
+
+Goal: [one sentence]
+
+Files (verified by agent):
+  CREATE: [paths]
+  EDIT:   [paths]
+  READ:   [paths]
+
+Steps:
+  1. [tool + file + action]
+  2. [...]
+
+Tools: Read, Edit, Write, Glob, Grep, Bash
+Agents: [Explore | Citation | Security | Performance | Pattern | none]
+        (already spawned / will spawn / not needed)
+
+MODEL HINT: [tier] ([id]) — [one-sentence reason tied to complexity score].
+Savings vs current: ~[N]% (or "current tier is appropriate").
+
+Risks and rollback:
+  - [risk]: [mitigation]
+  - Reversibility: [easy | moderate | hard]
+
+Verification:
+  - [specific command or check]
+
+Estimated effort:
+  - Token cost tier: [low | medium | high]
+  - Wall-clock: [~Ns or ~Nm]
+  - Tool calls: [N]
+
+Assumptions (correct me if wrong):
+  - [actionable assumption]
+```
+
+**Approval gate adds `switch [tier]` response** — user can downgrade model
+before execution to save tokens, then re-approve.
+
+---
+
 ## NEVER (Anti-Hallucination Rules)
 
 - Spawn an agent and then ignore its findings in the perfected prompt
@@ -213,6 +287,14 @@ Always show the calculation.
 ---
 
 ## Version History
+
+**v4.1 (2026-04-16):**
+- Step 0.25 Curiosity Gate: confidence scoring + assumption ledger
+- Step 0.35 Options-First: 2-3 alternatives before agent spawning
+- Step 0.55 Execution Plan + MODEL HINT for all non-Question prompts
+- Approval gate: `switch [tier]` response for pre-execution model change
+- References: model-router.md, execution-plan-template.md, model-tiers.json
+- Aligned with prompt-perfection-core.md v2.1
 
 **v4.0 (2026-04-07):**
 - HARD-GATE anti-hallucination block added

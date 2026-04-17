@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
-# Version: 4.6.0
-# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.6 with superprompting)
+# Version: 4.7.0
+# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.7 with dynamic model routing, Curiosity Gate, Options-First, Execution Plan)
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -52,7 +52,7 @@ function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -Foregr
 
 # Banner
 Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host " Claude Commands Library Installer v4.6.0" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v4.7.0" -ForegroundColor Cyan
 Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
@@ -276,8 +276,8 @@ function Deploy-ClaudeDirectory {
 
         # Create version file to track installed version
         $versionFile = Join-Path $targetClaudeDir "VERSION"
-        "4.6.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
-        Write-Success "Version file created (v4.6.0)"
+        "4.7.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
+        Write-Success "Version file created (v4.7.0)"
 
         return $true
     } catch {
@@ -309,11 +309,20 @@ function Test-Installation {
         return $false
     }
 
-    # Check for key files
-    $coreLibrary = Join-Path $targetClaudeDir "library\prompt-perfection-core.md"
-    if (-not (Test-Path $coreLibrary)) {
-        Write-Error "Core library not found: $coreLibrary"
-        return $false
+    # Check for key files (v4.7 adds model-router + execution-plan-template)
+    $keyFiles = @{
+        "Core library"          = "library\prompt-perfection-core.md"
+        "Model router (v4.7)"   = "library\model-router.md"
+        "Execution plan (v4.7)" = "library\execution-plan-template.md"
+        "Model tiers config"    = "config\model-tiers.json"
+    }
+
+    foreach ($name in $keyFiles.Keys) {
+        $path = Join-Path $targetClaudeDir $keyFiles[$name]
+        if (-not (Test-Path $path)) {
+            Write-Error "$name not found: $path"
+            return $false
+        }
     }
 
     # Check version file
@@ -321,6 +330,20 @@ function Test-Installation {
     if (Test-Path $versionFile) {
         $installedVersion = Get-Content $versionFile -Raw
         Write-Info "Installed version: $installedVersion"
+    }
+
+    # Verify all 7 skills present and at expected version
+    $expectedSkills = @("prompt", "prompt-hybrid", "prompt-dotnet", "prompt-react", "reflect", "deploy", "new-stack")
+    $missingSkills = @()
+    foreach ($skill in $expectedSkills) {
+        $skillFile = Join-Path $targetClaudeDir "skills\$skill\SKILL.md"
+        if (-not (Test-Path $skillFile)) {
+            $missingSkills += $skill
+        }
+    }
+    if ($missingSkills.Count -gt 0) {
+        Write-Error "Missing skills: $($missingSkills -join ', ')"
+        return $false
     }
 
     # Count commands
@@ -341,8 +364,10 @@ function Test-Installation {
 
     Write-Success "Verification passed"
     Write-Info "  - Found $commandCount command(s)"
-    Write-Info "  - Found $skillCount skill(s)"
+    Write-Info "  - Found $skillCount skill(s) (expected 7)"
     Write-Info "  - Core library: OK"
+    Write-Info "  - Model router + execution plan template: OK"
+    Write-Info "  - Model tiers config: OK"
     Write-Info "  - Directory structure: OK"
 
     return $true
@@ -408,9 +433,22 @@ function Show-Summary {
     Write-Host "`n" -NoNewline
     Write-Success "Installation complete!"
 
+    # v4.7 Feature Announcement
+    Write-Host "`n========================================" -ForegroundColor Magenta
+    Write-Host "  NEW IN VERSION 4.7 (April 2026)" -ForegroundColor Magenta
+    Write-Host "========================================" -ForegroundColor Magenta
+    Write-Host "`nDynamic model routing + smarter Phase 0:" -ForegroundColor White
+    Write-Host "  - Step 0.25 Curiosity Gate: confidence score + assumption ledger" -ForegroundColor Green
+    Write-Host "  - Step 0.35 Options-First: 2-3 alternatives shown by default" -ForegroundColor Green
+    Write-Host "  - Step 0.55 Execution Plan: what/how/files/tools before approval" -ForegroundColor Green
+    Write-Host "  - MODEL HINT: suggests haiku/sonnet/opus per task complexity" -ForegroundColor Green
+    Write-Host "  - 'switch [tier]' approval response for pre-execution model change" -ForegroundColor Green
+    Write-Host "  - New files: model-router.md, execution-plan-template.md, model-tiers.json" -ForegroundColor Green
+    Write-Host "  - Estimated token savings: 30-45% (Haiku for simple tasks)" -ForegroundColor Green
+
     # v4.6 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  NEW IN VERSION 4.6 (April 2026)" -ForegroundColor Magenta
+    Write-Host "  FROM VERSION 4.6 (April 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
     Write-Host "`nSuperprompting revision - Anti-Hallucination:" -ForegroundColor White
     Write-Host "  - Anti-Hallucination Contract in core library v2.0" -ForegroundColor Green

@@ -81,6 +81,25 @@ Ask only what's needed to scaffold correctly:
 
 ---
 
+## Execution Plan + Model Selection (v2.1)
+
+Before generating files, emit the plan per
+`.claude/library/execution-plan-template.md`:
+
+- Goal: scaffold `[stack-name]` with selected components
+- Files to CREATE: docker-compose.yml, nginx.conf, Dockerfile.api, .env,
+  .gitignore, deploy.sh (exact list depends on component choices)
+- Steps (numbered generation sequence)
+- MODEL HINT: haiku — scaffold is deterministic template filling from
+  verified personal-profile.md facts, no reasoning required.
+- Risks: port collision, network-name typo → verify before writing
+- Verification: `docker compose config` on generated file
+- Assumptions: stack-name, port number, component selections
+
+Approval gate responses: `y | modify | no | switch [tier]`
+
+---
+
 ## Scaffold Output
 
 Generate all files for the new stack:
@@ -245,6 +264,12 @@ ssh [SERVER_USER]@[SERVER_HOST] \
 ---
 
 ## Version History
+
+**v2.1 (2026-04-16):**
+- Execution Plan block added before scaffolding
+- MODEL HINT defaults to haiku (template-fill task)
+- `switch [tier]` option in approval gate
+- Aligned with prompt-perfection-core.md v2.1
 
 **v2.0 (2026-04-07):**
 - HARD-GATE anti-hallucination block added

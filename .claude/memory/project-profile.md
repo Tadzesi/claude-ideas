@@ -1,7 +1,7 @@
 # Project Profile
 
-**Version:** 2.1
-**Last Updated:** 2026-04-07
+**Version:** 2.2
+**Last Updated:** 2026-04-17
 **Purpose:** Structured fact store for memory recall across sessions - populated automatically
 
 ---
@@ -9,7 +9,7 @@
 ## Project Identity
 
 **Name:** Claude Commands Library (claude-ideas)
-**Version:** 4.5.0
+**Version:** 4.7.0
 **Repository:** https://github.com/Tadzesi/claude-ideas
 **License:** MIT
 **Live Docs:** https://tadzesi.github.io/claude-ideas/

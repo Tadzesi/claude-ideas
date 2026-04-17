@@ -5,6 +5,50 @@ All notable changes to the Claude Commands Library will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.7.0] - 2026-04-16
+
+### Added
+- **Dynamic model routing system** — new `.claude/config/model-tiers.json` maps
+  prompt types, complexity scores, and file counts to the optimal Claude tier
+  (haiku / sonnet / opus).
+- **Model Router** — `.claude/library/model-router.md` provides the decision
+  algorithm (hard de-escalation, hard escalation, by score, by type, by file
+  count). Referenced from every skill.
+- **Execution Plan Template** — `.claude/library/execution-plan-template.md`
+  defines the mandatory pre-approval plan: Goal, Files, Steps, Tools, MODEL
+  HINT, Risks, Verification, Estimated effort, Assumptions.
+- **Step 0.25 Curiosity Gate** in `prompt-perfection-core.md` — confidence
+  score 0-100 + mandatory assumption ledger when confidence < 100%. Forces
+  explicit uncertainty accounting instead of silent guessing.
+- **Step 0.35 Options-First** — 2-3 alternative approaches shown by default
+  for Task/Feature/Bug Fix/Refactor/Config prompts (was "only when multiple
+  approaches exist"). Each option carries model tier + cost estimate.
+- **Step 0.55 Execution Plan + Model Selection** — mandatory block before
+  the approval gate for all non-Question prompts. Makes "what will be done
+  and how" unambiguous.
+- **Approval gate: `switch [tier]` response** — user can request a model
+  downgrade/upgrade before approving execution.
+- v4.7 feature announcement in installer summary.
+
+### Changed
+- `prompt-perfection-core.md`: v2.0 → v2.1 (new steps 0.25, 0.35, 0.55;
+  flowchart updated)
+- `skills/prompt/SKILL.md`: v4.0 → v4.1
+- `skills/prompt-hybrid/SKILL.md`: v4.0 → v4.1
+- `skills/prompt-dotnet`, `prompt-react`, `reflect`, `deploy`, `new-stack`:
+  v2.0 → v2.1 (domain-specific MODEL HINT defaults)
+- Legacy commands (`prompt-technical`, `prompt-research`, `prompt-article`,
+  `prompt-article-readme`): Phase 0 v2.1 Add-ons block added
+- Installer: v4.6.0 → v4.7.0, now verifies `model-router.md`,
+  `execution-plan-template.md`, `model-tiers.json`, and all 7 skills
+
+### Performance
+- Estimated token savings: 30-45% through Haiku default for simple tasks
+  (memory recall, single-file edits, template-fill scaffolds, deploys)
+- Clearer execution plans reduce re-prompting iterations
+
+---
+
 ## [4.6.0] - 2026-04-07
 
 ### Added

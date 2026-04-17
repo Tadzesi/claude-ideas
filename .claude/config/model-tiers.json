@@ -1,0 +1,117 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-04-16",
+  "purpose": "Maps prompt types, complexity and task characteristics to recommended Claude model tier. Skills read this file to suggest the optimal model before execution, reducing token cost.",
+
+  "tiers": {
+    "haiku": {
+      "id": "claude-haiku-4-5",
+      "cost_weight": 1,
+      "speed": "fast",
+      "use_for": [
+        "Phase 0 analysis only (no execution)",
+        "Memory recall and context loading",
+        "Single-file simple edits",
+        "Grammar/spelling correction",
+        "Short answers to factual questions",
+        "Glob/Grep exploration summaries",
+        "Status readouts and log filtering"
+      ],
+      "avoid_for": [
+        "Multi-file refactors",
+        "Architecture decisions",
+        "Security-critical changes",
+        "Complex reasoning chains"
+      ]
+    },
+    "sonnet": {
+      "id": "claude-sonnet-4-6",
+      "cost_weight": 3,
+      "speed": "medium",
+      "use_for": [
+        "Multi-file edits (2-5 files)",
+        "Pattern detection across codebase",
+        "Moderate-complexity features",
+        "Bug investigation with root-cause analysis",
+        "API/SDK integration",
+        "Test writing and coverage",
+        "Documentation generation with context"
+      ],
+      "avoid_for": [
+        "Trivial cleanups (use haiku)",
+        "Mission-critical architecture (use opus)"
+      ]
+    },
+    "opus": {
+      "id": "claude-opus-4-7",
+      "cost_weight": 15,
+      "speed": "slow",
+      "use_for": [
+        "Architecture and design decisions",
+        "Cross-cutting refactors (6+ files)",
+        "Security audits and threat modelling",
+        "Algorithm design and performance optimisation",
+        "Multi-agent orchestration (research mode)",
+        "Ambiguous prompts requiring deep reasoning",
+        "Breaking-change migrations"
+      ],
+      "avoid_for": [
+        "Simple edits (wasteful)",
+        "Pure information retrieval (use haiku)"
+      ]
+    }
+  },
+
+  "routing_rules": {
+    "by_complexity_score": {
+      "0-4": "haiku",
+      "5-9": "sonnet",
+      "10-19": "sonnet",
+      "20+": "opus"
+    },
+    "by_prompt_type": {
+      "Question": "haiku",
+      "Docs": "haiku",
+      "Bug Fix (single file)": "haiku",
+      "Bug Fix (multi file)": "sonnet",
+      "Config": "haiku",
+      "Feature (small)": "sonnet",
+      "Feature (large)": "opus",
+      "Code Review": "sonnet",
+      "Security Review": "opus",
+      "Refactor (local)": "sonnet",
+      "Refactor (cross-cutting)": "opus",
+      "Research": "opus"
+    },
+    "by_file_count": {
+      "1": "haiku",
+      "2-5": "sonnet",
+      "6+": "opus"
+    },
+    "escalation_triggers": [
+      "ambiguous user prompt",
+      "security or credential handling involved",
+      "breaking change across public API",
+      "migration between framework major versions",
+      "user explicitly requests deep analysis"
+    ],
+    "de_escalation_triggers": [
+      "single file typo or rename",
+      "user asks for summary of already-known facts",
+      "memory recall only",
+      "plain-text status or listing"
+    ]
+  },
+
+  "output_hint_template": {
+    "suggest_switch": "MODEL HINT: This task suits {tier} ({id}). Current session may be on a higher tier. Consider: /model {tier} to reduce cost by ~{savings_pct}%.",
+    "keep_current": "MODEL HINT: Current model is appropriate for this task.",
+    "escalate": "MODEL HINT: This task requires deeper reasoning. Consider: /model {tier} for better results."
+  },
+
+  "estimated_savings_pct": {
+    "opus_to_sonnet": 80,
+    "opus_to_haiku": 93,
+    "sonnet_to_haiku": 66
+  }
+}

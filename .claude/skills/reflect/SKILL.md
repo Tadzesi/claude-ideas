@@ -87,10 +87,22 @@ Append confirmed observations to `.claude/memory/observations.md`:
 
 ---
 
-## Step 4: Offer to Apply
+## Step 4: Execution Plan + Model Selection (v2.1)
+
+Before applying anything, emit a short plan per
+`.claude/library/execution-plan-template.md`:
+
+- Files to EDIT (observations.md + any HIGH priority target files)
+- Steps (one per file, numbered)
+- MODEL HINT: haiku — reflect is pure analysis + targeted edits, no codebase
+  exploration. Recommend switching to haiku if currently on sonnet/opus.
+- Verification: quick read-back after edits
+- Assumptions (which HIGH items are auto-applied)
+
+## Step 5: Offer to Apply
 
 Present all HIGH priority proposals together and ask once:
-"Apply HIGH priority changes now? (yes/no)"
+"Apply HIGH priority changes now? (yes/no | switch haiku)"
 
 If yes — apply all HIGH priority changes in sequence, confirm each file edited.
 MEDIUM/LOW priority items stay in observations.md for next session.
@@ -109,6 +121,12 @@ Do NOT ask per-item — one decision for all HIGH, one for all MEDIUM.
 ---
 
 ## Version History
+
+**v2.1 (2026-04-16):**
+- Step 4 Execution Plan block added (files, steps, MODEL HINT, assumptions)
+- MODEL HINT defaults to haiku for reflect (analysis-only)
+- `switch haiku` option in the apply prompt
+- Aligned with prompt-perfection-core.md v2.1
 
 **v2.0 (2026-04-07):**
 - HARD-GATE scope rules added

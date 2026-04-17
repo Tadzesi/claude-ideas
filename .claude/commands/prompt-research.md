@@ -20,6 +20,16 @@ The `/prompt-research` command provides **deep, multi-iteration codebase analysi
 - **Comprehensive reporting** - 15-20 page research reports with priorities
 - **Smart convergence** - Automatically determines when research is complete
 
+**Phase 0 v2.1 Add-ons (mandatory):**
+- Step 0.25 Curiosity Gate (confidence score + assumption ledger)
+- Step 0.35 Options-First: present narrow / broad / comprehensive research
+  strategies with cost + duration estimates BEFORE spawning agents
+- Step 0.55 Execution Plan + MODEL HINT
+  (see @.claude/library/execution-plan-template.md
+   and @.claude/library/model-router.md)
+- MODEL HINT default for research: opus (complexity >= 20)
+- Approval gate adds `switch [haiku|sonnet|opus]` response
+
 ---
 
 ## 🎯 When to Use This Command

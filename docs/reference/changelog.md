@@ -2,6 +2,59 @@
 
 All notable changes to the Claude Commands Library.
 
+## [4.7.0] - April 2026
+
+### Added
+
+- **Dynamic model routing** — new config `model-tiers.json` maps prompt types,
+  complexity scores, and file counts to the best Claude tier (haiku / sonnet / opus)
+- **Model Router** (`library/model-router.md`) — decision algorithm used by every
+  skill: hard de-escalation, hard escalation, by complexity score, by prompt type,
+  by file count. Each skill emits a `MODEL HINT` line before the approval gate
+- **Execution Plan Template** (`library/execution-plan-template.md`) — mandatory
+  pre-approval plan: Goal, Files, Steps, Tools, MODEL HINT, Risks, Verification,
+  Estimated effort, Assumptions
+- **Step 0.25 Curiosity Gate** in Phase 0 — confidence score 0-100 + mandatory
+  assumption ledger when confidence < 100%. Forces explicit uncertainty accounting
+- **Step 0.35 Options-First** — 2-3 alternatives shown BY DEFAULT for
+  Task/Feature/Bug Fix/Refactor/Config (was "only when multiple exist"). Each
+  option carries model tier + cost estimate
+- **Step 0.55 Execution Plan + Model Selection** — mandatory block before
+  approval for all non-Question prompts
+- **Approval gate: `switch [tier]` response** — request a model change before
+  approving, then re-approve
+
+### Changed
+
+- `prompt-perfection-core.md`: v2.0 → v2.1 (new steps, updated flowchart)
+- `skills/prompt/SKILL.md`: v4.0 → v4.1
+- `skills/prompt-hybrid/SKILL.md`: v4.0 → v4.1
+- `skills/prompt-dotnet`, `prompt-react`, `reflect`, `deploy`, `new-stack`: v2.0 → v2.1
+- Legacy commands: Phase 0 v2.1 Add-ons block added
+- Installer: v4.6.0 → v4.7.0, verifies all new library files + 7 skills
+
+### Performance
+
+- Estimated token savings: **30-45%** via Haiku default for simple tasks
+- Clearer execution plans reduce re-prompting iterations
+
+### Upgrade Guide (4.6 → 4.7)
+
+No breaking changes. Skills are backward compatible.
+Run the installer:
+
+```powershell
+.\install-claude-commands.ps1
+```
+
+Or update an existing installation:
+
+```powershell
+.\install-claude-commands.ps1 -Force
+```
+
+---
+
 ## [4.6.0] - April 2026
 
 ### Added

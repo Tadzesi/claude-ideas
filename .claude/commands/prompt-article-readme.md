@@ -9,6 +9,16 @@ This command generates or updates a professional README.md file for any project 
 **Import:** Use Phase 0 from `.claude/library/prompt-perfection-core.md`
 **Adaptation:** Article/Documentation (from `.claude/library/adapters/article-adapter.md`)
 
+**Phase 0 v2.1 Add-ons (mandatory):**
+- Step 0.25 Curiosity Gate (confidence + assumption ledger)
+- Step 0.35 Options-First: present minimal / standard / comprehensive README
+  styles with tradeoffs before generating
+- Step 0.55 Execution Plan + MODEL HINT
+  (see `.claude/library/execution-plan-template.md`
+   and `.claude/library/model-router.md`)
+- MODEL HINT default for README generation: haiku (template-driven task)
+- Approval gate adds `switch [haiku|sonnet|opus]` response
+
 **Before starting the README wizard, first perfect the user's prompt.**
 
 ### Step 0.1: Initial Analysis

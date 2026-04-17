@@ -37,6 +37,15 @@ This command provides deep technical analysis for programming and development ta
 **Adaptation:** Technical with Hybrid Intelligence (from @.claude/library/adapters/technical-adapter.md)
 **Rules:** Path-specific rules from @.claude/rules/technical-patterns.md
 
+**Phase 0 v2.1 Add-ons (mandatory):**
+- Step 0.25 Curiosity Gate (confidence score + assumption ledger)
+- Step 0.35 Options-First (2-3 alternatives for Task/Feature/Bug Fix/Refactor)
+- Step 0.55 Execution Plan + MODEL HINT
+  (see @.claude/library/execution-plan-template.md
+   and @.claude/library/model-router.md)
+- Approval gate adds `switch [haiku|sonnet|opus]` response
+- Technical routing: score 0-4 → haiku, 5-19 → sonnet, 20+ → opus
+
 **Enhanced Flow:** This command enhances Phase 0 with automatic complexity detection and intelligent agent spawning for complex tasks.
 
 **Before any technical analysis, first perfect the user's prompt and detect complexity.**

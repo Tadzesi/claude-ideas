@@ -1,7 +1,7 @@
 # Prompt Perfection Core Library
 
-**Version:** 2.0
-**Last Updated:** 2026-04-07
+**Version:** 2.1
+**Last Updated:** 2026-04-16
 **Purpose:** Canonical Phase 0 implementation for all prompt commands
 **AI Fluency:** Aligned with Anthropic's 4Ds Framework (Delegation, Description, Discernment, Diligence)
 
@@ -54,12 +54,17 @@ flowchart TD
     F -->|no| H[Step 0.2a: Memory Recall]
     G --> H
     H --> I[Step 0.2b: Completeness Check]
-    I --> J{All required info present?}
+    I --> CG[Step 0.25: Curiosity Gate]
+    CG --> J{Confidence >= 90%?}
     J -->|yes| K[Step 0.4: Correction and Structuring]
     J -->|no| L[Step 0.3: Clarification Questions]
-    L --> K
+    L --> OPT{Multiple viable approaches?}
+    OPT -->|yes| OP[Step 0.35: Options-First]
+    OPT -->|no| K
+    OP --> K
     K --> M[Step 0.5: Output Perfect Prompt]
-    M --> N[Step 0.6: Approval Gate]
+    M --> EP[Step 0.55: Execution Plan + Model Selection]
+    EP --> N[Step 0.6: Approval Gate]
     N -->|approved| O[Execute Task]
     N -->|modify| M
     O --> P[Step 0.7: Post-Execution Evaluation]
@@ -356,8 +361,48 @@ Check for presence of (including pre-filled facts from memory):
 ```
 
 **Decision Point:**
-- If ALL required components present (from user input + profile) → **Go to Step 0.4 (Correction)**
-- If ANY required components missing → **Go to Step 0.3 (Clarification)**
+- Always proceed to **Step 0.25 (Curiosity Gate)** — it decides whether to ask
+  questions, jump to Step 0.4, or first offer options.
+
+---
+
+### Step 0.25: Curiosity Gate *(NEW v2.1)*
+
+**Purpose:** Force explicit uncertainty accounting before skipping ahead.
+Replaces the old "ask only when missing" default — memory pre-fill is not a
+licence to guess.
+
+**Confidence scoring (0-100):**
+
+Start at 100. Subtract for each uncertainty:
+- Goal is vague (no measurable outcome) → -25
+- Scope lists no concrete files → -20
+- Expected Result unspecified → -15
+- Requirements implicit only → -10
+- Technology choice ambiguous → -10
+- Constraints unknown → -5 each (cap -15)
+- User-level disagreement with profile facts → -20
+
+**Decision Logic:**
+```
+confidence >= 90  → proceed to Step 0.4 silently
+confidence 70-89  → ask ONE targeted question + list assumptions (Step 0.3 lite)
+confidence < 70   → full Step 0.3 clarification round (MIN 2 questions)
+```
+
+**Assumption Ledger (mandatory output when confidence < 100):**
+
+```
+ASSUMPTIONS I AM MAKING (correct me if wrong)
+- [Assumption 1 — what I will do if you do not correct this]
+- [Assumption 2]
+- [Assumption 3]
+
+Confidence: [N%]
+```
+
+**Rule:** Every assumption must be actionable — the user must be able to say
+"no, do X instead" and know exactly what changes.
 
 ---
 
@@ -415,37 +460,64 @@ Check for presence of (including pre-filled facts from memory):
    - You can skip this if not applicable
 ```
 
-**Multiple Approaches Pattern:**
-
-When multiple valid solutions exist:
-
-```markdown
-**Multiple Approaches Detected:**
-
-I can solve this in different ways. Which approach fits your needs?
-
-**Option 1: [Name]**
-- **Description:** [What this does]
-- **Pros:** [Advantages]
-- **Cons:** [Disadvantages]
-- **Best for:** [Use case]
-
-**Option 2: [Name]**
-- **Description:** [What this does]
-- **Pros:** [Advantages]
-- **Cons:** [Disadvantages]
-- **Best for:** [Use case]
-
-⭐ **Recommended:** Option [X]
-**Reasoning:** [Why this is best based on context]
-
-*Please select: 1, 2, or describe your preference*
-```
-
 **Wait for User Response:**
 - Process all answers
 - If new questions arise, ask them
 - Repeat until all required information gathered
+
+---
+
+### Step 0.35: Options-First *(NEW v2.1 — default ON for Task/Feature/Bug Fix/Refactor)*
+
+**Purpose:** Present 2-3 alternative approaches BEFORE committing to one.
+Makes tradeoffs explicit so the user picks, not Claude.
+
+**When to run:**
+- Prompt type is Task, Feature, Bug Fix, Refactor, or Config AND
+- More than one valid implementation path exists
+
+**When to SKIP:**
+- Pure Question (no implementation)
+- User already specified the approach ("use X library", "write it as a hook")
+- Only one viable path exists — say so explicitly: "One-path task, no options."
+
+**Output Format:**
+
+```
+APPROACHES FOR THIS TASK
+
+Option 1: [Short name]
+  What:  [One line — what changes]
+  How:   [One line — method]
+  Pros:  [Advantages]
+  Cons:  [Disadvantages]
+  Model: [haiku/sonnet/opus — from model-router.md]
+  Cost:  [low/medium/high tokens]
+  Best when: [use case]
+
+Option 2: [Short name]
+  What:  [...]
+  How:   [...]
+  Pros:  [...]
+  Cons:  [...]
+  Model: [...]
+  Cost:  [...]
+  Best when: [...]
+
+Option 3: [Short name — optional, if a meaningfully different third exists]
+  ...
+
+RECOMMENDED: Option [X]
+Reason: [one sentence — why this fits the facts from memory + scope]
+
+Select: 1 / 2 / 3 / modify / describe your own
+```
+
+**Rules:**
+1. Options must be meaningfully different — not cosmetic variants.
+2. Each option gets a model tier from `.claude/library/model-router.md`.
+3. Recommendation must reference concrete facts from project profile.
+4. Wait for selection before moving to Step 0.4.
 
 ---
 
@@ -530,6 +602,75 @@ Or: *None specified*
 
 ---
 
+### Step 0.55: Execution Plan + Model Selection *(NEW v2.1 — mandatory for all non-Question prompts)*
+
+**Purpose:** Before the approval gate, make "what will be done and how"
+unambiguous. User and Claude must share the same mental model. Also surface
+the recommended Claude tier so the user can switch models before spending
+tokens.
+
+**Import:** Use template from `.claude/library/execution-plan-template.md`
+
+**Model routing:** Apply rules from `.claude/library/model-router.md` using
+config in `.claude/config/model-tiers.json`.
+
+**Skip only when:**
+- Prompt type is pure Question AND no files will be touched.
+
+**Mandatory blocks (in order):**
+
+1. Goal (one sentence)
+2. Files — CREATE / EDIT / READ (paths verified with Glob/Read)
+3. Steps — numbered, each mapping to a concrete tool call
+4. Tools — which of Read/Edit/Write/Glob/Grep/Bash/Agent will be used
+5. MODEL HINT — one line from `model-router.md`
+6. Risks and rollback — reversibility + mitigations
+7. Verification — commands or checks to run after
+8. Estimated effort — token tier (low/medium/high) + wall-clock + tool-call count
+9. Assumptions — actionable list the user can override
+
+**Rules:**
+- No `[placeholders]` in final output. Every slot filled with a concrete value.
+- Paths unverified? Mark them `(unverified — will Glob first)` and run the Glob BEFORE the approval gate closes.
+- Steps must be countable. Vague verbs ("improve", "enhance") are not steps.
+- MODEL HINT is mandatory — even "keep current" is explicit communication.
+
+**Example output:**
+```
+EXECUTION PLAN
+
+Goal: Add MODEL HINT block to /prompt skill before approval gate.
+
+Files (verified):
+  EDIT: .claude/skills/prompt/SKILL.md
+
+Steps:
+  1. Edit SKILL.md — insert Model Selection block before Step 0.6 section.
+  2. Bump version in frontmatter to v4.1.
+
+Tools: Read, Edit
+Agents: none
+
+MODEL HINT: sonnet (claude-sonnet-4-6) — precise single-file wording change.
+
+Risks and rollback:
+  - Reversibility: easy (git revert).
+
+Verification:
+  - .\tests\validate-library-references.ps1 -Verbose
+
+Estimated effort:
+  - Token cost tier: low
+  - Wall-clock: ~45s
+  - Tool calls: 3
+
+Assumptions I am making (correct me if wrong):
+  - Block goes BEFORE Step 0.6, not after.
+  - Minor version bump (v4.1) is appropriate.
+```
+
+---
+
 ### Step 0.6: Approval Gate
 
 **Purpose:** Get user confirmation before proceeding
@@ -546,10 +687,15 @@ Or: *None specified*
 - Type: [prompt type]
 - Goal: [brief goal summary]
 - Scope: [scope summary]
-- Confidence: [High/Medium/Low - based on completeness]
+- Confidence: [N% from Step 0.25]
+- MODEL HINT: [one-line recommendation from Step 0.55]
 
-**What happens next:**
-After you approve, I will [execute task / answer question / generate content / etc.]
+**What happens next (concrete):**
+1. [First action, which file, which tool]
+2. [Second action]
+3. [Verification step]
+
+(Full Execution Plan above in Step 0.55 — user and Claude are aligned.)
 
 **⚖️ Diligence Reminder (AI Fluency):**
 You remain responsible for any output generated from this prompt.
@@ -558,11 +704,12 @@ You remain responsible for any output generated from this prompt.
 - Test thoroughly before production use
 
 **Reply with:**
-- `y` or `yes` — Execute this perfected prompt
+- `y` or `yes` — Execute this perfected prompt with current model
 - `n` or `no` — Cancel
 - `modify [description]` — Adjust the prompt (tell me what to change)
 - `explain [component]` — Explain why I included/changed something
 - `options` — Show me alternative approaches (if applicable)
+- `switch [haiku|sonnet|opus]` — I will remind you to run /model before approving
 ```
 
 **Handle User Responses:**
@@ -574,6 +721,7 @@ You remain responsible for any output generated from this prompt.
 | `modify [X]` | Apply changes, re-display perfected prompt, wait for approval |
 | `explain [X]` | Provide detailed explanation, re-prompt for approval |
 | `options` | Show alternative approaches if multiple exist, wait for selection |
+| `switch [tier]` | Remind user: "Run `/model [tier]` then reply `y` to proceed." Wait. |
 
 ---
 
@@ -818,6 +966,14 @@ File: `.claude/library/adapters/session-adapter.md`
 
 ## Version History
 
+**v2.1 (2026-04-16):**
+- Step 0.25 Curiosity Gate: confidence scoring + mandatory assumption ledger
+- Step 0.35 Options-First: 2-3 alternatives BY DEFAULT for Task/Feature/Bug Fix/Refactor/Config
+- Step 0.55 Execution Plan + Model Selection: mandatory for all non-Question prompts
+- Approval gate: concrete "What happens next" (numbered steps) + `switch [tier]` response
+- References new files: model-router.md, execution-plan-template.md, model-tiers.json
+- Flowchart updated to reflect new gates
+
 **v2.0 (2026-04-07):**
 - Anti-Hallucination Contract: NEVER/ALWAYS/Grounding Protocol rules
 - Phase 0 Mermaid flowchart
@@ -897,6 +1053,11 @@ File: `.claude/library/adapters/session-adapter.md`
 - @.claude/config/complexity-rules.json
 - @.claude/config/agent-templates.json
 - @.claude/config/ai-fluency.json *(AI Fluency Framework - NEW v1.3)*
+- @.claude/config/model-tiers.json *(NEW v2.1 — model routing)*
+
+**Phase 0 Support (v2.1):**
+- @.claude/library/model-router.md
+- @.claude/library/execution-plan-template.md
 
 **Path-Specific Rules (v1.2):**
 - @.claude/rules/technical-patterns.md

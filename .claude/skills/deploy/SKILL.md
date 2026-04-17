@@ -89,6 +89,23 @@ Before generating commands, verify:
 Show results. If issues found, stop and ask user to resolve before proceeding.
 If clean, confirm: `Ready to generate deploy commands. Proceed? (y/n)`
 
+### Phase 1.5 — Execution Plan + Model Selection (v2.1)
+
+Emit an Execution Plan per `.claude/library/execution-plan-template.md`
+BEFORE generating commands:
+
+- Goal (one sentence)
+- Files that will be uploaded (source → remote path)
+- Steps (numbered, each a discrete command)
+- MODEL HINT: haiku — deploy is template-filling with verified facts, not
+  reasoning. Suggest switching to haiku if current tier is sonnet/opus.
+- Risks and rollback (db migrations, destructive restarts, traffic impact)
+- Verification (post-deploy curl / docker ps)
+- Estimated effort (wall-clock, tool calls)
+- Assumptions (stack name, branch, env)
+
+Approval gate responses: `y | modify | no | switch [tier]`
+
 ### Phase 2 — Generate Deploy Commands
 
 Generate the complete deploy sequence based on scan. Example output for .NET API + React stack:
@@ -192,6 +209,11 @@ curl -X POST "https://api.cloudflare.com/client/v4/zones/[CF_ZONE_ID]/purge_cach
 ---
 
 ## Version History
+
+**v2.1 (2026-04-16):**
+- Phase 1.5 Execution Plan + MODEL HINT (haiku default for deploys)
+- `switch [tier]` response in approval gate
+- Aligned with prompt-perfection-core.md v2.1
 
 **v2.0 (2026-04-07):**
 - HARD-GATE anti-hallucination block added

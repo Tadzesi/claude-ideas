@@ -87,13 +87,21 @@ Use scan results to pre-fill what's already known. Only ask for what's genuinely
 | **Affected files** | ❓ inferred or ask | |
 | **Expected behavior** | ❓ from user | |
 
+### Step 0.25 — Curiosity Gate (v2.1)
+
+Confidence scoring per
+`.claude/library/prompt-perfection-core.md#step-025-curiosity-gate`.
+If confidence < 90%, publish the assumption ledger before proceeding.
+
 ### Step 0.3 — Clarification (only truly unknown items)
 
 Ask only what the scan could not determine. Example for a typical .NET task — skip any question already answered by the scan.
 
-If multiple valid approaches exist for their stack, present options:
-- Mark ⭐ recommended based on what's already in the project (consistency > preference)
-- E.g., if project uses FluentValidation, recommend that over DataAnnotations
+### Step 0.35 — Options-First (v2.1, default ON for non-trivial tasks)
+
+Present 2-3 alternatives with What/How/Pros/Cons/Model tier. Recommend based
+on what already exists in the project (consistency > preference). Example:
+if FluentValidation is present, recommend that over DataAnnotations.
 
 ### Step 0.4 — Apply .NET Best Practices Automatically
 
@@ -163,9 +171,21 @@ Based on detected stack, apply these without asking:
 [What the implementation should do/look like]
 ```
 
+### Step 0.55 — Execution Plan + Model Selection (v2.1, mandatory)
+
+Emit the full plan from `.claude/library/execution-plan-template.md`:
+Goal, Files (CREATE/EDIT/READ with verified paths), Steps (numbered),
+Tools, MODEL HINT (from `.claude/library/model-router.md`), Risks/rollback,
+Verification, Estimated effort, Assumptions.
+
+.NET-specific routing hints:
+- Single-file typo, DTO rename, async keyword add → haiku
+- Multi-file service + controller + tests → sonnet
+- EF migration with data preservation, cross-cutting middleware → opus
+
 ### Step 0.6 — Approval Gate
 
-Wait for: `y` (execute) | `modify` (adjust) | `no` (cancel)
+Wait for: `y` (execute) | `modify` (adjust) | `no` (cancel) | `switch [tier]`
 
 After approval — proceed with implementation following the perfected prompt and detected project conventions.
 
@@ -215,6 +235,13 @@ public record ItemDto(int Id, string Name, DateTime CreatedAt);
 ---
 
 ## Version History
+
+**v2.1 (2026-04-16):**
+- Step 0.25 Curiosity Gate reference
+- Step 0.35 Options-First default for .NET tasks
+- Step 0.55 Execution Plan + MODEL HINT with .NET-specific routing
+- `switch [tier]` response in approval gate
+- Aligned with prompt-perfection-core.md v2.1
 
 **v2.0 (2026-04-07):**
 - HARD-GATE anti-hallucination block added
