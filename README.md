@@ -6,13 +6,17 @@
 
 A collection of Claude Code slash commands for prompt engineering, refinement, and content generation. Transform vague ideas into precise, executable prompts with intelligent agent assistance, caching, and learning.
 
-**Version 4.5** - March 2026
+**Version 4.7** - April 2026
 
 ## Features
 
-- 🌍 **Universal Skills** - All skills read config from personal-profile.md, no hardcoded values (NEW v4.5)
-- 🔵 **Project-Aware Commands** - /prompt-dotnet and /prompt-react scan your project automatically (NEW v4.4)
-- 🚀 **Deploy & Stack** - /deploy and /new-stack for project-aware deployment workflows (NEW v4.3)
+- ⚡ **Dynamic Model Routing** - Skills suggest haiku/sonnet/opus per task, ~30-45% token savings (NEW v4.7)
+- 🔮 **Options-First** - 2-3 alternatives shown by default with cost estimates before execution (NEW v4.7)
+- 📋 **Execution Plan** - Mandatory pre-approval plan listing files, steps, model, and risks (NEW v4.7)
+- 🛡️ **Anti-Hallucination Contract** - HARD-GATE checklist + NEVER rules in every skill (NEW v4.6)
+- 🌍 **Universal Skills** - All skills read config from personal-profile.md, no hardcoded values (v4.5)
+- 🔵 **Project-Aware Commands** - /prompt-dotnet and /prompt-react scan your project automatically (v4.4)
+- 🚀 **Deploy & Stack** - /deploy and /new-stack for project-aware deployment workflows (v4.3)
 - 🔄 **Skill Reflection** - Actively improve skills from conversation feedback (v4.1)
 - 📊 **Enhanced Statusline** - Color-coded context bar, tokens, API duration with icons (v4.1)
 - 🔮 **Predictive Intelligence** - See 2 steps ahead with proactive guidance (v4.0)
@@ -52,7 +56,47 @@ npm run docs:preview
 
 ---
 
-## What's New in Version 4.5 🌍
+## What's New in Version 4.7 ⚡
+
+**Dynamic Model Routing + Smarter Phase 0 (April 2026)**
+
+Version 4.7 makes every prompt cheaper to run and clearer to approve through three Phase 0 additions.
+
+### Headline Features
+
+⚡ **Dynamic Model Routing**
+- New `model-router.md` decision algorithm routes haiku/sonnet/opus per task
+- MODEL HINT shown in every Execution Plan
+- Estimated 30-45% token savings for typical workflows
+
+🔮 **Curiosity Gate (Step 0.25)**
+- Confidence score 0-100 on every prompt analysis
+- Mandatory assumption ledger when confidence drops below 100%
+- No more silent guessing
+
+📋 **Options-First (Step 0.35)**
+- 2-3 alternatives shown BY DEFAULT for Task/Feature/Bug Fix/Refactor/Config
+- Each option shows model tier + token-cost estimate
+- `switch [haiku|sonnet|opus]` at approval gate to cut cost
+
+📄 **Execution Plan (Step 0.55)**
+- Mandatory pre-approval block: verified files, steps, tools, risks, MODEL HINT
+- `switch [tier]` changes model before approving
+
+---
+
+## What Was New in Version 4.6 🛡️
+
+**Superprompting: Anti-Hallucination Contract (April 2026)**
+
+- HARD-GATE checklist in every skill (pre-flight before any output)
+- NEVER rules (domain-specific prohibitions per skill)
+- Chain-of-Thought REASONING block in Step 0.1
+- Core library v2.0 with Mermaid flowchart and Grounding Protocol
+
+---
+
+## What Was New in Version 4.5 🌍
 
 **Universal Skills + Project-Aware Commands (March 2026)**
 

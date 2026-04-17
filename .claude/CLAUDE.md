@@ -58,9 +58,9 @@ Load path-specific rules automatically:
 - Library: kebab-case (prompt-perfection-core.md)
 
 **Version Format:**
-- Use semantic versioning (v4.5.0)
+- Use semantic versioning (v4.7.0)
 - Include date in version history (YYYY-MM-DD)
-- Current version: 4.5.0 (Universal Skills)
+- Current version: 4.7.0 (Dynamic Model Routing)
 
 **Terminology:**
 - "Explore Agent" (not ExploreAgent)
