@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
-# Version: 4.7.0
-# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.7 with dynamic model routing, Curiosity Gate, Options-First, Execution Plan)
+# Version: 4.8.0
+# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.8 adds global Interaction Protocol in CLAUDE.md; inherits v4.7 dynamic model routing, Curiosity Gate, Options-First, Execution Plan)
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -52,7 +52,7 @@ function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -Foregr
 
 # Banner
 Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host " Claude Commands Library Installer v4.7.0" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v4.8.0" -ForegroundColor Cyan
 Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
@@ -276,8 +276,8 @@ function Deploy-ClaudeDirectory {
 
         # Create version file to track installed version
         $versionFile = Join-Path $targetClaudeDir "VERSION"
-        "4.7.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
-        Write-Success "Version file created (v4.7.0)"
+        "4.8.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
+        Write-Success "Version file created (v4.8.0)"
 
         return $true
     } catch {
@@ -433,9 +433,20 @@ function Show-Summary {
     Write-Host "`n" -NoNewline
     Write-Success "Installation complete!"
 
+    # v4.8 Feature Announcement
+    Write-Host "`n========================================" -ForegroundColor Magenta
+    Write-Host "  NEW IN VERSION 4.8 (April 2026)" -ForegroundColor Magenta
+    Write-Host "========================================" -ForegroundColor Magenta
+    Write-Host "`nInteraction Protocol (global, applies to ALL interactions):" -ForegroundColor White
+    Write-Host "  - Language: SK in / EN internal / SK out; technical terms verbatim" -ForegroundColor Green
+    Write-Host "  - Plan-First: understanding + 2-3 options + execution plan + approval" -ForegroundColor Green
+    Write-Host "  - Proactive Option-Finding: Claude proposes better paths BEFORE executing" -ForegroundColor Green
+    Write-Host "  - Never Auto-Execute: no git/install/build without explicit consent" -ForegroundColor Green
+    Write-Host "  - Lives in CLAUDE.md -> loaded into every session automatically" -ForegroundColor Green
+
     # v4.7 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  NEW IN VERSION 4.7 (April 2026)" -ForegroundColor Magenta
+    Write-Host "  FROM VERSION 4.7 (April 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
     Write-Host "`nDynamic model routing + smarter Phase 0:" -ForegroundColor White
     Write-Host "  - Step 0.25 Curiosity Gate: confidence score + assumption ledger" -ForegroundColor Green

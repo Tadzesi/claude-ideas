@@ -116,6 +116,13 @@ export default defineConfig({
           items: [
             { text: 'Getting Best Results', link: '/guide/tutorial-best-results' }
           ]
+        },
+        {
+          text: 'Protocols',
+          collapsed: false,
+          items: [
+            { text: 'Interaction Protocol (v4.8)', link: '/guide/interaction-protocol' }
+          ]
         }
       ],
 

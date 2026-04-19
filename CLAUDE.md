@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Claude Commands Library** (v4.4) - A collection of reusable slash commands for Claude Code that enhance prompt engineering, content creation, and session management. Commands use a library-based architecture where a shared core (Phase 0) handles prompt analysis/perfection, and domain-specific adapters customize behavior.
+**Claude Commands Library** (v4.8.0) - A collection of reusable slash commands for Claude Code that enhance prompt engineering, content creation, and session management. Commands use a library-based architecture where a shared core (Phase 0) handles prompt analysis/perfection, and domain-specific adapters customize behavior.
 
 ## Response Style Guidelines
 
@@ -16,6 +16,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Simple dashes for lists, UPPERCASE for emphasis
 - Lines under 80 characters
 - Never display markdown file contents in terminal; direct user to VS Code: `code FILENAME.md`
+
+## Interaction Protocol (applies to ALL interactions, not just slash commands)
+
+### Language
+- User píše po slovensky — akceptuj a odpovedaj po slovensky
+- Interné myslenie, volania nástrojov, kód, commit messages, docs — v angličtine
+- Technické termíny (file paths, commands, API names) ponechaj v origináli
+
+### Plan-First Execution (CRITICAL)
+Pred akoukoľvek zmenou súboru, spustením buildu/testu, alebo commitom MUSÍŠ:
+1. Zhrnúť porozumenie úlohy (1-2 vety po slovensky)
+2. Ak je task netriviálny (edit >1 súboru, nová funkcia, refactor, config): predstav 2-3 options s pros/cons
+3. Vypísať execution plan: súbory (CREATE/EDIT/READ), kroky, riziká, verifikácia
+4. Počkať na `y` / `yes` / `schvaľujem` — nikdy nepredpokladaj súhlas
+
+Výnimky (plán nie je potrebný):
+- Pure read-only otázky (čo robí tento súbor?, aká je verzia?)
+- Triviálne jednorazové veci explicitne vyžiadané (oprav tento preklep)
+
+### Proactive Option-Finding
+Nie si pasívny executor. Keď vidíš lepšiu cestu než navrhuje user, povedz to PRED exekúciou.
+Pomenuj tradeoff, odporúč, ale rozhodnutie nechaj na usera.
+
+### Never Auto-Execute
+- Nikdy `git commit`, `git push`, `npm install`, `install-claude-commands.ps1` bez explicitného súhlasu
+- Obe strany (AI aj user) musia rozumieť ČO sa ide stať, PREČO a AKO to overíme
 
 ## Build and Development Commands
 
@@ -51,7 +77,8 @@ User Input -> Phase 0 (core library) -> Domain Adapter -> Command-Specific Logic
 
 - **Core Library:** `.claude/library/prompt-perfection-core.md` - Canonical Phase 0 flow (analyze, clarify, correct, structure)
 - **Adapters:** `.claude/library/adapters/` - Domain customizations (technical, article, session, hybrid, research)
-- **Commands:** `.claude/commands/` - Old format (still works), OR `.claude/skills/` - New Skills format with YAML frontmatter
+- **Skills (PRIMARY):** `.claude/skills/` - Skills format with YAML frontmatter (7 skills, v4.1)
+- **Commands (LEGACY):** `.claude/commands/` - Old format, still functional
 - **Intelligence:** `.claude/library/intelligence/` - Predictive intelligence, reflection, warnings, next-steps prediction
 - **Orchestration:** `.claude/library/orchestration/` - Multi-agent research coordination (lead agent, iteration engine, result aggregator)
 - **Agents:** `.claude/library/agents/` - Specialized agent definitions (explore, citation, security, performance, pattern)

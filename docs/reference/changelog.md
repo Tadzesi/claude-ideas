@@ -2,6 +2,50 @@
 
 All notable changes to the Claude Commands Library.
 
+## [4.8.0] - April 2026
+
+### Added
+
+- **Interaction Protocol in `CLAUDE.md`** — global session-level directive that
+  applies to ALL interactions, not just `/prompt*` slash commands
+- **Four rules enforced globally:**
+  - **Language** — user píše po slovensky; Claude odpovedá po slovensky; tool
+    calls / commits / code / docs v angličtine; technické termíny verbatim
+  - **Plan-First Execution** — pred akoukoľvek zmenou: summary + 2-3 options
+    (pre non-trivial tasks) + execution plan + explicit approval
+  - **Proactive Option-Finding** — Claude actively navrhuje lepšie cesty PRED
+    exekúciou; pomenuje tradeoff, odporúča, rozhodnutie user-a
+  - **Never Auto-Execute** — žiadne `git commit`, `git push`, `npm install`,
+    installer runs bez explicitného súhlasu
+- **New documentation page** `/guide/interaction-protocol` covering the rules,
+  rationale, exceptions, and worked examples
+- v4.8 What's New card on the docs home feature grid
+- Sidebar entry "Protocols > Interaction Protocol (v4.8)" under `/guide/`
+
+### Changed
+
+- `CLAUDE.md`: project version v4.7.0 → v4.8.0; Skills promoted to PRIMARY in
+  the architecture section (was grouped with legacy commands)
+- `install-claude-commands.ps1`: v4.7.0 → v4.8.0 with new feature announcement
+  block listing the four protocol rules
+- `.claude/memory/MEMORY.md`: updated to reflect v4.8.0
+
+### Rationale
+
+Previously, plan-first discipline (Curiosity Gate, Options-First, Execution
+Plan, Approval Gate) lived only inside `/prompt*` skills. Normal conversation
+bypassed it — leading to unwanted auto-execution and token waste when
+assumptions were wrong. v4.8 fixes the root cause: `CLAUDE.md` is loaded into
+every session automatically, so the same discipline applies everywhere.
+
+### Migration
+
+No breaking changes. Existing skills and commands continue to work. Users
+will notice Claude now asks for approval more consistently in free-form chat
+tasks (not only inside `/prompt`).
+
+---
+
 ## [4.7.0] - April 2026
 
 ### Added

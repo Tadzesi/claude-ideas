@@ -5,6 +5,44 @@ All notable changes to the Claude Commands Library will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.8.0] - 2026-04-19
+
+### Added
+- **Interaction Protocol in `CLAUDE.md`** — global session-level directive that
+  applies to ALL interactions, not just `/prompt*` slash commands. Four
+  sections: Language (SK input / EN internal / SK output), Plan-First
+  Execution (mandatory understanding + options + execution plan + approval
+  gate for every non-trivial change), Proactive Option-Finding (Claude
+  actively proposes better paths before executing), and Never Auto-Execute
+  (no git/install/build actions without explicit user consent).
+- **New documentation page** `docs/guide/interaction-protocol.md` covering the
+  protocol rules, rationale, exceptions, and worked examples.
+- v4.8 What's New card on `docs/index.md` feature grid.
+- Version bump announcements in README.md and `docs/reference/changelog.md`.
+
+### Changed
+- `CLAUDE.md`: project version header v4.4 → v4.7.0 (drift correction) then
+  v4.7.0 → v4.8.0 for this release.
+- `CLAUDE.md` architecture section: Skills promoted to PRIMARY (was grouped
+  with legacy commands on a single line).
+- `install-claude-commands.ps1`: v4.7.0 → v4.8.0 (version strings + feature
+  announcement; no new files verified — protocol lives in `CLAUDE.md`).
+- `.claude/memory/MEMORY.md`: updated to reflect v4.8.0 state.
+
+### Rationale
+Previously, plan-first discipline (Curiosity Gate, Options-First, Execution
+Plan, Approval Gate) lived only inside `/prompt*` skills. Normal conversation
+bypassed it — leading to unwanted auto-execution and token waste when
+assumptions were wrong. v4.8 fixes the root cause: `CLAUDE.md` is loaded into
+every session automatically, so the same discipline applies everywhere.
+
+### Migration
+No breaking changes. Existing skills and commands continue to work. Users
+will notice Claude now asks for approval more consistently in free-form chat
+tasks (not only inside `/prompt`).
+
+---
+
 ## [4.7.0] - 2026-04-16
 
 ### Added

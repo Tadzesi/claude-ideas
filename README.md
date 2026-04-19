@@ -6,13 +6,14 @@
 
 A collection of Claude Code slash commands for prompt engineering, refinement, and content generation. Transform vague ideas into precise, executable prompts with intelligent agent assistance, caching, and learning.
 
-**Version 4.7** - April 2026
+**Version 4.8** - April 2026
 
 ## Features
 
-- ⚡ **Dynamic Model Routing** - Skills suggest haiku/sonnet/opus per task, ~30-45% token savings (NEW v4.7)
-- 🔮 **Options-First** - 2-3 alternatives shown by default with cost estimates before execution (NEW v4.7)
-- 📋 **Execution Plan** - Mandatory pre-approval plan listing files, steps, model, and risks (NEW v4.7)
+- 🗣️ **Interaction Protocol** - Global SK/EN language rules, plan-first execution, no auto-execute (NEW v4.8)
+- ⚡ **Dynamic Model Routing** - Skills suggest haiku/sonnet/opus per task, ~30-45% token savings (v4.7)
+- 🔮 **Options-First** - 2-3 alternatives shown by default with cost estimates before execution (v4.7)
+- 📋 **Execution Plan** - Mandatory pre-approval plan listing files, steps, model, and risks (v4.7)
 - 🛡️ **Anti-Hallucination Contract** - HARD-GATE checklist + NEVER rules in every skill (NEW v4.6)
 - 🌍 **Universal Skills** - All skills read config from personal-profile.md, no hardcoded values (v4.5)
 - 🔵 **Project-Aware Commands** - /prompt-dotnet and /prompt-react scan your project automatically (v4.4)
@@ -53,6 +54,43 @@ npm run docs:preview
 
 - **[Project Overview](CLAUDE.md)** - Detailed project documentation, architecture, and development practices
 - **[Archived Documentation](docs-archive/)** - Historical documentation from v2.0 and earlier (migrated to VitePress)
+
+---
+
+## What's New in Version 4.8 🗣️
+
+**Interaction Protocol (April 2026)**
+
+Version 4.8 promotes Phase 0 discipline from individual skills to a **global protocol** loaded at session start. Now every interaction — not just `/prompt*` calls — follows the same rules.
+
+### Headline Additions (`CLAUDE.md`)
+
+🗣️ **Language Protocol**
+- User píše po slovensky → Claude odpovedá po slovensky
+- Tool calls, commit messages, code, docs → English
+- Technical terms (paths, APIs) preserved verbatim
+
+📋 **Plan-First Execution (mandatory)**
+- Before any file change, build, test, or commit:
+  1. Summarise understanding (1-2 sentences)
+  2. Present 2-3 options for non-trivial work
+  3. Emit an execution plan (files, steps, risks, verification)
+  4. Wait for explicit approval — never assume consent
+
+🔎 **Proactive Option-Finding**
+- Claude is no longer a passive executor
+- If a better path exists than what the user proposed, say so BEFORE executing
+- Name the tradeoff, recommend, but leave the decision to the user
+
+🛑 **Never Auto-Execute**
+- No `git commit`, `git push`, `npm install`, or installer runs without explicit approval
+- Both sides (AI + user) must understand WHAT, WHY, and HOW to verify
+
+### Why It Matters
+
+Previously, plan-first discipline lived only inside `/prompt*` skills. Normal conversation bypassed it — leading to unwanted auto-execution and token waste when assumptions were wrong. v4.8 fixes this at the root: `CLAUDE.md` is loaded into every session automatically.
+
+Read the full guide: [Interaction Protocol](https://tadzesi.github.io/claude-ideas/guide/interaction-protocol.html)
 
 ---
 

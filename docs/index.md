@@ -74,6 +74,12 @@ features:
     link: /reference/changelog#460-april-2026
     linkText: What's New in v4.6
 
+  - icon: 🗣️
+    title: Interaction Protocol (v4.8)
+    details: Plan-first execution, SK/EN language rules, proactive option-finding, and never-auto-execute — now enforced globally in every session via CLAUDE.md, not only inside /prompt commands.
+    link: /guide/interaction-protocol
+    linkText: Read the Protocol
+
   - icon: ⚡
     title: Dynamic Model Routing (v4.7)
     details: Skills now suggest the optimal Claude tier (haiku/sonnet/opus) per task, emit an Execution Plan before any file is touched, and present 2-3 alternatives by default. Curiosity Gate publishes an assumption ledger whenever confidence is below 100%. Estimated 30-45% token savings.
@@ -196,6 +202,25 @@ The system tracks:
 After 3+ occurrences, it suggests smart defaults.
 
 ## What's New
+
+### v4.8 - Interaction Protocol
+
+Plan-first discipline promoted from individual `/prompt*` skills to a **global
+session protocol** loaded from `CLAUDE.md`. Applies to every interaction, not
+only slash commands.
+
+**Four rules:**
+
+- **Language** — SK in / EN internal / SK out; technical terms verbatim
+- **Plan-First** — summarise understanding, present 2-3 options for non-trivial work, emit an execution plan, wait for explicit approval
+- **Proactive Option-Finding** — Claude proposes better paths BEFORE executing; names tradeoffs, recommends, user decides
+- **Never Auto-Execute** — no `git commit`, `git push`, `npm install`, installer runs without explicit consent
+
+**Why it matters:** previously, normal conversation bypassed Phase 0 discipline
+and auto-executed. v4.8 fixes the root cause — `CLAUDE.md` is loaded into
+every session automatically.
+
+[Read the full protocol →](/guide/interaction-protocol)
 
 ### v4.7 - Dynamic Model Routing + Smarter Phase 0
 
