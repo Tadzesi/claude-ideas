@@ -27,6 +27,10 @@ Thumbs.db
 .temp/
 .claude/cache/
 
+# Local workspace state (backups, superpowers plans/specs)
+.claude-backup/
+docs/superpowers/
+
 # Environment
 .env
 .env.local
