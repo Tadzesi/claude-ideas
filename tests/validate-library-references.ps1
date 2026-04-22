@@ -1,6 +1,14 @@
 # Automated Test Script for Library References
-# Version: 1.0
-# Purpose: Validate all commands follow v2.0 library system pattern
+# Version: 1.1 (2026-04-22)
+# Purpose: Validate all commands follow v2.0+ library system pattern
+#
+# Changelog:
+#   v1.1: Aligned with v4.9.0 reality — session-adapter.md removed
+#         (session commands sunset in v4.5); Phase 0 regex accepts emoji
+#         prefix; Version History accepts CHANGELOG-skills.md pointer;
+#         reflect.md treated as non-standard flow (Trigger/Workflow);
+#         session-start/session-end mappings removed.
+#   v1.0: Initial (2024-12-20)
 
 param(
     [string]$CommandsPath = ".\.claude\commands",
@@ -9,7 +17,7 @@ param(
 )
 
 Write-Host "===============================================" -ForegroundColor Cyan
-Write-Host "Library Reference Validation Test Suite v1.0" -ForegroundColor Cyan
+Write-Host "Library Reference Validation Test Suite v1.1" -ForegroundColor Cyan
 Write-Host "===============================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -54,6 +62,20 @@ function Test-FileExists {
 function Test-CommandHasLibraryReference {
     param([string]$FilePath, [string]$CommandName)
 
+    # reflect uses non-standard flow (Trigger/Workflow) — skip Phase 0 test
+    if ($CommandName -eq "reflect") {
+        $testResults.Total++
+        Write-Host "[SKIP]" -ForegroundColor DarkGray -NoNewline
+        Write-Host " $CommandName - Non-standard flow (Trigger/Workflow), Phase 0 not required"
+        $testResults.Tests += @{
+            Name = "Library reference in $CommandName"
+            Status = "SKIP"
+            Details = "Non-standard flow"
+        }
+        $testResults.Passed++
+        return
+    }
+
     $testResults.Total++
     $test = @{
         Name = "Library reference in $CommandName"
@@ -63,8 +85,8 @@ function Test-CommandHasLibraryReference {
 
     $content = Get-Content $FilePath -Raw
 
-    # Check for Phase 0 section
-    if ($content -notmatch "## Phase 0:") {
+    # v1.1: allow anything (emoji, symbol, text) between "## " and "Phase 0"
+    if ($content -notmatch "##[^\r\n]*Phase 0") {
         Write-Host "[FAIL]" -ForegroundColor Red -NoNewline
         Write-Host " $CommandName - Missing Phase 0 section"
         $test.Status = "FAIL"
@@ -108,18 +130,29 @@ function Test-CommandHasVersionHistory {
 
     $content = Get-Content $FilePath -Raw
 
-    if ($content -match "## Version History") {
-        # Check for v2.0 entry
+    # v1.1: allow anything between "## " and "Version History" (emoji prefix)
+    if ($content -match "##[^\r\n]*Version History") {
+        # Accept legacy v2.0, CHANGELOG pointer, or any semver entry v1.0+
         if ($content -match "v2\.0.*2024-12-20") {
             Write-Host "[PASS]" -ForegroundColor Green -NoNewline
             Write-Host " $CommandName - Has v2.0 version history"
             $test.Status = "PASS"
             $testResults.Passed++
+        } elseif ($content -match "CHANGELOG-skills\.md") {
+            Write-Host "[PASS]" -ForegroundColor Green -NoNewline
+            Write-Host " $CommandName - References consolidated CHANGELOG-skills.md (v4.9+)"
+            $test.Status = "PASS"
+            $testResults.Passed++
+        } elseif ($content -match "\*\*v\d+\.\d+") {
+            Write-Host "[PASS]" -ForegroundColor Green -NoNewline
+            Write-Host " $CommandName - Has semver version entry"
+            $test.Status = "PASS"
+            $testResults.Passed++
         } else {
             Write-Host "[WARN]" -ForegroundColor Yellow -NoNewline
-            Write-Host " $CommandName - Has version history but no v2.0 entry"
+            Write-Host " $CommandName - Version history present but no recognised version entry"
             $test.Status = "WARN"
-            $test.Details = "Missing v2.0 entry"
+            $test.Details = "No v2.0/v3.0+/CHANGELOG pointer found"
             $testResults.Warnings++
         }
     } else {
@@ -194,12 +227,20 @@ Write-Host "-----------------------------------" -ForegroundColor Cyan
 Test-FileExists "$LibraryPath\prompt-perfection-core.md" "Core library (prompt-perfection-core.md) exists"
 
 # Test 2: Adapters exist
+# v1.1: session-adapter.md removed (session commands sunset in v4.5);
+#       added research-adapter, context-editing-adapter, memory-tool-adapter;
+#       added caching-strategy as top-level library file check.
 Write-Host "`n[Test Suite 2: Adapter Files]" -ForegroundColor Cyan
 Write-Host "------------------------------" -ForegroundColor Cyan
 Test-AdapterExists "$LibraryPath\adapters\technical-adapter.md" "technical-adapter.md"
 Test-AdapterExists "$LibraryPath\adapters\article-adapter.md" "article-adapter.md"
-Test-AdapterExists "$LibraryPath\adapters\session-adapter.md" "session-adapter.md"
-Test-AdapterExists "$LibraryPath\adapters\hybrid-adapter.md" "hybrid-adapter.md (v2.0)"
+Test-AdapterExists "$LibraryPath\adapters\hybrid-adapter.md" "hybrid-adapter.md"
+Test-AdapterExists "$LibraryPath\adapters\research-adapter.md" "research-adapter.md"
+Test-AdapterExists "$LibraryPath\adapters\context-editing-adapter.md" "context-editing-adapter.md (v4.9)"
+Test-AdapterExists "$LibraryPath\adapters\memory-tool-adapter.md" "memory-tool-adapter.md (v4.9)"
+Test-FileExists "$LibraryPath\caching-strategy.md" "caching-strategy.md (v4.9) exists"
+Test-FileExists "$LibraryPath\model-router.md" "model-router.md exists"
+Test-FileExists "$LibraryPath\execution-plan-template.md" "execution-plan-template.md exists"
 
 # Test 3: Commands have library references
 Write-Host "`n[Test Suite 3: Command Library References]" -ForegroundColor Cyan
@@ -234,13 +275,14 @@ foreach ($command in $commands) {
 Write-Host "`n[Test Suite 6: Adapter References in Commands]" -ForegroundColor Cyan
 Write-Host "-----------------------------------------------" -ForegroundColor Cyan
 
+# v1.1: session-start/session-end removed (commands sunset in v4.5).
+#       prompt-research added with research-adapter.md mapping.
 $adapterMappings = @{
     "prompt-technical" = "technical-adapter.md"
     "prompt-hybrid" = "hybrid-adapter.md"
     "prompt-article" = "article-adapter.md"
     "prompt-article-readme" = "article-adapter.md"
-    "session-start" = "session-adapter.md"
-    "session-end" = "session-adapter.md"
+    "prompt-research" = "research-adapter.md"
 }
 
 foreach ($command in $commands) {
