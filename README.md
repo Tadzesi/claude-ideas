@@ -10,20 +10,7 @@ A collection of Claude Code slash commands for prompt engineering, refinement, a
 
 ## Features
 
-- 🚀 **Opus 4.7 Optimisation** - Prompt caching (~90% input reduction on warm hits), Fast Path Phase 0 (~40% saved on trivial prompts), opus-fast/opus-smart tier split, per-tier thinking budget, context-editing & memory-tool adapters (NEW v4.9)
-- 🗣️ **Interaction Protocol** - Global SK/EN language rules, plan-first execution, no auto-execute (v4.8)
-- ⚡ **Dynamic Model Routing** - Skills suggest haiku/sonnet/opus per task, ~30-45% token savings (v4.7)
-- 🔮 **Options-First** - 2-3 alternatives shown by default with cost estimates before execution (v4.7)
-- 📋 **Execution Plan** - Mandatory pre-approval plan listing files, steps, model, and risks (v4.7)
-- 🛡️ **Anti-Hallucination Contract** - HARD-GATE checklist + NEVER rules in every skill (NEW v4.6)
-- 🌍 **Universal Skills** - All skills read config from personal-profile.md, no hardcoded values (v4.5)
-- 🔵 **Project-Aware Commands** - /prompt-dotnet and /prompt-react scan your project automatically (v4.4)
-- 🚀 **Deploy & Stack** - /deploy and /new-stack for project-aware deployment workflows (v4.3)
-- 🔄 **Skill Reflection** - Actively improve skills from conversation feedback (v4.1)
-- 📊 **Enhanced Statusline** - Color-coded context bar, tokens, API duration with icons (v4.1)
-- 🔮 **Predictive Intelligence** - See 2 steps ahead with proactive guidance (v4.0)
-- ⚠️ **Proactive Warnings** - Prevent problems BEFORE coding starts (v4.0)
-- 📐 **Pattern Recognition** - Auto-detect project conventions and architectural patterns (v4.0)
+- 🚀 **Opus 4.7 Optimisation (v4.9)** - Prompt caching (~90% input reduction on warm hits), Fast Path Phase 0 (~40% saved on trivial prompts), opus-fast/opus-smart tier split, per-tier thinking budget, context-editing & memory-tool adapters
 - ⚡ **Prompt Perfection** - Analyze and refine any prompt to be clear and unambiguous
 - 🤖 **Intelligent Agent Assistance** - Automatic codebase analysis for complex tasks
 - 🔍 **Multi-Agent Verification** - Cross-validate critical operations with 3 agents
@@ -33,6 +20,13 @@ A collection of Claude Code slash commands for prompt engineering, refinement, a
 - 🔧 **Technical Analysis** - Deep dive into implementation options with code scaffolding
 - 📝 **Article Generation** - Interactive wizard for multi-platform content creation
 - 📄 **README Generation** - Auto-generate professional documentation from project analysis
+- 🔄 **Skill Reflection** - Improve skills from conversation feedback with `/reflect`
+- 📊 **Enhanced Statusline** - Color-coded context bar, tokens, API duration with icons
+- 🔵 **Project-Aware Commands** - `/prompt-dotnet` and `/prompt-react` scan your project automatically
+- 🌍 **Universal Skills** - All skills read config from `personal-profile.md`, no hardcoded values
+- 🚀 **Deploy & Stack** - `/deploy` and `/new-stack` for project-aware deployment workflows
+
+> For the history of earlier releases (v2.0 through v4.8), see [CHANGELOG.md](CHANGELOG.md) or [docs/reference/changelog](https://tadzesi.github.io/claude-ideas/reference/changelog).
 
 ## Documentation
 
@@ -58,212 +52,39 @@ npm run docs:preview
 
 ---
 
-## What's New in Version 4.8 🗣️
+## What's New in Version 4.9 🚀
 
-**Interaction Protocol (April 2026)**
+**Opus 4.7 Optimisation (April 2026)**
 
-Version 4.8 promotes Phase 0 discipline from individual skills to a **global protocol** loaded at session start. Now every interaction — not just `/prompt*` calls — follows the same rules.
-
-### Headline Additions (`CLAUDE.md`)
-
-🗣️ **Language Protocol**
-- User píše po slovensky → Claude odpovedá po slovensky
-- Tool calls, commit messages, code, docs → English
-- Technical terms (paths, APIs) preserved verbatim
-
-📋 **Plan-First Execution (mandatory)**
-- Before any file change, build, test, or commit:
-  1. Summarise understanding (1-2 sentences)
-  2. Present 2-3 options for non-trivial work
-  3. Emit an execution plan (files, steps, risks, verification)
-  4. Wait for explicit approval — never assume consent
-
-🔎 **Proactive Option-Finding**
-- Claude is no longer a passive executor
-- If a better path exists than what the user proposed, say so BEFORE executing
-- Name the tradeoff, recommend, but leave the decision to the user
-
-🛑 **Never Auto-Execute**
-- No `git commit`, `git push`, `npm install`, or installer runs without explicit approval
-- Both sides (AI + user) must understand WHAT, WHY, and HOW to verify
-
-### Why It Matters
-
-Previously, plan-first discipline lived only inside `/prompt*` skills. Normal conversation bypassed it — leading to unwanted auto-execution and token waste when assumptions were wrong. v4.8 fixes this at the root: `CLAUDE.md` is loaded into every session automatically.
-
-Read the full guide: [Interaction Protocol](https://tadzesi.github.io/claude-ideas/guide/interaction-protocol.html)
-
----
-
-## What's New in Version 4.7 ⚡
-
-**Dynamic Model Routing + Smarter Phase 0 (April 2026)**
-
-Version 4.7 makes every prompt cheaper to run and clearer to approve through three Phase 0 additions.
+Version 4.9 targets token + context savings for `claude-opus-4-7`. Seven additive changes, all backward compatible.
 
 ### Headline Features
 
-⚡ **Dynamic Model Routing**
-- New `model-router.md` decision algorithm routes haiku/sonnet/opus per task
-- MODEL HINT shown in every Execution Plan
-- Estimated 30-45% token savings for typical workflows
+🚀 **Prompt Caching Strategy** (`.claude/library/caching-strategy.md`)
+- `cache_control: ephemeral` breakpoints on stable library files
+- 5m default TTL, 1h beta TTL (`extended-cache-ttl-2025-04-11`)
+- Expected ~90 % input cost reduction on warm cache hits
 
-🔮 **Curiosity Gate (Step 0.25)**
-- Confidence score 0-100 on every prompt analysis
-- Mandatory assumption ledger when confidence drops below 100%
-- No more silent guessing
+⚡ **Fast Path in Phase 0**
+- Trivial prompts (complexity score < 5, single file, no security flags) short-circuit to Steps 0.1 → 0.5 → 0.6
+- Saves ~40 % Phase 0 tokens on simple tasks
 
-📋 **Options-First (Step 0.35)**
-- 2-3 alternatives shown BY DEFAULT for Task/Feature/Bug Fix/Refactor/Config
-- Each option shows model tier + token-cost estimate
-- `switch [haiku|sonnet|opus]` at approval gate to cut cost
+🧠 **Model Tier Split**
+- `opus` → `opus-fast` (Opus 4.6, 200K ctx, 4K thinking) vs `opus-smart` (Opus 4.7, 1M ctx beta, 8K thinking, interleaved thinking)
+- Router picks based on depth-vs-latency tradeoff
+- Per-tier `thinking_budget_tokens` in `model-tiers.json`
 
-📄 **Execution Plan (Step 0.55)**
-- Mandatory pre-approval block: verified files, steps, tools, risks, MODEL HINT
-- `switch [tier]` changes model before approving
+🧩 **Context-Editing + Memory-Tool Adapters**
+- `clear_tool_uses_20250919` for `/prompt-research` multi-iteration loops (prevents 200K context exhaustion)
+- Bridge to native `memory_20250818` tool with Phase A/B/C/D progressive migration
 
----
+📚 **Consolidated CHANGELOG-skills.md**
+- Version History deduped across all seven skills (~5K tokens saved per skill load)
+- Batch API hint in `/reflect` (50 % cost for non-urgent SDK runs)
 
-## What Was New in Version 4.6 🛡️
+Full release notes: [CHANGELOG.md](CHANGELOG.md#490---2026-04-22) · [docs](https://tadzesi.github.io/claude-ideas/reference/changelog#490-april-2026)
 
-**Superprompting: Anti-Hallucination Contract (April 2026)**
-
-- HARD-GATE checklist in every skill (pre-flight before any output)
-- NEVER rules (domain-specific prohibitions per skill)
-- Chain-of-Thought REASONING block in Step 0.1
-- Core library v2.0 with Mermaid flowchart and Grounding Protocol
-
----
-
-## What Was New in Version 4.5 🌍
-
-**Universal Skills + Project-Aware Commands (March 2026)**
-
-Version 4.5 makes all skills fully universal - no hardcoded values anywhere. Skills read configuration dynamically from `personal-profile.md`.
-
-### Headline Features
-
-🌍 **Universal Skills**
-- All skills removed hardcoded usernames, server addresses, paths
-- `/deploy` and `/new-stack` now read server config from `personal-profile.md`
-- Safer defaults - no accidental deploys to wrong servers
-
-🔵 **Project-Aware Commands (v4.4)**
-- `/prompt-dotnet` - scans `.csproj`, `Program.cs`, detects framework version and patterns
-- `/prompt-react` - scans `package.json`, `vite.config`, detects React version and setup
-- Both include scan fallbacks when project files are missing
-
-🚀 **Removed: /session-start and /session-end**
-- Replaced by Claude Code's built-in **auto-memory system**
-- No manual session saving needed - Claude Code handles context automatically
-- Cleaner workflow, one less step between sessions
-
----
-
-## What Was New in Version 4.1 🔄
-
-**AI Fluency Framework + Skill Reflection (January 2026)**
-
-🤝 **AI Fluency Framework Integration** - Delegation Assessment, Interaction Mode Detection, Discernment Hints based on Anthropic's official AI Fluency research.
-
-📊 **Enhanced Statusline** - Color-coded context bar, tokens, API duration with delta indicator.
-
-🔄 **`/reflect` Command** - Analyze session signals, propose priority-coded skill improvements (HIGH/MED/LOW), apply with user approval.
-
-See [v4.1 Release Notes](.claude/docs/v4.1-RELEASE-NOTES.md) for complete details.
-
----
-
-## What Was New in Version 4.0 🔮
-
-**Predictive Intelligence System (January 2026)**
-
-Version 4.0 introduced **Predictive Intelligence** - see "2 steps ahead" with proactive guidance.
-
-- 🔮 **Phase 0.15 Predictive Intelligence** - Journey stage detection, proactive warnings, next-steps prediction
-- ⚠️ **Domain Risk Analysis** - 20+ risks across 6 domains (auth, payment, database, API, security, performance)
-- 📐 **Pattern Recognition** - Auto-detect naming conventions and architectural patterns
-- 🔗 **Relationship Mapping** - Connect current work to previous tasks
-
-See [v4.0 Release Notes](.claude/docs/v4.0-RELEASE-NOTES.md) for complete details.
-
----
-
-## What Was New in Version 3.0
-
-**Multi-Agent Research System (December 2025)**
-
-Version 3.0 introduced a **comprehensive multi-agent research system** with orchestrated agents and iterative refinement.
-
-- 🔬 `/prompt-research` - Deep multi-agent research with 2-5 specialized agents
-- 🤖 5 Specialized Research Agents (Explore, Citation, Security, Performance, Pattern)
-- 🧠 External Memory System with persistent knowledge graph
-- 📄 15-20 page comprehensive research reports
-
----
-
-## What Was New in Version 2.0
-
-**Unified Library System (December 2024)**
-
-Version 2.0 introduced a **unified library system** that dramatically improved maintainability and consistency:
-
-### Key Improvements
-
-✅ **Eliminated Code Duplication**
-- Reduced prompt-hybrid.md from 1097 to 1037 lines
-- ~500 lines of duplicate Phase 0 logic removed across all commands
-- All commands now reference a single source of truth
-
-✅ **New Hybrid Intelligence Adapter**
-- Reusable complexity detection engine
-- Agent spawning with caching
-- Multi-agent verification
-- Learning system integration
-- Available at: `.claude/library/adapters/hybrid-adapter.md`
-
-✅ **Enhanced Documentation**
-- All commands now include version history
-- Clear library references and integration guides
-- Consistent structure across all 7 commands
-- Migration guide for custom commands
-
-✅ **Better Maintainability**
-- Single source of truth for Phase 0 logic
-- Update library once, all commands benefit
-- Easy to add new commands (just reference library)
-- Clear separation: core vs. domain logic
-
-### Architecture
-
-```
-.claude/
-├── library/
-│   ├── prompt-perfection-core.md    # Universal Phase 0
-│   └── adapters/
-│       ├── technical-adapter.md
-│       ├── article-adapter.md
-│       ├── session-adapter.md
-│       └── hybrid-adapter.md        # NEW: Advanced features
-├── commands/                         # All commands reference library
-│   ├── prompt.md                    # v2.0 - Library-based
-│   ├── prompt-hybrid.md             # v2.0 - Refactored
-│   ├── prompt-technical.md          # v2.0 - Enhanced docs
-│   ├── prompt-article.md            # v2.0 - Library refs
-│   ├── prompt-article-readme.md     # v2.0 - Library refs
-│   ├── session-start.md             # v2.0 - Already perfect
-│   └── session-end.md               # v2.0 - Already perfect
-└── config/                          # Configuration-driven
-    ├── complexity-rules.json
-    ├── agent-templates.json
-    ├── cache-config.json            # Agent caching
-    ├── verification-config.json     # Multi-agent
-    └── learning-config.json         # Learning system
-```
-
-**Result:** 100% of commands now fully understandable and maintainable.
-
-See [CLAUDE.md](CLAUDE.md) for complete v2.0 details and migration guide.
+Earlier releases (v2.0 through v4.8): see the full [changelog](CHANGELOG.md).
 
 ---
 
