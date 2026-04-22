@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Claude Commands Library** (v4.8.0) - A collection of reusable slash commands for Claude Code that enhance prompt engineering, content creation, and session management. Commands use a library-based architecture where a shared core (Phase 0) handles prompt analysis/perfection, and domain-specific adapters customize behavior.
+**Claude Commands Library** (v4.9.0) - A collection of reusable slash commands for Claude Code that enhance prompt engineering, content creation, and session management. Commands use a library-based architecture where a shared core (Phase 0) handles prompt analysis/perfection, and domain-specific adapters customize behavior.
 
 ## Response Style Guidelines
 

@@ -53,6 +53,10 @@ API proxy: [configured target or none]
 Build output: [dist/]
 ```
 
+**CACHING (Opus 4.7):** core-library, model-router, exec-plan-template,
+model-tiers, this skill's persona — stable across calls, mark
+`cache_control: ephemeral`. See `.claude/library/caching-strategy.md`.
+
 ---
 
 ## HARD-GATE: Anti-Hallucination Check
@@ -253,20 +257,7 @@ const { data, isLoading, error } = useQuery({
 
 ## Version History
 
-**v2.1 (2026-04-16):**
-- Step 0.25 Curiosity Gate reference
-- Step 0.35 Options-First default for React tasks
-- Step 0.55 Execution Plan + MODEL HINT with React-specific routing
-- `switch [tier]` response in approval gate
-- Aligned with prompt-perfection-core.md v2.1
-
-**v2.0 (2026-04-07):**
-- HARD-GATE anti-hallucination block added
-- NEVER section with React-specific rules
-- Aligned with prompt-perfection-core.md v2.0
-
-**v1.0 (2026-03-03):**
-- Initial release with project scan and React best practices
+See `.claude/CHANGELOG-skills.md` (consolidated history for all skills).
 
 ---
 

@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
-# Version: 4.8.0
-# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.8 adds global Interaction Protocol in CLAUDE.md; inherits v4.7 dynamic model routing, Curiosity Gate, Options-First, Execution Plan)
+# Version: 4.9.0
+# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.9 adds Opus 4.7 optimisation: prompt caching, Fast Path, model-tier split opus-fast/opus-smart, context-editing + memory-tool adapters; inherits v4.8 Interaction Protocol, v4.7 dynamic model routing)
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -52,7 +52,7 @@ function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -Foregr
 
 # Banner
 Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host " Claude Commands Library Installer v4.8.0" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v4.9.0" -ForegroundColor Cyan
 Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
@@ -215,6 +215,14 @@ function Deploy-ClaudeDirectory {
             Write-Success "CLAUDE.md deployed"
         }
 
+        # Deploy CHANGELOG-skills.md (consolidated skills history, v4.9)
+        $sourceChangelogSkills = Join-Path $sourceClaudeDir "CHANGELOG-skills.md"
+        $targetChangelogSkills = Join-Path $targetClaudeDir "CHANGELOG-skills.md"
+        if (Test-Path $sourceChangelogSkills) {
+            Copy-Item -Path $sourceChangelogSkills -Destination $targetChangelogSkills -Force
+            Write-Success "CHANGELOG-skills.md deployed"
+        }
+
         # Clean up directories that should not exist (removed in newer versions)
         $obsoleteDirs = @("tasks")
         foreach ($dir in $obsoleteDirs) {
@@ -276,8 +284,8 @@ function Deploy-ClaudeDirectory {
 
         # Create version file to track installed version
         $versionFile = Join-Path $targetClaudeDir "VERSION"
-        "4.8.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
-        Write-Success "Version file created (v4.8.0)"
+        "4.9.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
+        Write-Success "Version file created (v4.9.0)"
 
         return $true
     } catch {
@@ -309,12 +317,16 @@ function Test-Installation {
         return $false
     }
 
-    # Check for key files (v4.7 adds model-router + execution-plan-template)
+    # Check for key files (v4.9 adds caching-strategy + context-editing + memory-tool adapters)
     $keyFiles = @{
-        "Core library"          = "library\prompt-perfection-core.md"
-        "Model router (v4.7)"   = "library\model-router.md"
-        "Execution plan (v4.7)" = "library\execution-plan-template.md"
-        "Model tiers config"    = "config\model-tiers.json"
+        "Core library"             = "library\prompt-perfection-core.md"
+        "Model router (v4.9)"      = "library\model-router.md"
+        "Execution plan (v4.7)"    = "library\execution-plan-template.md"
+        "Model tiers config v2.0"  = "config\model-tiers.json"
+        "Caching strategy (v4.9)"  = "library\caching-strategy.md"
+        "Context-editing adapter"  = "library\adapters\context-editing-adapter.md"
+        "Memory-tool adapter"      = "library\adapters\memory-tool-adapter.md"
+        "Skills CHANGELOG (v4.9)"  = "CHANGELOG-skills.md"
     }
 
     foreach ($name in $keyFiles.Keys) {
@@ -433,9 +445,24 @@ function Show-Summary {
     Write-Host "`n" -NoNewline
     Write-Success "Installation complete!"
 
+    # v4.9 Feature Announcement
+    Write-Host "`n========================================" -ForegroundColor Magenta
+    Write-Host "  NEW IN VERSION 4.9 (April 2026)" -ForegroundColor Magenta
+    Write-Host "========================================" -ForegroundColor Magenta
+    Write-Host "`nOpus 4.7 Optimisation (token + context savings):" -ForegroundColor White
+    Write-Host "  - Prompt caching: cache_control markers on stable library files" -ForegroundColor Green
+    Write-Host "    (warm cache hit: ~90% input cost reduction)" -ForegroundColor Green
+    Write-Host "  - Fast Path Phase 0: score<5 triggers compact flow (~40% tokens saved)" -ForegroundColor Green
+    Write-Host "  - Model tier split: opus-fast (4.6) vs opus-smart (4.7, 1M ctx beta)" -ForegroundColor Green
+    Write-Host "  - Per-tier thinking_budget_tokens (sonnet 2K, opus-fast 4K, opus-smart 8K)" -ForegroundColor Green
+    Write-Host "  - Context editing adapter: clear_tool_uses_20250919 for /research" -ForegroundColor Green
+    Write-Host "  - Memory tool adapter: bridge to native memory_20250818 (progressive)" -ForegroundColor Green
+    Write-Host "  - Consolidated CHANGELOG-skills.md (Version History deduped across 7 skills)" -ForegroundColor Green
+    Write-Host "  - Batch API hint in /reflect (50% cost for non-urgent SDK runs)" -ForegroundColor Green
+
     # v4.8 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  NEW IN VERSION 4.8 (April 2026)" -ForegroundColor Magenta
+    Write-Host "  FROM VERSION 4.8 (April 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
     Write-Host "`nInteraction Protocol (global, applies to ALL interactions):" -ForegroundColor White
     Write-Host "  - Language: SK in / EN internal / SK out; technical terms verbatim" -ForegroundColor Green

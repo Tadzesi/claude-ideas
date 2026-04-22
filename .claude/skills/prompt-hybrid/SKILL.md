@@ -43,6 +43,15 @@ Learned patterns: [from prompt-patterns.md if relevant, else omit]
 
 If project-profile.md does not exist, note: "No project profile found — proceeding without pre-loaded context."
 
+**CACHING (Opus 4.7):** Library files (core, router, exec-plan-template,
+model-tiers, complexity-rules, adapters) are stable — mark with
+`cache_control: ephemeral`. See `.claude/library/caching-strategy.md`.
+
+**CONTEXT EDITING (research mode, score >= 20):** Apply
+`context-management-2025-06-27` with `clear_tool_uses_20250919` to drop
+old Glob/Grep results between iterations. See
+`.claude/library/adapters/context-editing-adapter.md`.
+
 ---
 
 ## HARD-GATE: Anti-Hallucination Check
@@ -207,45 +216,10 @@ Agent Recommendations: [key findings]
 
 ### Step 0.55: Execution Plan + Model Selection (v4.1)
 
-Emit the full plan using `.claude/library/execution-plan-template.md`. All
-blocks filled, no placeholders. MODEL HINT from `.claude/library/model-router.md`.
-
-```
-EXECUTION PLAN
-
-Goal: [one sentence]
-
-Files (verified by agent):
-  CREATE: [paths]
-  EDIT:   [paths]
-  READ:   [paths]
-
-Steps:
-  1. [tool + file + action]
-  2. [...]
-
-Tools: Read, Edit, Write, Glob, Grep, Bash
-Agents: [Explore | Citation | Security | Performance | Pattern | none]
-        (already spawned / will spawn / not needed)
-
-MODEL HINT: [tier] ([id]) — [one-sentence reason tied to complexity score].
-Savings vs current: ~[N]% (or "current tier is appropriate").
-
-Risks and rollback:
-  - [risk]: [mitigation]
-  - Reversibility: [easy | moderate | hard]
-
-Verification:
-  - [specific command or check]
-
-Estimated effort:
-  - Token cost tier: [low | medium | high]
-  - Wall-clock: [~Ns or ~Nm]
-  - Tool calls: [N]
-
-Assumptions (correct me if wrong):
-  - [actionable assumption]
-```
+Emit the full plan using the canonical template in
+`.claude/library/execution-plan-template.md` (Template + Good Example
+sections). MODEL HINT from `.claude/library/model-router.md`. Do not
+re-paste the template here — read it from the file.
 
 **Approval gate adds `switch [tier]` response** — user can downgrade model
 before execution to save tokens, then re-approve.
@@ -288,24 +262,7 @@ Always show the calculation.
 
 ## Version History
 
-**v4.1 (2026-04-16):**
-- Step 0.25 Curiosity Gate: confidence scoring + assumption ledger
-- Step 0.35 Options-First: 2-3 alternatives before agent spawning
-- Step 0.55 Execution Plan + MODEL HINT for all non-Question prompts
-- Approval gate: `switch [tier]` response for pre-execution model change
-- References: model-router.md, execution-plan-template.md, model-tiers.json
-- Aligned with prompt-perfection-core.md v2.1
-
-**v4.0 (2026-04-07):**
-- HARD-GATE anti-hallucination block added
-- NEVER section with agent-specific rules
-- Few-shot complexity scoring example
-- Aligned with prompt-perfection-core.md v2.0
-
-**v3.0 (2026-03-03):**
-- Converted to Skills format with YAML frontmatter
-- STARTUP section loads project context first
-- Project-aware completeness check
+See `.claude/CHANGELOG-skills.md` (consolidated history for all skills).
 
 ---
 

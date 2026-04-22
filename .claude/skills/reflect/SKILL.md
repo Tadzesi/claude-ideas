@@ -122,19 +122,17 @@ Do NOT ask per-item — one decision for all HIGH, one for all MEDIUM.
 
 ## Version History
 
-**v2.1 (2026-04-16):**
-- Step 4 Execution Plan block added (files, steps, MODEL HINT, assumptions)
-- MODEL HINT defaults to haiku for reflect (analysis-only)
-- `switch haiku` option in the apply prompt
-- Aligned with prompt-perfection-core.md v2.1
+See `.claude/CHANGELOG-skills.md` (consolidated history for all skills).
 
-**v2.0 (2026-04-07):**
-- HARD-GATE scope rules added
-- NEVER section added
-- Aligned with prompt-perfection-core.md v2.0
+---
 
-**v1.0 (2026-03-03):**
-- Initial release
+## Batch API hint (P3.2 — Opus 4.7 cost reduction)
+
+`/reflect` is non-urgent (analysis + targeted edits with no time pressure).
+For SDK-driven runs, submit via Anthropic Message Batches API for **50 %
+cost reduction**. Wall-clock target: complete within 24 h. The harness
+runs synchronous by default; this hint applies when invoking via SDK in
+nightly automation.
 
 ---
 

@@ -265,19 +265,7 @@ ssh [SERVER_USER]@[SERVER_HOST] \
 
 ## Version History
 
-**v2.1 (2026-04-16):**
-- Execution Plan block added before scaffolding
-- MODEL HINT defaults to haiku (template-fill task)
-- `switch [tier]` option in approval gate
-- Aligned with prompt-perfection-core.md v2.1
-
-**v2.0 (2026-04-07):**
-- HARD-GATE anti-hallucination block added
-- NEVER section added
-- Aligned with prompt-perfection-core.md v2.0
-
-**v1.0 (2026-03-14):**
-- Initial release (Universal Skills, reads personal-profile.md)
+See `.claude/CHANGELOG-skills.md` (consolidated history for all skills).
 
 ---
 

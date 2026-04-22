@@ -1,13 +1,15 @@
 {
-  "version": "1.0.0",
-  "last_updated": "2026-04-16",
-  "purpose": "Maps prompt types, complexity and task characteristics to recommended Claude model tier. Skills read this file to suggest the optimal model before execution, reducing token cost.",
+  "version": "2.0.0",
+  "last_updated": "2026-04-22",
+  "purpose": "Maps prompt types, complexity and task characteristics to recommended Claude model tier. Skills read this file to suggest the optimal model before execution, reducing token cost. v2.0 splits opus → opus-fast (4.6) vs opus-smart (4.7 with extended thinking + 1M context) and adds per-tier thinking budget.",
 
   "tiers": {
     "haiku": {
       "id": "claude-haiku-4-5",
       "cost_weight": 1,
       "speed": "fast",
+      "thinking_budget_tokens": 0,
+      "context_window": 200000,
       "use_for": [
         "Phase 0 analysis only (no execution)",
         "Memory recall and context loading",
@@ -28,6 +30,8 @@
       "id": "claude-sonnet-4-6",
       "cost_weight": 3,
       "speed": "medium",
+      "thinking_budget_tokens": 2000,
+      "context_window": 200000,
       "use_for": [
         "Multi-file edits (2-5 files)",
         "Pattern detection across codebase",
@@ -39,25 +43,69 @@
       ],
       "avoid_for": [
         "Trivial cleanups (use haiku)",
-        "Mission-critical architecture (use opus)"
+        "Mission-critical architecture (use opus-smart)"
       ]
     },
-    "opus": {
+    "opus-fast": {
+      "id": "claude-opus-4-6",
+      "cost_weight": 12,
+      "speed": "medium",
+      "thinking_budget_tokens": 4000,
+      "context_window": 200000,
+      "notes": "Opus 4.6 — fast variant. Toggled via /fast in Claude Code. Use when opus-tier reasoning is needed but latency matters more than 1M context or extended thinking depth.",
+      "use_for": [
+        "Cross-cutting refactors (6+ files) under deadline",
+        "Code review on PR with multiple concerns",
+        "Architecture decisions on familiar stacks",
+        "Interactive sessions where wall-clock matters"
+      ],
+      "avoid_for": [
+        "Tasks needing 1M context window",
+        "Multi-iteration research with deep reasoning",
+        "Security audits with novel attack surface"
+      ]
+    },
+    "opus-smart": {
       "id": "claude-opus-4-7",
       "cost_weight": 15,
       "speed": "slow",
+      "thinking_budget_tokens": 8000,
+      "context_window_default": 200000,
+      "context_window_beta": 1000000,
+      "context_beta_header": "context-1m-2025-08-07",
+      "interleaved_thinking_beta_header": "interleaved-thinking-2025-05-14",
+      "extended_cache_beta_header": "extended-cache-ttl-2025-04-11",
+      "notes": "Opus 4.7 — smart variant. Default in this project. Supports 1M context (beta header), extended thinking, interleaved thinking between tool calls, 1h cache TTL.",
       "use_for": [
-        "Architecture and design decisions",
-        "Cross-cutting refactors (6+ files)",
+        "Architecture and design decisions on complex systems",
+        "Cross-cutting refactors (6+ files) needing deep reasoning",
         "Security audits and threat modelling",
         "Algorithm design and performance optimisation",
-        "Multi-agent orchestration (research mode)",
+        "Multi-agent orchestration (research mode, score >= 20)",
         "Ambiguous prompts requiring deep reasoning",
-        "Breaking-change migrations"
+        "Breaking-change migrations across major framework versions",
+        "Tasks requiring 200K+ context (1M beta)"
       ],
       "avoid_for": [
-        "Simple edits (wasteful)",
-        "Pure information retrieval (use haiku)"
+        "Simple edits (wasteful — use haiku)",
+        "Pure information retrieval (use haiku)",
+        "Time-sensitive interactive tasks (use opus-fast)"
+      ]
+    }
+  },
+
+  "thinking_modes": {
+    "extended": {
+      "description": "Standard extended thinking. Add `thinking: {type: 'enabled', budget_tokens: N}` per-tier value above.",
+      "applies_to": ["sonnet", "opus-fast", "opus-smart"]
+    },
+    "interleaved": {
+      "description": "Thinking blocks between tool calls. Requires beta header `interleaved-thinking-2025-05-14`. Best for multi-iteration research where reasoning must compound across tool results.",
+      "applies_to": ["opus-smart"],
+      "trigger_conditions": [
+        "complexity_score >= 20",
+        "research mode (/prompt-research)",
+        "multi-agent iteration count >= 2"
       ]
     }
   },
@@ -67,7 +115,8 @@
       "0-4": "haiku",
       "5-9": "sonnet",
       "10-19": "sonnet",
-      "20+": "opus"
+      "20-29": "opus-fast",
+      "30+": "opus-smart"
     },
     "by_prompt_type": {
       "Question": "haiku",
@@ -76,42 +125,78 @@
       "Bug Fix (multi file)": "sonnet",
       "Config": "haiku",
       "Feature (small)": "sonnet",
-      "Feature (large)": "opus",
+      "Feature (large)": "opus-fast",
       "Code Review": "sonnet",
-      "Security Review": "opus",
+      "Security Review": "opus-smart",
       "Refactor (local)": "sonnet",
-      "Refactor (cross-cutting)": "opus",
-      "Research": "opus"
+      "Refactor (cross-cutting)": "opus-fast",
+      "Research": "opus-smart",
+      "Architecture": "opus-smart"
     },
     "by_file_count": {
       "1": "haiku",
       "2-5": "sonnet",
-      "6+": "opus"
+      "6-15": "opus-fast",
+      "16+": "opus-smart"
     },
     "escalation_triggers": [
       "ambiguous user prompt",
       "security or credential handling involved",
       "breaking change across public API",
       "migration between framework major versions",
-      "user explicitly requests deep analysis"
+      "user explicitly requests deep analysis",
+      "context required exceeds 200K tokens (use opus-smart with 1M beta)"
     ],
     "de_escalation_triggers": [
       "single file typo or rename",
       "user asks for summary of already-known facts",
       "memory recall only",
-      "plain-text status or listing"
-    ]
+      "plain-text status or listing",
+      "wall-clock matters more than depth (prefer opus-fast over opus-smart)"
+    ],
+    "smart_vs_fast_decision": {
+      "prefer_opus_smart_when": [
+        "novel problem (no existing pattern)",
+        "needs 1M context",
+        "research/security with multiple iterations",
+        "deep reasoning > speed"
+      ],
+      "prefer_opus_fast_when": [
+        "familiar refactor pattern",
+        "interactive session, user waiting",
+        "200K context sufficient",
+        "/fast already toggled"
+      ]
+    }
+  },
+
+  "caching": {
+    "enabled": true,
+    "strategy_file": ".claude/library/caching-strategy.md",
+    "default_ttl": "5m",
+    "extended_ttl": "1h",
+    "extended_ttl_requires_beta": "extended-cache-ttl-2025-04-11",
+    "expected_savings_pct": {
+      "warm_cache_hit": 90,
+      "first_call_overhead": 25
+    }
   },
 
   "output_hint_template": {
     "suggest_switch": "MODEL HINT: This task suits {tier} ({id}). Current session may be on a higher tier. Consider: /model {tier} to reduce cost by ~{savings_pct}%.",
     "keep_current": "MODEL HINT: Current model is appropriate for this task.",
-    "escalate": "MODEL HINT: This task requires deeper reasoning. Consider: /model {tier} for better results."
+    "escalate": "MODEL HINT: This task requires deeper reasoning. Consider: /model {tier} for better results.",
+    "thinking_hint": "THINKING: Allocate {budget_tokens} thinking tokens for this task ({tier} default).",
+    "smart_vs_fast": "MODEL HINT: opus-smart (4.7) recommended for depth, opus-fast (4.6, /fast) if latency matters. This task: {recommendation}."
   },
 
   "estimated_savings_pct": {
-    "opus_to_sonnet": 80,
-    "opus_to_haiku": 93,
-    "sonnet_to_haiku": 66
+    "opus_smart_to_opus_fast": 20,
+    "opus_smart_to_sonnet": 80,
+    "opus_smart_to_haiku": 93,
+    "opus_fast_to_sonnet": 75,
+    "opus_fast_to_haiku": 92,
+    "sonnet_to_haiku": 66,
+    "no_cache_to_warm_cache": 85
   }
 }

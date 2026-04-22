@@ -46,6 +46,12 @@ Learned patterns: [any relevant patterns from prompt-patterns.md]
 **Skip asking about anything already in the profile.**
 Only ask for information genuinely missing from the profile.
 
+**CACHING (Opus 4.7 — see `.claude/library/caching-strategy.md`):**
+core-library, model-router, execution-plan-template, model-tiers,
+adapters are stable across calls — flag with `cache_control: ephemeral`
+when this skill is invoked via the Anthropic SDK. Cache hits cost ~10 %
+of base input.
+
 ---
 
 ## HARD-GATE: Anti-Hallucination Check
@@ -394,37 +400,7 @@ After each successful prompt perfection:
 
 ## Version History
 
-**v4.1 (2026-04-16):**
-- Step 0.25 Curiosity Gate: confidence scoring + mandatory assumption ledger
-- Step 0.35 Options-First: 2-3 alternatives by default (not only "when multiple exist")
-- Step 0.55 Execution Plan + Model Selection: mandatory for non-Question prompts
-- Approval gate: concrete numbered "What happens next" + `switch [tier]` response
-- References: model-router.md, execution-plan-template.md, model-tiers.json
-- Aligned with prompt-perfection-core.md v2.1
-
-**v4.0 (2026-04-07):**
-- HARD-GATE anti-hallucination block added after STARTUP
-- NEVER section added
-- Few-shot examples added (correct vs incorrect output)
-- Removed hardcoded values from STARTUP template
-- Aligned with prompt-perfection-core.md v2.0
-
-**v3.0 (2026-03-03):**
-- Converted to Skills format with YAML frontmatter
-- STARTUP section: loads project-profile.md and sessions.md first
-- Displays loaded context so user knows what is pre-filled
-- Only asks for genuinely missing information
-- Project-specific guidance for scope, options, and conventions
-- Session-aware: references recent work from sessions.md
-
-**v2.1 (2026-01-20):**
-- AI Fluency alignment (Common Mistakes, AI Limitations)
-
-**v2.0 (2024-12-19):**
-- Migrated to unified library system
-
-**v1.0:**
-- Standalone Phase 0 implementation
+See `.claude/CHANGELOG-skills.md` (consolidated history for all skills).
 
 ---
 

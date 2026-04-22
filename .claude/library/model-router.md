@@ -1,11 +1,18 @@
 # Model Router
 
-**Version:** 1.0
-**Last Updated:** 2026-04-16
-**Config:** `.claude/config/model-tiers.json`
-**Purpose:** Decide which Claude model tier (haiku / sonnet / opus) best fits a
-given task and surface that hint to the user BEFORE execution. Reduces token
-cost without reducing quality.
+**Version:** 2.0
+**Last Updated:** 2026-04-22
+**Config:** `.claude/config/model-tiers.json` (v2.0 — opus split)
+**Purpose:** Decide which Claude model tier (haiku / sonnet / opus-fast /
+opus-smart) best fits a given task and surface that hint to the user BEFORE
+execution. Reduces token cost without reducing quality.
+
+**v2.0 change:** `opus` is now split:
+- `opus-fast` = Opus 4.6 (`claude-opus-4-6`), interactive, 200K ctx, 4K thinking
+- `opus-smart` = Opus 4.7 (`claude-opus-4-7`), 1M ctx beta, 8K thinking,
+  interleaved thinking, 1h cache TTL beta. Default for research / security.
+
+Legacy "opus" hints in older skills still resolve to `opus-smart` (default).
 
 ---
 
@@ -34,21 +41,40 @@ If ANY de-escalation trigger fires -> suggest **haiku**:
 
 ### 2. Hard escalation
 
-If ANY escalation trigger fires -> suggest **opus**:
+If ANY escalation trigger fires -> suggest **opus-smart** (4.7):
 - Security or credential handling
 - Breaking change across public API
 - Framework major-version migration
 - User explicitly requested deep analysis or research
-- Multi-agent research mode (score >= 20)
+- Multi-agent research mode (score >= 30)
+- Context required exceeds 200K tokens (1M beta)
 
-### 3. By complexity score (prompt-hybrid)
+If escalation fires BUT user is in interactive session and wall-clock
+matters more than depth → suggest **opus-fast** (4.6, /fast).
 
-| Score | Tier    |
-|-------|---------|
-| 0-4   | haiku   |
-| 5-9   | sonnet  |
-| 10-19 | sonnet  |
-| 20+   | opus    |
+### 3. By complexity score
+
+| Score | Tier        |
+|-------|-------------|
+| 0-4   | haiku       |
+| 5-9   | sonnet      |
+| 10-19 | sonnet      |
+| 20-29 | opus-fast   |
+| 30+   | opus-smart  |
+
+### 3a. Smart vs Fast decision (when opus tier selected)
+
+Prefer **opus-smart** when:
+- Novel problem, no existing pattern
+- Needs 1M context window (beta `context-1m-2025-08-07`)
+- Research / security with multiple iterations
+- Depth > speed
+
+Prefer **opus-fast** when:
+- Familiar refactor pattern
+- Interactive session, user actively waiting
+- 200K context sufficient
+- `/fast` already toggled in Claude Code
 
 ### 4. By prompt type (if no complexity score yet)
 
@@ -97,8 +123,10 @@ Consider /model opus before approval.
 
 - Never invent model IDs — always read from `model-tiers.json`.
 - Never suggest a tier change without a one-sentence reason.
-- Never suggest opus for tasks under complexity score 10 unless an escalation
-  trigger fired (wasteful).
+- Never suggest opus-smart for tasks under complexity score 10 unless an
+  escalation trigger fired (wasteful — 15× haiku cost).
+- Never suggest opus-fast for tasks under complexity score 20 unless
+  user has /fast already toggled.
 - Never skip the hint — even "keep current" is explicit communication.
 
 ---
@@ -110,6 +138,10 @@ Consider /model opus before approval.
   "a smaller model".
 - Always include the estimated savings percentage when suggesting a switch
   down (values from `estimated_savings_pct` in the config).
+- Always include thinking budget hint when recommending sonnet / opus-fast /
+  opus-smart (from `tiers.{tier}.thinking_budget_tokens`).
+- Always recommend caching when the same library files load repeatedly in a
+  session (see `.claude/library/caching-strategy.md`).
 
 ---
 

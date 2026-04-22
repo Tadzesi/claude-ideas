@@ -5,6 +5,70 @@ All notable changes to the Claude Commands Library will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.9.0] - 2026-04-22
+
+### Added
+- **Opus 4.7 Optimisation** — token + context savings targeted at Claude
+  Opus 4.7 (`claude-opus-4-7`). Seven changes across library, config, and
+  skills: prompt caching strategy, Fast Path in Phase 0, model-tier split,
+  context-editing adapter, memory-tool adapter, consolidated changelog,
+  Batch API hint.
+- `.claude/library/caching-strategy.md` — Anthropic `cache_control:
+  ephemeral` breakpoint strategy for core library, model-router,
+  execution-plan-template, model-tiers, adapters. 5m default TTL, 1h beta
+  TTL (`extended-cache-ttl-2025-04-11`). Expected: ~90% input cost
+  reduction on warm cache hit.
+- `.claude/library/adapters/context-editing-adapter.md` — application of
+  `context-management-2025-06-27` with `clear_tool_uses_20250919` to drop
+  old tool_result blocks during `/prompt-research` iterations. Prevents
+  200K context exhaustion on broad/comprehensive strategies.
+- `.claude/library/adapters/memory-tool-adapter.md` — bridge between the
+  project's file-based `.claude/memory/` system and Anthropic's native
+  `memory_20250818` tool. Documents Phase A/B/C/D progressive migration.
+- `.claude/CHANGELOG-skills.md` — consolidated version history for all
+  seven skills (replaces per-skill Version History blocks).
+- Fast Path flow in `prompt-perfection-core.md` for trivial prompts
+  (score < 5, single file, no security flags): short-circuits Steps
+  0.11 / 0.12 / 0.15 / 0.25 / 0.35 / 0.55 / 0.7. Saves ~40% Phase 0 tokens
+  on simple tasks.
+- Per-tier `thinking_budget_tokens` in `model-tiers.json`: haiku 0,
+  sonnet 2000, opus-fast 4000, opus-smart 8000.
+- Interleaved thinking mode flag for multi-iteration research
+  (`interleaved-thinking-2025-05-14`).
+- Batch API hint in `/reflect` skill (50% cost reduction for non-urgent
+  SDK-driven runs).
+
+### Changed
+- `prompt-perfection-core.md` v2.1 → v2.2: Mermaid flowchart replaced with
+  plain-text flow; inline Step 0.55 example block removed (canonical lives
+  in `execution-plan-template.md`); Version History condensed.
+- `model-router.md` v1.0 → v2.0: smart-vs-fast decision tree; thinking
+  budget + caching always appended to MODEL HINT.
+- `model-tiers.json` v1.0 → v2.0: `opus` split into `opus-fast`
+  (`claude-opus-4-6`, 200K ctx, 4K thinking) and `opus-smart`
+  (`claude-opus-4-7`, 200K default + 1M beta, 8K thinking).
+  `by_complexity_score` expanded (20-29 → opus-fast, 30+ → opus-smart).
+  New top-level `caching` and `thinking_modes` sections.
+- All seven skills: Version History → one-line pointer to
+  `CHANGELOG-skills.md`.
+- `prompt` / `prompt-hybrid` / `prompt-react` / `prompt-dotnet` skills:
+  STARTUP gains CACHING hint block.
+- `prompt-hybrid` skill: Step 0.55 inline template removed (references
+  canonical file); STARTUP also gains CONTEXT EDITING hint for research.
+- `install-claude-commands.ps1` v4.8.0 → v4.9.0: deploys
+  `CHANGELOG-skills.md`, verifies new library files, expanded feature
+  announcement.
+- Project version header in `CLAUDE.md` v4.8.0 → v4.9.0.
+
+### Notes
+- Backward compatible: legacy "opus" references in skills still resolve to
+  `opus-smart`. No skill deletions. No breaking schema changes in
+  `model-tiers.json` — only additions.
+- Context-editing and memory-tool adapters are opt-in (Phase A/B/C/D).
+  Skills document strategy; SDK callers apply at request-construction time.
+
+---
+
 ## [4.8.0] - 2026-04-19
 
 ### Added

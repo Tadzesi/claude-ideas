@@ -41,34 +41,48 @@ All prompt commands should use this library as their foundation, with optional d
 
 ---
 
-## Phase 0 Flowchart
+## Phase 0 Flow (text)
 
-```mermaid
-flowchart TD
-    A[User Input] --> B[Anti-Hallucination Contract Check]
-    B --> C[Step 0.1: Initial Analysis + REASONING block]
-    C --> D[Step 0.11: Delegation Check]
-    D --> E[Step 0.12: Interaction Mode Detection]
-    E --> F{Predictive Intelligence enabled?}
-    F -->|yes| G[Step 0.15: Predictive Intelligence]
-    F -->|no| H[Step 0.2a: Memory Recall]
-    G --> H
-    H --> I[Step 0.2b: Completeness Check]
-    I --> CG[Step 0.25: Curiosity Gate]
-    CG --> J{Confidence >= 90%?}
-    J -->|yes| K[Step 0.4: Correction and Structuring]
-    J -->|no| L[Step 0.3: Clarification Questions]
-    L --> OPT{Multiple viable approaches?}
-    OPT -->|yes| OP[Step 0.35: Options-First]
-    OPT -->|no| K
-    OP --> K
-    K --> M[Step 0.5: Output Perfect Prompt]
-    M --> EP[Step 0.55: Execution Plan + Model Selection]
-    EP --> N[Step 0.6: Approval Gate]
-    N -->|approved| O[Execute Task]
-    N -->|modify| M
-    O --> P[Step 0.7: Post-Execution Evaluation]
+`Input → Anti-Hallucination → 0.1 Analysis → 0.11 Delegation → 0.12 Mode →
+[0.15 Predictive if enabled] → 0.2a Memory → 0.2b Completeness →
+0.25 Curiosity Gate → (>=90 skip / 70-89 one Q / <70 full 0.3) →
+0.35 Options-First (if multi-path) → 0.4 Correction → 0.5 Perfect Prompt →
+0.55 Execution Plan + MODEL HINT → 0.6 Approval Gate → Execute → 0.7 Eval`
+
+**Fast Path (score < 5):** Anti-Hallucination → 0.1 → 0.5 → 0.6. Skip
+Curiosity Gate, Options-First, full Execution Plan. See Fast Path section
+below for the exact short-circuit.
+
+---
+
+## Fast Path (NEW v2.2 — for trivial prompts)
+
+**Trigger:** ALL of:
+- Complexity score < 5 (per `.claude/config/complexity-rules.json`)
+- Single file affected (or zero — pure question)
+- Goal stated unambiguously by user
+- No security / credential / breaking-change keywords
+- Memory pre-fill answers all 9 completeness criteria
+
+**Short-circuit flow:** `0.1 → 0.5 (compact) → 0.6 (one-line approval)`
+
+**Compact 0.5 output (max 6 lines):**
 ```
+FAST PATH
+
+Goal: [one sentence]
+Files: [single path]
+MODEL HINT: haiku — trivial single-file edit.
+Approve? y / n / modify
+```
+
+**Skip:** 0.11, 0.12, 0.15, 0.2b, 0.25 (assumption ledger), 0.35 (options),
+0.55 (full plan), 0.7. Save ~40 % of Phase 0 tokens on trivial prompts.
+
+**Escalate out of Fast Path** when ANY arises mid-execution:
+- New file dependency surfaces → emit full 0.55 plan
+- User asks "why" or "options" → re-run from 0.35
+- Security or destructive command needed → full plan + extra confirmation
 
 ---
 
@@ -635,39 +649,9 @@ config in `.claude/config/model-tiers.json`.
 - Steps must be countable. Vague verbs ("improve", "enhance") are not steps.
 - MODEL HINT is mandatory — even "keep current" is explicit communication.
 
-**Example output:**
-```
-EXECUTION PLAN
-
-Goal: Add MODEL HINT block to /prompt skill before approval gate.
-
-Files (verified):
-  EDIT: .claude/skills/prompt/SKILL.md
-
-Steps:
-  1. Edit SKILL.md — insert Model Selection block before Step 0.6 section.
-  2. Bump version in frontmatter to v4.1.
-
-Tools: Read, Edit
-Agents: none
-
-MODEL HINT: sonnet (claude-sonnet-4-6) — precise single-file wording change.
-
-Risks and rollback:
-  - Reversibility: easy (git revert).
-
-Verification:
-  - .\tests\validate-library-references.ps1 -Verbose
-
-Estimated effort:
-  - Token cost tier: low
-  - Wall-clock: ~45s
-  - Tool calls: 3
-
-Assumptions I am making (correct me if wrong):
-  - Block goes BEFORE Step 0.6, not after.
-  - Minor version bump (v4.1) is appropriate.
-```
+**Example output:** see `.claude/library/execution-plan-template.md` (Good
+Example section). Do not duplicate the example here — keep one source of
+truth.
 
 ---
 
@@ -966,75 +950,15 @@ File: `.claude/library/adapters/session-adapter.md`
 
 ## Version History
 
-**v2.1 (2026-04-16):**
-- Step 0.25 Curiosity Gate: confidence scoring + mandatory assumption ledger
-- Step 0.35 Options-First: 2-3 alternatives BY DEFAULT for Task/Feature/Bug Fix/Refactor/Config
-- Step 0.55 Execution Plan + Model Selection: mandatory for all non-Question prompts
-- Approval gate: concrete "What happens next" (numbered steps) + `switch [tier]` response
-- References new files: model-router.md, execution-plan-template.md, model-tiers.json
-- Flowchart updated to reflect new gates
+**v2.2 (2026-04-22):** Fast Path for trivial prompts; Mermaid flowchart
+replaced with text; inline Step 0.55 example removed (canonical lives in
+execution-plan-template.md). See `.claude/CHANGELOG-skills.md` for full
+history of all skills/library files.
 
-**v2.0 (2026-04-07):**
-- Anti-Hallucination Contract: NEVER/ALWAYS/Grounding Protocol rules
-- Phase 0 Mermaid flowchart
-- Step 0.1: REASONING block required before proceeding to Step 0.11
-- Superpowers pattern alignment: HARD-GATE, rigid checklist
-- Version bump to reflect breaking change in expected output format
-
-**v1.6 (2026-03-03):**
-- Step 0.2a: "ALWAYS LOAD FIRST" - stronger emphasis on reading memory before analysis
-- Added sessions.md and prompt-patterns.md to the startup reads
-- Added "CONTEXT LOADED" brief summary so user sees what was pre-filled
-- Project profile now populated with real data (v2.0 of project-profile.md)
-- Combined with new Skills format commands for full project awareness
-
-**v1.5 (2026-02-06):**
-- Added Step 0.2a: Memory Recall - pre-fills completeness check from project profile
-- Step 0.3 now skips questions answered by project profile
-- Missing profile triggers opt-in prompt for first-time creation
-- All commands using Phase 0 gain memory recall automatically
-- Backward compatible: works without project-profile.md
-
-**v1.4 (2026-01-20):**
-- Step 0.11 - Quick Delegation Check (AI Fluency - Delegation competency)
-- Step 0.7 - Post-Execution Evaluation (AI Fluency - Discernment competency)
-- The Feedback Loop section (Describe → Evaluate → Refine pattern)
-- Diligence Reminder in Approval Gate (AI Fluency - Diligence competency)
-- Common Iteration Patterns for refinement
-- Full alignment with all 4Ds of AI Fluency Framework
-
-**v1.3 (2026-01-20):**
-- AI Fluency Framework alignment (Anthropic's 4Ds)
-- Step 0.12 - Interaction Mode Detection (Automation/Augmentation/Agency)
-- Performance Description criteria (AI behavior preferences)
-- Process Description criteria (approach methodology)
-- Discernment Hints in output template
-- Expanded completeness check from 6 to 9 components
-- Added configuration reference: .claude/config/ai-fluency.json
-
-**v1.2 (2026-01-10):**
-- Added @ import syntax documentation
-- Aligned with Claude Code native memory hierarchy
-- Added path-specific rules support via .claude/rules/
-- Updated integration examples with @ imports
-
-**v1.1 (2026-01-01):**
-- Added Phase 0.15: Predictive Intelligence (OPTIONAL)
-- Proactive guidance system
-- Journey stage detection
-- Domain risk analysis
-- Project pattern recognition
-- Relationship mapping
-- Proactive warnings
-- Next-steps prediction
-- Backward compatible (can be disabled)
-
-**v1.0 (2025-11-01):**
-- Initial release
-- Core Phase 0 flow (Steps 0.1-0.6)
-- Universal 6-criteria completeness check
-- Approval gate pattern
-- Integration examples
+**v2.1 (2026-04-16):** Curiosity Gate, Options-First, Execution Plan + MODEL HINT.
+**v2.0 (2026-04-07):** Anti-Hallucination Contract, REASONING block.
+**v1.x (2026-01 → 2026-03):** AI Fluency 4Ds, memory recall, predictive intelligence.
+**v1.0 (2025-11-01):** Initial Phase 0.
 
 ---
 
@@ -1058,6 +982,11 @@ File: `.claude/library/adapters/session-adapter.md`
 **Phase 0 Support (v2.1):**
 - @.claude/library/model-router.md
 - @.claude/library/execution-plan-template.md
+
+**Caching + Memory (v2.2 / Opus 4.7 optimisation):**
+- @.claude/library/caching-strategy.md (prompt caching breakpoints)
+- @.claude/library/adapters/memory-tool-adapter.md (native memory_20250818)
+- @.claude/library/adapters/context-editing-adapter.md (clear_tool_uses for /research)
 
 **Path-Specific Rules (v1.2):**
 - @.claude/rules/technical-patterns.md

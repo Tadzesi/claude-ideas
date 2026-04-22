@@ -2,6 +2,43 @@
 
 All notable changes to the Claude Commands Library.
 
+## [4.9.0] - April 2026
+
+### Added
+
+- **Opus 4.7 Optimisation** — token + context savings targeted at
+  `claude-opus-4-7`. Seven additive changes:
+  - **Prompt caching strategy** (`.claude/library/caching-strategy.md`)
+    with `cache_control: ephemeral` breakpoints. ~90% input cost reduction
+    on warm cache hits (5m default, 1h beta).
+  - **Fast Path in Phase 0** — trivial prompts (score < 5) short-circuit
+    to Steps 0.1 → 0.5 → 0.6. Saves ~40% Phase 0 tokens.
+  - **Model tier split** — `opus` → `opus-fast` (4.6, 200K ctx, 4K
+    thinking) vs `opus-smart` (4.7, 1M ctx beta, 8K thinking, interleaved
+    thinking beta). Router picks on depth-vs-latency.
+  - **Per-tier thinking budget** — haiku 0 / sonnet 2K / opus-fast 4K /
+    opus-smart 8K in `model-tiers.json`.
+  - **Context-editing adapter** — `clear_tool_uses_20250919` for
+    `/prompt-research` multi-iteration loops.
+  - **Memory-tool adapter** — bridge to native `memory_20250818` with
+    Phase A/B/C/D progressive migration.
+  - **Consolidated CHANGELOG-skills.md** — Version History deduped across
+    seven skills (~5K tokens saved per skill load).
+  - **Batch API hint** in `/reflect` (50% cost on SDK-driven runs).
+
+### Changed
+
+- `prompt-perfection-core.md` v2.1 → v2.2 (Fast Path; Mermaid → text)
+- `model-router.md` v1.0 → v2.0 (smart vs fast decision)
+- `model-tiers.json` v1.0 → v2.0 (opus split; caching; thinking modes)
+- All seven skills: Version History → CHANGELOG-skills.md pointer
+- `install-claude-commands.ps1` v4.8.0 → v4.9.0
+
+### Notes
+
+- Backward compatible: legacy "opus" hints resolve to `opus-smart`
+- Adapters are opt-in; they document strategy for SDK integration
+
 ## [4.8.0] - April 2026
 
 ### Added
