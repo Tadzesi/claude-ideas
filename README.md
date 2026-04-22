@@ -6,11 +6,12 @@
 
 A collection of Claude Code slash commands for prompt engineering, refinement, and content generation. Transform vague ideas into precise, executable prompts with intelligent agent assistance, caching, and learning.
 
-**Version 4.8** - April 2026
+**Version 4.9** - April 2026
 
 ## Features
 
-- 🗣️ **Interaction Protocol** - Global SK/EN language rules, plan-first execution, no auto-execute (NEW v4.8)
+- 🚀 **Opus 4.7 Optimisation** - Prompt caching (~90% input reduction on warm hits), Fast Path Phase 0 (~40% saved on trivial prompts), opus-fast/opus-smart tier split, per-tier thinking budget, context-editing & memory-tool adapters (NEW v4.9)
+- 🗣️ **Interaction Protocol** - Global SK/EN language rules, plan-first execution, no auto-execute (v4.8)
 - ⚡ **Dynamic Model Routing** - Skills suggest haiku/sonnet/opus per task, ~30-45% token savings (v4.7)
 - 🔮 **Options-First** - 2-3 alternatives shown by default with cost estimates before execution (v4.7)
 - 📋 **Execution Plan** - Mandatory pre-approval plan listing files, steps, model, and risks (v4.7)

@@ -74,6 +74,12 @@ features:
     link: /reference/changelog#460-april-2026
     linkText: What's New in v4.6
 
+  - icon: 🚀
+    title: Opus 4.7 Optimisation (v4.9)
+    details: Prompt caching breakpoints on stable library files (~90% input cost reduction on warm hits), Fast Path Phase 0 for trivial prompts (~40% token savings), model tier split into opus-fast (4.6) vs opus-smart (4.7 with 1M context beta + 8K thinking budget), context-editing adapter for /prompt-research iterations, native memory-tool bridge.
+    link: /reference/changelog#490-april-2026
+    linkText: What's New in v4.9
+
   - icon: 🗣️
     title: Interaction Protocol (v4.8)
     details: Plan-first execution, SK/EN language rules, proactive option-finding, and never-auto-execute — now enforced globally in every session via CLAUDE.md, not only inside /prompt commands.
@@ -202,6 +208,39 @@ The system tracks:
 After 3+ occurrences, it suggests smart defaults.
 
 ## What's New
+
+### v4.9 - Opus 4.7 Optimisation
+
+Token + context savings targeted at `claude-opus-4-7`. Seven additive
+changes, all backward compatible.
+
+**Highlights:**
+
+- **Prompt caching strategy** — `cache_control: ephemeral` breakpoints on
+  stable library files (core-library, model-router, exec-plan-template,
+  model-tiers, adapters). Expected ~90% input cost reduction on warm
+  cache hits. 5m default TTL, 1h beta TTL via
+  `extended-cache-ttl-2025-04-11`.
+- **Fast Path in Phase 0** — trivial prompts (complexity score < 5,
+  single file, no security flags) short-circuit to Steps 0.1 → 0.5 →
+  0.6. Saves ~40% Phase 0 tokens on simple tasks.
+- **Model tier split** — `opus` is now `opus-fast` (Opus 4.6, 200K ctx,
+  4K thinking, interactive) vs `opus-smart` (Opus 4.7, 1M ctx beta, 8K
+  thinking, interleaved thinking beta). Router picks based on
+  depth-vs-latency tradeoff.
+- **Per-tier thinking budget** — `thinking_budget_tokens` in
+  `model-tiers.json`: haiku 0 / sonnet 2K / opus-fast 4K / opus-smart 8K.
+- **Context-editing adapter** — applies
+  `context-management-2025-06-27` with `clear_tool_uses_20250919` to
+  prevent 200K context exhaustion during `/prompt-research` iterations.
+- **Memory-tool adapter** — bridge to native `memory_20250818` with a
+  Phase A/B/C/D progressive migration plan.
+- **Consolidated CHANGELOG-skills.md** — Version History deduped across
+  all seven skills (~5K tokens saved per skill load).
+- **Batch API hint** in `/reflect` for 50% cost reduction on non-urgent
+  SDK-driven runs.
+
+[See full changelog entry →](/reference/changelog#490-april-2026)
 
 ### v4.8 - Interaction Protocol
 
