@@ -30,37 +30,26 @@ Load path-specific rules automatically:
 ## Quick Reference
 
 **Commands Available:**
-- `/prompt` - Quick prompt cleanup (2s)
-- `/prompt-hybrid` - Intelligent perfection with agents (2-30s)
-- `/prompt-technical` - Technical analysis (5-30s)
-- `/prompt-research` - Deep multi-agent research (60-180s)
-- `/prompt-article` - Article wizard
-- `/prompt-article-readme` - README generator
-- `/prompt-dotnet` - .NET project-aware prompt perfection
-- `/prompt-react` - React project-aware prompt perfection
-- `/deploy` - Project-aware deployment workflow
-- `/new-stack` - Docker stack scaffold
-- `/reflect` - Skill improvement analysis
+- `/prompt` - Prompt analysis and rewrite (Phase 0 flow)
+- `/prompt-article-readme` - README generator from project analysis
+- `/prompt-research` - Deep multi-agent research (orchestrator-worker, 2-4 iterations)
 
 **Configuration:**
-- Complexity rules: @.claude/config/complexity-rules.json
 - Agent templates: @.claude/config/agent-templates.json
-- Learning config: @.claude/config/learning-config.json
-- AI Fluency: @.claude/config/ai-fluency.json
 
 ---
 
 ## Project Conventions
 
 **File Naming:**
-- Commands: kebab-case (prompt-technical.md)
-- Config: kebab-case JSON (complexity-rules.json)
+- Skills: kebab-case dir + SKILL.md (skills/prompt/SKILL.md)
+- Config: kebab-case JSON (agent-templates.json)
 - Library: kebab-case (prompt-perfection-core.md)
 
 **Version Format:**
-- Use semantic versioning (v4.7.0)
+- Use semantic versioning (v5.0.0)
 - Include date in version history (YYYY-MM-DD)
-- Current version: 4.7.0 (Dynamic Model Routing)
+- Current version: 5.0.0 (Honest 3-command portfolio)
 
 **Terminology:**
 - "Explore Agent" (not ExploreAgent)
