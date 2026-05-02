@@ -2,6 +2,36 @@
 
 All notable changes to the Claude Commands Library.
 
+## [5.0.0] - May 2026 {#500-may-2026}
+
+### Removed
+
+- **8 commands/skills deleted:** `/prompt-hybrid`, `/prompt-technical`, `/prompt-article`, `/prompt-dotnet`, `/prompt-react`, `/deploy`, `/new-stack`, `/reflect`
+- **5 config files deleted:** `cache-config.json`, `verification-config.json`, `learning-config.json`, `predictive-intelligence.json`, `ai-fluency.json`
+- **Library subdirectories flattened:** `adapters/`, `intelligence/`, `agents/`, `orchestration/` — all files moved to `library/` root
+
+### Changed
+
+- **Skills-only format** — all three commands live in `.claude/skills/` with YAML frontmatter; `.claude/commands/` directory removed
+- **Library flat structure** — 14 files at `library/` root: `prompt-perfection-core.md`, `readme-adapter.md`, `research-adapter.md`, `caching-strategy.md`, `model-router.md`, `execution-plan-template.md`, orchestration files, research agent files
+- **`install-claude-commands.ps1`** updated to v5.0.0 — removes `commands/` on upgrade, checks 3 skills instead of 7, single v5.0 announcement block
+- **`README.md`** rewritten — 70 lines, honest 3-command description
+- **`CLAUDE.md`** updated — v5.0.0, 3-command table, flat library architecture
+- **`package.json`** version 5.0.0
+
+### Kept
+
+- `/prompt`, `/prompt-article-readme`, `/prompt-research` — all maintained
+- Phase 0 shared foundation (`prompt-perfection-core.md`)
+- Interaction Protocol from v4.8 (global, CLAUDE.md)
+- Memory system (project-profile.md, sessions.md, prompt-patterns.md)
+- All VitePress documentation (updated to reflect 3-command scope)
+
+### Why
+
+Repo had grown to 11 commands, most untested and unused in practice.
+Reduced to the three that are actually run regularly.
+
 ## [4.9.0] - April 2026
 
 ### Added
