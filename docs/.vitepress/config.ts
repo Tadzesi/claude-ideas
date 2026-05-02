@@ -34,45 +34,13 @@ export default defineConfig({
 
       '/commands/': [
         {
-          text: 'Prompt Commands',
+          text: 'Commands',
           collapsed: false,
           items: [
             { text: 'Overview', link: '/commands/' },
             { text: '/prompt', link: '/commands/prompt' },
-            { text: '/prompt-hybrid', link: '/commands/prompt-hybrid' },
-            { text: '/prompt-technical', link: '/commands/prompt-technical' },
+            { text: '/prompt-article-readme', link: '/commands/prompt-article-readme' },
             { text: '/prompt-research', link: '/commands/prompt-research' }
-          ]
-        },
-        {
-          text: 'Project-Aware Commands',
-          collapsed: false,
-          items: [
-            { text: '/prompt-dotnet', link: '/commands/prompt-dotnet' },
-            { text: '/prompt-react', link: '/commands/prompt-react' }
-          ]
-        },
-        {
-          text: 'Content Commands',
-          collapsed: false,
-          items: [
-            { text: '/prompt-article', link: '/commands/prompt-article' },
-            { text: '/prompt-article-readme', link: '/commands/prompt-article-readme' }
-          ]
-        },
-        {
-          text: 'Deployment & Infrastructure',
-          collapsed: false,
-          items: [
-            { text: '/deploy', link: '/commands/deploy' },
-            { text: '/new-stack', link: '/commands/new-stack' }
-          ]
-        },
-        {
-          text: 'Utility Commands',
-          collapsed: false,
-          items: [
-            { text: '/reflect', link: '/commands/reflect' }
           ]
         }
       ],
@@ -90,21 +58,11 @@ export default defineConfig({
           ]
         },
         {
-          text: 'Intelligence Systems',
+          text: 'Research System',
           collapsed: false,
           items: [
-            { text: 'Hybrid Intelligence', link: '/architecture/hybrid-intelligence' },
-            { text: 'Predictive Intelligence', link: '/architecture/predictive-intelligence' },
-            { text: 'Multi-Agent Research', link: '/architecture/multi-agent' }
-          ]
-        },
-        {
-          text: 'Advanced Features',
-          collapsed: false,
-          items: [
-            { text: 'Agent Caching', link: '/architecture/caching' },
-            { text: 'Learning System', link: '/architecture/learning' },
-            { text: 'Enhanced Statusline', link: '/architecture/statusline' }
+            { text: 'Multi-Agent Research', link: '/architecture/multi-agent' },
+            { text: 'Agent Caching', link: '/architecture/caching' }
           ]
         }
       ],
