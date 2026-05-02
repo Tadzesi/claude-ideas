@@ -181,6 +181,18 @@ After 3+ occurrences, it suggests smart defaults.
 
 ## What's New
 
+### v5.0 - Session Memory + Honest Portfolio
+
+Repo reduced from 11 commands to the three that are actually used: `/prompt`, `/prompt-article-readme`, `/prompt-research`. Everything else removed.
+
+**Session Memory** added as a workflow layer:
+
+- **PreCompact hook** — writes a diary entry to `.claude/memory/diary/` before every compaction. Captures task summary, design decisions (with WHY), challenges, solutions, and observed preferences. Per-project; never committed.
+- **`/reflect-diary`** — reads accumulated diary entries, identifies recurring patterns, and proposes updates to `project-profile.md`. Nothing applied without explicit approval.
+- **Installer** — `install-claude-commands.ps1` now deploys the hook to `~/.claude/hooks/` and registers it in `~/.claude/settings.json` on any machine.
+
+[See full changelog →](/reference/changelog#500-may-2026)
+
 ### v4.9 - Opus 4.7 Optimisation
 
 Token + context savings targeted at `claude-opus-4-7`. Seven additive
