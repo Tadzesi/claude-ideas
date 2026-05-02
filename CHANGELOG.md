@@ -5,6 +5,31 @@ All notable changes to the Claude Commands Library will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.0] - 2026-05-02
+
+### Removed
+- Eight slash commands (`prompt-hybrid`, `prompt-technical`, `prompt-dotnet`, `prompt-react`, `prompt-article`, `deploy`, `new-stack`, `reflect`). They existed but were not used in practice.
+- "Predictive Intelligence", "Multi-Agent Verification", "Learning System" components. These were marketed in v4.x without benchmarks. Removed pending real measurement.
+- 4-layer library structure (adapters, intelligence, orchestration, agents). Flattened to single `library/` directory.
+- "Future Enhancements" section from README. Moved to `ROADMAP.md`.
+
+### Changed
+- README rewritten to describe what the repo actually does, not what it aspirationally claims.
+- CLAUDE.md trimmed to remove references to deleted components.
+
+### Kept
+- `/prompt`, `/prompt-article-readme`, `/prompt-research`
+- Plan-First Execution rule
+- Bilingual (Slovak/English) interaction protocol
+- Memory recall protocol
+- Statusline
+
+### Why
+v4.x had feature inflation without measurement. v5.0 is a deliberate reduction to what is actually
+used and defensible. Future versions will only add features with reproducible benchmarks.
+
+---
+
 ## [4.9.0] - 2026-04-22
 
 ### Added
