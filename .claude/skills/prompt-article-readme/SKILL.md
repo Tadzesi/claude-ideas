@@ -1,3 +1,9 @@
+---
+name: prompt-article-readme
+description: Generates or updates a professional README.md for any project by analyzing codebase structure, configuration files, and existing documentation. Use when the user wants to create or update a README with an interactive wizard.
+argument-hint: "[optional: language style] or [--update]"
+---
+
 # /prompt-article-readme - README.md Generator
 
 This command generates or updates a professional README.md file for any project by analyzing the codebase structure, configuration files, and existing documentation. It first perfects the user's prompt, then guides through the README generation wizard.
@@ -40,7 +46,7 @@ Mark missing items - these will be collected in the wizard steps.
 - If anything is ambiguous or unclear, ASK before proceeding
 - If multiple valid approaches exist:
   - List each option with pros/cons
-  - Mark ⭐ recommended option with reasoning
+  - Mark recommended option with reasoning
   - Wait for user selection
 
 ### Step 0.4: Correction
@@ -66,11 +72,11 @@ Transform into an executable format with:
 > $ARGUMENTS
 
 **Completeness Check:**
-- [x] Goal: [extracted or ✅ auto-filled: "Generate README.md" - will be collected in wizard]
-- [x] Project: [extracted or ✅ auto-filled: current directory]
-- [x] Context: [extracted or ✅ auto-detected from project analysis]
-- [ ] Constraints: [extracted or ❌ optional]
-- [x] Style: [extracted or ❌ will be collected in wizard]
+- [x] Goal: [extracted or auto-filled: "Generate README.md" - will be collected in wizard]
+- [x] Project: [extracted or auto-filled: current directory]
+- [x] Context: [extracted or auto-detected from project analysis]
+- [ ] Constraints: [extracted or optional]
+- [x] Style: [extracted or will be collected in wizard]
 
 **Smart Defaults Applied:**
 - Output format: README.md file (auto-detected from command type)
@@ -88,9 +94,9 @@ Transform into an executable format with:
 
 ---
 
-⏸️ **Waiting for approval before starting README wizard.** Reply with:
-- `y` or `yes` — proceed to README wizard
-- `n` or `no` — cancel
+Waiting for approval before starting README wizard. Reply with:
+- `y` or `yes` -- proceed to README wizard
+- `n` or `no` -- cancel
 - Or type modifications for adjustments
 
 ---
@@ -132,13 +138,13 @@ Guide the user through each step using the AskUserQuestion tool. Do NOT skip ste
 Analyze the project to detect:
 
 1. **Project Type** - Detect from files:
-   - `package.json` → Node.js/JavaScript/TypeScript
-   - `*.csproj` / `*.sln` → .NET/C#
-   - `requirements.txt` / `pyproject.toml` / `setup.py` → Python
-   - `Cargo.toml` → Rust
-   - `go.mod` → Go
-   - `pom.xml` / `build.gradle` → Java
-   - `composer.json` → PHP
+   - `package.json` -> Node.js/JavaScript/TypeScript
+   - `*.csproj` / `*.sln` -> .NET/C#
+   - `requirements.txt` / `pyproject.toml` / `setup.py` -> Python
+   - `Cargo.toml` -> Rust
+   - `go.mod` -> Go
+   - `pom.xml` / `build.gradle` -> Java
+   - `composer.json` -> PHP
 
 2. **Framework Detection**:
    - React, Vue, Angular, Next.js, Nuxt
@@ -272,10 +278,6 @@ Brief description of the project.
 ```markdown
 # Project Name
 
-[![Build Status](badge-url)](link)
-[![Version](badge-url)](link)
-[![License](badge-url)](link)
-
 Brief description of the project.
 
 ## Table of Contents
@@ -308,30 +310,8 @@ Brief description of the project.
 
 ## Installation
 
-### Quick Start
-
 ```bash
-[quick install commands]
-```
-
-### Manual Installation
-
-```bash
-[detailed install steps]
-```
-
-## Usage
-
-### Basic Usage
-
-```bash
-[basic usage]
-```
-
-### Advanced Usage
-
-```bash
-[advanced usage]
+[install/build/run commands]
 ```
 
 ## Configuration
@@ -339,53 +319,14 @@ Brief description of the project.
 | Variable | Description | Default |
 |----------|-------------|---------|
 | VAR_1 | Description | value |
-| VAR_2 | Description | value |
-
-## API Reference
-
-[API documentation or link]
-
-## Architecture
-
-```
-[Project structure or diagram]
-```
-
-## Testing
-
-```bash
-[test commands]
-```
-
-## Deployment
-
-[Deployment instructions]
 
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-## Troubleshooting
-
-### Common Issues
-
-**Issue 1**
-- Solution
-
-**Issue 2**
-- Solution
-
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md) for details.
-
 ## License
 
 This project is licensed under the [LICENSE_TYPE] - see [LICENSE](LICENSE) file.
-
-## Authors
-
-- **Author Name** - *Initial work* - [GitHub](link)
 ```
 
 ---
@@ -404,8 +345,6 @@ This project is licensed under the [LICENSE_TYPE] - see [LICENSE](LICENSE) file.
 
 ```bash
 npm install
-# or
-yarn install
 ```
 
 ## Scripts
@@ -416,7 +355,6 @@ yarn install
 | `npm run dev` | Start in development mode |
 | `npm run build` | Build for production |
 | `npm test` | Run tests |
-| `npm run lint` | Run linter |
 ```
 
 ### .NET / C#
@@ -425,29 +363,13 @@ yarn install
 ## Prerequisites
 
 - .NET SDK [version]+
-- Visual Studio / VS Code (optional)
-
-## Installation
-
-```bash
-dotnet restore
-```
 
 ## Build
 
 ```bash
+dotnet restore
 dotnet build
-```
-
-## Run
-
-```bash
 dotnet run --project [ProjectName]
-```
-
-## Test
-
-```bash
 dotnet test
 ```
 ```
@@ -458,71 +380,18 @@ dotnet test
 ## Prerequisites
 
 - Python >= [version]
-- pip / poetry / pipenv
 
 ## Installation
 
 ```bash
-# Using pip
 pip install -r requirements.txt
-
-# Using poetry
-poetry install
-
-# Using pipenv
-pipenv install
 ```
 
 ## Usage
 
 ```bash
 python main.py
-# or
-poetry run python main.py
 ```
-
-## Testing
-
-```bash
-pytest
-# or
-python -m pytest
-```
-```
-
----
-
-## Output Format
-
-```
-╔══════════════════════════════════════════════════════════════╗
-║                    README GENERATOR WIZARD                    ║
-╚══════════════════════════════════════════════════════════════╝
-
-📊 PROJECT ANALYSIS
-├── Type: [detected project type]
-├── Framework: [detected framework]
-├── Package Manager: [npm/yarn/dotnet/pip/etc.]
-├── Build Command: [detected build command]
-├── Test Command: [detected test command]
-├── Dependencies: [count] production, [count] dev
-└── Existing README: [Yes/No]
-
-📝 CONFIGURATION
-├── Language: [selected language]
-├── Style: [selected style]
-├── Custom Sections: [selected sections]
-└── Existing README: [handling method]
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-📄 GENERATED README.md
-[Full README content]
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-💾 FILE SAVED: ./README.md
-📦 BACKUP: ./README.md.backup (if replaced)
 ```
 
 ---
@@ -544,19 +413,6 @@ When this command is executed:
 8. **Save the file** - Write README.md (backup existing if replacing)
 9. **Display result** - Show generated content and file location
 
-### Analysis Commands (Windows-compatible)
-
-```powershell
-# Find project files
-Get-ChildItem -Recurse -Include package.json,*.csproj,requirements.txt,Cargo.toml,go.mod
-
-# Check for existing README
-Test-Path README.md
-
-# Get directory structure
-Get-ChildItem -Directory -Depth 2
-```
-
 ### Quality Checklist
 
 Before finalizing, verify:
@@ -564,83 +420,8 @@ Before finalizing, verify:
 - [ ] Build/run commands are accurate
 - [ ] Prerequisites match actual requirements
 - [ ] All selected custom sections included
-- [ ] Links are valid (LICENSE, CONTRIBUTING, etc.)
 - [ ] Grammar and spelling are correct
 - [ ] File saved successfully
-
----
-
-## Example Wizard Interaction
-
-```
-User: /prompt-article-readme Generate README for my React project
-
-Claude: [Phase 0: Prompt Perfection]
-
-**Detected Language:** English
-**Prompt Type:** Documentation / README Generation
-
-**Original:**
-> Generate README for my React project
-
-**Completeness Check:**
-- [x] Goal: Generate README
-- [x] Project: Current directory (React project)
-- [ ] Context: ❌ will be auto-detected
-- [ ] Style: ❌ will be collected in wizard
-
-**Perfected Prompt:**
-> **Goal:** Generate a new README.md file
-> **Project:** Current directory (React project)
-> **Style:** will configure in wizard
-> **Constraints:** None - will configure in wizard
-
-**Changes Made:**
-- Clarified goal as "Generate a new README.md file"
-
-⏸️ **Waiting for approval.** Reply with y/n/modifications
-
-User: y
-
-Claude: Welcome to the README Generator! Let me analyze your project and help create documentation.
-
-[Step 1] What language should the README be written in?
-- English
-- Slovak
-
-User: English
-
-[Step 2] What style of README do you prefer?
-- Minimal
-- Standard
-- Comprehensive
-- Badge-heavy
-
-User: Standard
-
-[Analyzing project...]
-
-📊 Detected: Node.js project with React
-- Package manager: npm
-- Scripts found: start, build, test, lint
-
-[Step 4] Do you want to add any custom sections?
-[Options displayed...]
-
-User: Docker Support, Environment Variables
-
-[Generating README...]
-
-Claude: [Displays generated README and saves to file]
-```
-
----
-
-⏸️ **After generation, ask the user:**
-- `edit [section]` — Modify specific section
-- `add [section]` — Add new section
-- `regenerate` — Start over
-- `done` — Finish and exit
 
 ---
 
@@ -648,47 +429,21 @@ Claude: [Displays generated README and saves to file]
 
 If user provides arguments, pre-fill wizard steps:
 
-`/prompt-article-readme en comprehensive`
+`/prompt-article-readme en comprehensive` - pre-selects English + Comprehensive style
 
-Would pre-select:
-- Language: English
-- Style: Comprehensive
-- (Continue wizard for remaining options)
-
-`/prompt-article-readme --update`
-
-Would:
-- Detect existing README
-- Default to "Update" mode
-- Preserve custom content
+`/prompt-article-readme --update` - detects existing README, defaults to Update mode
 
 ---
 
 ## Version History
 
-**v2.0 (2024-12-20):**
-- ✨ Added explicit library reference
-- ✨ References prompt-perfection-core.md and article-adapter.md
-- Enhanced documentation consistency
-- Maintains all README generation functionality
+See `.claude/CHANGELOG-skills.md` for full history.
 
-**v1.0 (Previous):**
-- Initial release
-- Interactive README wizard
-- Project analysis automation
-- Multi-style support
+**v2.1 (2026-05-02):** Migrated to skills/ format (v5 Phase 2).
 
 ---
 
 ## Library Integration
 
-This command uses the **Unified Library System:**
 - **Core:** `.claude/library/prompt-perfection-core.md` (universal Phase 0)
 - **Adapter:** `.claude/library/readme-adapter.md` (article/documentation domain)
-- **Benefits:** Consistent validation, proven flow, easy maintenance
-
-For details on the library system, see: `doc/Unified_Library_System_Guide.md`
-
----
-
-**Ready to generate your README? Just type: `/prompt-article-readme`**
