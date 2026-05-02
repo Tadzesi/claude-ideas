@@ -336,8 +336,7 @@ Claude will find the pattern in your profile or from the mentioned file.
 
 ## Related
 
-- [/prompt-hybrid](/commands/prompt-hybrid) - When you need agent assistance
-- [/prompt-technical](/commands/prompt-technical) - For implementation planning
-- [/reflect](/commands/reflect) - Improve skills after a session
+- [/prompt-research](/commands/prompt-research) - For deep codebase analysis
+- [/prompt-article-readme](/commands/prompt-article-readme) - For README generation
 - [Skills Format](/architecture/skills-format) - How the new format works
 - [Phase 0](/architecture/phase-0) - The validation flow

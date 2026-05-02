@@ -384,7 +384,5 @@ This grounding requirement forces every stated fact to be traceable to a source 
 ## Related
 
 - [Library System](/architecture/library-system) - How Phase 0 is shared
-- [Hybrid Intelligence](/architecture/hybrid-intelligence) - Complexity detection
-- [Predictive Intelligence](/architecture/predictive-intelligence) - Phase 0.15
 - [AI Fluency Framework](/architecture/ai-fluency) - The 4Ds model
 - [Changelog](/reference/changelog) - v4.6 Anti-Hallucination Contract release notes

@@ -258,5 +258,5 @@ To create a new command:
 ## Related
 
 - [Phase 0](/architecture/phase-0) - The core flow
-- [Hybrid Intelligence](/architecture/hybrid-intelligence) - Agent integration
+- [Multi-Agent Research](/architecture/multi-agent) - Agent integration
 - [Configuration](/reference/configuration) - Config files

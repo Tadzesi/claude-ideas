@@ -251,5 +251,5 @@ In `.claude/config/orchestration-config.json`:
 
 ## Related Commands
 
-- [/prompt-technical](/commands/prompt-technical) - For implementation planning
-- [/prompt-hybrid](/commands/prompt-hybrid) - For general complex tasks
+- [/prompt](/commands/prompt) - For quick prompt refinement
+- [/prompt-article-readme](/commands/prompt-article-readme) - For README generation

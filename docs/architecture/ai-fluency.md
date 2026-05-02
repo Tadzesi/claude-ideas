@@ -403,5 +403,5 @@ Based on Anthropic's AI Fluency Framework:
 ## Related
 
 - [Phase 0](/architecture/phase-0) - Prompt perfection flow
-- [Hybrid Intelligence](/architecture/hybrid-intelligence) - Complexity detection
-- [Learning System](/architecture/learning) - Pattern tracking
+- [Multi-Agent Research](/architecture/multi-agent) - Agent orchestration
+- [Library System](/architecture/library-system) - Shared library

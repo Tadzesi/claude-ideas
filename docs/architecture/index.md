@@ -1,232 +1,135 @@
 # Architecture Overview
 
-Claude Commands Library is built on a modular, extensible architecture that combines several intelligent systems.
+Claude Commands Library is built on a shared Phase 0 foundation with two domain adapters and a multi-agent research system.
 
-## Core Components
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                     Claude Commands Library                      │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
-│  │   Commands   │  │   Library    │  │    Config    │          │
-│  │  /prompt     │  │  Core + Adapt│  │   JSON files │          │
-│  │  /prompt-*   │  │              │  │              │          │
-│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘          │
-│         │                 │                 │                   │
-│         └────────────┬────┴─────────────────┘                   │
-│                      ▼                                          │
-│  ┌────────────────────────────────────────────────────┐        │
-│  │              Phase 0: Prompt Perfection             │        │
-│  │  Detection → Check → Clarify → Structure → Approve  │        │
-│  └────────────────────────┬───────────────────────────┘        │
-│                           │                                     │
-│         ┌─────────────────┼─────────────────┐                  │
-│         ▼                 ▼                 ▼                  │
-│  ┌─────────────┐  ┌──────────────┐  ┌─────────────┐           │
-│  │   Hybrid    │  │  Predictive  │  │   Multi-    │           │
-│  │Intelligence │  │ Intelligence │  │   Agent     │           │
-│  │  (agents)   │  │  (Phase 0.15)│  │  Research   │           │
-│  └─────────────┘  └──────────────┘  └─────────────┘           │
-│                                                                  │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
-│  │   Caching    │  │   Learning   │  │   Memory     │          │
-│  │  Agent results│ │  Patterns    │  │  Sessions    │          │
-│  └──────────────┘  └──────────────┘  └──────────────┘          │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-## Directory Structure
+## Structure
 
 ```
 .claude/
-├── commands/           # Slash command definitions
-│   ├── prompt.md
-│   ├── prompt-hybrid.md
-│   ├── prompt-technical.md
-│   ├── prompt-research.md
-│   └── ...
+├── skills/
+│   ├── prompt/SKILL.md
+│   ├── prompt-article-readme/SKILL.md
+│   └── prompt-research/SKILL.md
 │
-├── library/            # Reusable components
+├── library/
 │   ├── prompt-perfection-core.md    # Phase 0 canonical
-│   ├── adapters/                    # Domain extensions
-│   │   ├── technical-adapter.md
-│   │   ├── article-adapter.md
-│   │   └── hybrid-adapter.md
-│   └── intelligence/                # AI systems
-│       ├── predictive-intelligence-core.md
-│       ├── relationship-mapper.md
-│       └── warning-system.md
+│   ├── readme-adapter.md            # /prompt-article-readme
+│   ├── research-adapter.md          # /prompt-research
+│   ├── caching-strategy.md
+│   ├── model-router.md
+│   ├── execution-plan-template.md
+│   ├── orchestration-aggregator.md
+│   ├── orchestration-iteration.md
+│   ├── orchestration-lead.md
+│   ├── research-agent-explore.md
+│   ├── research-agent-pattern.md
+│   ├── research-agent-security.md
+│   ├── research-agent-performance.md
+│   └── research-agent-citation.md
 │
-├── config/             # Configuration files
-│   ├── complexity-rules.json
+├── config/
 │   ├── agent-templates.json
-│   ├── cache-config.json
-│   ├── learning-config.json
-│   └── ai-fluency.json       # NEW v4.1
+│   ├── orchestration-config.json
+│   ├── iteration-rules.json
+│   ├── agent-roles.json
+│   ├── citation-config.json
+│   ├── external-memory-config.json
+│   ├── complexity-rules.json
+│   └── model-tiers.json
 │
-├── memory/             # Persistent data
-│   ├── project-profile.md     # Structured fact store (v4.2)
+├── memory/
+│   ├── project-profile.md
 │   ├── sessions.md
 │   ├── prompt-patterns.md
-│   └── observations.md
+│   └── project-knowledge.md
 │
-├── rules/              # Path-specific rules
-│   ├── technical-patterns.md
-│   └── command-conventions.md
-│
-└── cache/              # Cached results
-    └── agent-results/
+└── rules/
+    ├── command-conventions.md
+    ├── library-standards.md
+    └── config-validation.md
 ```
 
 ## Key Concepts
 
-### 1. AI Fluency Framework (NEW v4.1)
+### 1. Phase 0: The Foundation
 
-Aligned with Anthropic's 4Ds model for effective human-AI collaboration:
-
-- **Delegation**: Explicit human vs AI task distribution
-- **Description**: 9 criteria (Product, Process, Performance)
-- **Discernment**: Evaluation hints for AI outputs
-- **Diligence**: Track AI content requiring verification
-
-[Learn about AI Fluency →](/architecture/ai-fluency)
-
-### 2. Phase 0: The Foundation
-
-Every command starts with Phase 0 - the prompt perfection process. This ensures clarity before execution.
+Every command begins with Phase 0 — a shared validation layer imported from `prompt-perfection-core.md`. It detects intent, recalls known facts from project memory, checks completeness, asks only genuinely unknown questions, structures the result, and waits for approval.
 
 [Learn about Phase 0 →](/architecture/phase-0)
 
-### 3. Library System
+### 2. Domain Adapters
 
-Commands don't duplicate logic. They reference a shared library:
+`/prompt-article-readme` and `/prompt-research` extend Phase 0 with domain-specific logic via adapters:
 
-- **Core**: Universal Phase 0 implementation
-- **Adapters**: Domain-specific extensions
-- **Intelligence**: AI enhancement systems
+- `readme-adapter.md` — project scan, stack detection, README style levels
+- `research-adapter.md` — iteration strategy, gap detection, report format
+
+### 3. Multi-Agent Research
+
+`/prompt-research` runs 2-4 iteration cycles using 5 specialist agents in parallel:
+Explore, Pattern, Security, Performance, Citation. Each iteration resolves gaps from the previous one.
+
+[Learn about Multi-Agent Research →](/architecture/multi-agent)
+
+### 4. Library System
+
+Commands reference shared library files instead of duplicating logic. Changes to `prompt-perfection-core.md` affect all three commands.
 
 [Explore the Library System →](/architecture/library-system)
 
-### 4. Hybrid Intelligence
+### 5. Skills Format
 
-Automatic complexity detection determines when to use agents:
+All three commands use native Claude Code Skills format with YAML frontmatter. Claude auto-suggests the right skill based on the `description` field.
 
-- Simple tasks: Fast inline validation
-- Complex tasks: Spawn specialized agents
-- Research tasks: Multi-agent orchestration
+[Skills Format →](/architecture/skills-format)
 
-[Understand Hybrid Intelligence →](/architecture/hybrid-intelligence)
+### 6. AI Fluency Framework
 
-### 5. Predictive Intelligence
+Phase 0 is aligned with Anthropic's 4Ds model: Delegation, Description, Discernment, Diligence.
 
-Phase 0.15 provides proactive guidance:
-
-- Journey stage detection
-- Domain risk analysis
-- Pattern recognition
-- Proactive warnings
-
-[Discover Predictive Intelligence →](/architecture/predictive-intelligence)
-
-### 6. Multi-Agent Research
-
-Deep analysis using 2-5 specialized agents:
-
-- Parallel exploration
-- Iterative refinement
-- Gap-driven research
-
-[Learn about Multi-Agent Research →](/architecture/multi-agent)
+[AI Fluency Framework →](/architecture/ai-fluency)
 
 ## Data Flow
 
 ```
-User Input: "/prompt-technical Add authentication"
-     │
+User: /prompt-research Understand the auth system
+
      ▼
-┌─────────────────────────────────────────┐
-│         Command: prompt-technical        │
-│                                          │
-│  Import: library/prompt-perfection-core  │
-│  Adapt:  library/adapters/technical      │
-│  Config: config/complexity-rules.json    │
-└──────────────────┬──────────────────────┘
-                   ▼
-┌─────────────────────────────────────────┐
-│         Phase 0: Prompt Perfection       │
-│                                          │
-│  1. Detect language, type, intent       │
-│  2. Recall facts from project profile   │
-│  3. Check completeness (6 criteria)     │
-│  4. Ask only unknown information        │
-│  5. Structure perfected prompt          │
-│  6. Wait for approval                   │
-└──────────────────┬──────────────────────┘
-                   ▼
-┌─────────────────────────────────────────┐
-│       Complexity-Based Routing           │
-│                                          │
-│  Score 0-4:  → Manual scan              │
-│  Score 5-9:  → Ask user about agent     │
-│  Score 10+:  → Spawn Explore Agent      │
-│  Score 15+:  → Multi-agent verification │
-└──────────────────┬──────────────────────┘
-                   ▼
-┌─────────────────────────────────────────┐
-│         Agent Exploration (if needed)    │
-│                                          │
-│  - Scan project structure               │
-│  - Detect patterns and conventions      │
-│  - Find related implementations         │
-│  - Cache results for 24 hours           │
-└──────────────────┬──────────────────────┘
-                   ▼
-┌─────────────────────────────────────────┐
-│         Implementation Analysis          │
-│                                          │
-│  - 2-3 implementation options           │
-│  - Pros/cons comparison                 │
-│  - Best practices checklist             │
-│  - Code scaffolding                     │
-└──────────────────┬──────────────────────┘
-                   ▼
-┌─────────────────────────────────────────┐
-│         Learning System Update           │
-│                                          │
-│  - Record transformation                │
-│  - Track user modifications             │
-│  - Update pattern database              │
-└─────────────────────────────────────────┘
+┌─────────────────────────────────┐
+│  research-adapter.md            │
+│  Load: prompt-perfection-core   │
+│  Extend: research strategy      │
+└──────────────┬──────────────────┘
+               ▼
+┌─────────────────────────────────┐
+│  Phase 0: Prompt Perfection     │
+│  Recall → Check → Ask → Approve │
+└──────────────┬──────────────────┘
+               ▼
+┌─────────────────────────────────┐
+│  orchestration-lead.md          │
+│  Spawn 2-5 agents in parallel   │
+└──────────────┬──────────────────┘
+               ▼
+┌─────────────────────────────────┐
+│  Iteration 1-4                  │
+│  Aggregate → Detect gaps        │
+│  → Next iteration or converge   │
+└──────────────┬──────────────────┘
+               ▼
+       Consolidated report
+       with file:line citations
 ```
 
-## Configuration System
+## Configuration
 
-All behavior is configuration-driven:
-
-| File | Purpose |
-|------|---------|
-| `complexity-rules.json` | Triggers and thresholds |
-| `agent-templates.json` | Agent prompts |
-| `cache-config.json` | Caching settings |
-| `learning-config.json` | Pattern tracking |
-| `predictive-intelligence.json` | Proactive guidance |
-| `ai-fluency.json` | 4Ds framework settings (NEW v4.1) |
-
-[See Configuration Reference →](/reference/configuration)
+All behaviour is configuration-driven. See [Configuration Reference →](/reference/configuration)
 
 ## Next Steps
 
-Dive deeper into specific systems:
-
-- [AI Fluency Framework](/architecture/ai-fluency) (NEW v4.1)
 - [Phase 0: Prompt Perfection](/architecture/phase-0)
+- [AI Fluency Framework](/architecture/ai-fluency)
 - [Library System](/architecture/library-system)
-- [Hybrid Intelligence](/architecture/hybrid-intelligence)
-- [Predictive Intelligence](/architecture/predictive-intelligence)
 - [Multi-Agent Research](/architecture/multi-agent)
-- [Caching System](/architecture/caching)
-- [Learning System](/architecture/learning)
-- [Enhanced Statusline](/architecture/statusline)
+- [Agent Caching](/architecture/caching)
+- [Skills Format](/architecture/skills-format)

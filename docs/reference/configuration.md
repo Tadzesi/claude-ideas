@@ -473,7 +473,6 @@ cat .claude/config/complexity-rules.json | python -m json.tool
 
 ## Related
 
-- [Hybrid Intelligence](/architecture/hybrid-intelligence) - Uses complexity-rules
+- [Multi-Agent Research](/architecture/multi-agent) - Uses orchestration-config
 - [Caching](/architecture/caching) - Uses cache-config
-- [Learning System](/architecture/learning) - Uses learning-config
 

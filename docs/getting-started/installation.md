@@ -150,22 +150,6 @@ Copy-Item ".claude\config\complexity-rules.json" "my-complexity-rules.json"
 ```
 :::
 
-## Optional: Enhanced Statusline
-
-Add real-time metrics to your terminal:
-
-```powershell
-iwr -useb https://raw.githubusercontent.com/Tadzesi/claude-ideas/main/install-claude-statusline.ps1 | iex
-```
-
-This displays:
-
-```
-■ my-project | ⎇ main | ████████░░ 45% | ● 27k/155k | ▶ 89k/15k | ◆ 3.2s
-```
-
-[Learn more about the statusline →](/architecture/statusline)
-
 ## Troubleshooting
 
 ### "Git is not recognized"

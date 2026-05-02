@@ -32,24 +32,6 @@ features:
     link: /architecture/phase-0
     linkText: Learn about Phase 0
 
-  - icon: 🤖
-    title: Intelligent Agent Assistance
-    details: Complex tasks automatically spawn specialized agents for codebase exploration, pattern detection, and implementation planning.
-    link: /architecture/hybrid-intelligence
-    linkText: Explore Hybrid Intelligence
-
-  - icon: 🔮
-    title: Predictive Intelligence
-    details: See problems before they happen. Proactive warnings, domain risk analysis, and next-steps prediction guide your development.
-    link: /architecture/predictive-intelligence
-    linkText: Discover Predictions
-
-  - icon: 📊
-    title: Enhanced Statusline
-    details: Real-time context tracking with visual progress bars, token usage, and API duration monitoring directly in your terminal.
-    link: /architecture/statusline
-    linkText: Setup Statusline
-
   - icon: 🔬
     title: Multi-Agent Research
     details: Deep codebase analysis with 2-5 specialized agents working in parallel, iterative refinement, and comprehensive reports.
@@ -92,11 +74,6 @@ features:
     link: /reference/changelog#470-april-2026
     linkText: What's New in v4.7
 
-  - icon: 📚
-    title: Learning System
-    details: The library learns from your patterns, suggests smart defaults, and actively improves skills through the /reflect command.
-    link: /architecture/learning
-    linkText: See Learning
 ---
 
 ## The Problem
@@ -153,11 +130,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Tadzesi/claude-ideas/m
 
 ### 3. Track Progress
 
-Install the [Enhanced Statusline](/architecture/statusline) to see real-time metrics:
-
-```
-■ my-project | ⎇ main | ████████░░ 45% | ● 27k/155k | ▶ 89k/15k | ◆ 3.2s
-```
+Commands show real-time progress as they run.
 
 ## Command Overview
 
@@ -167,8 +140,7 @@ Install the [Enhanced Statusline](/architecture/statusline) to see real-time met
 | `/prompt-hybrid` | Intelligent with agents | 2-30s | Complex tasks, codebase changes |
 | `/prompt-technical` | Implementation analysis | 5-30s | New features, refactoring |
 | `/prompt-research` | Deep multi-agent research | 60-180s | Security audits, architecture review |
-| [`/prompt-dotnet`](/commands/prompt-dotnet) | .NET project-aware perfection | ~3s | C# APIs, EF Core, .NET features |
-| [`/prompt-react`](/commands/prompt-react) | React project-aware perfection | ~3s | Components, hooks, Vite, routing |
+
 | `/prompt-article` | Article writing wizard | Interactive | Blog posts, documentation |
 | `/session-start` | Load previous context | ~2s | Beginning of session |
 | `/session-end` | Save current context | ~5s | End of session |

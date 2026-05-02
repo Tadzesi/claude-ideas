@@ -310,7 +310,6 @@ rm -rf .claude/cache/agent-results/*
 
 ## Related
 
-- [Hybrid Intelligence](/architecture/hybrid-intelligence) - Agent system
 - [Multi-Agent Research](/architecture/multi-agent) - Iteration caching
 - [Configuration](/reference/configuration) - All cache settings
 
