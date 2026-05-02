@@ -4,6 +4,19 @@ All notable changes to the Claude Commands Library.
 
 ## [5.0.0] - May 2026 {#500-may-2026}
 
+### Added
+
+- **Session Memory** — `PreCompact` hook writes a diary entry to
+  `.claude/memory/diary/YYYY-MM-DD-session-N.md` before every compaction.
+  Captures task summary, design decisions (with WHY), challenges, solutions,
+  and observed user preferences. Per-project; never committed.
+- **`/reflect-diary` skill** — reads accumulated diary entries, identifies
+  patterns (2+ occurrences), and proposes updates to `project-profile.md`.
+  Nothing is applied without explicit user approval.
+- **Global hook installer** — `install-claude-commands.ps1` now deploys
+  `pre-compact.sh` to `~/.claude/hooks/` and registers the `PreCompact`
+  event in `~/.claude/settings.json` on any machine.
+
 ### Removed
 
 - **8 commands/skills deleted:** `/prompt-hybrid`, `/prompt-technical`, `/prompt-article`, `/prompt-dotnet`, `/prompt-react`, `/deploy`, `/new-stack`, `/reflect`
@@ -14,10 +27,12 @@ All notable changes to the Claude Commands Library.
 
 - **Skills-only format** — all three commands live in `.claude/skills/` with YAML frontmatter; `.claude/commands/` directory removed
 - **Library flat structure** — 14 files at `library/` root: `prompt-perfection-core.md`, `readme-adapter.md`, `research-adapter.md`, `caching-strategy.md`, `model-router.md`, `execution-plan-template.md`, orchestration files, research agent files
-- **`install-claude-commands.ps1`** updated to v5.0.0 — removes `commands/` on upgrade, checks 3 skills instead of 7, single v5.0 announcement block
-- **`README.md`** rewritten — 70 lines, honest 3-command description
+- **`install-claude-commands.ps1`** — v5.0.0: removes `commands/` on upgrade, checks 3 skills, deploys `hooks/` directory, adds `Install-GlobalHook` function
+- **`README.md`** rewritten — 70 lines, honest 3-command description + Session memory section
 - **`CLAUDE.md`** updated — v5.0.0, 3-command table, flat library architecture
 - **`package.json`** version 5.0.0
+- `.claude/skills/` now includes `reflect-diary/SKILL.md`
+- `.claude/hooks/pre-compact.sh` added as reference copy in repo
 
 ### Kept
 
