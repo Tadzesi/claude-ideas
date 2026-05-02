@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
-# Version: 4.9.0
-# Description: Installs/updates Claude commands and libraries from GitHub repository (v4.9 adds Opus 4.7 optimisation: prompt caching, Fast Path, model-tier split opus-fast/opus-smart, context-editing + memory-tool adapters; inherits v4.8 Interaction Protocol, v4.7 dynamic model routing)
+# Version: 5.0.0
+# Description: Installs/updates three Claude Code slash commands — /prompt, /prompt-article-readme, /prompt-research
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -52,7 +52,7 @@ function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -Foregr
 
 # Banner
 Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host " Claude Commands Library Installer v4.9.0" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v5.0.0" -ForegroundColor Cyan
 Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
@@ -180,7 +180,7 @@ function Deploy-ClaudeDirectory {
         }
 
         # Deploy directories that should be updated
-        $directoriesToDeploy = @("commands", "skills", "library", "config", "rules", "scripts", "docs")
+        $directoriesToDeploy = @("skills", "library", "config", "rules", "docs")
 
         # Create parent directory if needed
         if (-not (Test-Path $targetClaudeDir)) {
@@ -224,7 +224,7 @@ function Deploy-ClaudeDirectory {
         }
 
         # Clean up directories that should not exist (removed in newer versions)
-        $obsoleteDirs = @("tasks")
+        $obsoleteDirs = @("tasks", "commands")
         foreach ($dir in $obsoleteDirs) {
             $obsoleteDir = Join-Path $targetClaudeDir $dir
             if (Test-Path $obsoleteDir) {
@@ -284,8 +284,8 @@ function Deploy-ClaudeDirectory {
 
         # Create version file to track installed version
         $versionFile = Join-Path $targetClaudeDir "VERSION"
-        "4.9.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
-        Write-Success "Version file created (v4.9.0)"
+        "5.0.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
+        Write-Success "Version file created (v5.0.0)"
 
         return $true
     } catch {
@@ -302,7 +302,7 @@ function Test-Installation {
 
     Write-Info "Verifying installation..."
 
-    $requiredDirs = @("commands", "skills", "library", "config", "rules")
+    $requiredDirs = @("skills", "library", "config", "rules")
     $missingDirs = @()
 
     foreach ($dir in $requiredDirs) {
@@ -317,16 +317,16 @@ function Test-Installation {
         return $false
     }
 
-    # Check for key files (v4.9 adds caching-strategy + context-editing + memory-tool adapters)
+    # Check for key files
     $keyFiles = @{
-        "Core library"             = "library\prompt-perfection-core.md"
-        "Model router (v4.9)"      = "library\model-router.md"
-        "Execution plan (v4.7)"    = "library\execution-plan-template.md"
-        "Model tiers config v2.0"  = "config\model-tiers.json"
-        "Caching strategy (v4.9)"  = "library\caching-strategy.md"
-        "Context-editing adapter"  = "library\adapters\context-editing-adapter.md"
-        "Memory-tool adapter"      = "library\adapters\memory-tool-adapter.md"
-        "Skills CHANGELOG (v4.9)"  = "CHANGELOG-skills.md"
+        "Core library"         = "library\prompt-perfection-core.md"
+        "README adapter"       = "library\readme-adapter.md"
+        "Research adapter"     = "library\research-adapter.md"
+        "Caching strategy"     = "library\caching-strategy.md"
+        "Model router"         = "library\model-router.md"
+        "Execution plan"       = "library\execution-plan-template.md"
+        "Model tiers config"   = "config\model-tiers.json"
+        "Skills CHANGELOG"     = "CHANGELOG-skills.md"
     }
 
     foreach ($name in $keyFiles.Keys) {
@@ -344,8 +344,8 @@ function Test-Installation {
         Write-Info "Installed version: $installedVersion"
     }
 
-    # Verify all 7 skills present and at expected version
-    $expectedSkills = @("prompt", "prompt-hybrid", "prompt-dotnet", "prompt-react", "reflect", "deploy", "new-stack")
+    # Verify all 3 skills present
+    $expectedSkills = @("prompt", "prompt-article-readme", "prompt-research")
     $missingSkills = @()
     foreach ($skill in $expectedSkills) {
         $skillFile = Join-Path $targetClaudeDir "skills\$skill\SKILL.md"
@@ -358,15 +358,6 @@ function Test-Installation {
         return $false
     }
 
-    # Count commands
-    $commandsDir = Join-Path $targetClaudeDir "commands"
-    $commandCount = (Get-ChildItem -Path $commandsDir -Filter "*.md" | Measure-Object).Count
-
-    if ($commandCount -eq 0) {
-        Write-Error "No command files found"
-        return $false
-    }
-
     # Count skills
     $skillsDir = Join-Path $targetClaudeDir "skills"
     $skillCount = 0
@@ -375,11 +366,10 @@ function Test-Installation {
     }
 
     Write-Success "Verification passed"
-    Write-Info "  - Found $commandCount command(s)"
-    Write-Info "  - Found $skillCount skill(s) (expected 7)"
+    Write-Info "  - Found $skillCount skill(s) (expected 3)"
     Write-Info "  - Core library: OK"
-    Write-Info "  - Model router + execution plan template: OK"
-    Write-Info "  - Model tiers config: OK"
+    Write-Info "  - Adapters (readme, research): OK"
+    Write-Info "  - Caching strategy: OK"
     Write-Info "  - Directory structure: OK"
 
     return $true
@@ -400,20 +390,11 @@ function Show-Summary {
 
     Write-Host "`nInstalled Components:" -ForegroundColor Cyan
 
-    # Commands
-    $commandsDir = Join-Path $targetClaudeDir "commands"
-    $commands = Get-ChildItem -Path $commandsDir -Filter "*.md" -ErrorAction SilentlyContinue
-    Write-Host "  Commands: " -NoNewline
-    Write-Host "$($commands.Count)" -ForegroundColor Yellow
-    foreach ($cmd in $commands) {
-        Write-Host "    - $($cmd.BaseName)" -ForegroundColor Gray
-    }
-
     # Skills
     $skillsDir = Join-Path $targetClaudeDir "skills"
     if (Test-Path $skillsDir) {
         $skills = Get-ChildItem -Path $skillsDir -Directory -ErrorAction SilentlyContinue
-        Write-Host "`n  Skills (new format): " -NoNewline
+        Write-Host "  Skills: " -NoNewline
         Write-Host "$($skills.Count)" -ForegroundColor Yellow
         foreach ($skill in $skills) {
             Write-Host "    - /$($skill.Name)" -ForegroundColor Gray
@@ -422,16 +403,13 @@ function Show-Summary {
 
     # Library
     $libraryDir = Join-Path $targetClaudeDir "library"
-    Write-Host "`n  Library:" -ForegroundColor Cyan
-    Write-Host "    - prompt-perfection-core.md" -ForegroundColor Gray
-
-    $adaptersDir = Join-Path $libraryDir "adapters"
-    if (Test-Path $adaptersDir) {
-        $adapters = Get-ChildItem -Path $adaptersDir -Filter "*.md"
-        Write-Host "    Adapters: $($adapters.Count)" -ForegroundColor Gray
-        foreach ($adapter in $adapters) {
-            Write-Host "      - $($adapter.BaseName)" -ForegroundColor DarkGray
-        }
+    if (Test-Path $libraryDir) {
+        $libraryFiles = Get-ChildItem -Path $libraryDir -Filter "*.md" -ErrorAction SilentlyContinue
+        Write-Host "`n  Library: " -NoNewline
+        Write-Host "$($libraryFiles.Count) file(s)" -ForegroundColor Yellow
+        Write-Host "    - prompt-perfection-core.md" -ForegroundColor Gray
+        Write-Host "    - readme-adapter.md, research-adapter.md" -ForegroundColor Gray
+        Write-Host "    - caching-strategy.md, model-router.md" -ForegroundColor Gray
     }
 
     # Memory
@@ -445,75 +423,24 @@ function Show-Summary {
     Write-Host "`n" -NoNewline
     Write-Success "Installation complete!"
 
-    # v4.9 Feature Announcement
+    # v5.0 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  NEW IN VERSION 4.9 (April 2026)" -ForegroundColor Magenta
+    Write-Host "  WHAT'S IN VERSION 5.0 (May 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`nOpus 4.7 Optimisation (token + context savings):" -ForegroundColor White
-    Write-Host "  - Prompt caching: cache_control markers on stable library files" -ForegroundColor Green
-    Write-Host "    (warm cache hit: ~90% input cost reduction)" -ForegroundColor Green
-    Write-Host "  - Fast Path Phase 0: score<5 triggers compact flow (~40% tokens saved)" -ForegroundColor Green
-    Write-Host "  - Model tier split: opus-fast (4.6) vs opus-smart (4.7, 1M ctx beta)" -ForegroundColor Green
-    Write-Host "  - Per-tier thinking_budget_tokens (sonnet 2K, opus-fast 4K, opus-smart 8K)" -ForegroundColor Green
-    Write-Host "  - Context editing adapter: clear_tool_uses_20250919 for /research" -ForegroundColor Green
-    Write-Host "  - Memory tool adapter: bridge to native memory_20250818 (progressive)" -ForegroundColor Green
-    Write-Host "  - Consolidated CHANGELOG-skills.md (Version History deduped across 7 skills)" -ForegroundColor Green
-    Write-Host "  - Batch API hint in /reflect (50% cost for non-urgent SDK runs)" -ForegroundColor Green
-
-    # v4.8 Feature Announcement
-    Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  FROM VERSION 4.8 (April 2026)" -ForegroundColor Magenta
-    Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`nInteraction Protocol (global, applies to ALL interactions):" -ForegroundColor White
-    Write-Host "  - Language: SK in / EN internal / SK out; technical terms verbatim" -ForegroundColor Green
-    Write-Host "  - Plan-First: understanding + 2-3 options + execution plan + approval" -ForegroundColor Green
-    Write-Host "  - Proactive Option-Finding: Claude proposes better paths BEFORE executing" -ForegroundColor Green
-    Write-Host "  - Never Auto-Execute: no git/install/build without explicit consent" -ForegroundColor Green
-    Write-Host "  - Lives in CLAUDE.md -> loaded into every session automatically" -ForegroundColor Green
-
-    # v4.7 Feature Announcement
-    Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  FROM VERSION 4.7 (April 2026)" -ForegroundColor Magenta
-    Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`nDynamic model routing + smarter Phase 0:" -ForegroundColor White
-    Write-Host "  - Step 0.25 Curiosity Gate: confidence score + assumption ledger" -ForegroundColor Green
-    Write-Host "  - Step 0.35 Options-First: 2-3 alternatives shown by default" -ForegroundColor Green
-    Write-Host "  - Step 0.55 Execution Plan: what/how/files/tools before approval" -ForegroundColor Green
-    Write-Host "  - MODEL HINT: suggests haiku/sonnet/opus per task complexity" -ForegroundColor Green
-    Write-Host "  - 'switch [tier]' approval response for pre-execution model change" -ForegroundColor Green
-    Write-Host "  - New files: model-router.md, execution-plan-template.md, model-tiers.json" -ForegroundColor Green
-    Write-Host "  - Estimated token savings: 30-45% (Haiku for simple tasks)" -ForegroundColor Green
-
-    # v4.6 Feature Announcement
-    Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  FROM VERSION 4.6 (April 2026)" -ForegroundColor Magenta
-    Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`nSuperprompting revision - Anti-Hallucination:" -ForegroundColor White
-    Write-Host "  - Anti-Hallucination Contract in core library v2.0" -ForegroundColor Green
-    Write-Host "  - HARD-GATE blocks in all 7 skills" -ForegroundColor Green
-    Write-Host "  - NEVER rules prevent fact invention" -ForegroundColor Green
-    Write-Host "  - Chain-of-Thought REASONING block in every prompt" -ForegroundColor Green
-    Write-Host "  - Few-shot examples: correct vs incorrect output" -ForegroundColor Green
-
-    # v4.5 Feature Announcement
-    Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  FROM VERSION 4.5 (March 2026)" -ForegroundColor Magenta
-    Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`nUniversal Skills (all project-specific values removed):" -ForegroundColor White
-    Write-Host "  - /deploy and /new-stack now read config from personal-profile.md" -ForegroundColor Green
-    Write-Host "  - No hardcoded server names, container names, or versions" -ForegroundColor Gray
-    Write-Host "  - Works with any project, not just claude-ideas" -ForegroundColor Gray
-    Write-Host "`nSession commands removed (replaced by auto-memory):" -ForegroundColor White
-    Write-Host "  - /session-start and /session-end deleted" -ForegroundColor Gray
-    Write-Host "  - Claude Code auto-memory handles context persistence" -ForegroundColor Gray
-    Write-Host "`nScan fallbacks added to prompt-dotnet and prompt-react:" -ForegroundColor White
-    Write-Host "  - Clear error + options when .csproj or package.json not found" -ForegroundColor Gray
-    Write-Host "  - Monorepo support in /prompt-react (searches subdirectories)" -ForegroundColor Gray
-    Write-Host "`nFrom v4.4: .NET + React project-aware skills" -ForegroundColor White
-    Write-Host "  - /prompt-dotnet, /prompt-react, /deploy, /new-stack" -ForegroundColor Gray
-    Write-Host "`nFrom v4.0: Predictive Intelligence + Multi-Agent Research" -ForegroundColor White
-    Write-Host "  - See 2 steps ahead, deep multi-agent analysis" -ForegroundColor Gray
-    Write-Host "`nSee docs/reference/changelog.md for full history" -ForegroundColor Cyan
+    Write-Host "`nHonest 3-command portfolio (reduced from 11):" -ForegroundColor White
+    Write-Host "  - /prompt — prompt analysis, clarification, structured rewrite" -ForegroundColor Green
+    Write-Host "  - /prompt-article-readme — README generator from project scan" -ForegroundColor Green
+    Write-Host "  - /prompt-research — multi-agent research (orchestrator-worker, 2-4 iter)" -ForegroundColor Green
+    Write-Host "`nRemoved: prompt-hybrid, prompt-technical, prompt-article," -ForegroundColor Gray
+    Write-Host "         prompt-dotnet, prompt-react, deploy, new-stack, reflect" -ForegroundColor Gray
+    Write-Host "`nLibrary flattened (no adapters/ subdir):" -ForegroundColor White
+    Write-Host "  - readme-adapter.md, research-adapter.md at library root" -ForegroundColor Green
+    Write-Host "  - caching-strategy.md, model-router.md, orchestration files" -ForegroundColor Green
+    Write-Host "`nInteraction protocol (from v4.8, global):" -ForegroundColor White
+    Write-Host "  - Plan-First: understanding + options + execution plan + approval" -ForegroundColor Green
+    Write-Host "  - Never auto-executes destructive operations" -ForegroundColor Green
+    Write-Host "  - SK input / EN internal / SK output" -ForegroundColor Green
+    Write-Host "`nSee CHANGELOG.md for full history" -ForegroundColor Cyan
     Write-Host "========================================`n" -ForegroundColor Magenta
 
     Write-Host "`nNext Steps:" -ForegroundColor Cyan
@@ -522,16 +449,9 @@ function Show-Summary {
     Write-Host "  3. Run this script again to update to the latest version" -ForegroundColor Gray
 
     Write-Host "`nAvailable Commands:" -ForegroundColor Cyan
-    Write-Host "  /prompt           - Basic prompt perfection with AI Fluency" -ForegroundColor Gray
-    Write-Host "  /prompt-hybrid    - Advanced with AI Fluency + predictive intelligence" -ForegroundColor Gray
-    Write-Host "  /prompt-technical - Technical analysis with predictive intelligence" -ForegroundColor Gray
-    Write-Host "  /prompt-research  - Deep multi-agent research" -ForegroundColor Gray
-    Write-Host "  /prompt-dotnet    - .NET project-aware prompt perfection" -ForegroundColor Green
-    Write-Host "  /prompt-react     - React project-aware prompt perfection" -ForegroundColor Green
-    Write-Host "  /prompt-article   - Article creation wizard" -ForegroundColor Gray
-    Write-Host "  /deploy           - Project-aware deployment workflow" -ForegroundColor Green
-    Write-Host "  /new-stack        - Docker stack scaffold" -ForegroundColor Green
-    Write-Host "  /reflect          - Skill reflection and improvement" -ForegroundColor Gray
+    Write-Host "  /prompt                - Prompt analysis and structured rewrite" -ForegroundColor Gray
+    Write-Host "  /prompt-article-readme - README generator from project scan" -ForegroundColor Gray
+    Write-Host "  /prompt-research       - Deep multi-agent codebase research" -ForegroundColor Gray
 
     Write-Host ""
 }
