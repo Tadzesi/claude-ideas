@@ -1,3 +1,9 @@
+---
+name: prompt-research
+description: Deep multi-agent research command for comprehensive codebase analysis using orchestrator-worker architecture with iterative refinement. Use for architecture analysis, security audits, performance investigations when you need thorough understanding with source citations across 2-4 iteration cycles.
+argument-hint: "[research goal or question]"
+---
+
 # /prompt-research - Deep Multi-Agent Research Command
 
 **Version:** 1.0.0
