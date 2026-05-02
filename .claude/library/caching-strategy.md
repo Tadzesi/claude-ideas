@@ -30,9 +30,9 @@ Mark these as cacheable via `cache_control` breakpoint AT THE END of each:
 3. `.claude/library/execution-plan-template.md` — plan format
 4. `.claude/config/model-tiers.json` — tier definitions
 5. `.claude/config/complexity-rules.json` — scoring rules
-6. `.claude/library/adapters/*.md` — domain adapters
+6. `.claude/library/*-adapter.md` — domain adapters
 7. `.claude/library/intelligence/*.md` — predictive components
-8. `.claude/library/orchestration/*.md` — multi-agent coordination
+8. `.claude/library/orchestration-*.md` — multi-agent coordination
 9. `.claude/CHANGELOG-skills.md` — consolidated version history
 
 ## What NOT to cache (volatile)

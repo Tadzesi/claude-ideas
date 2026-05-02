@@ -503,7 +503,7 @@ Important information
 ## Phase 0: Prompt Perfection
 
 **Import:** `.claude/library/prompt-perfection-core.md`
-**Adaptation:** Article (from `.claude/library/adapters/article-adapter.md`)
+**Adaptation:** Article (from `.claude/library/readme-adapter.md`)
 
 **Interactive Wizard Enabled:**
 - Step-by-step collection of all criteria
@@ -519,7 +519,7 @@ Important information
 ## Phase 0: Prompt Perfection
 
 **Import:** `.claude/library/prompt-perfection-core.md`
-**Adaptation:** Article (from `.claude/library/adapters/article-adapter.md`)
+**Adaptation:** Article (from `.claude/library/readme-adapter.md`)
 
 **Auto-Detection Enabled:**
 - Project structure analysis
@@ -640,7 +640,7 @@ Technical article about React Hooks for LinkedIn and Dev.to
 ## Related Files
 
 - **Core Library:** `.claude/library/prompt-perfection-core.md`
-- **This Adapter:** `.claude/library/adapters/article-adapter.md`
+- **This Adapter:** `.claude/library/readme-adapter.md`
 - **Commands Using This:**
   - `.claude/commands/prompt-article.md`
   - `.claude/commands/prompt-article-readme.md`

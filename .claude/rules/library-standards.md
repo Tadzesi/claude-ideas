@@ -16,7 +16,7 @@ Rules for core library and adapter files.
 ## Adapters
 
 - Extend core library for specific domains
-- Located in .claude/library/adapters/
+- Located in .claude/library/ (as *-adapter.md files)
 - Reference parent library explicitly
 - Add domain-specific criteria only
 

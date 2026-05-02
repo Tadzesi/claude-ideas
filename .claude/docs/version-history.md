@@ -138,46 +138,46 @@ The v3.0 release introduces a comprehensive multi-agent research system aligned 
 - Smart convergence (automatic research completion detection)
 
 **New Orchestration Components:**
-1. **Lead Agent** (`.claude/library/orchestration/lead-agent-core.md`)
+1. **Lead Agent** (`.claude/library/orchestration-lead.md`)
    - Coordinates worker agents
    - Monitors research progress
    - Decides iterations and convergence
 
-2. **Iteration Engine** (`.claude/library/orchestration/iteration-engine.md`)
+2. **Iteration Engine** (`.claude/library/orchestration-iteration.md`)
    - Multi-step refinement loop (max 4 iterations)
    - Gap detection (8 gap types)
    - Adaptive agent selection
    - Convergence evaluation
 
-3. **Result Aggregator** (`.claude/library/orchestration/result-aggregator.md`)
+3. **Result Aggregator** (`.claude/library/orchestration-aggregator.md`)
    - Deduplication and merging
    - Conflict resolution (6 rules)
    - Confidence scoring
    - Priority organization (Critical/Important/Informational)
 
 **New Specialized Agents:**
-1. **ExploreAgent** (`.claude/library/agents/explore-agent.md`)
+1. **ExploreAgent** (`.claude/library/research-agent-explore.md`)
    - Codebase discovery and file mapping
    - Architecture understanding
    - Pattern recognition
 
-2. **CitationAgent** (`.claude/library/agents/citation-agent.md`)
+2. **CitationAgent** (`.claude/library/research-agent-citation.md`)
    - Source attribution (file:line precision)
    - Code snippet extraction
    - Confidence scoring
    - Evidence tracking
 
-3. **SecurityAgent** (`.claude/library/agents/security-agent.md`)
+3. **SecurityAgent** (`.claude/library/research-agent-security.md`)
    - OWASP Top 10 compliance
    - Vulnerability detection
    - Authentication/authorization analysis
 
-4. **PerformanceAgent** (`.claude/library/agents/performance-agent.md`)
+4. **PerformanceAgent** (`.claude/library/research-agent-performance.md`)
    - Bottleneck detection
    - N+1 query identification
    - Caching analysis
 
-5. **PatternAgent** (`.claude/library/agents/pattern-agent.md`)
+5. **PatternAgent** (`.claude/library/research-agent-pattern.md`)
    - Convention detection
    - Consistency analysis
    - Pattern recognition
@@ -296,7 +296,7 @@ The v2.0 release brought significant improvements to the command library archite
 
 ### New Features in v2.0
 
-1. **Hybrid Intelligence Adapter** (`.claude/library/adapters/hybrid-adapter.md`)
+1. **Hybrid Intelligence Adapter** (`[deleted in v5 phase 1]`)
    - Reusable complexity detection
    - Agent spawning logic
    - Caching system

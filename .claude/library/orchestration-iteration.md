@@ -815,7 +815,7 @@ Lead Agent Step 3 → Iteration Engine (Gap Analysis)
 ## Related Components
 
 **Invoked by:**
-- `.claude/library/orchestration/lead-agent-core.md` - Lead Agent
+- `.claude/library/orchestration-lead.md` - Lead Agent
 
 **Reads from:**
 - `.claude/config/iteration-rules.json` - Convergence and gap rules

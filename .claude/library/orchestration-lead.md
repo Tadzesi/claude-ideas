@@ -297,7 +297,7 @@ Each refinement agent receives:
 
 **Invoke Result Aggregator:**
 
-Read from: `.claude/library/orchestration/result-aggregator.md`
+Read from: `.claude/library/orchestration-aggregator.md`
 
 **Inputs to aggregator:**
 - All findings from all iterations (1 to N)
@@ -404,15 +404,15 @@ Read from: `.claude/library/orchestration/result-aggregator.md`
 **Worker Agent Integration:**
 - Reads agent definitions from `.claude/config/agent-roles.json`
 - Spawns agents using Task tool
-- Each agent follows its own template (in `.claude/library/agents/`)
+- Each agent follows its own template (in `.claude/library/` (research-agent-* files))
 
 **Iteration Engine Integration:**
-- Delegates refinement logic to `.claude/library/orchestration/iteration-engine.md`
+- Delegates refinement logic to `.claude/library/orchestration-iteration.md`
 - Receives gap analysis and agent recommendations
 - Executes iteration decisions
 
 **Result Aggregator Integration:**
-- Delegates synthesis to `.claude/library/orchestration/result-aggregator.md`
+- Delegates synthesis to `.claude/library/orchestration-aggregator.md`
 - Provides all iteration data
 - Receives final structured report
 
@@ -547,9 +547,9 @@ Test 3: Comprehensive research, security-critical
 ## Related Components
 
 **Delegates to:**
-- `.claude/library/orchestration/iteration-engine.md` - Refinement logic
-- `.claude/library/orchestration/result-aggregator.md` - Synthesis
-- `.claude/library/agents/[agent-name].md` - Worker agents
+- `.claude/library/orchestration-iteration.md` - Refinement logic
+- `.claude/library/orchestration-aggregator.md` - Synthesis
+- `.claude/library/research-agent-[name].md` - Worker agents
 
 **Configured by:**
 - `.claude/config/orchestration-config.json` - Orchestration settings

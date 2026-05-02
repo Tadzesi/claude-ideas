@@ -103,7 +103,7 @@ The `/prompt-research` command provides **deep, multi-iteration codebase analysi
 Transform user input into a comprehensive research specification.
 
 **Import:** Uses Phase 0 from `.claude/library/prompt-perfection-core.md`
-**Adaptation:** Research-specific (from `.claude/library/adapters/research-adapter.md`)
+**Adaptation:** Research-specific (from `.claude/library/research-adapter.md`)
 
 ### Step 0.11: Delegation Assessment *(AI Fluency - NEW v1.1)*
 
@@ -1030,21 +1030,21 @@ Solution: Expected behavior - cache invalidates on changes
 **Imports:** `.claude/library/prompt-perfection-core.md`
 
 ### Research Adapter
-**Uses:** `.claude/library/adapters/research-adapter.md`
+**Uses:** `.claude/library/research-adapter.md`
 
 ### Orchestration Components
 **Invokes:**
-- `.claude/library/orchestration/lead-agent-core.md`
-- `.claude/library/orchestration/iteration-engine.md`
-- `.claude/library/orchestration/result-aggregator.md`
+- `.claude/library/orchestration-lead.md`
+- `.claude/library/orchestration-iteration.md`
+- `.claude/library/orchestration-aggregator.md`
 
 ### Specialized Agents
 **Deploys:**
-- `.claude/library/agents/explore-agent.md`
-- `.claude/library/agents/citation-agent.md`
-- `.claude/library/agents/security-agent.md`
-- `.claude/library/agents/performance-agent.md`
-- `.claude/library/agents/pattern-agent.md`
+- `.claude/library/research-agent-explore.md`
+- `.claude/library/research-agent-citation.md`
+- `.claude/library/research-agent-security.md`
+- `.claude/library/research-agent-performance.md`
+- `.claude/library/research-agent-pattern.md`
 
 ### External Memory
 **Updates:**

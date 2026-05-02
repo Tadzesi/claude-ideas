@@ -346,7 +346,7 @@ Total: 34 → Broad research strategy (3-4 agents, 2-3 iterations)
 5. Coordinate iterations
 6. Invoke Result Aggregator when converged
 
-**Reference:** `.claude/library/orchestration/lead-agent-core.md`
+**Reference:** `.claude/library/orchestration-lead.md`
 ```
 
 ---
@@ -371,7 +371,7 @@ Total: 34 → Broad research strategy (3-4 agents, 2-3 iterations)
 5. Save checkpoints
 6. Repeat until converged (max 4 iterations)
 
-**Reference:** `.claude/library/orchestration/iteration-engine.md`
+**Reference:** `.claude/library/orchestration-iteration.md`
 ```
 
 ---
@@ -438,7 +438,7 @@ Total: 34 → Broad research strategy (3-4 agents, 2-3 iterations)
 - Updated architectural-context.md
 - Updated citation-index.md
 
-**Reference:** `.claude/library/orchestration/result-aggregator.md`
+**Reference:** `.claude/library/orchestration-aggregator.md`
 ```
 
 ---
@@ -468,11 +468,11 @@ IF "Patterns" in focus_areas OR consistency_questions asked:
 CitationAgent ALWAYS spawned (provides evidence)
 
 **Agent References:**
-- `.claude/library/agents/explore-agent.md`
-- `.claude/library/agents/citation-agent.md`
-- `.claude/library/agents/security-agent.md`
-- `.claude/library/agents/performance-agent.md`
-- `.claude/library/agents/pattern-agent.md`
+- `.claude/library/research-agent-explore.md`
+- `.claude/library/research-agent-citation.md`
+- `.claude/library/research-agent-security.md`
+- `.claude/library/research-agent-performance.md`
+- `.claude/library/research-agent-pattern.md`
 
 **Configuration:** `.claude/config/agent-roles.json`
 ```
@@ -726,12 +726,12 @@ IF knowledge graph update fails:
 - `.claude/library/prompt-perfection-core.md` (base Phase 0)
 
 **Invokes:**
-- `.claude/library/orchestration/lead-agent-core.md`
-- `.claude/library/orchestration/iteration-engine.md`
-- `.claude/library/orchestration/result-aggregator.md`
+- `.claude/library/orchestration-lead.md`
+- `.claude/library/orchestration-iteration.md`
+- `.claude/library/orchestration-aggregator.md`
 
 **Integrates:**
-- `.claude/library/agents/*` (all specialized agents)
+- `.claude/library/research-agent-*` (all specialized agents)
 - `.claude/memory/*` (external memory system)
 - `.claude/cache/*` (agent result cache)
 

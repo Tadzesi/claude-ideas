@@ -818,7 +818,7 @@ File: `.claude/library/adapters/technical-adapter.md`
 ---
 
 #### Article Adaptation
-File: `.claude/library/adapters/article-adapter.md`
+File: `.claude/library/readme-adapter.md`
 
 **Additional Criteria:**
 - [ ] **Topic:** Main subject matter
@@ -967,7 +967,7 @@ history of all skills/library files.
 **Core Library (@ import syntax):**
 - @.claude/library/prompt-perfection-core.md (this file)
 - @.claude/library/adapters/technical-adapter.md
-- @.claude/library/adapters/article-adapter.md
+- @.claude/library/readme-adapter.md
 - @.claude/library/adapters/session-adapter.md
 
 **Memory (v1.3):**
