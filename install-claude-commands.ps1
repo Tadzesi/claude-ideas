@@ -180,7 +180,7 @@ function Deploy-ClaudeDirectory {
         }
 
         # Deploy directories that should be updated
-        $directoriesToDeploy = @("skills", "library", "config", "rules", "docs")
+        $directoriesToDeploy = @("skills", "library", "config", "rules", "docs", "hooks")
 
         # Create parent directory if needed
         if (-not (Test-Path $targetClaudeDir)) {
@@ -365,8 +365,16 @@ function Test-Installation {
         $skillCount = (Get-ChildItem -Path $skillsDir -Directory | Measure-Object).Count
     }
 
+    # Check global hook
+    $globalHookPath = Join-Path $env:USERPROFILE ".claude\hooks\pre-compact.sh"
+    if (Test-Path $globalHookPath) {
+        Write-Info "  - Pre-compact hook: OK (global)"
+    } else {
+        Write-Warning "  - Pre-compact hook: not installed globally"
+    }
+
     Write-Success "Verification passed"
-    Write-Info "  - Found $skillCount skill(s) (expected 3)"
+    Write-Info "  - Found $skillCount skill(s) (3 core + reflect-diary)"
     Write-Info "  - Core library: OK"
     Write-Info "  - Adapters (readme, research): OK"
     Write-Info "  - Caching strategy: OK"
@@ -470,6 +478,68 @@ function Remove-TempFiles {
     }
 }
 
+# Install global pre-compact hook and register in ~/.claude/settings.json
+function Install-GlobalHook {
+    param([string]$RepoClaudePath)
+
+    $hookSource = Join-Path $RepoClaudePath "hooks\pre-compact.sh"
+    $globalHookDir = Join-Path $env:USERPROFILE ".claude\hooks"
+    $globalHookTarget = Join-Path $globalHookDir "pre-compact.sh"
+    $settingsPath = Join-Path $env:USERPROFILE ".claude\settings.json"
+
+    Write-Info "Installing global pre-compact hook..."
+
+    if (-not (Test-Path $hookSource)) {
+        Write-Warning "pre-compact.sh not found in repo — skipping global hook install"
+        return $false
+    }
+
+    # Deploy hook script to ~/.claude/hooks/
+    if (-not (Test-Path $globalHookDir)) {
+        New-Item -ItemType Directory -Path $globalHookDir -Force | Out-Null
+    }
+    Copy-Item -Path $hookSource -Destination $globalHookTarget -Force
+    Write-Success "pre-compact.sh deployed to ~/.claude/hooks/"
+
+    # Update ~/.claude/settings.json — add PreCompact block if missing
+    if (Test-Path $settingsPath) {
+        $settings = Get-Content $settingsPath -Raw | ConvertFrom-Json
+
+        $hooksObj = $settings.hooks
+        $alreadyConfigured = $hooksObj -and
+            ($hooksObj.PSObject.Properties.Name -contains "PreCompact")
+
+        if (-not $alreadyConfigured) {
+            if (-not $hooksObj) {
+                $settings | Add-Member -NotePropertyName "hooks" -NotePropertyValue ([PSCustomObject]@{}) -Force
+            }
+            $preCompact = @(
+                [PSCustomObject]@{
+                    matcher = "auto"
+                    hooks   = @(
+                        [PSCustomObject]@{
+                            type    = "command"
+                            command = "bash ~/.claude/hooks/pre-compact.sh"
+                        }
+                    )
+                }
+            )
+            $settings.hooks | Add-Member -NotePropertyName "PreCompact" -NotePropertyValue $preCompact -Force
+            $json = $settings | ConvertTo-Json -Depth 10
+            [System.IO.File]::WriteAllText($settingsPath, $json, [System.Text.Encoding]::UTF8)
+            Write-Success "PreCompact hook added to ~/.claude/settings.json"
+        } else {
+            Write-Info "PreCompact hook already in settings.json — skipping"
+        }
+    } else {
+        Write-Warning "~/.claude/settings.json not found"
+        Write-Info "Add manually to settings.json:"
+        Write-Info '  "PreCompact": [{"matcher":"auto","hooks":[{"type":"command","command":"bash ~/.claude/hooks/pre-compact.sh"}]}]'
+    }
+
+    return $true
+}
+
 # Main installation flow
 function Install-ClaudeCommands {
     Write-Info "Starting installation process..."
@@ -538,6 +608,10 @@ function Install-ClaudeCommands {
         Remove-TempFiles -TempPath $TempDir
         return $false
     }
+
+    # Install global pre-compact hook
+    $repoClaudePath = Join-Path $repoPath $ClaudeDir
+    Install-GlobalHook -RepoClaudePath $repoClaudePath | Out-Null
 
     # Verify installation
     if (-not (Test-Installation -TargetPath $InstallPath)) {

@@ -79,7 +79,8 @@ export default defineConfig({
           text: 'Protocols',
           collapsed: false,
           items: [
-            { text: 'Interaction Protocol (v4.8)', link: '/guide/interaction-protocol' }
+            { text: 'Interaction Protocol (v4.8)', link: '/guide/interaction-protocol' },
+            { text: 'Session Memory', link: '/guide/session-memory' }
           ]
         }
       ],

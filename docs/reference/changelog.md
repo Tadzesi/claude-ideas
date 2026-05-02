@@ -2,6 +2,34 @@
 
 All notable changes to the Claude Commands Library.
 
+## [5.0.0] - May 2026
+
+### Added
+
+- **Session Memory** — `PreCompact` hook writes a diary entry to
+  `.claude/memory/diary/YYYY-MM-DD-session-N.md` before every compaction.
+  Captures task summary, design decisions (with WHY), challenges, solutions,
+  and observed user preferences. Per-project; never committed.
+- **`/reflect-diary` skill** — reads accumulated diary entries, identifies
+  patterns (2+ occurrences), and proposes updates to `project-profile.md`.
+  Nothing is applied without explicit user approval.
+- **Global hook installer** — `install-claude-commands.ps1` now deploys
+  `pre-compact.sh` to `~/.claude/hooks/` and registers the `PreCompact`
+  event in `~/.claude/settings.json` on any machine.
+
+### Changed
+
+- `.claude/skills/` now includes `reflect-diary/SKILL.md`
+- `.claude/hooks/pre-compact.sh` added as reference copy in repo
+- `install-claude-commands.ps1`: deploys `hooks/` directory; adds
+  `Install-GlobalHook` function; verification checks global hook presence
+
+### Scope
+
+- Three core commands unchanged: `/prompt`, `/prompt-article-readme`,
+  `/prompt-research`
+- Library, config, memory layout unchanged
+
 ## [4.9.0] - April 2026
 
 ### Added

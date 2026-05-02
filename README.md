@@ -20,6 +20,16 @@ Three commands for Claude Code:
 
 These rules live in `CLAUDE.md` and apply to every interaction in this repo, not just slash commands.
 
+## Session memory
+
+A `PreCompact` hook writes a diary entry to `.claude/memory/diary/` before Claude Code compacts long conversations. Entries capture task summary, design decisions (with the WHY), challenges, solutions, and observed preferences.
+
+- **Automatic** — fires at every `/compact`, no manual step needed.
+- **Per-project** — each project keeps its own diary under its own `.claude/memory/diary/`.
+- **`/reflect-diary`** — manual skill that reads accumulated entries, identifies recurring patterns (2+ occurrences), and proposes updates to `project-profile.md`. Nothing is written without explicit approval.
+
+The installer (`install-claude-commands.ps1`) deploys the hook to `~/.claude/hooks/` and registers it in `~/.claude/settings.json` automatically.
+
 ## Installation
 
 Clone the repo, then copy `.claude/` into your project:

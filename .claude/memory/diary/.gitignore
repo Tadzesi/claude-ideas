@@ -1,0 +1,2 @@
+# Diary entries are session-local — do not commit
+*.md
