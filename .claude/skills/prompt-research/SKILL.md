@@ -14,9 +14,26 @@ argument-hint: "[research goal or question]"
 
 ---
 
-## 📋 Overview
+## STARTUP: Load Project Context (ALWAYS FIRST)
 
-The `/prompt-research` command provides **deep, multi-iteration codebase analysis** using specialized agents coordinated by an orchestrator. Unlike `/prompt-hybrid` (single-pass, fast), this command uses **2-4 iterations** with **multiple specialized agents** to achieve comprehensive understanding.
+Before any analysis, load known facts from memory:
+
+1. Read `.claude/memory/project-knowledge.md`
+2. Read `.claude/memory/architectural-context.md`
+3. Read last 3 sessions from `.claude/memory/sessions.md`
+
+Skip re-researching anything already in the knowledge graph.
+
+**CACHING (Opus 4.7 — see `.claude/library/caching-strategy.md`):**
+prompt-perfection-core, research-adapter, execution-plan-template, model-router, model-tiers,
+orchestration-lead, orchestration-iteration, orchestration-aggregator
+are stable across calls — flag with `cache_control: ephemeral` when invoked via Anthropic SDK.
+
+---
+
+## Overview
+
+The `/prompt-research` command provides **deep, multi-iteration codebase analysis** using specialized agents coordinated by an orchestrator. It uses **2-4 iterations** with **multiple specialized agents** to achieve comprehensive understanding.
 
 **Key Capabilities:**
 - **Multi-agent orchestration** - 2-5 specialized agents work in parallel
@@ -38,44 +55,22 @@ The `/prompt-research` command provides **deep, multi-iteration codebase analysi
 
 ---
 
-## 🎯 When to Use This Command
+## When to Use This Command
 
-### Use `/prompt-research` for:
-✅ **Architecture analysis** - Understanding system structure and component relationships
-✅ **Security audits** - OWASP Top 10, vulnerability detection, auth/authz review
-✅ **Performance investigations** - Bottleneck detection, N+1 queries, caching analysis
-✅ **Pattern discovery** - Naming conventions, code organization, consistency checks
-✅ **Comprehensive understanding** - When you need multiple perspectives and deep insights
-✅ **Critical decisions** - When accuracy and completeness matter more than speed
+Use `/prompt-research` for:
+- **Architecture analysis** - Understanding system structure and component relationships
+- **Security audits** - OWASP Top 10, vulnerability detection, auth/authz review
+- **Performance investigations** - Bottleneck detection, N+1 queries, caching analysis
+- **Pattern discovery** - Naming conventions, code organization, consistency checks
+- **Comprehensive understanding** - When you need multiple perspectives and deep insights
+- **Critical decisions** - When accuracy and completeness matter more than speed
 
-### Use `/prompt-hybrid` instead for:
-⚡ **Quick tasks** - Single-file changes, simple questions
-⚡ **Fast iterations** - When you need answers in 2-30 seconds
-⚡ **Single perspective** - One agent is sufficient
-⚡ **Known patterns** - Following established codebase patterns
-
-### Use `/prompt-technical` for:
-🔧 **Implementation planning** - After you understand the system (use research first)
-🔧 **Code scaffolding** - Generating implementation with best practices
+Use `/prompt` instead for quick tasks, simple questions, single-file changes,
+or when one agent and a single pass is sufficient.
 
 ---
 
-## 📊 Command Comparison
-
-| Feature | /prompt-research | /prompt-hybrid | /prompt-technical |
-|---------|------------------|----------------|-------------------|
-| **Duration** | 60-180s | 2-30s | 20-60s |
-| **Agents** | 2-5 specialized | 0-1 general | 0-1 general |
-| **Iterations** | 2-4 cycles | Single-pass | Single-pass |
-| **Depth** | Comprehensive | Balanced | Technical |
-| **Citations** | Always (file:line) | Optional | Optional |
-| **Memory** | Persistent graph | Learning only | Learning only |
-| **Report** | 15-20 pages | Structured prompt | Implementation plan |
-| **Use Case** | Research & audit | General tasks | Implementation |
-
----
-
-## 🚀 Usage
+## Usage
 
 ### Basic Usage
 
@@ -103,7 +98,7 @@ The `/prompt-research` command provides **deep, multi-iteration codebase analysi
 
 ---
 
-## 📝 Phase 0: Prompt Perfection
+## Phase 0: Prompt Perfection
 
 ### Objective
 Transform user input into a comprehensive research specification.
@@ -118,7 +113,7 @@ Transform user input into a comprehensive research specification.
 **Before starting research, assess:**
 
 ```markdown
-## 🤝 DELEGATION ASSESSMENT (AI Fluency)
+## DELEGATION ASSESSMENT (AI Fluency)
 
 ### Problem Awareness
 - **Research Goal:** [Clear / Needs Clarification]
@@ -127,11 +122,11 @@ Transform user input into a comprehensive research specification.
 
 ### Platform Capabilities
 **This research involves:**
-- Code analysis: ✅ AI Excellent
-- Pattern detection: ✅ AI Excellent
-- Architecture understanding: ✅ AI Good
-- Security assessment: ✅ AI Good (human must approve remediations)
-- Business decisions: ⚠️ Human Required
+- Code analysis: AI Excellent
+- Pattern detection: AI Excellent
+- Architecture understanding: AI Good
+- Security assessment: AI Good (human must approve remediations)
+- Business decisions: Human Required
 
 ### Recommended Delegation
 
@@ -269,7 +264,7 @@ Selected Strategy: Broad Research
 
 ---
 
-## 🔄 Phase 1: Multi-Agent Research Execution
+## Phase 1: Multi-Agent Research Execution
 
 ### Orchestration Flow
 
@@ -307,8 +302,8 @@ CitationAgent:
 SecurityAgent:
 - Analyzes authentication flow
 - Checks OWASP Top 10
-- Validates password hashing (BCrypt - secure ✓)
-- Validates token management (JWT - needs expiration check ⚠️)
+- Validates password hashing (BCrypt - secure)
+- Validates token management (JWT - needs expiration check)
 - Findings: 2 security concerns, 5 good practices
 
 PatternAgent:
@@ -327,9 +322,9 @@ Iteration 1 Results:
 **Step 3: Iteration Engine - Gap Analysis** (5s)
 ```
 Iteration Engine evaluates:
-- Coverage: 55% (< 70% target) ❌
-- Confidence: 0.75 (< 0.80 target) ❌
-- Unresolved questions: 1 (session management) ❌
+- Coverage: 55% (< 70% target) NOT MET
+- Confidence: 0.75 (< 0.80 target) NOT MET
+- Unresolved questions: 1 (session management) NOT MET
 → Convergence NOT met, continue to Iteration 2
 
 Gaps detected:
@@ -351,7 +346,7 @@ ExploreAgent (refined focus):
 
 PerformanceAgent:
 - Analyzes token validation performance
-- Checks caching (Redis cache for user data - good ✓)
+- Checks caching (Redis cache for user data - good)
 - Detects: No performance issues in auth flow
 - Findings: 2 performance insights
 
@@ -369,10 +364,10 @@ Iteration 2 Results:
 **Step 5: Iteration Engine - Convergence Check** (5s)
 ```
 Iteration Engine evaluates:
-- Coverage: 78% (>= 70% target) ✓
-- Confidence: 0.83 (>= 0.80 target) ✓
-- Unresolved questions: 0 ✓
-- Conflicts: 0 ✓
+- Coverage: 78% (>= 70% target) MET
+- Confidence: 0.83 (>= 0.80 target) MET
+- Unresolved questions: 0 MET
+- Conflicts: 0 MET
 → Convergence MET, proceed to aggregation
 ```
 
@@ -396,7 +391,7 @@ Result Aggregator:
 
 ---
 
-## 📄 Output: Research Report
+## Output: Research Report
 
 ### Report Structure (15-20 pages)
 
@@ -404,13 +399,16 @@ Result Aggregator:
 # Research Report: Authentication System Analysis
 
 ## Executive Summary
-The authentication system uses JWT tokens with BCrypt password hashing, following industry best practices for security. The architecture implements a clean service layer pattern with 100% dependency injection consistency. Two areas need attention: token expiration configuration and rate limiting for login attempts.
+The authentication system uses JWT tokens with BCrypt password hashing, following industry
+best practices for security. The architecture implements a clean service layer pattern with
+100% dependency injection consistency. Two areas need attention: token expiration
+configuration and rate limiting for login attempts.
 
-**Key Takeaways:**
-- Secure password hashing (BCrypt with 12 rounds) ✅
-- JWT tokens with refresh token mechanism ✅
-- Token expiration should be configurable (currently hardcoded) ⚠️
-- Rate limiting not implemented for auth endpoints ⚠️
+Key Takeaways:
+- Secure password hashing (BCrypt with 12 rounds) - GOOD
+- JWT tokens with refresh token mechanism - GOOD
+- Token expiration should be configurable (currently hardcoded) - NEEDS FIX
+- Rate limiting not implemented for auth endpoints - NEEDS FIX
 
 ---
 
@@ -440,12 +438,12 @@ The authentication system uses JWT tokens with BCrypt password hashing, followin
 
 ---
 
-## 🚨 Critical Findings
-(None found - good news!)
+## Critical Findings
+(None found)
 
 ---
 
-## ⚠️ Important Findings
+## Important Findings
 
 ### Finding 1: Token Expiration Hardcoded
 **Severity:** Important
@@ -453,7 +451,9 @@ The authentication system uses JWT tokens with BCrypt password hashing, followin
 **Confidence:** High (0.88)
 
 **Description:**
-JWT token expiration is hardcoded to 24 hours in AuthService.cs [1]. This should be configurable via appsettings.json to allow different expiration times for different environments (dev vs. production).
+JWT token expiration is hardcoded to 24 hours in AuthService.cs [1]. This should be
+configurable via appsettings.json to allow different expiration times for different
+environments (dev vs. production).
 
 **Evidence:**
 - Hardcoded value in token generation [1]
@@ -482,11 +482,8 @@ Move expiration time to configuration:
 **Confidence:** High (0.85)
 
 **Description:**
-Login and authentication endpoints do not implement rate limiting [3][4]. This allows unlimited login attempts, making the system vulnerable to brute force attacks.
-
-**Evidence:**
-- AuthController.Login has no rate limiting attribute [3]
-- No rate limiting middleware configured [4]
+Login and authentication endpoints do not implement rate limiting [3][4]. This allows
+unlimited login attempts, making the system vulnerable to brute force attacks.
 
 **Recommendation:**
 Implement rate limiting:
@@ -497,31 +494,18 @@ Implement rate limiting:
 
 **Priority:** P1 - Security concern
 
-**Citations:**
-[3] C:\Projects\MyApp\Controllers\AuthController.cs:42
-[4] C:\Projects\MyApp\Startup.cs:50-70 (middleware configuration)
-
 ---
 
-## 💡 Informational Findings
+## Informational Findings
 
 ### Finding 3: JWT Authentication Implementation
 **Category:** Architecture, Security
 **Confidence:** Very High (0.95)
 
 **Description:**
-Application uses JWT-based authentication with BCrypt password hashing [5][6]. Implementation follows security best practices with proper token signing (HMAC-SHA256) and secure password hashing (BCrypt, 12 rounds).
-
-**Details:**
-- JWT tokens signed with HMAC-SHA256
-- 24-hour expiration (see Finding 1 for improvement)
-- Refresh tokens implemented (7-day expiration)
-- BCrypt hashing with 12 rounds (secure)
-- User claims included in token
-
-**Citations:**
-[5] C:\Projects\MyApp\Services\AuthService.cs:15-30 (JWT generation)
-[6] C:\Projects\MyApp\Services\AuthService.cs:80-85 (BCrypt hashing)
+Application uses JWT-based authentication with BCrypt password hashing [5][6].
+Implementation follows security best practices with proper token signing (HMAC-SHA256)
+and secure password hashing (BCrypt, 12 rounds).
 
 ---
 
@@ -529,7 +513,7 @@ Application uses JWT-based authentication with BCrypt password hashing [5][6]. I
 
 ---
 
-## 🏗️ Architectural Insights
+## Architectural Insights
 
 **System Architecture:**
 Layered architecture with clean separation of concerns:
@@ -547,190 +531,89 @@ Layered architecture with clean separation of concerns:
    - Dependencies: IConfiguration
 
 **Architectural Patterns:**
-- Dependency Injection: 100% consistent ✅
-- Service Layer Pattern: 95% consistent ✅
-- Repository Pattern: 100% consistent ✅
+- Dependency Injection: 100% consistent
+- Service Layer Pattern: 95% consistent
+- Repository Pattern: 100% consistent
 
 ---
 
-## 🛡️ Security Analysis
+## Security Analysis
 
 **Overall Security Score:** 8.5/10 (Very Good)
 
 **Strengths:**
-- BCrypt password hashing (12 rounds) ✅
-- JWT token signing with HMAC-SHA256 ✅
-- Refresh token rotation ✅
-- No hardcoded secrets ✅
+- BCrypt password hashing (12 rounds)
+- JWT token signing with HMAC-SHA256
+- Refresh token rotation
+- No hardcoded secrets
 
 **Concerns:**
-- Hardcoded token expiration (Finding 1) ⚠️
-- Missing rate limiting (Finding 2) ⚠️
+- Hardcoded token expiration (Finding 1)
+- Missing rate limiting (Finding 2)
 
 **OWASP Top 10 Compliance:**
-✅ A01: Broken Access Control - Authorization middleware present
-✅ A02: Cryptographic Failures - BCrypt hashing, HTTPS enforced
-⚠️ A03: Injection - Parameterized queries used, but validate input
-✅ A04: Insecure Design - Secure design patterns followed
-⚠️ A05: Security Misconfiguration - Token expiration hardcoded
-✅ A06: Vulnerable Components - Dependencies up-to-date
-⚠️ A07: Authentication Failures - Missing rate limiting
-✅ A08: Software/Data Integrity - Code signing not analyzed
-✅ A09: Security Logging - Authentication events logged
-✅ A10: SSRF - Not applicable to this system
+- A01: Broken Access Control - Authorization middleware present (PASS)
+- A02: Cryptographic Failures - BCrypt hashing, HTTPS enforced (PASS)
+- A03: Injection - Parameterized queries used, but validate input (WARN)
+- A04: Insecure Design - Secure design patterns followed (PASS)
+- A05: Security Misconfiguration - Token expiration hardcoded (WARN)
+- A06: Vulnerable Components - Dependencies up-to-date (PASS)
+- A07: Authentication Failures - Missing rate limiting (WARN)
+- A08: Software/Data Integrity - Code signing not analyzed (PASS)
+- A09: Security Logging - Authentication events logged (PASS)
+- A10: SSRF - Not applicable to this system (PASS)
 
 ---
 
-## ⚡ Performance Analysis
+## Performance Analysis
 
 **Overall Performance Score:** 9.0/10 (Excellent)
 
 **Bottlenecks Identified:** 0 Critical, 0 Important
-
-**Optimization Opportunities:**
-- Redis caching used for user data ✅
-- Token validation cached in memory ✅
-- No N+1 queries detected ✅
 
 **Caching Strategy:**
 - User data cached in Redis (5-minute TTL)
 - Token validation results cached (in-memory)
 - Session data cached (Redis)
 
-**Performance:** Authentication flow is well-optimized, no issues detected.
-
 ---
 
-## 📐 Patterns & Conventions
+## Patterns & Conventions
 
 **Naming Conventions:**
-- Interfaces: I{Name} (100% consistent) ✅
-- Classes: {Entity}{Purpose} (95% consistent) ✅
-- Async methods: {Verb}{Noun}Async (100% consistent) ✅
-
-**File Organization:**
-- Layer-based folders (100% consistent) ✅
-- One class per file (100% consistent) ✅
+- Interfaces: I{Name} (100% consistent)
+- Classes: {Entity}{Purpose} (95% consistent)
+- Async methods: {Verb}{Noun}Async (100% consistent)
 
 **Architectural Patterns:**
-- Dependency Injection: Used everywhere ✅
-- Service Layer: Clear separation ✅
-- Repository Pattern: Data access abstraction ✅
-
-**Recommendations for New Code:**
-1. Continue using I{Name} for interfaces
-2. Follow {Verb}{Noun}Async for async methods
-3. Maintain service layer separation
-4. Use constructor injection for dependencies
+- Dependency Injection: Used everywhere
+- Service Layer: Clear separation
+- Repository Pattern: Data access abstraction
 
 ---
 
-## 📊 Recommendations
+## Recommendations
 
 ### Security Recommendations
 1. **Configure Token Expiration** (Priority: P1)
    - Rationale: Security best practice, environment flexibility
-   - Impact: More secure production environment
    - Effort: Low (1 hour)
    - Citations: [1][2]
 
 2. **Implement Rate Limiting** (Priority: P1)
    - Rationale: Prevent brute force attacks
-   - Impact: Significant security improvement
    - Effort: Medium (4 hours)
    - Citations: [3][4]
 
-### Architecture Recommendations
-(None - architecture is well-designed)
-
-### Performance Recommendations
-(None - performance is excellent)
-
 ---
 
-## 🧩 Knowledge Graph Updates
-
-**New Knowledge Added:**
-
-**Architecture Overview:**
-- Layered architecture identified
-- JWT authentication is core security mechanism
-- Service layer pattern used throughout
-
-**Core Components:**
-- AuthService, AuthController, JwtMiddleware documented
-- Component relationships mapped
-- Dependencies tracked
-
-**Patterns & Conventions:**
-- Naming conventions: I{Name}, {Verb}{Noun}Async
-- 100% dependency injection consistency
-- Service layer pattern 95% consistent
-
-**Security Model:**
-- JWT + BCrypt documented
-- OWASP Top 10 compliance assessed
-- Two improvements identified
-
-**Performance Characteristics:**
-- Redis caching strategy documented
-- No bottlenecks found
-- Excellent performance score (9.0/10)
-
-**Research History:**
-- Session RS001 added to log
-
----
-
-## ❓ Gaps & Future Research
-
-**No Unresolved Questions** ✅
-
-**Recommended Follow-Up Research:**
-1. **Analyze authorization system** (separate from authentication)
-   - Rationale: Complete security picture
-   - Estimated complexity: 25 (Narrow research)
-
-2. **Review API rate limiting across all endpoints**
-   - Rationale: Consistent rate limiting strategy
-   - Estimated complexity: 30 (Broad research)
-
----
-
-## 📚 Citations & References
-
-### By File
-
-**File: C:\Projects\MyApp\Services\AuthService.cs**
-- [1] Lines 26: Token expiration (hardcoded 24h)
-- [5] Lines 15-30: JWT token generation
-- [6] Lines 80-85: BCrypt password verification
-- [7] Lines 90-95: Refresh token generation
-
-**File: C:\Projects\MyApp\Controllers\AuthController.cs**
-- [3] Lines 42: Login endpoint (no rate limiting)
-- [8] Lines 65-75: Logout endpoint
-
-**File: C:\Projects\MyApp\appsettings.json**
-- [2] Lines 10-15: JWT configuration section
-
-[Additional citations...]
-
----
-
-## 📈 Research Statistics
+## Research Statistics
 
 **Findings Summary:**
 - Total Findings: 19
 - Critical: 0 (0%)
 - Important: 2 (11%)
 - Informational: 17 (89%)
-
-**Confidence Distribution:**
-- Very High (0.90+): 5 findings
-- High (0.75-0.89): 11 findings
-- Medium (0.60-0.74): 3 findings
-- Low (< 0.60): 0 findings
 
 **Agent Contributions:**
 - ExploreAgent: 8 findings
@@ -743,14 +626,9 @@ Layered architecture with clean separation of concerns:
 - Iteration 1: 15 findings, 55% coverage, 0.75 avg confidence
 - Iteration 2: 7 findings, 78% coverage, 0.83 avg confidence
 
-**Coverage Analysis:**
-- Files analyzed: 8 / 10 estimated (80%)
-- Coverage percentage: 78%
-- Unanalyzed areas: Email notification service (not in auth scope)
-
 ---
 
-## 🎯 Next Steps
+## Next Steps
 
 **Immediate Actions (P1):**
 1. Configure JWT token expiration via appsettings.json
@@ -769,7 +647,7 @@ Layered architecture with clean separation of concerns:
 
 ---
 
-## 🗄️ Persistent Memory Updates
+## Persistent Memory Updates
 
 After research completes, the following files are updated:
 
@@ -784,8 +662,6 @@ After research completes, the following files are updated:
 **Patterns:** Service layer, dependency injection
 **Citations:** [RS001-EXP-001]
 
-[Additional components...]
-
 ## Security Model
 
 ### Authentication
@@ -794,8 +670,6 @@ After research completes, the following files are updated:
 **Strengths:** BCrypt (12 rounds), HMAC-SHA256, refresh tokens
 **Concerns:** Hardcoded expiration, missing rate limiting
 **Citations:** [RS001-SEC-001], [RS001-SEC-002]
-
-[Additional security details...]
 ```
 
 ### architectural-context.md
@@ -809,8 +683,6 @@ After research completes, the following files are updated:
 **Design Decision:** 24-hour expiration chosen for user convenience
 **Trade-off:** Security (shorter) vs. UX (longer) - currently favors UX
 **Citations:** [RS001-EXP-001-CIT-001]
-
-[Additional architectural understanding...]
 ```
 
 ### citation-index.md
@@ -823,13 +695,11 @@ After research completes, the following files are updated:
 **Citations:**
 [RS001-SEC-001-CIT-001] C:\Projects\MyApp\Services\AuthService.cs:15-30
 [RS001-SEC-001-CIT-002] C:\Projects\MyApp\Services\AuthService.cs:80-85
-
-[Additional citations...]
 ```
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 ### Complexity Threshold
 
@@ -844,7 +714,7 @@ From `.claude/config/complexity-rules.json`:
 
 **Automatic Research Mode:**
 - Score >= 20: Command automatically uses research mode
-- Score < 20: Suggests using `/prompt-hybrid` instead
+- Score < 20: Use `/prompt` instead
 
 ### Strategy Selection
 
@@ -882,7 +752,7 @@ From `.claude/config/agent-roles.json`:
 
 ---
 
-## 🔍 Example Workflows
+## Example Workflows
 
 ### Workflow 1: Security Audit
 ```
@@ -929,7 +799,7 @@ User: /prompt-research Help me understand the architecture
 
 ---
 
-## 📊 Performance Expectations
+## Performance Expectations
 
 ### First Run (No Cache)
 - **Narrow:** ~60s (2 agents, 1-2 iterations)
@@ -947,19 +817,19 @@ User: /prompt-research Help me understand the architecture
 
 ---
 
-## 🎓 Best Practices
+## Best Practices
 
 ### 1. Be Specific
-❌ Bad: "Analyze the code"
-✅ Good: "Analyze authentication system for security vulnerabilities"
+Bad: "Analyze the code"
+Good: "Analyze authentication system for security vulnerabilities"
 
 ### 2. Use for Complex Tasks
-❌ Bad: "Fix typo in line 42" (use /prompt instead)
-✅ Good: "Perform comprehensive security audit" (use /prompt-research)
+Bad: "Fix typo in line 42" (use /prompt instead)
+Good: "Perform comprehensive security audit" (use /prompt-research)
 
 ### 3. Provide Context in Questions
-❌ Bad: "Is it fast?"
-✅ Good: "Are there performance bottlenecks in the API layer?"
+Bad: "Is it fast?"
+Good: "Are there performance bottlenecks in the API layer?"
 
 ### 4. Leverage Multiple Sessions
 - First session: Broad understanding
@@ -973,7 +843,7 @@ User: /prompt-research Help me understand the architecture
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Research Takes Too Long
 ```
@@ -1005,32 +875,20 @@ Solution: Expected behavior - cache invalidates on changes
 
 ---
 
-## 📝 Version History
+## Version History
 
-### v1.1.0 - 2026-01-20 (AI Fluency Alignment)
-- ✨ **NEW:** Step 0.11 - Delegation Assessment (AI Fluency Framework)
-- ✨ **NEW:** Problem Awareness, Platform Capabilities, Delegation Plan
-- ✨ **NEW:** Agency Mode documentation for research tasks
-- Aligned with Anthropic's 4Ds model
-- Enhanced responsibility awareness
+See `.claude/CHANGELOG-skills.md` for full history.
 
-### v1.0.0 - 2025-12-28 (Phase 5 Complete)
-- Initial release of /prompt-research command
-- Multi-agent orchestration with iterative refinement
-- Source attribution with CitationAgent
-- External memory integration
-- Comprehensive research reporting
-- Integration with all Phase 1-4 components
+**v2.1 (2026-05-02):** Migrated to skills/ format (v5 Phase 2). Added STARTUP + CACHING hint.
+Removed references to deleted commands and configs. Removed emojis.
 
-**Future Enhancements:**
-- Visual architecture diagrams (Mermaid)
-- Interactive finding exploration
-- Automated remediation suggestions
-- Cross-project knowledge sharing
+**v1.1.0 (2026-01-20):** AI Fluency Alignment - Step 0.11 Delegation Assessment.
+
+**v1.0.0 (2025-12-28):** Initial release - multi-agent orchestration with iterative refinement.
 
 ---
 
-## 🔗 Library Integration
+## Library Integration
 
 ### Core Phase 0
 **Imports:** `.claude/library/prompt-perfection-core.md`
@@ -1066,8 +924,6 @@ Solution: Expected behavior - cache invalidates on changes
 - `.claude/config/complexity-rules.json`
 - `.claude/config/citation-config.json`
 - `.claude/config/iteration-rules.json`
-- `.claude/config/cache-config.json`
-- `.claude/config/learning-config.json`
 
 ---
 
