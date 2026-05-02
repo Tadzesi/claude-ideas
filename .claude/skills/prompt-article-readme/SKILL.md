@@ -10,6 +10,22 @@ This command generates or updates a professional README.md file for any project 
 
 ---
 
+## STARTUP: Load Project Context (ALWAYS FIRST)
+
+Before any analysis, load known facts from memory:
+
+1. Read `.claude/memory/project-profile.md`
+2. Read last 3 sessions from `.claude/memory/sessions.md`
+3. Read `.claude/memory/prompt-patterns.md` if it exists
+
+Skip asking about anything already in the profile.
+
+**CACHING (Opus 4.7 — see `.claude/library/caching-strategy.md`):**
+prompt-perfection-core, readme-adapter, execution-plan-template, model-router, model-tiers
+are stable across calls — flag with `cache_control: ephemeral` when invoked via Anthropic SDK.
+
+---
+
 ## Phase 0: Prompt Perfection
 
 **Import:** Use Phase 0 from `.claude/library/prompt-perfection-core.md`
