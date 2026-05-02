@@ -211,6 +211,5 @@ Expected Result:
 
 ## Next Steps
 
-- [Try /prompt-hybrid for complex tasks](/guide/commands/prompt-hybrid)
-- [Use /prompt-technical for implementation](/guide/commands/prompt-technical)
-- [Learn about Phase 0 library](/guide/architecture/library-system)
+- [Use /prompt-research for deep analysis](/guide/commands/prompt-research)
+- [Learn about Phase 0](/architecture/phase-0)

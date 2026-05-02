@@ -405,7 +405,6 @@ Force research mode with flag:
 
 ## Related
 
-- [Hybrid Intelligence](/architecture/hybrid-intelligence) - Agent spawning
 - [Caching](/architecture/caching) - Result persistence
 - [/prompt-research](/commands/prompt-research) - Command reference
 

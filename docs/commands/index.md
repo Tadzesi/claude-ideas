@@ -1,99 +1,93 @@
 # Commands Overview
 
-Claude Commands Library provides three slash commands for Claude Code.
+Claude Commands Library provides three slash commands.
 
-::: tip v5.0 — Honest 3-command scope
-Reduced from eleven commands to three that are actually maintained and tested.
-[See what was removed →](/reference/changelog#500-may-2026)
-:::
-
-## Quick Reference
+## All Commands
 
 | Command | Purpose |
 |---------|---------|
-| [/prompt](/commands/prompt) | Prompt analysis and structured rewrite |
-| [/prompt-article-readme](/commands/prompt-article-readme) | README generator from project scan |
-| [/prompt-research](/commands/prompt-research) | Multi-agent codebase research |
+| `/prompt` | Prompt analysis and structured rewrite |
+| `/prompt-article-readme` | README generator from project scan |
+| `/prompt-research` | Multi-agent codebase research (2-4 iterations) |
 
-## Commands
+## Command Details
 
-### /prompt
+### /prompt — Prompt analysis and structured rewrite
 
-Analyses any prompt, asks targeted clarifying questions, and rewrites it into a structured executable form.
+Transforms any vague or incomplete task description into a structured executable prompt.
 
 ```bash
-/prompt Fix the authentication bug returning null for expired tokens
+/prompt Refactor the UserService to use repository pattern
 ```
 
 **Output structure:** Goal, Context, Scope, Requirements, Constraints, Expected Result.
 
-**When to use:** Any time a task description is vague, incomplete, or likely to produce the wrong result on the first attempt.
+**Features:**
+- Phase 0 validation (detect, recall, check, ask, structure, approve)
+- Bilingual support (Slovak / English)
+- Memory recall — pre-fills known facts from `project-profile.md`
 
-[Full documentation →](/commands/prompt)
+[Full guide →](/guide/commands/prompt)
 
 ---
 
-### /prompt-article-readme
+### /prompt-article-readme — README generator
 
-Scans your project's structure and config files, then generates or updates a `README.md` matched to the detected stack and conventions.
+Scans your project and generates or updates `README.md` matched to the detected stack.
 
 ```bash
 /prompt-article-readme
 ```
 
-**What it scans:** `package.json`, `.csproj`, `Dockerfile`, `docker-compose.yml`, git history, existing README.
+**What it scans:**
+- `package.json`, `.csproj`, `Dockerfile`, `docker-compose.yml`
+- Existing README (to update rather than overwrite)
+- Git history for project age and contributors
 
-**When to use:** New project without a README, stale README after a major refactor, or project handed off to a new team.
-
-[Full documentation →](/commands/prompt-article-readme)
+**Features:**
+- Detects framework, version, architecture
+- Three style levels: Minimal, Standard, Comprehensive
+- Handles updates to existing README
 
 ---
 
-### /prompt-research
+### /prompt-research — Multi-agent codebase research
 
-Multi-step research workflow for unfamiliar codebases. Spawns parallel exploration agents, iterates on findings, and produces a single consolidated report.
+Deep research workflow using 2-5 parallel specialist agents, with 2-4 iteration cycles.
 
 ```bash
-/prompt-research Understand the payment processing flow and identify risks
+/prompt-research Understand the payment processing flow and identify security risks
 ```
 
-**What it does:** 2–4 iteration cycles using 5 specialist agents (Explore, Pattern, Security, Performance, Citation). Each iteration refines the previous findings and resolves gaps.
+**Agent types:**
+- **Explore Agent** — maps files, dependencies, entry points
+- **Pattern Agent** — detects conventions and anti-patterns
+- **Security Agent** — flags vulnerabilities
+- **Performance Agent** — identifies bottlenecks
+- **Citation Agent** — grounds every finding to a `file:line`
 
-**When to use:** Unfamiliar codebase, architecture audit, security review, performance investigation — any situation where you need thorough understanding with source citations.
+**Features:**
+- Iterative refinement — gaps detected between rounds trigger another iteration
+- Persistent knowledge graph in `.claude/memory/project-knowledge.md`
+- Reports with `file:line` citations
 
-[Full documentation →](/commands/prompt-research)
+[Full guide →](/guide/commands/prompt-research)
 
 ---
 
-## How All Commands Work
+## Which Command Should I Use?
 
-### Phase 0: Shared Foundation
-
-Every command begins with Phase 0 — a shared validation layer:
-
-1. **Recall** — load known facts from project memory
-2. **Detect** — language, type, and intent
-3. **Check** — completeness criteria, pre-filling from memory
-4. **Ask** — only genuinely unknown information
-5. **Structure** — transform into executable format
-6. **Approve** — wait for confirmation before proceeding
-
-[Phase 0 architecture →](/architecture/phase-0)
-
-### Plan-First Execution
-
-Before any file edit, build, test, or commit, Claude will:
-1. Summarise its understanding of the task
-2. Present 2–3 implementation options for non-trivial work
-3. Show an execution plan (files, steps, risks, verification)
-4. Wait for explicit approval
-
-This is enforced globally via `CLAUDE.md` — not just inside slash commands.
-
-[Interaction Protocol →](/guide/interaction-protocol)
+| Goal | Command |
+|------|---------|
+| My task description is vague | `/prompt` |
+| I want a better prompt before asking Claude to code | `/prompt` |
+| My README is missing or outdated | `/prompt-article-readme` |
+| I'm joining an unfamiliar codebase | `/prompt-research` |
+| Security or architecture audit | `/prompt-research` |
+| Performance investigation | `/prompt-research` |
 
 ## Next Steps
 
 - [Tutorial: Getting Best Results](/guide/tutorial-best-results)
-- [Architecture Overview](/architecture/)
-- [Installation](/getting-started/installation)
+- [Phase 0 architecture](/architecture/phase-0)
+- [Multi-agent research system](/architecture/multi-agent)

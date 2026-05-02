@@ -230,5 +230,5 @@ The generated README is a starting point. Customize:
 
 ## Related Commands
 
-- [/prompt-article](/commands/prompt-article) - For other written content
-- [/reflect](/commands/reflect) - Improve skills after a session
+- [/prompt](/commands/prompt) - For prompt refinement
+- [/prompt-research](/commands/prompt-research) - For codebase research

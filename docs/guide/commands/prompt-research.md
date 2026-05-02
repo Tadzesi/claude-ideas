@@ -371,7 +371,6 @@ See [Configuration Reference](/reference/configuration) for customization option
 
 ## Next Steps
 
-- [Learn about hybrid intelligence](/guide/architecture/hybrid-architecture)
 - [Configure research strategies](/reference/configuration)
-- [Explore specialized agents](/guide/advanced-features/multi-agent)
+- [Multi-Agent Research Architecture](/architecture/multi-agent)
 - [Try /prompt-research on your codebase](#usage)
