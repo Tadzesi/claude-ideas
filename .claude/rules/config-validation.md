@@ -31,11 +31,6 @@ Get-Content file.json | ConvertFrom-Json
 - `templates[]` - Agent prompt templates
 - `trigger_mappings` - Complexity to template mapping
 
-### learning-config.json
-- `enabled` - Boolean to enable/disable
-- `pattern_storage` - Path to patterns file
-- `learning_threshold` - Occurrences before learning
-
 ## Naming Conventions
 
 - Use kebab-case for file names

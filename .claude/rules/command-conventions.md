@@ -24,7 +24,6 @@ Every command file must include:
 Use @ import syntax for library files:
 - Core: @.claude/library/prompt-perfection-core.md
 - Adapters: @.claude/library/*-adapter.md
-- Intelligence: @.claude/library/intelligence/*.md
 
 ## Phase 0 Import Pattern
 

@@ -250,7 +250,7 @@ Options:
 - **Multiple focus areas:** +5
 
 **Score Thresholds:**
-- **0-19:** Use `/prompt-hybrid` (faster, single-pass)
+- **0-19:** Use `/prompt` (faster, single-pass)
 - **20-29:** Research mode (Narrow strategy, 2 agents, 1-2 iterations)
 - **30-49:** Research mode (Broad strategy, 3-4 agents, 2-3 iterations)
 - **50+:** Research mode (Comprehensive strategy, 5 agents, 3-4 iterations)
@@ -507,7 +507,6 @@ CitationAgent ALWAYS spawned (provides evidence)
 - NOT to aggregation (always fresh)
 - NOT to external memory reads (always current)
 
-**Reference:** `.claude/config/cache-config.json`
 ```
 
 ---
@@ -534,7 +533,6 @@ CitationAgent ALWAYS spawned (provides evidence)
    - Adjust trigger weights over time
    - Optimize strategy selection
 
-**Reference:** `.claude/config/learning-config.json`
 ```
 
 ---
@@ -740,11 +738,9 @@ IF knowledge graph update fails:
 - `.claude/config/agent-roles.json`
 - `.claude/config/external-memory-config.json`
 - `.claude/config/complexity-rules.json`
-- `.claude/config/cache-config.json`
-- `.claude/config/learning-config.json`
 
 **Used by:**
-- `.claude/commands/prompt-research.md` (main command)
+- `.claude/skills/prompt-research/SKILL.md` (main skill)
 
 ---
 

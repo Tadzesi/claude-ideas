@@ -255,48 +255,6 @@ DEFAULT:
 
 ---
 
-### Step 0.15: Predictive Intelligence (OPTIONAL - NEW v4.0)
-
-**Purpose:** Provide proactive guidance and anticipate user needs BEFORE asking for missing information
-
-**When to use:** When predictive intelligence is enabled in configuration
-
-**Import:** Use Predictive Intelligence from `.claude/library/intelligence/predictive-intelligence-core.md`
-
-**Configuration:** Check `.claude/config/predictive-intelligence.json` → `enabled`
-
-**Process:**
-
-IF predictive_intelligence.enabled == true:
-  1. **Journey Stage Detection** - Understand where user is (exploring/implementing/debugging)
-  2. **Domain Risk Analysis** - Identify security/compliance risks specific to domain
-  3. **Project Pattern Recognition** - Detect existing project conventions
-  4. **Relationship Mapping** - Connect to previous work and related areas
-  5. **Proactive Warning System** - Warn about problems BEFORE user makes mistakes
-  6. **Next-Steps Prediction** - Forecast logical followup tasks
-
-**Output:**
-```markdown
-## 🔮 PREDICTIVE INTELLIGENCE ANALYSIS
-
-[Comprehensive proactive guidance - see predictive-intelligence-core.md for full template]
-
-**Journey Stage:** [Stage] - [Guidance]
-**Domain Risks:** [Warnings and mitigations]
-**Project Patterns:** [Detected conventions]
-**Related Work:** [Connections to previous work]
-**Proactive Warnings:** [Problems to avoid]
-**Next Steps:** [Recommended followups]
-
----
-```
-
-**After Predictive Intelligence, continue with Step 0.2** (now enhanced with predictive context)
-
-**Note:** This step is OPTIONAL and can be disabled in configuration. When disabled, proceed directly to Step 0.2.
-
----
-
 ### Step 0.2: Completeness Check
 
 **Purpose:** Identify missing critical information, pre-filling from project memory
@@ -801,22 +759,6 @@ Use the core flow above, but adapt the **Completeness Check** criteria for speci
 
 ### Available Adaptations
 
-#### Technical Adaptation
-File: `.claude/library/adapters/technical-adapter.md`
-
-**Additional Criteria:**
-- [ ] **Technical Stack:** Frameworks, libraries, versions
-- [ ] **Architecture:** Patterns, conventions, structure
-- [ ] **Code Location:** Specific files, classes, methods
-- [ ] **Testing Strategy:** Unit tests, integration tests
-
-**Enhanced Validation:**
-- Can spawn agents for codebase exploration (if using hybrid)
-- Validates technical feasibility
-- Detects existing patterns
-
----
-
 #### Article Adaptation
 File: `.claude/library/readme-adapter.md`
 
@@ -833,20 +775,6 @@ File: `.claude/library/readme-adapter.md`
 - Language-specific guidelines
 
 ---
-
-#### Session Adaptation
-File: `.claude/library/adapters/session-adapter.md`
-
-**Additional Criteria:**
-- [ ] **Session Action:** Save context / Load context
-- [ ] **Scope Filter:** What to capture/load (all/specific feature/decisions)
-- [ ] **Priority:** What matters most
-- [ ] **Focus:** Where to concentrate effort
-
-**Enhanced Validation:**
-- Git branch awareness
-- File change tracking
-- Decision/WIP separation
 
 ---
 
@@ -871,26 +799,26 @@ File: `.claude/library/adapters/session-adapter.md`
 
 ---
 
-### Example 2: Command with Domain Adapter
+### Example 2: Command with Research Adapter
 
 ```markdown
-# /technical-command
+# /prompt-research
 
 ## Phase 0: Prompt Perfection
 
 **Import:** Use Phase 0 from `.claude/library/prompt-perfection-core.md`
-**Adaptation:** Technical (from `.claude/library/adapters/technical-adapter.md`)
+**Adaptation:** Research (from `.claude/library/research-adapter.md`)
 
 **Additional Criteria:**
-- Technical Stack (auto-detect or ask)
-- Code Location (required)
-- Testing Strategy (recommended)
+- Research scope (architecture / security / performance / patterns)
+- Research depth (narrow / broad / comprehensive)
+- Specific questions to answer
 
-[Claude combines core Phase 0 + technical adapter]
+[Claude combines core Phase 0 + research adapter]
 
-## Phase 1: Technical Analysis
+## Phase 1: Multi-Agent Research Execution
 
-[Command-specific logic]
+[Orchestrator spawns specialized agents, iterates to convergence]
 ```
 
 ---
@@ -966,40 +894,28 @@ history of all skills/library files.
 
 **Core Library (@ import syntax):**
 - @.claude/library/prompt-perfection-core.md (this file)
-- @.claude/library/adapters/technical-adapter.md
 - @.claude/library/readme-adapter.md
-- @.claude/library/adapters/session-adapter.md
+- @.claude/library/research-adapter.md
 
-**Memory (v1.3):**
+**Memory:**
 - @.claude/memory/project-profile.md
 
 **Configuration:**
 - @.claude/config/complexity-rules.json
 - @.claude/config/agent-templates.json
-- @.claude/config/ai-fluency.json *(AI Fluency Framework - NEW v1.3)*
-- @.claude/config/model-tiers.json *(NEW v2.1 — model routing)*
+- @.claude/config/model-tiers.json *(model routing)*
 
 **Phase 0 Support (v2.1):**
 - @.claude/library/model-router.md
 - @.claude/library/execution-plan-template.md
 
-**Caching + Memory (v2.2 / Opus 4.7 optimisation):**
+**Caching (v2.2 / Opus 4.7 optimisation):**
 - @.claude/library/caching-strategy.md (prompt caching breakpoints)
-- @.claude/library/adapters/memory-tool-adapter.md (native memory_20250818)
-- @.claude/library/adapters/context-editing-adapter.md (clear_tool_uses for /research)
 
-**Path-Specific Rules (v1.2):**
-- @.claude/rules/technical-patterns.md
+**Path-Specific Rules:**
 - @.claude/rules/command-conventions.md
 - @.claude/rules/library-standards.md
 - @.claude/rules/config-validation.md
-
-**Predictive Intelligence (v1.1):**
-- @.claude/library/intelligence/predictive-intelligence-core.md
-- @.claude/library/intelligence/relationship-mapper.md
-- @.claude/library/intelligence/warning-system.md
-- @.claude/library/intelligence/next-steps-predictor.md
-- @.claude/config/predictive-intelligence.json
 
 ---
 

@@ -20,13 +20,6 @@ Rules for core library and adapter files.
 - Reference parent library explicitly
 - Add domain-specific criteria only
 
-## Intelligence Components
-
-- Located in .claude/library/intelligence/
-- Implement predictive features
-- Must be optional (can be disabled)
-- Configuration in .claude/config/
-
 ## File Structure
 
 ```markdown

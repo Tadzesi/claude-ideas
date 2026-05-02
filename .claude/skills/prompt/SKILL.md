@@ -411,15 +411,10 @@ Use `/prompt` when:
 - Single command or small scope change
 - You want prompt cleanup without codebase exploration
 
-Use `/prompt-hybrid` when:
-- Complex tasks needing codebase exploration
-- Multi-file or multi-command scope
-- Pattern detection across the project needed
-
-Use `/prompt-technical` when:
-- Architecture decisions needed
-- Code scaffolding or implementation options
-- Best practices guidance for technical choices
+Use `/prompt-research` when:
+- Deep multi-agent research with citations needed
+- Architecture analysis, security audits, performance investigations
+- 2-4 iteration cycles required for comprehensive understanding
 
 ---
 

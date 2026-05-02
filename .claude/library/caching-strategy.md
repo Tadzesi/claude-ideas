@@ -31,8 +31,7 @@ Mark these as cacheable via `cache_control` breakpoint AT THE END of each:
 4. `.claude/config/model-tiers.json` — tier definitions
 5. `.claude/config/complexity-rules.json` — scoring rules
 6. `.claude/library/*-adapter.md` — domain adapters
-7. `.claude/library/intelligence/*.md` — predictive components
-8. `.claude/library/orchestration-*.md` — multi-agent coordination
+7. `.claude/library/orchestration-*.md` — multi-agent coordination
 9. `.claude/CHANGELOG-skills.md` — consolidated version history
 
 ## What NOT to cache (volatile)
@@ -116,7 +115,7 @@ For 1-hour TTL on the most stable block, add beta header:
 | Subsequent within 1 hour (beta TTL) | ~90% | ~20% |
 | Across multi-day sessions | 0% (TTL expired) | 100% |
 
-A typical /prompt-hybrid session (5-10 invocations within an hour) cuts
+A typical /prompt or /prompt-research session (5-10 invocations within an hour) cuts
 input cost by ~70-85%.
 
 ---
