@@ -1,10 +1,10 @@
 # Introduction
 
-Claude Commands Library is a collection of slash commands for Claude Code that transform how you write prompts. Instead of hoping Claude understands your intent, every prompt goes through a validation process that ensures clarity before execution.
+Claude Commands Library is a collection of three slash commands for Claude Code that improve how you write prompts and research codebases.
 
 ## Why Use This Library?
 
-### The Traditional Approach
+### Without it
 
 ```
 You: "Add authentication to my app"
@@ -17,90 +17,65 @@ Claude: *adds JWT layer*
 
 **Result:** 3 rounds of back-and-forth, wasted tokens, fragmented implementation.
 
-### The Claude Commands Approach
+### With /prompt
 
 ```
-You: /prompt-technical Add authentication to my app
+You: /prompt Add authentication to my app
 
-Claude: Before I implement, let me clarify:
+Claude: Before you proceed, let me clarify:
 
 1. Which authentication method?
    - Option A: OAuth (Google, GitHub, Microsoft)
    - Option B: JWT with username/password
    - Option C: Session-based with cookies
-   Recommended: Option A for user convenience
 
-2. Which providers should I support?
-   - Google (most common)
-   - GitHub (developer audience)
-   - Microsoft (enterprise)
+2. Which providers should you support?
 
-3. Where should I store user data?
+3. Where should user data be stored?
    - Your existing Users table
    - New OAuth-specific tables
 
-You: A, Google only, existing Users table
+You: OAuth, Google only, existing Users table
 
-Claude: *implements exactly what you need, first time*
+→ Structured prompt ready. Hand it to Claude for precise implementation.
 ```
 
-**Result:** One clear conversation, precise implementation.
+**Result:** One clear conversation. Correct implementation on the first attempt.
 
-## Core Concepts
+## The Three Commands
 
-### Phase 0: Prompt Perfection
+**[/prompt](/commands/prompt)** — Analyses any prompt, asks targeted questions, and rewrites it into a structured executable form.
 
-Every command begins with **Phase 0** - a validation process that:
+**[/prompt-article-readme](/commands/prompt-article-readme)** — Scans your project and generates or updates `README.md` matched to the detected stack.
+
+**[/prompt-research](/commands/prompt-research)** — Multi-step research for unfamiliar codebases. Spawns parallel agents, iterates on findings, produces a cited report.
+
+## Core Concept: Phase 0
+
+Every command begins with **Phase 0** — a shared validation layer that:
 
 1. **Detects** what you're asking (task, question, bug fix, etc.)
-2. **Checks** for missing information using 6 criteria
-3. **Asks** clarifying questions before proceeding
-4. **Structures** your request into an unambiguous format
-5. **Waits** for your approval
+2. **Recalls** known facts from project memory
+3. **Checks** for missing information
+4. **Asks** only genuinely unknown questions
+5. **Structures** the result into a clear format
+6. **Waits** for your approval
 
 [Learn more about Phase 0 →](/architecture/phase-0)
 
-### Complexity Detection
-
-Not every task needs deep analysis. The library automatically scores complexity:
-
-| Score | Category | Action |
-|-------|----------|--------|
-| 0-4 | Simple | Fast inline validation |
-| 5-9 | Moderate | Asks if you want agent help |
-| 10-19 | Complex | Spawns Explore Agent automatically |
-| 20+ | Research | Multi-agent deep analysis |
-
-### Agent Types
-
-When complexity warrants it, specialized agents help:
-
-- **Explore Agent** - Scans your codebase for patterns and conventions
-- **Plan Agent** - Creates implementation strategies
-- **Security Agent** - Checks for OWASP vulnerabilities
-- **Performance Agent** - Identifies bottlenecks
-- **Pattern Agent** - Ensures consistency with existing code
-
 ## What You'll Learn
 
-This documentation covers:
-
-1. **[Installation](/getting-started/installation)** - Get set up in 2 minutes
-2. **[Quick Start](/getting-started/quick-start)** - Your first commands
-3. **[Your First Prompt](/getting-started/first-prompt)** - Detailed walkthrough
-4. **[Commands](/commands/)** - Complete command reference
-5. **[Architecture](/architecture/)** - How everything works
-6. **[Best Practices](/reference/best-practices)** - Get the most from the library
+1. **[Installation](/getting-started/installation)** — get set up in 2 minutes
+2. **[Quick Start](/getting-started/quick-start)** — your first commands
+3. **[Your First Prompt](/getting-started/first-prompt)** — detailed walkthrough
+4. **[Commands](/commands/)** — complete command reference
+5. **[Architecture](/architecture/)** — how everything works
 
 ## Requirements
 
 - [Claude Code CLI](https://claude.ai/code) installed
-- Windows 10/11 or compatible PowerShell environment
-- Git (for installation)
-
-## Next Steps
-
-Ready to get started?
+- Windows 10/11 (PowerShell installer); `.claude/` directory is OS-agnostic
+- Git
 
 ::: tip Recommended Path
 1. [Install the library](/getting-started/installation) (2 minutes)

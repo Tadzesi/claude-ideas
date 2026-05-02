@@ -1,509 +1,248 @@
-# Tutorial: Getting Best Results with Claude Commands
+# Tutorial: Getting Best Results
 
-This comprehensive tutorial teaches you how to use Claude Commands Library effectively, following the AI Fluency Framework principles for optimal human-AI collaboration.
+How to use the three commands effectively.
 
 ## Prerequisites
 
-- Claude Commands Library v4.6+ installed
+- Claude Commands Library v5.0 installed
 - Basic familiarity with Claude Code
 - A project to work with
 
-## Part 1: Understanding the Fundamentals
+## Part 1: Understanding Phase 0
 
-### The 4Ds Framework
-
-Every interaction with Claude Commands follows Anthropic's AI Fluency Framework:
+Every command begins with **Phase 0** — a shared validation layer that runs before any output.
 
 ```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│ DELEGATION  │ ──► │ DESCRIPTION │ ──► │ DISCERNMENT │ ──► │  DILIGENCE  │
-│ What to ask │     │ How to ask  │     │ Evaluate    │     │ Responsible │
-└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+Step 1: Analysis
+  Detect language (English, Slovak, etc.)
+  Identify prompt type (Task, Bug Fix, Question, etc.)
+  Extract core intent
+
+Step 2: Memory Recall
+  Load known facts from project-profile.md
+  Pre-fill tech stack, conventions, recent work
+
+Step 3: Completeness Check
+  Goal — what do you want to achieve?
+  Context — project, technology, environment
+  Scope — which files, components, areas
+  Requirements — specific needs
+  Constraints — limitations (optional)
+  Expected Result — how to verify success
+
+Step 4: Clarifying Questions
+  Ask only what cannot be answered from memory
+  Present options where multiple approaches exist
+
+Step 5: Structured Output
+  Goal / Context / Scope / Requirements / Constraints / Expected Result
+
+Step 6: Approval Gate
+  Wait for explicit approval before proceeding
 ```
 
-### The Feedback Loop
+The approval gate is mandatory — Claude never auto-executes after Phase 0.
 
-Effective AI use is iterative. Don't expect perfection on first try:
+## Part 2: Using /prompt Effectively
 
-```
-    DESCRIBE          EVALUATE
-   (what you want) → (what you got)
-         ↑               ↓
-         └─── REFINE ←──┘
-           (improve prompt)
-```
+### The difference it makes
 
-## Part 2: Choosing the Right Command
-
-| Situation | Command | Why |
-|-----------|---------|-----|
-| Quick fix, simple task | `/prompt` | Fast, 2 seconds |
-| Complex task, need exploration | `/prompt-hybrid` | Agent assistance |
-| New feature, architecture | `/prompt-technical` | Implementation analysis |
-| Security audit, deep analysis | `/prompt-research` | Multi-agent research |
-| Writing content | `/prompt-article` | Article wizard |
-| .NET project task | `/prompt-dotnet` | Scans .csproj, pre-fills stack |
-| React project task | `/prompt-react` | Scans package.json, pre-fills stack |
-| Improve from feedback | `/reflect` | Learn from session |
-
-## Part 3: Writing Effective Prompts
-
-### Bad vs Good Prompts
-
-::: danger Bad Prompt
+::: danger Before — vague prompt
 ```
 /prompt Fix my code
 ```
-**Problems:**
-- No context (what code?)
-- No scope (which file?)
-- No expected result (what should happen?)
+Problems: no context, no scope, no expected result.
 :::
 
-::: tip Good Prompt
+::: tip After — complete prompt
 ```
-/prompt Fix the NullReferenceException in UserService.GetUser() method
-when the user doesn't exist in the database. Should return null instead
-of throwing. Using .NET 8, Entity Framework Core.
+/prompt Fix the NullReferenceException in UserService.GetUser()
+when the user does not exist. Should return null instead of throwing.
+Using .NET 8, Entity Framework Core.
 ```
-**Why it works:**
-- Clear goal (fix exception)
-- Specific scope (UserService.GetUser)
-- Context (what happens, what should happen)
-- Tech stack (.NET 8, EF Core)
+Why it works: clear goal, specific scope, stated expected behaviour, tech stack provided.
 :::
 
-### The 6 Essential Criteria
+### The 6 criteria
 
-Every prompt should include:
+Every prompt should answer:
 
-1. **Goal** - What do you want to achieve?
-2. **Context** - Project, technology, environment
-3. **Scope** - Which files, components, areas
-4. **Requirements** - Specific needs
-5. **Constraints** - Limitations, rules (optional)
-6. **Expected Result** - How to verify success
+1. **Goal** — what do you want to achieve?
+2. **Context** — project, technology, environment
+3. **Scope** — which files, components, areas
+4. **Requirements** — specific needs
+5. **Constraints** — limitations, rules (optional)
+6. **Expected Result** — how to verify success
 
-### Examples by Task Type
+### Examples by task type
 
-#### Bug Fix
+**Bug fix:**
 ```
-/prompt-technical
-
-Fix the authentication timeout issue in our React app.
-- Users report being logged out after 5 minutes
-- Expected: Sessions should last 30 minutes
-- Files: src/auth/AuthContext.tsx, src/api/client.ts
-- Using: React 18, Axios, JWT tokens
+/prompt Fix the authentication timeout in the React app.
+Users are logged out after 5 minutes, expected 30 minutes.
+Files: src/auth/AuthContext.tsx, src/api/client.ts
+Stack: React 18, Axios, JWT
 ```
 
-#### New Feature
+**New feature:**
 ```
-/prompt-hybrid
-
-Add dark mode toggle to the Settings page.
-- Should persist preference in localStorage
-- Should respect system preference on first load
-- Toggle should be a switch component
-- Using: React, Tailwind CSS, shadcn/ui
+/prompt Add dark mode toggle to the Settings page.
+Should persist in localStorage and respect system preference on first load.
+Stack: React, Tailwind CSS, shadcn/ui
 ```
 
-#### Architecture Question
+**Refactor:**
 ```
-/prompt-research
-
-Analyze our current authentication system and recommend improvements.
-- Current: JWT tokens stored in localStorage
-- Concerns: Security, session management, refresh tokens
-- Tech stack: React frontend, .NET Core API
+/prompt Refactor UserService to use repository pattern.
+Currently: direct DbContext calls in service layer.
+Target: IUserRepository interface + concrete implementation.
+Stack: .NET 8, EF Core
 ```
 
-## Part 4: Understanding the Phase 0 Flow
+### When Phase 0 asks questions
 
-When you run a command, it goes through Phase 0:
+Answer fully — each question prevents misimplementation. If Claude asks which auth method, saying "JWT" saves a full refactor.
 
-### Step 1: Analysis
-```
-Detected Language: English
-Prompt Type: Bug Fix
-Core Intent: Fix authentication timeout
-```
+## Part 3: Using /prompt-research Effectively
 
-### Step 2: Completeness Check
+### Give a focused goal
+
+Too broad produces shallow results:
 ```
-✓ Goal: Fix timeout issue
-✓ Context: React app, JWT tokens
-✓ Scope: AuthContext.tsx, client.ts
-✓ Requirements: 30-minute sessions
-○ Constraints: Not specified
-✓ Expected Result: Sessions last 30 minutes
+/prompt-research Understand the codebase
 ```
 
-### Step 3: Clarification Questions
-
-If anything is missing, you'll be asked:
-
+Focused produces deep results:
 ```
-🚨 Critical (must have):
-- What authentication library are you using?
-
-⚠️ Important (should have):
-- Is there a refresh token mechanism?
-
-💡 Optional:
-- Should I also add "remember me" functionality?
+/prompt-research Understand the payment processing flow
+and identify potential race conditions in order creation
 ```
 
-### Step 4: Approval Gate
+### What to expect
+
+1. Claude spawns 2-5 agents in parallel (Explore, Pattern, Security, Performance, Citation)
+2. First iteration maps the landscape — files, entry points, key paths
+3. Subsequent iterations (2-4 total) drill into gaps from the previous round
+4. Final report: structured findings with `file:line` citations
+
+### Good research prompts
 
 ```
-⏸️ Perfected Prompt Ready - Awaiting Your Approval
+/prompt-research Map the authentication system and
+identify any JWT validation gaps
 
-Summary:
-- Type: Bug Fix
-- Goal: Fix authentication timeout (5min → 30min)
-- Scope: AuthContext.tsx, client.ts
-- Confidence: High
+/prompt-research Understand how database migrations work,
+what the schema history is, and flag any missing rollbacks
 
-⚖️ Diligence Reminder (AI Fluency):
-You remain responsible for any output generated.
-
-Reply with: y/yes, n/no, modify, explain, options
+/prompt-research Find all API endpoints that handle payment data
+and check for OWASP Top 10 issues
 ```
 
-### Step 5: Execution
+### Using the output
 
-After approval, the task executes.
+The report cites every claim with a file path and line number. Use these to:
+- Jump directly to the relevant code
+- Verify findings before acting on them
+- Create precise follow-up prompts with `/prompt`
 
-### Step 6: Post-Execution Evaluation
+## Part 4: Using /prompt-article-readme Effectively
 
+### Run it from the project root
+
+```bash
+cd /my-project
+/prompt-article-readme
 ```
-📊 Quick Evaluation (Discernment Check)
 
-How was this output?
-- `good` — Accurate, appropriate, useful ✅
-- `partial` — Mostly good, needs adjustments ⚠️
-- `wrong` — Significant issues, needs rework ❌
-- `explain` — Show me your reasoning 🔍
-```
+Claude scans the directory it's running in. Running from a subdirectory produces a scoped README, not a top-level one.
 
-## Part 5: Iterating for Better Results
+### Choosing a style level
 
-### When Output is "Partial"
+When prompted, choose based on audience:
+
+- **Minimal** — personal projects, internal tools
+- **Standard** — open source, team projects
+- **Comprehensive** — public libraries, portfolio pieces
+
+### Updating an existing README
+
+If a README already exists, Claude reads it first and proposes targeted updates — it does not overwrite everything. Review the diff before approving.
+
+## Part 5: Iterating on Output
+
+### Feedback responses
+
+After any command output, you can respond:
+
+| Response | What happens |
+|----------|-------------|
+| `y` / `yes` | Approve and proceed |
+| `partial` | Output was mostly right, needs adjustment — Claude asks what to fix |
+| `wrong` | Output missed the mark — Claude asks what specifically was wrong |
+| `explain` | Claude explains its reasoning before you decide |
+| `options` | Claude presents alternative approaches |
+
+### Refining a result
 
 ```
 User: partial
 
 Claude: What needs adjustment?
 
-User: The session duration is correct, but I also need to handle
-      the refresh token expiration.
+User: The session duration logic is right, but you modified
+AuthContext.tsx — the actual timeout is handled in api/client.ts
 
-Claude: [Makes adjustments]
+Claude: [corrects the target file]
 ```
 
-### When Output is "Wrong"
+## Part 6: Common Mistakes
 
+**Too vague:**
 ```
-User: wrong
+# Wrong
+/prompt Fix the bug
 
-Claude: What specifically was wrong?
-
-User: You modified the wrong file. The auth logic is in
-      src/services/auth.ts, not src/auth/AuthContext.tsx
-
-Claude: [Starts over with correct file]
-```
-
-### Useful Refinement Phrases
-
-| Situation | Say This |
-|-----------|----------|
-| Too long | "Make it more concise, focus on [key points]" |
-| Too vague | "Be more specific about [aspect]" |
-| Wrong tone | "Use a more [formal/casual/technical] tone" |
-| Missing context | "Also consider [additional context]" |
-| Incorrect facts | "Check [claim], it should be [correction]" |
-| Wrong approach | "Instead of X, try Y because [reason]" |
-
-## Part 6: Command-Specific Tips
-
-### /prompt - Quick Perfection
-
-Best for:
-- Simple bug fixes
-- Small code changes
-- Quick questions
-
-```bash
-/prompt Add null check to handleSubmit function in ContactForm.tsx
-```
-
-### /prompt-hybrid - Intelligent Assistance
-
-Best for:
-- Complex tasks
-- When you need codebase exploration
-- Multi-file changes
-
-```bash
-/prompt-hybrid Refactor our API client to use React Query for caching
-```
-
-The system will:
-1. Detect complexity (score 0-50+)
-2. Spawn agents if needed
-3. Explore codebase
-4. Provide informed recommendations
-
-### /prompt-technical - Implementation Analysis
-
-Best for:
-- New features
-- Architecture decisions
-- Refactoring
-
-```bash
-/prompt-technical Implement WebSocket support for real-time notifications
-```
-
-You'll get:
-- Multiple implementation options
-- Pros/cons analysis
-- Code scaffolding
-- Best practices
-
-### /prompt-research - Deep Analysis
-
-Best for:
-- Security audits
-- Performance investigations
-- Architecture reviews
-
-```bash
-/prompt-research Perform security audit of our payment processing system
-```
-
-Features:
-- 2-5 specialized agents
-- Iterative refinement
-- Citations with file:line
-- Comprehensive reports
-
-### Auto-Memory (v4.5+)
-
-Context is now loaded automatically at the start of every session — no command needed.
-
-Claude Code's built-in memory system reads `~/.claude/projects/.../memory/` and your `.claude/memory/project-profile.md` before the first message. You will see:
-
-```
-CONTEXT LOADED FROM PROJECT PROFILE
-Project: My App v2.1 | Stack: Node.js + PostgreSQL
-Platform: Windows | Branch: feature/auth
-Recent work: Added JWT middleware (yesterday)
-```
-
-**No `/session-start` or `/session-end` commands required.**
-
-### /reflect - Learn and Improve
-
-After using any command:
-```bash
-/reflect prompt-hybrid
-```
-
-Analyzes the session for:
-- Corrections (what went wrong)
-- Successes (what worked)
-- Edge cases (missing features)
-- Preferences (your patterns)
-
-## Part 7: Common Mistakes to Avoid
-
-### 1. Being Too Vague
-
-::: danger Don't
-```
-/prompt Fix my app
-```
-:::
-
-::: tip Do
-```
+# Right
 /prompt Fix the login button not responding on mobile Safari.
-Using React 18, Tailwind CSS.
-```
-:::
-
-### 2. Accepting First Output
-
-Don't settle! If output is 80% good, use `partial` and refine.
-
-### 3. Not Providing Context
-
-AI doesn't know your:
-- Tech stack
-- Project structure
-- Coding conventions
-- Team preferences
-
-Always include relevant context.
-
-### 4. Over-Trusting AI
-
-Always:
-- Review generated code
-- Test before deploying
-- Verify facts and claims
-- Check for security issues
-
-### 5. Under-Using AI
-
-Don't spend hours on:
-- Boilerplate code
-- Documentation
-- Test cases
-- Code refactoring
-
-Let AI draft, you refine.
-
-## Part 8: Pro Tips
-
-### Tip 1: Meta-Prompting
-
-If unsure how to phrase something:
-
-```
-/prompt Help me craft a prompt for implementing
-user authentication with OAuth2
+React 18, Tailwind CSS.
 ```
 
-AI can help you write better prompts!
+**Not providing tech stack:** Claude has to guess or ask. Include `Stack: ...` in any prompt that touches code.
 
-### Tip 2: Use Examples
+**Accepting 80% output:** Use `partial` and refine. Getting to 100% takes less time than fixing broken code.
 
+**Over-trusting output:** Always review generated code, test before deploying, verify facts. You remain responsible.
+
+**Too broad a research goal:** `/prompt-research` with "understand everything" spreads agents thin. Narrow the scope.
+
+## Part 7: Pro Tips
+
+**Meta-prompting** — if unsure how to phrase something:
 ```
-/prompt-technical Create a validation function like this:
-
-// Input: { name: "", age: -1 }
-// Output: { valid: false, errors: ["name required", "age must be positive"] }
+/prompt Help me write a prompt for implementing
+OAuth2 authentication in a .NET 8 minimal API
 ```
 
-### Tip 3: Specify Output Format
+**Use examples** — show the expected input/output shape:
+```
+/prompt Create a validation function.
+Input: { name: "", age: -1 }
+Output: { valid: false, errors: ["name required", "age must be positive"] }
+```
 
+**Chain commands** — use `/prompt` to structure a task, then hand the output to Claude for implementation. Use `/prompt-research` first when you don't know the codebase well.
+
+**Specify output format:**
 ```
 /prompt Explain the Observer pattern.
-
-Output as:
-1. One-sentence summary
-2. When to use (3 bullet points)
-3. Code example (TypeScript)
-4. Common pitfalls
+Output as: 1-sentence summary, when to use (3 bullets), TypeScript example, pitfalls.
 ```
-
-### Tip 4: Use Constraints
-
-```
-/prompt-technical Add logging to the API service.
-Constraints:
-- Must not affect performance (async only)
-- Must not log sensitive data (PII)
-- Must follow existing patterns in codebase
-```
-
-### Tip 5: Capture Learnings
-
-After a productive session, run `/reflect` to improve the skills you used:
-
-```bash
-/reflect prompt-hybrid
-```
-
-This captures corrections and successes so commands improve over time.
-
-## Part 9: Troubleshooting
-
-### "Claude keeps asking too many questions"
-
-Your prompt is missing critical information. Include:
-- Goal, Context, Scope at minimum
-- Tech stack if relevant
-
-### "Output doesn't match expectations"
-
-1. Check if you approved the perfected prompt
-2. Review the scope - was it clear?
-3. Use `partial` or `wrong` to refine
-
-### "Agent spawning takes too long"
-
-For simpler tasks, use `/prompt` instead of `/prompt-hybrid`.
-
-### "Can't find relevant files"
-
-Provide file paths explicitly:
-```
-/prompt Fix bug in src/components/UserProfile.tsx
-```
-
-## Part 10: Complete Workflow Example
-
-### Scenario: Add User Profile Feature
-
-**1. Plan the Feature**
-```bash
-/prompt-technical Add user profile page with avatar upload
-
-Requirements:
-- Display name, email, avatar
-- Edit functionality
-- Avatar upload to S3
-- Form validation
-- Using: Next.js 14, TypeScript, Tailwind, AWS S3
-```
-
-**3. Review Options**
-- Option A: Server-side upload
-- Option B: Client-side with presigned URLs (recommended)
-
-Select: "Option B"
-
-**4. Implement**
-Claude provides:
-- API routes
-- Component code
-- S3 integration
-- Type definitions
-
-**5. Evaluate**
-```
-partial - The form validation is good but I need server-side
-validation too for the API routes.
-```
-
-**6. Refine**
-Claude adds server-side validation.
-
-**7. Reflect**
-```bash
-/reflect prompt-technical
-```
-
-Captures learnings for future features.
-
-## Summary
-
-1. **Choose the right command** for your task complexity
-2. **Provide complete context** (Goal, Context, Scope, Requirements)
-3. **Review and approve** the perfected prompt
-4. **Iterate using feedback** (good/partial/wrong)
-5. **Remember your responsibility** for AI-generated output
-6. **Learn from sessions** with /reflect
 
 ---
 
 ## Related
 
-- [AI Fluency Framework](/architecture/ai-fluency) - The 4Ds explained
-- [Phase 0 Flow](/architecture/phase-0) - Prompt perfection details
-- [Commands Reference](/commands/) - All commands documentation
+- [AI Fluency Framework](/architecture/ai-fluency)
+- [Phase 0 Flow](/architecture/phase-0)
+- [Multi-Agent Research](/architecture/multi-agent)
+- [Commands Reference](/commands/)
