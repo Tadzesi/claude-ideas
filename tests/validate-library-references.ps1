@@ -1,28 +1,34 @@
 # Automated Test Script for Library References
-# Version: 1.2 (2026-05-03)
-# Purpose: Validate v5.0 skills follow the shared Phase 0 library pattern
+# Version: 1.3 (2026-05-03)
+# Purpose: Validate v5.2 skills + subagents follow shared library + Anthropic
+#          subagent frontmatter contracts.
 #
 # Changelog:
-#   v1.2: Realigned with v5.0 reality (Proposal 2.3 cleanup):
-#         - .claude/commands/ no longer exists (commands sunset in v5.0,
-#           replaced by .claude/skills/<name>/SKILL.md)
-#         - library/adapters/ subdir does not exist (adapters live flat
-#           in .claude/library/ as *-adapter.md)
-#         - 4 active skills: prompt, prompt-article-readme, prompt-research,
-#           reflect-diary (reflect-diary is an analysis skill — no Phase 0)
-#         - Library reference now matches skill-style "@.claude/library/..."
-#           or legacy "**Import:**" form
+#   v1.3: v5.2 -- adds .claude/agents/ subagent suite:
+#         - Suite 6 verifies all 5 research subagents exist (research-explore,
+#           research-pattern, research-security, research-performance,
+#           research-citation)
+#         - Suite 7 parses subagent frontmatter and asserts:
+#           * required fields name + description present
+#           * name is lowercase + hyphens, unique
+#           * model in {haiku, sonnet, opus} (or "inherit" / full ID)
+#           * tools comma-separated valid Anthropic tool names
+#           * color in valid set
+#         No longer expects research-agent-*.md or agent-roles.json
+#         (deleted in v5.2 Phase C).
+#   v1.2: Realigned with v5.0 reality
 #   v1.1: Aligned with v4.9.0 reality
 #   v1.0: Initial (2024-12-20)
 
 param(
     [string]$SkillsPath = ".\.claude\skills",
     [string]$LibraryPath = ".\.claude\library",
+    [string]$AgentsPath = ".\.claude\agents",
     [switch]$Verbose
 )
 
 Write-Host "===============================================" -ForegroundColor Cyan
-Write-Host "Library Reference Validation Test Suite v1.2" -ForegroundColor Cyan
+Write-Host "Library Reference Validation Test Suite v1.3" -ForegroundColor Cyan
 Write-Host "===============================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -202,6 +208,135 @@ foreach ($dir in $skillDirs) {
     }
 
     $testResults.Tests += $test
+}
+
+# Test 6: All 5 research subagents present in .claude/agents/
+Write-Host "`n[Test Suite 6: Research Subagents Existence (v5.2+)]" -ForegroundColor Cyan
+Write-Host "-----------------------------------------------------" -ForegroundColor Cyan
+
+$expectedAgents = @(
+    "research-explore", "research-pattern", "research-security",
+    "research-performance", "research-citation"
+)
+
+foreach ($agentName in $expectedAgents) {
+    $agentFile = Join-Path $AgentsPath "$agentName.md"
+    Test-FileExists $agentFile "Subagent $agentName exists"
+}
+
+# Test 7: Subagent frontmatter validation
+Write-Host "`n[Test Suite 7: Subagent Frontmatter (Anthropic spec)]" -ForegroundColor Cyan
+Write-Host "------------------------------------------------------" -ForegroundColor Cyan
+
+$validModels = @("haiku", "sonnet", "opus", "inherit")
+$validColors = @("red", "blue", "green", "yellow", "orange", "purple", "pink", "cyan", "magenta")
+# Anthropic internal tools allowlist (subset relevant for research subagents)
+$validTools = @("Read", "Grep", "Glob", "Bash", "Edit", "Write", "WebFetch", "WebSearch", "Task", "NotebookEdit", "TodoWrite")
+
+$seenNames = @{}
+
+if (Test-Path $AgentsPath) {
+    Get-ChildItem -Path $AgentsPath -Filter "*.md" | ForEach-Object {
+        $agentFile = $_
+        $content = Get-Content $agentFile.FullName -Raw
+
+        # Extract frontmatter block
+        if ($content -match "(?ms)^---\s*\r?\n(.*?)\r?\n---") {
+            $fm = $Matches[1]
+
+            # Parse simple key: value pairs
+            $fmMap = @{}
+            foreach ($line in $fm -split "\r?\n") {
+                if ($line -match "^(\w+):\s*(.*)$") {
+                    $fmMap[$Matches[1]] = $Matches[2].Trim()
+                }
+            }
+
+            # Required: name
+            $testResults.Total++
+            $name = $fmMap["name"]
+            if ($name -and $name -match "^[a-z][a-z0-9-]*$") {
+                if ($seenNames.ContainsKey($name)) {
+                    Write-Host "[FAIL]" -ForegroundColor Red -NoNewline
+                    Write-Host " $($agentFile.Name) - duplicate name: $name"
+                    $testResults.Failed++
+                } else {
+                    Write-Host "[PASS]" -ForegroundColor Green -NoNewline
+                    Write-Host " $($agentFile.Name) - name '$name' valid + unique"
+                    $seenNames[$name] = $true
+                    $testResults.Passed++
+                }
+            } else {
+                Write-Host "[FAIL]" -ForegroundColor Red -NoNewline
+                Write-Host " $($agentFile.Name) - name missing or invalid (must be lowercase + hyphens): '$name'"
+                $testResults.Failed++
+            }
+
+            # Required: description
+            $testResults.Total++
+            if ($fmMap["description"] -and $fmMap["description"].Length -gt 30) {
+                Write-Host "[PASS]" -ForegroundColor Green -NoNewline
+                Write-Host " $($agentFile.Name) - description present (length OK)"
+                $testResults.Passed++
+            } else {
+                Write-Host "[FAIL]" -ForegroundColor Red -NoNewline
+                Write-Host " $($agentFile.Name) - description missing or too short"
+                $testResults.Failed++
+            }
+
+            # Optional but expected: model
+            if ($fmMap.ContainsKey("model")) {
+                $testResults.Total++
+                $model = $fmMap["model"]
+                # Accept enum value OR full claude-* model ID
+                if (($validModels -contains $model) -or ($model -match "^claude-")) {
+                    Write-Host "[PASS]" -ForegroundColor Green -NoNewline
+                    Write-Host " $($agentFile.Name) - model '$model' valid"
+                    $testResults.Passed++
+                } else {
+                    Write-Host "[FAIL]" -ForegroundColor Red -NoNewline
+                    Write-Host " $($agentFile.Name) - model '$model' not in valid set"
+                    $testResults.Failed++
+                }
+            }
+
+            # Optional: tools (comma-separated)
+            if ($fmMap.ContainsKey("tools")) {
+                $testResults.Total++
+                $toolList = $fmMap["tools"] -split "\s*,\s*"
+                $invalidTools = $toolList | Where-Object { $validTools -notcontains $_ }
+                if ($invalidTools.Count -eq 0) {
+                    Write-Host "[PASS]" -ForegroundColor Green -NoNewline
+                    Write-Host " $($agentFile.Name) - tools $($toolList -join ',') all valid"
+                    $testResults.Passed++
+                } else {
+                    Write-Host "[FAIL]" -ForegroundColor Red -NoNewline
+                    Write-Host " $($agentFile.Name) - invalid tools: $($invalidTools -join ',')"
+                    $testResults.Failed++
+                }
+            }
+
+            # Optional: color
+            if ($fmMap.ContainsKey("color")) {
+                $testResults.Total++
+                $color = $fmMap["color"]
+                if ($validColors -contains $color) {
+                    Write-Host "[PASS]" -ForegroundColor Green -NoNewline
+                    Write-Host " $($agentFile.Name) - color '$color' valid"
+                    $testResults.Passed++
+                } else {
+                    Write-Host "[WARN]" -ForegroundColor Yellow -NoNewline
+                    Write-Host " $($agentFile.Name) - color '$color' not in common set"
+                    $testResults.Warnings++
+                }
+            }
+        } else {
+            $testResults.Total++
+            Write-Host "[FAIL]" -ForegroundColor Red -NoNewline
+            Write-Host " $($agentFile.Name) - no YAML frontmatter found"
+            $testResults.Failed++
+        }
+    }
 }
 
 # Summary

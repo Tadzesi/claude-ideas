@@ -335,8 +335,8 @@ Check `.claude/memory/project-knowledge.md` periodically to:
 
 Research behavior is controlled by:
 
-- `.claude/config/orchestration-config.json` - Strategies, iterations
-- `.claude/config/agent-roles.json` - Agent definitions, triggers
+- `.claude/config/orchestration-config.json` - Strategies, cohort rules, iterations
+- `.claude/agents/research-*.md` - Per-subagent definition (frontmatter + system prompt; see [Anthropic spec](https://code.claude.com/docs/en/sub-agents#supported-frontmatter-fields))
 - `.claude/config/iteration-rules.json` - Convergence criteria
 - `.claude/config/citation-config.json` - Citation formatting
 - `.claude/config/external-memory-config.json` - Memory persistence

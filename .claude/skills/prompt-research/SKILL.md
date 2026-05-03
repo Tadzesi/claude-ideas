@@ -28,22 +28,28 @@ invoked via the Anthropic SDK. See `.claude/library/caching-strategy.md`.
 
 ## Overview
 
-`/prompt-research` runs a **lead orchestrator** that spawns **5 specialist
-agents in parallel** (Explore, Pattern, Security, Performance, Citation),
-coordinates **2-4 iteration cycles** with gap-driven refinement, and
-aggregates findings into a comprehensive report. Specialist roles are
-described in `.claude/library/research-adapter.md`.
+`/prompt-research` runs orchestration **in the main thread** that spawns
+up to 5 real Anthropic subagents in parallel via the Task tool
+(`@research-explore`, `@research-pattern`, `@research-security`,
+`@research-performance`, `@research-citation` — all defined in
+`.claude/agents/`), coordinates 2-4 iteration cycles with gap-driven
+refinement, and aggregates findings into a comprehensive report.
 
 **Key capabilities:**
-- Multi-agent orchestration with parallel specialist agents
+- Real subagent orchestration (isolated context per specialist) via Task tool
 - Iterative refinement with smart convergence (coverage + confidence targets)
 - File:line citations and code snippets for every finding
 - Persistent knowledge graph across sessions
 - Comprehensive prioritised reports (Critical / Important / Informational)
 
+**Why orchestration runs in main thread:** Anthropic subagents cannot spawn
+other subagents (https://code.claude.com/docs/en/sub-agents#limitations).
+The iteration loop, gap analysis, citation index persistence, and final
+aggregation all live in this skill (main context).
+
 **Phase 0 Import:** `@.claude/library/prompt-perfection-core.md` (canonical
-flow with research-adapter Steps 0.25 / 0.35 / 0.55 add-ons; default MODEL
-HINT for research is `opus`).
+flow with research-adapter Phase 0 add-ons; default MODEL HINT for
+research is `opus`).
 
 ---
 
@@ -98,20 +104,88 @@ execute.
 
 ---
 
-## Orchestration Flow (Phase 1)
+## Specialist Selection Rules
 
-1. **Lead planning** (5-10s) — load memory, choose strategy, plan agent cohort
-2. **Iteration 1** (30-40s) — Explore + Citation + scope-specific agents in parallel
-3. **Iteration engine** (5s) — gap analysis against coverage + confidence targets
-4. **Iteration 2-4** (30-40s each) — refine on detected gaps; stop when converged
-5. **Aggregation** (20-30s) — dedupe, conflict resolution, prioritisation, report
+Always spawn (every iteration of every research session):
+- `@research-explore`   — file discovery, architecture mapping
+- `@research-citation`  — file:line evidence for every finding
 
-**Convergence targets** (from `.claude/config/orchestration-config.json`):
-coverage and confidence per strategy template. The engine stops when both
-targets are met and there are zero unresolved questions or conflicts.
+Conditionally spawn based on detected keywords + complexity score:
 
-**Expected duration:** Narrow ~60s, Broad ~120s, Comprehensive ~180s
-(first run, no cache; cached re-runs are 10-20x faster).
+| Subagent                | Spawn when (any condition true)                                    |
+|-------------------------|--------------------------------------------------------------------|
+| `@research-security`    | keywords: security, authentication, authorization, encryption,     |
+|                         | vulnerability, payment, credential, password, token                |
+|                         | OR complexity >= 15                                                |
+| `@research-performance` | keywords: performance, slow, optimization, bottleneck,             |
+|                         | scalability, latency, throughput, caching                          |
+|                         | OR complexity >= 12                                                |
+| `@research-pattern`     | keywords: pattern, convention, like other, match existing,         |
+|                         | consistent, standard                                               |
+|                         | OR strategy in {broad, comprehensive}                              |
+
+Strategy → default cohort size:
+- Narrow:        explore + citation                              (2)
+- Broad:         explore + citation + pattern + 1 specialist     (3-4)
+- Comprehensive: explore + citation + security + performance + pattern (5)
+
+Source: `.claude/config/orchestration-config.json#agent_cohort_rules` plus
+the per-subagent `description` frontmatter (which is also pushy enough for
+auto-delegation outside `/prompt-research`).
+
+---
+
+## Orchestration Flow
+
+**Iteration 1** (parallel spawn — single message with multiple Task
+tool invocations, one per subagent):
+
+```
+Task(subagent_type: "research-explore",   prompt: <scope-specific>)
+Task(subagent_type: "research-citation",  prompt: <findings-to-cite>)
+Task(subagent_type: "research-{conditional}", prompt: ...)
+```
+
+Wait for all SubagentStop events (Anthropic auto-handles this when Task
+calls are batched in one message).
+
+**Gap analysis** (main context):
+- Compare aggregated subagent summaries against
+  `orchestration-config.json#convergence_settings`:
+  `min_coverage: 0.70`, `min_confidence: 0.80`,
+  `max_unresolved_conflicts: 2`.
+- If converged → proceed to Aggregation.
+- If gaps → Iteration 2 with refinement spawns targeted at the gap.
+
+**Iterations 2-4:** spawn refinement subagents per detected gap. Stop when:
+- convergence reached, OR
+- max iterations (4) hit, OR
+- no new findings between two consecutive iterations.
+
+**Aggregation** (main context):
+- Dedupe similar findings (similarity >= 0.85).
+- Resolve conflicts (prefer higher-confidence source).
+- Prioritise by severity (Critical / Important / Informational).
+- **Append citation index entries** returned by `@research-citation` to
+  `.claude/memory/citation-index.md` (subagents are read-only; this
+  write happens in main thread).
+- Update `.claude/memory/project-knowledge.md` and
+  `.claude/memory/architectural-context.md` with new insights.
+- Render final report.
+
+---
+
+## Performance Expectations
+
+First-run (no cache) duration estimates:
+
+  Narrow strategy        ~60s   (2-3 subagents, 1-2 iterations)
+  Broad strategy         ~120s  (3-4 subagents, 2-3 iterations)
+  Comprehensive strategy ~180s  (5 subagents, 3-4 iterations)
+
+Cached re-run (same prompt, files unchanged): ~10s (10-20× faster).
+Subagents have isolated context windows — their cache lifecycle is
+separate from the main session cache.
 
 ---
 
@@ -129,7 +203,9 @@ A 15-20 page markdown report with these sections:
 - Prioritised Recommendations
 - Research Statistics + Next Steps
 
-See `.claude/library/research-adapter.md` for the full report template.
+Each subagent owns its own "Output format" section in
+`.claude/agents/research-*.md`; the report concatenates per-subagent
+sections under the appropriate severity heading.
 
 ---
 
@@ -150,8 +226,9 @@ existing knowledge rather than re-discovering it.
 - Read `.claude/config/orchestration-config.json` when you need
   `strategy_templates` (initial agents, max iterations, estimated duration)
   for narrow / broad / comprehensive.
-- Read `.claude/config/agent-roles.json` when you need per-agent model tier,
-  `timeout_seconds`, and `conditional` flags.
+- Per-agent model and tools live in subagent frontmatter
+  (`.claude/agents/research-*.md`); inspect via `/agents` UI or read
+  the files directly.
 
 ---
 

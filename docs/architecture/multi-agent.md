@@ -1,6 +1,45 @@
 # Multi-Agent Research
 
-Deep analysis through coordinated specialized agents working in parallel with iterative refinement.
+Deep analysis through real Anthropic subagents working in parallel with
+iterative refinement. As of v5.2, every specialist is a real subagent
+file in `.claude/agents/` — no prose simulation.
+
+## Architecture (v5.2+)
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  Main thread — .claude/skills/prompt-research/SKILL.md           │
+│  (orchestrator: planning, iteration loop, gap analysis,          │
+│   citation index persistence, aggregation)                        │
+└────────────────────────┬─────────────────────────────────────────┘
+                         │ Task tool (parallel spawn,
+                         │ single message multiple invocations)
+        ┌────────────────┼────────────────┐
+        ▼                ▼                ▼
+   ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ...
+   │@research-   │  │@research-   │  │@research-   │
+   │ explore     │  │ citation    │  │ security    │
+   │ (haiku)     │  │ (haiku)     │  │ (sonnet)    │
+   └──────┬──────┘  └──────┬──────┘  └──────┬──────┘
+          │ summary         │ citations       │ findings
+          └─────────────────┼─────────────────┘
+                            ▼
+                  Subagent results return to main
+                  thread (isolated context per agent)
+                            │
+                            ▼
+                  Aggregation + gap analysis
+                  (main thread)
+                            │
+                            ▼
+                  Converged? → Report
+                  Not yet?   → Iteration N+1
+```
+
+**Why orchestration runs in main thread:** subagents cannot spawn other
+subagents ([Anthropic limit](https://code.claude.com/docs/en/sub-agents#limitations)).
+The iteration loop, gap analysis, citation index writes, and final
+aggregation all live in the orchestrator skill.
 
 ## When to Use
 
@@ -16,43 +55,10 @@ Multi-agent research is designed for complex problems requiring multiple perspec
 
 ## How It Works
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Multi-Agent Research                      │
-│                                                              │
-│  ┌─────────────────────────────────────────────────────┐    │
-│  │              Lead Agent (Orchestrator)               │    │
-│  │    Manages workflow, synthesizes results             │    │
-│  └───────────────────────┬─────────────────────────────┘    │
-│                          │                                   │
-│         ┌────────────────┼────────────────┐                 │
-│         ▼                ▼                ▼                 │
-│    ┌─────────┐     ┌─────────┐     ┌─────────┐             │
-│    │ Agent 1 │     │ Agent 2 │     │ Agent 3 │             │
-│    │ Explore │     │ Pattern │     │Security │             │
-│    └────┬────┘     └────┬────┘     └────┬────┘             │
-│         │               │               │                   │
-│         └───────────────┼───────────────┘                   │
-│                         ▼                                    │
-│    ┌─────────────────────────────────────────────────────┐  │
-│    │              Result Aggregation                      │  │
-│    │    Combines findings, resolves conflicts             │  │
-│    └─────────────────────────────────────────────────────┘  │
-│                         │                                    │
-│                         ▼                                    │
-│    ┌─────────────────────────────────────────────────────┐  │
-│    │              Gap Analysis                            │  │
-│    │    Identifies missing coverage                       │  │
-│    └─────────────────────────────────────────────────────┘  │
-│                         │                                    │
-│              ┌──────────┴──────────┐                        │
-│              ▼                     ▼                        │
-│         Gaps Found?           Complete                      │
-│              │                     │                        │
-│              ▼                     ▼                        │
-│         Next Iteration       Final Report                   │
-└─────────────────────────────────────────────────────────────┘
-```
+See the architecture diagram above. The orchestrator (main thread)
+spawns 2-5 specialist subagents in parallel via the Task tool, waits
+for all to complete, runs gap analysis, and either spawns refinement
+subagents in iteration N+1 or proceeds to aggregation.
 
 ## Aggregation Pipeline
 
@@ -67,79 +73,26 @@ graph update** so subsequent runs build on prior context, and (8) **Metrics**
 when coverage ≥ 70 % and confidence ≥ 80 % across all open questions, or
 when the iteration cap (default 4) is reached.
 
-## Agent Types
+## Subagents
 
-### Explore Agent
+All five live in `.claude/agents/` as real Anthropic subagents with valid
+YAML frontmatter ([spec](https://code.claude.com/docs/en/sub-agents#supported-frontmatter-fields)).
+The model and tool allowlist are declared in frontmatter, not in any
+JSON config — single source of truth.
 
-| Property | Value |
-|----------|-------|
-| **Model** | Haiku |
-| **Time** | ~30s |
-| **Focus** | Codebase structure and patterns |
+| File                       | Model  | Color  | Tools             | Focus                        |
+|----------------------------|--------|--------|-------------------|------------------------------|
+| `research-explore.md`      | haiku  | blue   | Read, Grep, Glob  | Codebase discovery, deps     |
+| `research-citation.md`     | haiku  | purple | Read, Grep        | file:line evidence           |
+| `research-pattern.md`      | haiku  | green  | Read, Grep, Glob  | Convention consistency       |
+| `research-security.md`     | sonnet | red    | Read, Grep, Glob  | OWASP Top 10, secrets, crypto|
+| `research-performance.md`  | sonnet | orange | Read, Grep, Glob  | N+1, async, caching, leaks   |
 
-Discovers:
-- Project structure
-- File relationships
-- Framework detection
-- Naming conventions
-
-### Citation Agent
-
-| Property | Value |
-|----------|-------|
-| **Model** | Sonnet |
-| **Time** | ~45s |
-| **Focus** | Precise source references |
-
-Provides:
-- `file:line` citations
-- Code snippet extraction
-- Cross-reference mapping
-- Evidence documentation
-
-### Security Agent
-
-| Property | Value |
-|----------|-------|
-| **Model** | Sonnet |
-| **Time** | ~45s |
-| **Focus** | Vulnerability detection |
-
-Analyzes:
-- OWASP Top 10
-- Input validation
-- Authentication flows
-- Authorization checks
-- Data exposure risks
-
-### Performance Agent
-
-| Property | Value |
-|----------|-------|
-| **Model** | Sonnet |
-| **Time** | ~45s |
-| **Focus** | Bottleneck identification |
-
-Detects:
-- N+1 query patterns
-- Memory leaks
-- Inefficient algorithms
-- Missing caching
-- Blocking operations
-
-### Pattern Agent
-
-| Property | Value |
-|----------|-------|
-| **Model** | Haiku |
-| **Time** | ~30s |
-| **Focus** | Convention consistency |
-
-Validates:
-- Code style adherence
-- Architectural patterns
-- Naming conventions
-- Best practice compliance
+Bash is intentionally absent — read-only research is fully served by
+Read + Grep + Glob, narrowing attack surface. Write/Edit are absent
+because subagents do not modify files; the orchestrator (main thread)
+owns all writes (citation index, project knowledge, architectural
+context).
 
 ## Iteration Process
 
@@ -283,23 +236,28 @@ issues and 5 performance concerns requiring attention.
 
 ## Configuration
 
-### orchestration-config.json
+### .claude/agents/research-*.md (per-agent, v5.2+)
+
+Per-agent metadata (model, tools, color, description) lives in the
+subagent frontmatter — not in any separate JSON. To inspect or edit
+a specialist, open `.claude/agents/research-<name>.md` directly or
+use Claude Code's `/agents` UI.
+
+### orchestration-config.json (cohort + convergence)
 
 ```json
 {
-  "research_mode": {
-    "default_strategy": "parallel",
-    "max_agents": 5,
-    "max_iterations": 4,
-    "convergence_threshold": 0.85
+  "strategy_templates": {
+    "narrow_research": { "initial_agents": ["ExploreAgent","CitationAgent"], "max_iterations": 2 },
+    "broad_research": { "initial_agents": ["ExploreAgent","CitationAgent","PatternAgent"], "max_iterations": 3 },
+    "comprehensive_research": { "initial_agents": [...], "max_iterations": 4 }
   },
-  "lead_agent": {
-    "model": "sonnet",
-    "synthesis_style": "comprehensive"
+  "agent_cohort_rules": {
+    "always_include": ["ExploreAgent","CitationAgent"],
+    "conditional_agents": { ... }
   },
-  "agent_selection": {
-    "auto_detect": true,
-    "minimum_agents": 2
+  "convergence_settings": {
+    "criteria": { "min_coverage": { "threshold": 0.70 }, "min_confidence": { "threshold": 0.80 } }
   }
 }
 ```

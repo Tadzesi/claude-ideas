@@ -1,6 +1,7 @@
 # Claude Commands Library Installer
-# Version: 5.1.0
+# Version: 5.2.0
 # Description: Installs/updates three Claude Code slash commands  - /prompt, /prompt-article-readme, /prompt-research
+#              + 5 research subagents in .claude/agents/ (v5.2+)
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -62,7 +63,7 @@ function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -Foregr
 
 # Banner
 Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host " Claude Commands Library Installer v5.1.0" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v5.2.0" -ForegroundColor Cyan
 Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
@@ -270,7 +271,8 @@ function Deploy-ClaudeDirectory {
         }
 
         # Deploy directories that should be updated
-        $directoriesToDeploy = @("skills", "library", "config", "rules", "docs", "hooks")
+        # v5.2: agents/ added for real Anthropic subagents (research-*)
+        $directoriesToDeploy = @("skills", "agents", "library", "config", "rules", "docs", "hooks")
 
         # Create parent directory if needed
         if (-not (Test-Path $targetClaudeDir)) {
@@ -440,7 +442,7 @@ function Test-Installation {
 
     Write-Info "Verifying installation..."
 
-    $requiredDirs = @("skills", "library", "config", "rules")
+    $requiredDirs = @("skills", "agents", "library", "config", "rules")
     $missingDirs = @()
 
     foreach ($dir in $requiredDirs) {
@@ -496,6 +498,20 @@ function Test-Installation {
         return $false
     }
 
+    # v5.2: verify all 5 research subagents present in .claude/agents/
+    $expectedAgents = @("research-explore", "research-pattern", "research-security", "research-performance", "research-citation")
+    $missingAgents = @()
+    foreach ($agent in $expectedAgents) {
+        $agentFile = Join-Path $targetClaudeDir "agents\$agent.md"
+        if (-not (Test-Path $agentFile)) {
+            $missingAgents += $agent
+        }
+    }
+    if ($missingAgents.Count -gt 0) {
+        Write-Error "Missing subagents: $($missingAgents -join ', ')"
+        return $false
+    }
+
     # Count skills
     $skillsDir = Join-Path $targetClaudeDir "skills"
     $skillCount = 0
@@ -511,8 +527,16 @@ function Test-Installation {
         Write-Warning "  - Pre-compact hook: not installed globally"
     }
 
+    # Count agents
+    $agentsDir = Join-Path $targetClaudeDir "agents"
+    $agentCount = 0
+    if (Test-Path $agentsDir) {
+        $agentCount = (Get-ChildItem -Path $agentsDir -Filter "*.md" | Measure-Object).Count
+    }
+
     Write-Success "Verification passed"
     Write-Info "  - Found $skillCount skill(s) (3 core + reflect-diary)"
+    Write-Info "  - Found $agentCount subagent(s) in .claude/agents/"
     Write-Info "  - Core library: OK"
     Write-Info "  - Adapters (readme, research): OK"
     Write-Info "  - Caching strategy: OK"
@@ -584,23 +608,29 @@ function Show-Summary {
     Write-Host "`n" -NoNewline
     Write-Success "Installation complete!"
 
-    # v5.0 Feature Announcement
+    # v5.2 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  WHAT'S IN VERSION 5.1 (May 2026)" -ForegroundColor Magenta
+    Write-Host "  WHAT'S IN VERSION 5.2 (May 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
-    Write-Host "`nHonest 3-command portfolio (reduced from 11):" -ForegroundColor White
+    Write-Host "`nReal Anthropic subagents migration:" -ForegroundColor White
+    Write-Host "  - 5 specialist subagents now in .claude/agents/" -ForegroundColor Green
+    Write-Host "    research-explore, research-pattern, research-security," -ForegroundColor Gray
+    Write-Host "    research-performance, research-citation" -ForegroundColor Gray
+    Write-Host "  - Real Anthropic subagent semantics: isolated context" -ForegroundColor Green
+    Write-Host "    per agent, per-agent model routing (haiku / sonnet)" -ForegroundColor Gray
+    Write-Host "  - Orchestration in main thread via Task tool (subagents" -ForegroundColor Green
+    Write-Host "    cannot spawn other subagents - Anthropic limit)" -ForegroundColor Gray
+    Write-Host "`nConsolidation:" -ForegroundColor White
+    Write-Host "  - DELETED 5 library/research-agent-*.md (~6000 words)" -ForegroundColor Yellow
+    Write-Host "  - DELETED config/agent-roles.json (408 lines, all aspirational" -ForegroundColor Yellow
+    Write-Host "    fields dropped; rest distributed to frontmatter + body" -ForegroundColor Gray
+    Write-Host "    + skill orchestration)" -ForegroundColor Gray
+    Write-Host "  - DEBLOATED research-adapter.md 2411 -> 627 words" -ForegroundColor Yellow
+    Write-Host "    (Phase 0 specifics only; orchestration moved to SKILL)" -ForegroundColor Gray
+    Write-Host "`nThree commands unchanged:" -ForegroundColor White
     Write-Host "  - /prompt  - prompt analysis, clarification, structured rewrite" -ForegroundColor Green
     Write-Host "  - /prompt-article-readme  - README generator from project scan" -ForegroundColor Green
-    Write-Host "  - /prompt-research  - multi-agent research (orchestrator-worker, 2-4 iter)" -ForegroundColor Green
-    Write-Host "`nRemoved: prompt-hybrid, prompt-technical, prompt-article," -ForegroundColor Gray
-    Write-Host "         prompt-dotnet, prompt-react, deploy, new-stack, reflect" -ForegroundColor Gray
-    Write-Host "`nLibrary flattened (no adapters/ subdir):" -ForegroundColor White
-    Write-Host "  - readme-adapter.md, research-adapter.md at library root" -ForegroundColor Green
-    Write-Host "  - caching-strategy.md, model-router.md, orchestration files" -ForegroundColor Green
-    Write-Host "`nInteraction protocol (from v4.8, global):" -ForegroundColor White
-    Write-Host "  - Plan-First: understanding + options + execution plan + approval" -ForegroundColor Green
-    Write-Host "  - Never auto-executes destructive operations" -ForegroundColor Green
-    Write-Host "  - SK input / EN internal / SK output" -ForegroundColor Green
+    Write-Host "  - /prompt-research  - multi-agent research (now real subagents)" -ForegroundColor Green
     Write-Host "`nSee CHANGELOG.md for full history" -ForegroundColor Cyan
     Write-Host "========================================`n" -ForegroundColor Magenta
 

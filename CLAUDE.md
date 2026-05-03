@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**claude-ideas** (v5.1.0) - Personal collection of three Claude Code slash commands for prompt engineering, project research, and documentation generation.
+**claude-ideas** (v5.2.0) - Personal collection of three Claude Code slash commands for prompt engineering, project research, and documentation generation.
 
 ## Response Style Guidelines
 
@@ -20,30 +20,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Interaction Protocol (applies to ALL interactions, not just slash commands)
 
 ### Language
-- User pÃ­Å¡e po slovensky â€” akceptuj a odpovedaj po slovensky
-- InternÃ© myslenie, volania nÃ¡strojov, kÃ³d, commit messages, docs â€” v angliÄtine
-- TechnickÃ© termÃ­ny (file paths, commands, API names) ponechaj v originÃ¡li
+- User pÃƒÂ­Ã…Â¡e po slovensky Ã¢â‚¬â€ akceptuj a odpovedaj po slovensky
+- InternÃƒÂ© myslenie, volania nÃƒÂ¡strojov, kÃƒÂ³d, commit messages, docs Ã¢â‚¬â€ v angliÃ„Âtine
+- TechnickÃƒÂ© termÃƒÂ­ny (file paths, commands, API names) ponechaj v originÃƒÂ¡li
 
 ### Plan-First Execution (CRITICAL)
-_Scope: voÄ¾nÃ¡ konverzÃ¡cia a priame tool calls. Vo vnÃºtri slash commandov rieÅ¡i approval gate Phase 0 Step 0.6._
+_Scope: voÃ„Â¾nÃƒÂ¡ konverzÃƒÂ¡cia a priame tool calls. Vo vnÃƒÂºtri slash commandov rieÃ…Â¡i approval gate Phase 0 Step 0.6._
 
-Pred akoukoÄ¾vek zmenou sÃºboru, spustenÃ­m buildu/testu, alebo commitom MUSÃÅ :
-1. ZhrnÃºÅ¥ porozumenie Ãºlohy (1-2 vety po slovensky)
-2. Ak je task netriviÃ¡lny (edit >1 sÃºboru, novÃ¡ funkcia, refactor, config): predstav 2-3 options s pros/cons
-3. VypÃ­saÅ¥ execution plan: sÃºbory (CREATE/EDIT/READ), kroky, rizikÃ¡, verifikÃ¡cia
-4. PoÄkaÅ¥ na `y` / `yes` / `schvaÄ¾ujem` â€” nikdy nepredpokladaj sÃºhlas
+Pred akoukoÃ„Â¾vek zmenou sÃƒÂºboru, spustenÃƒÂ­m buildu/testu, alebo commitom MUSÃƒÂÃ…Â :
+1. ZhrnÃƒÂºÃ…Â¥ porozumenie ÃƒÂºlohy (1-2 vety po slovensky)
+2. Ak je task netriviÃƒÂ¡lny (edit >1 sÃƒÂºboru, novÃƒÂ¡ funkcia, refactor, config): predstav 2-3 options s pros/cons
+3. VypÃƒÂ­saÃ…Â¥ execution plan: sÃƒÂºbory (CREATE/EDIT/READ), kroky, rizikÃƒÂ¡, verifikÃƒÂ¡cia
+4. PoÃ„ÂkaÃ…Â¥ na `y` / `yes` / `schvaÃ„Â¾ujem` Ã¢â‚¬â€ nikdy nepredpokladaj sÃƒÂºhlas
 
-VÃ½nimky (plÃ¡n nie je potrebnÃ½):
-- Pure read-only otÃ¡zky (Äo robÃ­ tento sÃºbor?, akÃ¡ je verzia?)
-- TriviÃ¡lne jednorazovÃ© veci explicitne vyÅ¾iadanÃ© (oprav tento preklep)
+VÃƒÂ½nimky (plÃƒÂ¡n nie je potrebnÃƒÂ½):
+- Pure read-only otÃƒÂ¡zky (Ã„Âo robÃƒÂ­ tento sÃƒÂºbor?, akÃƒÂ¡ je verzia?)
+- TriviÃƒÂ¡lne jednorazovÃƒÂ© veci explicitne vyÃ…Â¾iadanÃƒÂ© (oprav tento preklep)
 
 ### Proactive Option-Finding
-Nie si pasÃ­vny executor. KeÄ vidÃ­Å¡ lepÅ¡iu cestu neÅ¾ navrhuje user, povedz to PRED exekÃºciou.
-Pomenuj tradeoff, odporÃºÄ, ale rozhodnutie nechaj na usera.
+Nie si pasÃƒÂ­vny executor. KeÃ„Â vidÃƒÂ­Ã…Â¡ lepÃ…Â¡iu cestu neÃ…Â¾ navrhuje user, povedz to PRED exekÃƒÂºciou.
+Pomenuj tradeoff, odporÃƒÂºÃ„Â, ale rozhodnutie nechaj na usera.
 
 ### Never Auto-Execute
-- Nikdy `git commit`, `git push`, `npm install`, `install-claude-commands.ps1` bez explicitnÃ©ho sÃºhlasu
-- Obe strany (AI aj user) musia rozumieÅ¥ ÄŒO sa ide staÅ¥, PREÄŒO a AKO to overÃ­me
+- Nikdy `git commit`, `git push`, `npm install`, `install-claude-commands.ps1` bez explicitnÃƒÂ©ho sÃƒÂºhlasu
+- Obe strany (AI aj user) musia rozumieÃ…Â¥ Ã„Å’O sa ide staÃ…Â¥, PREÃ„Å’O a AKO to overÃƒÂ­me
 
 ## Build and Development Commands
 
@@ -116,7 +116,7 @@ auto-loaded when editing matching paths.
 ### Modifying Skills
 - Always reference the core library (`@.claude/library/prompt-perfection-core.md`) for Phase 0
 - Domain adapters: `.claude/library/readme-adapter.md` (readme), `.claude/library/research-adapter.md` (research)
-- Changes to the core library affect ALL commands â€” test multiple commands after changes
+- Changes to the core library affect ALL commands Ã¢â‚¬â€ test multiple commands after changes
 - Run `.\tests\validate-library-references.ps1` to verify library references
 
 ### File Conventions

@@ -1,8 +1,35 @@
 # Skills Changelog (Consolidated)
 
-**Last Updated:** 2026-04-22
+**Last Updated:** 2026-05-03
 **Purpose:** Single source of truth for all skill version history.
 Replaces per-skill Version History blocks (~15 KB / 5K tokens saved).
+
+---
+
+## v5.2 — 2026-05-03 (prompt-research)
+
+Real Anthropic subagents migration.
+
+- `prompt-research/SKILL.md` rewritten:
+  - Specialist Selection Rules section (always-spawn cohort + conditional
+    triggers per keyword/complexity)
+  - Orchestration Flow now explicit Task tool invocation pattern
+    (single message, multiple parallel Task calls)
+  - Performance Expectations inline
+  - Aggregation appends citation entries to memory in main thread
+    (subagents are read-only)
+- 5 NEW subagents in `.claude/agents/` (research-explore, research-pattern,
+  research-security, research-performance, research-citation) — see
+  `CHANGELOG.md` [5.2.0] for full migration details
+- DELETED 5 legacy `library/research-agent-*.md` files (~6000 words)
+- DELETED `config/agent-roles.json` (408 lines, content distributed to
+  frontmatter + body + skill orchestration)
+- DEBLOATED `library/research-adapter.md` 2411 → 627 words (Phase 0
+  specifics only)
+- Bash removed from explore + security tool allowlists (read-only research
+  fully served by Read+Grep+Glob; attack surface narrowed)
+
+Other skills unchanged.
 
 ---
 

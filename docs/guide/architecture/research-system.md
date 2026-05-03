@@ -227,19 +227,23 @@ Defines research strategies and coordination:
 }
 ```
 
-### agent-roles.json
-Agent definitions and triggers:
-```json
-{
-  "agents": {
-    "SecurityAgent": {
-      "model": "sonnet",
-      "timeout": 45,
-      "triggers": ["security", "auth", "owasp"]
-    }
-  }
-}
+### .claude/agents/research-*.md (v5.2+)
+
+Each subagent is a real Anthropic subagent with YAML frontmatter
++ system prompt body. Per-agent model and tool allowlist live there
+(no separate JSON config). Example header:
+
+```yaml
+---
+name: research-security
+description: Use proactively for security-critical research...
+tools: Read, Grep, Glob
+model: sonnet
+color: red
+---
 ```
+
+See [Anthropic frontmatter spec](https://code.claude.com/docs/en/sub-agents#supported-frontmatter-fields).
 
 ### iteration-rules.json
 Convergence criteria and gap detection:
