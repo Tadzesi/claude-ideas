@@ -18,9 +18,6 @@ Claude Commands Library is built on a shared Phase 0 foundation with two domain 
 │   ├── caching-strategy.md
 │   ├── model-router.md
 │   ├── execution-plan-template.md
-│   ├── orchestration-aggregator.md
-│   ├── orchestration-iteration.md
-│   ├── orchestration-lead.md
 │   ├── research-agent-explore.md
 │   ├── research-agent-pattern.md
 │   ├── research-agent-security.md
@@ -107,7 +104,7 @@ User: /prompt-research Understand the auth system
 └──────────────┬──────────────────┘
                ▼
 ┌─────────────────────────────────┐
-│  orchestration-lead.md          │
+│  Orchestrator (in SKILL.md)     │
 │  Spawn 2-5 agents in parallel   │
 └──────────────┬──────────────────┘
                ▼

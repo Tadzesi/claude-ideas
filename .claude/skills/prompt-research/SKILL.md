@@ -25,8 +25,7 @@ Before any analysis, load known facts from memory:
 Skip re-researching anything already in the knowledge graph.
 
 **CACHING (Opus 4.7 — see `.claude/library/caching-strategy.md`):**
-prompt-perfection-core, research-adapter, execution-plan-template, model-router, model-tiers,
-orchestration-lead, orchestration-iteration, orchestration-aggregator
+prompt-perfection-core, research-adapter, execution-plan-template, model-router, model-tiers
 are stable across calls — flag with `cache_control: ephemeral` when invoked via Anthropic SDK.
 
 ---
@@ -867,12 +866,6 @@ Removed references to deleted commands and configs. Removed emojis.
 
 ### Research Adapter
 **Uses:** `.claude/library/research-adapter.md`
-
-### Orchestration Components
-**Invokes:**
-- `.claude/library/orchestration-lead.md`
-- `.claude/library/orchestration-iteration.md`
-- `.claude/library/orchestration-aggregator.md`
 
 ### Specialized Agents
 **Deploys:**

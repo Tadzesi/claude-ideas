@@ -345,8 +345,6 @@ Total: 34 → Broad research strategy (3-4 agents, 2-3 iterations)
 4. Monitor progress
 5. Coordinate iterations
 6. Invoke Result Aggregator when converged
-
-**Reference:** `.claude/library/orchestration-lead.md`
 ```
 
 ---
@@ -370,8 +368,6 @@ Total: 34 → Broad research strategy (3-4 agents, 2-3 iterations)
 4. Plan next iteration
 5. Save checkpoints
 6. Repeat until converged (max 4 iterations)
-
-**Reference:** `.claude/library/orchestration-iteration.md`
 ```
 
 ---
@@ -437,8 +433,6 @@ Total: 34 → Broad research strategy (3-4 agents, 2-3 iterations)
 - Updated project-knowledge.md
 - Updated architectural-context.md
 - Updated citation-index.md
-
-**Reference:** `.claude/library/orchestration-aggregator.md`
 ```
 
 ---
@@ -722,11 +716,6 @@ IF knowledge graph update fails:
 
 **Imports:**
 - `.claude/library/prompt-perfection-core.md` (base Phase 0)
-
-**Invokes:**
-- `.claude/library/orchestration-lead.md`
-- `.claude/library/orchestration-iteration.md`
-- `.claude/library/orchestration-aggregator.md`
 
 **Integrates:**
 - `.claude/library/research-agent-*` (all specialized agents)
