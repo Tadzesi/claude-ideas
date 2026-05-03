@@ -261,6 +261,12 @@ DEFAULT:
 
 **Step 0.2a: Memory Recall (v1.6 - ALWAYS LOAD FIRST)**
 
+> **Layer note (v2.4):** This step is the **operational procedure** for memory
+> recall inside Phase 0. The **meta-policy** ("always check memory before
+> asking the user about anything") lives in root `CLAUDE.md` Interaction
+> Protocol → Memory Recall. If you add or remove a file from the list below,
+> propagate the change to `CLAUDE.md` so the two layers stay aligned.
+
 CRITICAL: Always read project memory before asking ANY questions.
 This prevents the user from having to repeat information across sessions.
 
@@ -616,6 +622,14 @@ truth.
 ### Step 0.6: Approval Gate
 
 **Scope:** Inside slash commands (Phase 0 flow). Free conversation is governed by CLAUDE.md Plan-First.
+
+> **Layer note (v2.4):** Approval vocabulary differs between layers by design.
+> Free-conversation Plan-First (root `CLAUDE.md`) accepts simple
+> `y / yes / schvaľujem`. The slash-command gate below intentionally exposes
+> a richer vocabulary (`yes / no / modify / explain / options / switch [tier]`)
+> because Phase 0 has more state to negotiate. Keep both files aligned on the
+> *concept* of "never auto-execute," but treat the vocab lists as
+> layer-specific and do not cross-port them.
 
 **Purpose:** Get user confirmation before proceeding
 
