@@ -43,6 +43,17 @@ Mark these as cacheable via `cache_control` breakpoint AT THE END of each:
 
 ---
 
+## Subagents and caching
+
+Subagents (`.claude/agents/*.md`) have isolated context windows and a
+separate cache lifecycle from the main session. The Anthropic harness
+manages subagent caching internally; do not list subagent files in the
+main session's `cache_control` blocks. The orchestrator (main thread)
+benefits from caching the SKILL + library prefix; subagents benefit
+from their own per-invocation prefix cache.
+
+---
+
 ## Cache breakpoint placement
 
 Anthropic supports up to 4 cache breakpoints per request. Order from most

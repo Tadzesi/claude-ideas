@@ -232,9 +232,10 @@ Finding 2: Missing rate limiting ⚠️
 
 ### Configuration
 
-`.claude/config/orchestration-config.json` - Research strategies
-`.claude/config/agent-roles.json` - Agent definitions
+`.claude/config/orchestration-config.json` - Research strategies, cohort rules, convergence
+`.claude/agents/research-*.md` - Per-subagent definition (frontmatter + system prompt)
 `.claude/config/iteration-rules.json` - Convergence criteria
+`.claude/config/citation-config.json` - Citation format and storage paths
 
 ---
 

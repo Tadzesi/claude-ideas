@@ -16,7 +16,6 @@ All configuration files are located in `.claude/config/`:
 | `predictive-intelligence.json` | Phase 0.15 behavior |
 | `orchestration-config.json` | Multi-agent research |
 | `iteration-rules.json` | Research convergence |
-| `agent-roles.json` | Agent definitions |
 | `citation-config.json` | Citation formatting |
 | `external-memory-config.json` | Persistent memory |
 
@@ -433,6 +432,12 @@ Persistent memory settings.
 
 ```
 .claude/
+├── agents/                          # Real Anthropic subagents (v5.2+)
+│   ├── research-explore.md
+│   ├── research-pattern.md
+│   ├── research-security.md
+│   ├── research-performance.md
+│   └── research-citation.md
 ├── config/
 │   ├── complexity-rules.json
 │   ├── agent-templates.json
@@ -442,7 +447,6 @@ Persistent memory settings.
 │   ├── predictive-intelligence.json
 │   ├── orchestration-config.json
 │   ├── iteration-rules.json
-│   ├── agent-roles.json
 │   ├── citation-config.json
 │   └── external-memory-config.json
 ├── memory/

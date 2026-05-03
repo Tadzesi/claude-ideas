@@ -14,21 +14,22 @@ Claude Commands Library is built on a shared Phase 0 foundation with two domain 
 ├── library/
 │   ├── prompt-perfection-core.md    # Phase 0 canonical
 │   ├── readme-adapter.md            # /prompt-article-readme
-│   ├── research-adapter.md          # /prompt-research
+│   ├── research-adapter.md          # /prompt-research (Phase 0 only)
 │   ├── caching-strategy.md
 │   ├── model-router.md
-│   ├── execution-plan-template.md
-│   ├── research-agent-explore.md
-│   ├── research-agent-pattern.md
-│   ├── research-agent-security.md
-│   ├── research-agent-performance.md
-│   └── research-agent-citation.md
+│   └── execution-plan-template.md
+│
+├── agents/                          # Real Anthropic subagents (v5.2+)
+│   ├── research-explore.md
+│   ├── research-pattern.md
+│   ├── research-security.md
+│   ├── research-performance.md
+│   └── research-citation.md
 │
 ├── config/
 │   ├── agent-templates.json
 │   ├── orchestration-config.json
 │   ├── iteration-rules.json
-│   ├── agent-roles.json
 │   ├── citation-config.json
 │   ├── external-memory-config.json
 │   ├── complexity-rules.json
@@ -63,8 +64,12 @@ Every command begins with Phase 0 — a shared validation layer imported from `p
 
 ### 3. Multi-Agent Research
 
-`/prompt-research` runs 2-4 iteration cycles using 5 specialist agents in parallel:
-Explore, Pattern, Security, Performance, Citation. Each iteration resolves gaps from the previous one.
+`/prompt-research` runs 2-4 iteration cycles using up to 5 real Anthropic
+subagents (defined in `.claude/agents/research-*.md`) invoked in parallel
+via the Task tool: Explore, Pattern, Security, Performance, Citation.
+Each iteration resolves gaps from the previous one. Orchestration runs
+in the main thread because subagents cannot spawn other subagents
+([Anthropic limit](https://code.claude.com/docs/en/sub-agents#limitations)).
 
 [Learn about Multi-Agent Research →](/architecture/multi-agent)
 
