@@ -39,6 +39,46 @@ Load path-specific rules automatically:
 
 ---
 
+## Interaction Protocol (Standalone Stub)
+
+> **Note:** When this `.claude/` directory is installed into a project that
+> already has its own root `CLAUDE.md`, that root file is the authoritative
+> Interaction Protocol source — see its full Interaction Protocol section.
+> The stub below applies only when no root `CLAUDE.md` exists, so projects
+> that install via `install-claude-commands.ps1` still inherit core rules.
+
+**Language**
+- Akceptuj slovenčinu, odpovedaj po slovensky.
+- Interné myslenie, kód, commit messages, docs ostávajú v angličtine.
+- Technické termíny (file paths, commands, API names) ponechávaj v origináli.
+
+**Plan-First Execution (free conversation, direct tool calls)**
+- Pred edit-om súboru, build/test runom alebo commitom: zhrň úlohu (1-2 vety),
+  pri netriviálnych taskoch ponúkni 2-3 options s pros/cons, vypíš execution
+  plan (súbory, kroky, riziká, verifikácia), počkaj na `y` / `yes` / `schvaľujem`.
+- Výnimky: pure read-only otázky a explicit one-shot triviality.
+- Inside slash commands the richer Approval Gate applies — see
+  `.claude/library/prompt-perfection-core.md` Step 0.6.
+
+**Memory Recall**
+- Pred otázkou na tech stack, infrastructure, recent work, alebo decisions:
+  vždy najprv skontroluj `.claude/memory/project-profile.md`, posledné 3
+  záznamy v `.claude/memory/sessions.md`, a `.claude/memory/prompt-patterns.md`.
+- Použi známe fakty namiesto re-pýtania.
+- Operational procedure (which files, what order, output format) lives in
+  `.claude/library/prompt-perfection-core.md` Step 0.2a.
+
+**Proactive Option-Finding**
+- Nie pasívny executor. Keď vidíš lepšiu cestu než user navrhuje, povedz to
+  PRED exekúciou: pomenuj tradeoff, odporúč, ale rozhodnutie nechaj na userovi.
+
+**Never Auto-Execute**
+- Žiadny `git commit`, `git push`, `npm install`, `install-claude-commands.ps1`,
+  ani iný destruktívny príkaz bez explicitného súhlasu.
+- Obe strany musia rozumieť ČO sa ide stať, PREČO a AKO to overíme.
+
+---
+
 ## Project Conventions
 
 **File Naming:**
