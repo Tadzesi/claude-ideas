@@ -33,8 +33,8 @@ features:
     linkText: Learn about Phase 0
 
   - icon: 🔬
-    title: Multi-Agent Research
-    details: Deep codebase analysis with 2-5 specialized agents working in parallel, iterative refinement, and comprehensive reports.
+    title: Real Subagents Research (v5.2)
+    details: Deep codebase analysis with up to 5 real Anthropic subagents in .claude/agents/ — isolated context per specialist, per-agent model routing (haiku/sonnet), parallel Task tool spawn, 2-4 iteration cycles. No prose simulation.
     link: /architecture/multi-agent
     linkText: Research System
 
@@ -180,6 +180,34 @@ The system tracks:
 After 3+ occurrences, it suggests smart defaults.
 
 ## What's New
+
+### v5.2 - Real Anthropic Subagents
+
+Multi-agent research now uses **real Claude Code subagents** instead of prose simulation. Each specialist lives in `.claude/agents/` with valid YAML frontmatter (`name`, `description`, `tools`, `model`, `color`) and runs in its own isolated context window.
+
+**5 specialist subagents:**
+- `research-explore` (haiku, blue) — codebase discovery, architecture mapping
+- `research-pattern` (haiku, green) — convention detection
+- `research-security` (sonnet, red) — OWASP Top 10, vulnerability scanning
+- `research-performance` (sonnet, orange) — N+1, async, caching audit
+- `research-citation` (haiku, purple) — file:line evidence on every finding
+
+**Orchestration in main thread.** The `prompt-research/SKILL.md` orchestrator spawns subagents via the Task tool (single message, multiple parallel invocations), runs gap analysis, and persists citation entries — because subagents cannot spawn other subagents ([Anthropic limit](https://code.claude.com/docs/en/sub-agents#limitations)).
+
+**Net diff:** -1 172 LOC. Removed 5 prose-only `library/research-agent-*.md` files (~6 000 words) and `config/agent-roles.json` (408 lines, mostly aspirational fields). Debloated `research-adapter.md` from 2 411 → 627 words.
+
+**Tools narrowed:** Bash removed from explore + security allowlists (read-only research is fully served by Read+Grep+Glob; attack surface narrowed).
+
+[See full changelog →](/reference/changelog#520-may-2026)
+
+### v5.1 - Architecture Cleanup
+
+Architecture cleanup pass driven by a documented diagnostic. Net diff: -2 856 LOC.
+
+- `prompt-research/SKILL.md` rewritten following Anthropic's progressive disclosure: 902 → 185 lines (-79%).
+- `scripts/sync-version.ps1` propagates `package.json` version to installer + `CLAUDE.md` (modes: `-Check`, `-DryRun`, default writes).
+- Installer `-RebaselineMemory` flag, version-transition announcement, obsolete-subdir auto-detection.
+- Standalone Interaction Protocol stub in `.claude/CLAUDE.md`.
 
 ### v5.0 - Session Memory + Honest Portfolio
 
