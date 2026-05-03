@@ -5,6 +5,64 @@ All notable changes to the Claude Commands Library will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.0] - 2026-05-03
+
+Architecture cleanup pass driven by a documented diagnostic
+(`docs/DIAGNOSTICS-2026-05.md`) and proposals
+(`docs/PROPOSALS-2026-05.md`). Net diff: -2 856 LOC.
+
+### Added
+- `scripts/sync-version.ps1` — propagates `package.json` version to
+  installer header/banner/announcement and `CLAUDE.md` project line.
+  Modes: `-Check` (CI/pre-commit, exit 1 on drift), `-DryRun`, default
+  writes. Idempotent.
+- `install-claude-commands.ps1` `-RebaselineMemory` flag — discards
+  stale memory templates while preserving user-generated `sessions.md`
+  and `prompt-patterns.md`.
+- Installer announces version transition before deploy
+  (`Upgrading: vX -> vY` / `Reinstalling vY` / `Fresh install: vY`).
+- Installer post-deploy check warns when preserved memory files still
+  reference library paths that no longer exist; suggests
+  `-RebaselineMemory`.
+- Installer auto-detects obsolete `.claude/` subdirs (anything outside
+  the deploy whitelist + `memory/cache`) and prompts before deletion.
+  Replaces the previous hard-coded `tasks, commands` list.
+- `.claude/CLAUDE.md` Interaction Protocol stub — applies when installed
+  into a project without its own root `CLAUDE.md`.
+- Layer-boundary notes in `prompt-perfection-core.md` Step 0.2a (Memory
+  Recall) and Step 0.6 (Approval Gate) make the multi-layer architecture
+  visible to readers of either file alone.
+
+### Changed
+- `prompt-research/SKILL.md` rewritten following Anthropic's progressive
+  disclosure best practice: 902 → 185 lines (-79%), 3 355 → 886 words
+  (-74%). YAML frontmatter and public identity preserved exactly.
+- `tests/validate-library-references.ps1` realigned to v5.0 reality
+  (skills directory + flat library adapters): now 16/16 PASS,
+  0 FAIL, 0 WARN.
+- Installer writes `.claude/VERSION` from source `package.json` instead
+  of a hard-coded literal — drift between bumped repo and target install
+  is no longer possible.
+- `docs/architecture/index.md` file tree no longer lists removed
+  orchestration files; data flow box generalised.
+- `reflect-diary/SKILL.md` documents itself as an intentional outlier
+  (analysis skill, no Phase 0) so future readers don't try to retrofit
+  Phase 0 onto it.
+
+### Removed
+- `.claude/library/orchestration-lead.md` (1 938 words)
+- `.claude/library/orchestration-iteration.md` (2 779 words)
+- `.claude/library/orchestration-aggregator.md` (3 563 words)
+- All three were orphaned (no active skill instructed `Read` on any of
+  them per Phase 1 diagnostics). Aggregator's 8-phase synthesis pipeline
+  knowledge salvaged into `docs/architecture/multi-agent.md` before
+  deletion.
+
+### Internal
+- `docs/DIAGNOSTICS-2026-05.md` — full architectural audit (Phase 1).
+- `docs/PROPOSALS-2026-05.md` — five proposals with alternatives
+  (Phase 2).
+
 ## [5.0.0] - 2026-05-02
 
 ### Removed

@@ -1,5 +1,5 @@
 # Claude Commands Library Installer
-# Version: 5.0.0
+# Version: 5.1.0
 # Description: Installs/updates three Claude Code slash commands  - /prompt, /prompt-article-readme, /prompt-research
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
@@ -62,7 +62,7 @@ function Write-Warning { param($Message) Write-Host "[WARNING] $Message" -Foregr
 
 # Banner
 Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host " Claude Commands Library Installer v5.0.0" -ForegroundColor Cyan
+Write-Host " Claude Commands Library Installer v5.1.0" -ForegroundColor Cyan
 Write-Host " https://github.com/Tadzesi/claude-ideas" -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
@@ -101,7 +101,7 @@ function Get-SourceVersion {
 
 # Scan target memory files for references to library/<file>.md paths
 # that no longer exist in the deployed library/. Returns array of
-# [PSCustomObject]@{ MemoryFile, StaleRef } --empty if all fresh.
+# [PSCustomObject]@{ MemoryFile, StaleRef } -- empty if all fresh.
 # v2.6: defends against silent regression where preserved user memory
 # carries references to library files removed in newer versions.
 function Test-MemoryFreshness {
@@ -140,7 +140,7 @@ function Test-MemoryFreshness {
 }
 
 # Show version transition: existing target VERSION vs. source package.json.
-# Always informational --does not block installation.
+# Always informational -- does not block installation.
 function Test-VersionDrift {
     param(
         [string]$TargetPath,
@@ -315,7 +315,7 @@ function Deploy-ClaudeDirectory {
 
         # v2.6: discover obsolete subdirs dynamically. Anything in the target
         # .claude/ that is neither in the deploy whitelist nor in the preserved
-        # set (memory, cache) is a candidate for removal --it's a leftover from
+        # set (memory, cache) is a candidate for removal -- it's a leftover from
         # a prior version that the LLM may pick up via globs / @imports and act
         # on stale info. Always prompts before deleting unless -Force is set.
         $preservedSubdirs = @("memory", "cache")
@@ -359,7 +359,7 @@ function Deploy-ClaudeDirectory {
         $sourceMemoryDir = Join-Path $sourceClaudeDir "memory"
 
         if ($RebaselineMemory -and $memoryBackup -and (Test-Path $memoryBackup)) {
-            # v2.6: rebaseline mode --preserve only user-generated history,
+            # v2.6: rebaseline mode -- preserve only user-generated history,
             # replace everything else with fresh templates from repo.
             $preservedNames = @("sessions.md", "prompt-patterns.md")
             Write-Info "Rebaselining memory (preserving: $($preservedNames -join ', '))..."
@@ -420,7 +420,7 @@ function Deploy-ClaudeDirectory {
 
         # Create version file to track installed version.
         # v2.6: $sourceVersion was already read from source package.json
-        # at function entry --single source of truth, no hard-coded literal.
+        # at function entry -- single source of truth, no hard-coded literal.
         $versionFile = Join-Path $targetClaudeDir "VERSION"
         $sourceVersion | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
         Write-Success "Version file created (v$sourceVersion)"
@@ -586,7 +586,7 @@ function Show-Summary {
 
     # v5.0 Feature Announcement
     Write-Host "`n========================================" -ForegroundColor Magenta
-    Write-Host "  WHAT'S IN VERSION 5.0 (May 2026)" -ForegroundColor Magenta
+    Write-Host "  WHAT'S IN VERSION 5.1 (May 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
     Write-Host "`nHonest 3-command portfolio (reduced from 11):" -ForegroundColor White
     Write-Host "  - /prompt  - prompt analysis, clarification, structured rewrite" -ForegroundColor Green

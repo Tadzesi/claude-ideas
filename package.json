@@ -1,6 +1,6 @@
 {
   "name": "claude-ideas",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "description": "Personal collection of three Claude Code slash commands for prompt engineering, project research, and documentation generation.",
   "main": "index.js",
   "directories": {

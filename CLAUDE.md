@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**claude-ideas** (v5.0.0) - Personal collection of three Claude Code slash commands for prompt engineering, project research, and documentation generation.
+**claude-ideas** (v5.1.0) - Personal collection of three Claude Code slash commands for prompt engineering, project research, and documentation generation.
 
 ## Response Style Guidelines
 
@@ -20,30 +20,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Interaction Protocol (applies to ALL interactions, not just slash commands)
 
 ### Language
-- User píše po slovensky — akceptuj a odpovedaj po slovensky
-- Interné myslenie, volania nástrojov, kód, commit messages, docs — v angličtine
-- Technické termíny (file paths, commands, API names) ponechaj v origináli
+- User pÃ­Å¡e po slovensky â€” akceptuj a odpovedaj po slovensky
+- InternÃ© myslenie, volania nÃ¡strojov, kÃ³d, commit messages, docs â€” v angliÄtine
+- TechnickÃ© termÃ­ny (file paths, commands, API names) ponechaj v originÃ¡li
 
 ### Plan-First Execution (CRITICAL)
-_Scope: voľná konverzácia a priame tool calls. Vo vnútri slash commandov rieši approval gate Phase 0 Step 0.6._
+_Scope: voÄ¾nÃ¡ konverzÃ¡cia a priame tool calls. Vo vnÃºtri slash commandov rieÅ¡i approval gate Phase 0 Step 0.6._
 
-Pred akoukoľvek zmenou súboru, spustením buildu/testu, alebo commitom MUSÍŠ:
-1. Zhrnúť porozumenie úlohy (1-2 vety po slovensky)
-2. Ak je task netriviálny (edit >1 súboru, nová funkcia, refactor, config): predstav 2-3 options s pros/cons
-3. Vypísať execution plan: súbory (CREATE/EDIT/READ), kroky, riziká, verifikácia
-4. Počkať na `y` / `yes` / `schvaľujem` — nikdy nepredpokladaj súhlas
+Pred akoukoÄ¾vek zmenou sÃºboru, spustenÃ­m buildu/testu, alebo commitom MUSÃÅ :
+1. ZhrnÃºÅ¥ porozumenie Ãºlohy (1-2 vety po slovensky)
+2. Ak je task netriviÃ¡lny (edit >1 sÃºboru, novÃ¡ funkcia, refactor, config): predstav 2-3 options s pros/cons
+3. VypÃ­saÅ¥ execution plan: sÃºbory (CREATE/EDIT/READ), kroky, rizikÃ¡, verifikÃ¡cia
+4. PoÄkaÅ¥ na `y` / `yes` / `schvaÄ¾ujem` â€” nikdy nepredpokladaj sÃºhlas
 
-Výnimky (plán nie je potrebný):
-- Pure read-only otázky (čo robí tento súbor?, aká je verzia?)
-- Triviálne jednorazové veci explicitne vyžiadané (oprav tento preklep)
+VÃ½nimky (plÃ¡n nie je potrebnÃ½):
+- Pure read-only otÃ¡zky (Äo robÃ­ tento sÃºbor?, akÃ¡ je verzia?)
+- TriviÃ¡lne jednorazovÃ© veci explicitne vyÅ¾iadanÃ© (oprav tento preklep)
 
 ### Proactive Option-Finding
-Nie si pasívny executor. Keď vidíš lepšiu cestu než navrhuje user, povedz to PRED exekúciou.
-Pomenuj tradeoff, odporúč, ale rozhodnutie nechaj na usera.
+Nie si pasÃ­vny executor. KeÄ vidÃ­Å¡ lepÅ¡iu cestu neÅ¾ navrhuje user, povedz to PRED exekÃºciou.
+Pomenuj tradeoff, odporÃºÄ, ale rozhodnutie nechaj na usera.
 
 ### Never Auto-Execute
-- Nikdy `git commit`, `git push`, `npm install`, `install-claude-commands.ps1` bez explicitného súhlasu
-- Obe strany (AI aj user) musia rozumieť ČO sa ide stať, PREČO a AKO to overíme
+- Nikdy `git commit`, `git push`, `npm install`, `install-claude-commands.ps1` bez explicitnÃ©ho sÃºhlasu
+- Obe strany (AI aj user) musia rozumieÅ¥ ÄŒO sa ide staÅ¥, PREÄŒO a AKO to overÃ­me
 
 ## Build and Development Commands
 
@@ -116,7 +116,7 @@ auto-loaded when editing matching paths.
 ### Modifying Skills
 - Always reference the core library (`@.claude/library/prompt-perfection-core.md`) for Phase 0
 - Domain adapters: `.claude/library/readme-adapter.md` (readme), `.claude/library/research-adapter.md` (research)
-- Changes to the core library affect ALL commands — test multiple commands after changes
+- Changes to the core library affect ALL commands â€” test multiple commands after changes
 - Run `.\tests\validate-library-references.ps1` to verify library references
 
 ### File Conventions
