@@ -8,6 +8,15 @@ description: Analyze session diary entries for this project, identify recurring 
 Read diary entries from this project, find patterns, propose memory updates.
 Do NOT modify any file without explicit user approval.
 
+> **Why this skill is leaner than the prompt-* family:** `reflect-diary` is an
+> **analysis skill** — it reads existing data and proposes diffs. It is NOT a
+> prompt-rewriting skill, so it does not import `prompt-perfection-core.md`
+> and does not run Phase 0 (Curiosity Gate, Options-First, Execution Plan,
+> Approval Gate). The minimal structure here is intentional: zero external
+> dependencies, no shared library surface, easy to audit. Do not retrofit
+> Phase 0 onto this skill — its use case (analysis on existing files, output
+> proposals only) is fundamentally different from the prompt-rewriting skills.
+
 ## Parameters
 
 Accept optional filters after the command:
