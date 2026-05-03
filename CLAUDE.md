@@ -63,6 +63,13 @@ Get-Content .claude/config/<file>.json | ConvertFrom-Json
 # Install commands to another project
 .\install-claude-commands.ps1
 .\install-claude-commands.ps1 -InstallPath "C:\target" -Force
+
+# Version bump (package.json is the single source of truth)
+# 1. Edit package.json "version" field
+# 2. Propagate to installer header, banner, and CLAUDE.md project line:
+.\scripts\sync-version.ps1
+.\scripts\sync-version.ps1 -Check     # CI mode: exit 1 if drift
+.\scripts\sync-version.ps1 -DryRun    # preview, write nothing
 ```
 
 Docs auto-deploy to GitHub Pages on push to `main` via `.github/workflows/deploy-docs.yml`.
