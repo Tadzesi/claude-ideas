@@ -5,6 +5,107 @@ All notable changes to the Claude Commands Library will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0] - 2026-05-03
+
+Real Claude Code subagents migration. Multi-agent research is now backed
+by actual Anthropic subagent infrastructure (isolated context per
+specialist, per-agent model routing, Task tool invocation), not prose
+simulation. Net diff: roughly -1 800 LOC (5 library files + 1 JSON
+config deleted, 1 adapter debloated 2 411 → 627 words, 5 subagent files
+created in `.claude/agents/`).
+
+### Added
+- `.claude/agents/research-explore.md` (haiku, blue) — codebase discovery
+- `.claude/agents/research-pattern.md` (haiku, green) — convention detection
+- `.claude/agents/research-security.md` (sonnet, red) — OWASP Top 10 audit
+- `.claude/agents/research-performance.md` (sonnet, orange) — bottlenecks
+- `.claude/agents/research-citation.md` (haiku, purple) — file:line evidence
+- `tests/validate-subagent-invocation.ps1` — every `@research-X` mention
+  in `prompt-research/SKILL.md` resolves to a file in `.claude/agents/`,
+  and every agent file is mentioned in the orchestrator skill (no orphans).
+- `tests/validate-no-aspirational-config.ps1` — verifies every top-level
+  JSON config key has at least one live consumer (skill / library /
+  agent / installer). Documentary keys exempt; advisory only.
+- `validate-library-references.ps1` Suites 6 + 7 — subagent existence
+  check + frontmatter validation (name, description, model in
+  {haiku/sonnet/opus/inherit/full ID}, tools against Anthropic
+  internal-tool allowlist, color).
+- `docs/V5.2-PREFLIGHT.md` — full migration plan with per-agent
+  frontmatter drafts, agent-roles.json field-by-field distribution
+  table, adapter debloat before/after, tool-narrowing justification.
+
+### Changed
+- `.claude/skills/prompt-research/SKILL.md` — Specialist Selection Rules,
+  Orchestration Flow rewritten as explicit Task-tool invocation pattern
+  (single message, multiple parallel Task calls), Performance
+  Expectations inline, Aggregation step now appends citation entries
+  to memory (subagents are read-only).
+- `.claude/library/research-adapter.md` debloated 2 411 → 627 words.
+  Kept only Phase 0 specifics (complexity scoring, strategy selection,
+  Step 4 + Step 5 overrides, performance table). Removed Integration
+  Wiring (now in SKILL), Configuration References (skill reads
+  configs directly), Error Handling (Anthropic default), Version
+  History (CHANGELOG-skills.md), Related Components (redundant).
+- `.claude/library/caching-strategy.md` — Subagents-and-caching note
+  added (separate cache lifecycle; do not list subagent files in main
+  session `cache_control` blocks).
+- `install-claude-commands.ps1` v5.1.0 → v5.2.0 — deploys
+  `.claude/agents/` directory; verifies all 5 expected research
+  subagents present; v5.2 announcement block.
+- `validate-library-references.ps1` v1.2 → v1.3 — realigned with v5.2
+  reality (no longer expects `research-agent-*.md` or
+  `agent-roles.json`).
+
+### Removed
+- `.claude/library/research-agent-explore.md` (~1 758 words; content
+  migrated to `.claude/agents/research-explore.md`).
+- `.claude/library/research-agent-pattern.md` (~839 words; migrated).
+- `.claude/library/research-agent-security.md` (~723 words; migrated).
+- `.claude/library/research-agent-performance.md` (~601 words; migrated).
+- `.claude/library/research-agent-citation.md` (~2 078 words; migrated).
+- `.claude/config/agent-roles.json` (408 lines): per-agent metadata
+  (name, description, model, tools, color) → subagent frontmatter;
+  expertise, analysis_focus, vulnerability_detection, pattern_types,
+  confidence_scoring, output_format → subagent body; trigger keywords
+  + complexity thresholds → SKILL Specialist Selection Rules; aspirational
+  fields (timeout_seconds, performance.*, error_handling.*,
+  parallel_execution.*, agent_integration.*, metadata.*) → dropped.
+
+### Tools narrowing (per A.2.7 in V5.2-PREFLIGHT)
+- Bash removed from research-explore + research-security tool allowlists.
+  Original JSON granted Bash; reality showed read-only research is fully
+  served by Read + Grep + Glob. Net narrowing of attack surface.
+- Glob added to research-security + research-performance (not in original
+  JSON; needed for pattern-based file enumeration without resorting to
+  Bash).
+
+### Anthropic alignment
+- https://code.claude.com/docs/en/sub-agents — overall subagent system
+- https://code.claude.com/docs/en/sub-agents#supported-frontmatter-fields
+  — frontmatter spec (name, description, tools, model, color, etc.)
+- https://code.claude.com/docs/en/sub-agents#available-tools
+  — tool allowlist semantics
+- https://code.claude.com/docs/en/sub-agents#run-parallel-research
+  — pattern for parallel Task spawning
+- https://code.claude.com/docs/en/sub-agents#limitations
+  — verbatim: "Subagents cannot spawn other subagents. If your workflow
+  requires nested delegation, use Skills or chain subagents from the
+  main conversation." (orchestration runs in main thread for this reason)
+
+### Docs sync
+- `docs/architecture/index.md` — tree updated, `agents/` row added,
+  Multi-Agent Research description rewritten to reference real subagents.
+- `docs/guide/advanced-features/multi-agent.md` — Configuration list
+  swapped `agent-roles.json` for `.claude/agents/research-*.md`.
+- `docs/guide/architecture/research-system.md` — `agent-roles.json`
+  section replaced with `.claude/agents/` frontmatter example linking
+  Anthropic spec.
+- `docs/guide/commands/prompt-research.md` — Configuration list updated.
+- `docs/reference/configuration.md` — `agent-roles.json` removed from
+  config table + tree; `agents/` subdirectory added.
+
+---
+
 ## [5.1.0] - 2026-05-03
 
 Architecture cleanup pass driven by a documented diagnostic

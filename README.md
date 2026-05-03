@@ -10,7 +10,7 @@ Three commands for Claude Code:
 
 - `/prompt` — Analyses an unclear prompt, asks targeted clarifying questions, and rewrites it into a structured executable form (Goal, Context, Scope, Requirements, Constraints, Expected Result). Bilingual (Slovak/English).
 - `/prompt-article-readme` — Scans a project's structure and config files, then generates or updates a `README.md` matching the detected stack and conventions.
-- `/prompt-research` — Multi-step research workflow for unfamiliar projects: spawns parallel exploration agents, iterates on findings, produces a single consolidated report. Designed for "I have to start working on a codebase I've never seen" situations.
+- `/prompt-research` — Multi-step research workflow for unfamiliar projects. Uses up to 5 real Anthropic subagents in parallel via the Task tool (`research-explore`, `research-pattern`, `research-security`, `research-performance`, `research-citation` — each with isolated context and per-agent model routing). Iterates on findings (2-4 cycles with gap-driven refinement), produces a single consolidated report with file:line citations on every claim. Designed for "I have to start working on a codebase I've never seen" situations.
 
 ## Design choices worth noting
 
@@ -60,8 +60,9 @@ Restart Claude Code after install.
 
 ```
 .claude/
-  skills/                Three skill definitions
-  library/               Shared Phase 0 prompt-perfection logic
+  skills/                Three skill definitions (/prompt, /prompt-article-readme, /prompt-research)
+  agents/                5 real Anthropic subagents for /prompt-research (v5.2+)
+  library/               Shared Phase 0 prompt-perfection logic + adapters
   memory/                Runtime data (project profile, sessions, patterns)
   config/                JSON configuration
   rules/                 Path-scoped rules
