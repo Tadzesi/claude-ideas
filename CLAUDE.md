@@ -25,6 +25,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Technické termíny (file paths, commands, API names) ponechaj v origináli
 
 ### Plan-First Execution (CRITICAL)
+_Scope: voľná konverzácia a priame tool calls. Vo vnútri slash commandov rieši approval gate Phase 0 Step 0.6._
+
 Pred akoukoľvek zmenou súboru, spustením buildu/testu, alebo commitom MUSÍŠ:
 1. Zhrnúť porozumenie úlohy (1-2 vety po slovensky)
 2. Ak je task netriviálny (edit >1 súboru, nová funkcia, refactor, config): predstav 2-3 options s pros/cons

@@ -703,52 +703,24 @@ After research completes, the following files are updated:
 
 ### Complexity Threshold
 
-From `.claude/config/complexity-rules.json`:
-```json
-{
-  "thresholds": {
-    "research_mode": 20
-  }
-}
-```
+Read `.claude/config/complexity-rules.json` for current thresholds.
+Key field: `thresholds.research_mode` — prompts scoring at or above this value
+trigger research mode automatically.
 
 **Automatic Research Mode:**
-- Score >= 20: Command automatically uses research mode
-- Score < 20: Use `/prompt` instead
+- Score >= threshold: Command automatically uses research mode
+- Score < threshold: Use `/prompt` instead
 
 ### Strategy Selection
 
-From `.claude/config/orchestration-config.json`:
-```json
-{
-  "strategy_templates": {
-    "narrow_research": {
-      "initial_agents": 2,
-      "max_iterations": 2,
-      "estimated_duration_seconds": 60
-    },
-    "broad_research": {
-      "initial_agents": 4,
-      "max_iterations": 3,
-      "estimated_duration_seconds": 120
-    },
-    "comprehensive_research": {
-      "initial_agents": 5,
-      "max_iterations": 4,
-      "estimated_duration_seconds": 180
-    }
-  }
-}
-```
+Read `.claude/config/orchestration-config.json` for strategy templates.
+Key field: `strategy_templates` — defines `initial_agents`, `max_iterations`,
+and `estimated_duration_seconds` for narrow / broad / comprehensive strategies.
 
 ### Agent Roles
 
-From `.claude/config/agent-roles.json`:
-- ExploreAgent (always) - Haiku, 30s timeout
-- CitationAgent (always) - Haiku, 20s timeout
-- SecurityAgent (conditional) - Sonnet, 45s timeout
-- PerformanceAgent (conditional) - Sonnet, 45s timeout
-- PatternAgent (conditional) - Haiku, 30s timeout
+Read `.claude/config/agent-roles.json` for current agent definitions.
+Key fields per role: model tier (haiku/sonnet), `timeout_seconds`, `conditional` flag.
 
 ---
 

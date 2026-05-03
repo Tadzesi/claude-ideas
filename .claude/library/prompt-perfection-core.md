@@ -615,6 +615,8 @@ truth.
 
 ### Step 0.6: Approval Gate
 
+**Scope:** Inside slash commands (Phase 0 flow). Free conversation is governed by CLAUDE.md Plan-First.
+
 **Purpose:** Get user confirmation before proceeding
 
 **Always wait for user approval.** Never proceed automatically.
