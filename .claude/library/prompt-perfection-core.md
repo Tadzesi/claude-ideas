@@ -1,7 +1,7 @@
 # Prompt Perfection Core Library
 
-**Version:** 2.1
-**Last Updated:** 2026-04-16
+**Version:** 2.2
+**Last Updated:** 2026-05-03
 **Purpose:** Canonical Phase 0 implementation for all prompt commands
 **AI Fluency:** Aligned with Anthropic's 4Ds Framework (Delegation, Description, Discernment, Diligence)
 
@@ -261,11 +261,16 @@ DEFAULT:
 
 **Step 0.2a: Memory Recall (v1.6 - ALWAYS LOAD FIRST)**
 
-> **Layer note (v2.4):** This step is the **operational procedure** for memory
-> recall inside Phase 0. The **meta-policy** ("always check memory before
-> asking the user about anything") lives in root `CLAUDE.md` Interaction
-> Protocol → Memory Recall. If you add or remove a file from the list below,
-> propagate the change to `CLAUDE.md` so the two layers stay aligned.
+> **Layer note:** This step is the **operational procedure** — defines
+> the canonical 3-file set Phase 0 MUST read before asking the user
+> anything. The **meta-policy** ("always check memory before asking")
+> lives in root `CLAUDE.md` Interaction Protocol → Memory Recall.
+> The **session-load list** (full set of memory files auto-imported
+> at session start via `@` syntax) lives in `.claude/CLAUDE.md`
+> Memory Imports — that list is broader and orthogonal to this
+> operational subset. If you change the operational 3-file set below,
+> propagate to root `CLAUDE.md`. If you change session-load imports,
+> propagate to `.claude/CLAUDE.md`.
 
 CRITICAL: Always read project memory before asking ANY questions.
 This prevents the user from having to repeat information across sessions.
@@ -623,7 +628,7 @@ truth.
 
 **Scope:** Inside slash commands (Phase 0 flow). Free conversation is governed by CLAUDE.md Plan-First.
 
-> **Layer note (v2.4):** Approval vocabulary differs between layers by design.
+> **Layer note:** Approval vocabulary differs between layers by design.
 > Free-conversation Plan-First (root `CLAUDE.md`) accepts simple
 > `y / yes / schvaľujem`. The slash-command gate below intentionally exposes
 > a richer vocabulary (`yes / no / modify / explain / options / switch [tier]`)
