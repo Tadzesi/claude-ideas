@@ -1,23 +1,28 @@
 # Automated Test Script for Library References
-# Version: 1.1 (2026-04-22)
-# Purpose: Validate all commands follow v2.0+ library system pattern
+# Version: 1.2 (2026-05-03)
+# Purpose: Validate v5.0 skills follow the shared Phase 0 library pattern
 #
 # Changelog:
-#   v1.1: Aligned with v4.9.0 reality — session-adapter.md removed
-#         (session commands sunset in v4.5); Phase 0 regex accepts emoji
-#         prefix; Version History accepts CHANGELOG-skills.md pointer;
-#         reflect.md treated as non-standard flow (Trigger/Workflow);
-#         session-start/session-end mappings removed.
+#   v1.2: Realigned with v5.0 reality (Proposal 2.3 cleanup):
+#         - .claude/commands/ no longer exists (commands sunset in v5.0,
+#           replaced by .claude/skills/<name>/SKILL.md)
+#         - library/adapters/ subdir does not exist (adapters live flat
+#           in .claude/library/ as *-adapter.md)
+#         - 4 active skills: prompt, prompt-article-readme, prompt-research,
+#           reflect-diary (reflect-diary is an analysis skill — no Phase 0)
+#         - Library reference now matches skill-style "@.claude/library/..."
+#           or legacy "**Import:**" form
+#   v1.1: Aligned with v4.9.0 reality
 #   v1.0: Initial (2024-12-20)
 
 param(
-    [string]$CommandsPath = ".\.claude\commands",
+    [string]$SkillsPath = ".\.claude\skills",
     [string]$LibraryPath = ".\.claude\library",
     [switch]$Verbose
 )
 
 Write-Host "===============================================" -ForegroundColor Cyan
-Write-Host "Library Reference Validation Test Suite v1.1" -ForegroundColor Cyan
+Write-Host "Library Reference Validation Test Suite v1.2" -ForegroundColor Cyan
 Write-Host "===============================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -29,22 +34,20 @@ $testResults = @{
     Tests = @()
 }
 
+# Skills that intentionally do not import Phase 0 / prompt-perfection-core.
+# reflect-diary is an analysis skill, not a prompt-rewriting skill.
+$nonPhase0Skills = @("reflect-diary")
+
 function Test-FileExists {
     param([string]$Path, [string]$Description)
 
     $testResults.Total++
-    $test = @{
-        Name = $Description
-        Status = "Unknown"
-        Details = ""
-    }
+    $test = @{ Name = $Description; Status = "Unknown"; Details = "" }
 
     if (Test-Path $Path) {
         Write-Host "[PASS]" -ForegroundColor Green -NoNewline
         Write-Host " $Description"
-        if ($Verbose) {
-            Write-Host "       Path: $Path" -ForegroundColor Gray
-        }
+        if ($Verbose) { Write-Host "       Path: $Path" -ForegroundColor Gray }
         $test.Status = "PASS"
         $testResults.Passed++
     } else {
@@ -59,162 +62,65 @@ function Test-FileExists {
     $testResults.Tests += $test
 }
 
-function Test-CommandHasLibraryReference {
-    param([string]$FilePath, [string]$CommandName)
+function Test-SkillHasLibraryReference {
+    param([string]$FilePath, [string]$SkillName)
 
-    # reflect uses non-standard flow (Trigger/Workflow) — skip Phase 0 test
-    if ($CommandName -eq "reflect") {
+    if ($nonPhase0Skills -contains $SkillName) {
         $testResults.Total++
         Write-Host "[SKIP]" -ForegroundColor DarkGray -NoNewline
-        Write-Host " $CommandName - Non-standard flow (Trigger/Workflow), Phase 0 not required"
+        Write-Host " $SkillName - Non-Phase-0 skill (analysis flow), library import not required"
         $testResults.Tests += @{
-            Name = "Library reference in $CommandName"
+            Name = "Library reference in $SkillName"
             Status = "SKIP"
-            Details = "Non-standard flow"
+            Details = "Non-Phase-0 skill"
         }
         $testResults.Passed++
         return
     }
 
     $testResults.Total++
-    $test = @{
-        Name = "Library reference in $CommandName"
-        Status = "Unknown"
-        Details = ""
-    }
-
+    $test = @{ Name = "Library reference in $SkillName"; Status = "Unknown"; Details = "" }
     $content = Get-Content $FilePath -Raw
 
-    # v1.1: allow anything (emoji, symbol, text) between "## " and "Phase 0"
-    if ($content -notmatch "##[^\r\n]*Phase 0") {
-        Write-Host "[FAIL]" -ForegroundColor Red -NoNewline
-        Write-Host " $CommandName - Missing Phase 0 section"
-        $test.Status = "FAIL"
-        $test.Details = "Missing Phase 0 section"
-        $testResults.Failed++
-        $testResults.Tests += $test
-        return
-    }
+    # v1.2: accept skill-style "@.claude/library/prompt-perfection-core.md"
+    # OR legacy "**Import:** ... prompt-perfection-core.md"
+    $skillStyle  = $content -match "@\.claude/library/prompt-perfection-core\.md"
+    $legacyStyle = $content -match "\*\*Import:\*\*.*prompt-perfection-core\.md"
 
-    # Check for Import statement
-    if ($content -match "\*\*Import:\*\*.*prompt-perfection-core\.md") {
+    if ($skillStyle -or $legacyStyle) {
         Write-Host "[PASS]" -ForegroundColor Green -NoNewline
-        Write-Host " $CommandName - Has library reference"
-        if ($Verbose) {
-            # Extract the import line
-            $importLine = ($content | Select-String -Pattern "\*\*Import:\*\*.*").Line
-            Write-Host "       $importLine" -ForegroundColor Gray
-        }
+        Write-Host " $SkillName - Has core library reference"
         $test.Status = "PASS"
         $testResults.Passed++
     } else {
         Write-Host "[WARN]" -ForegroundColor Yellow -NoNewline
-        Write-Host " $CommandName - No explicit library import (may use inline Phase 0)"
+        Write-Host " $SkillName - No prompt-perfection-core import found (may use inline Phase 0)"
         $test.Status = "WARN"
-        $test.Details = "No explicit library import found"
+        $test.Details = "No core library import"
         $testResults.Warnings++
     }
 
     $testResults.Tests += $test
 }
 
-function Test-CommandHasVersionHistory {
-    param([string]$FilePath, [string]$CommandName)
+function Test-SkillHasFrontmatter {
+    param([string]$FilePath, [string]$SkillName)
 
     $testResults.Total++
-    $test = @{
-        Name = "Version history in $CommandName"
-        Status = "Unknown"
-        Details = ""
-    }
-
+    $test = @{ Name = "YAML frontmatter in $SkillName"; Status = "Unknown"; Details = "" }
     $content = Get-Content $FilePath -Raw
 
-    # v1.1: allow anything between "## " and "Version History" (emoji prefix)
-    if ($content -match "##[^\r\n]*Version History") {
-        # Accept legacy v2.0, CHANGELOG pointer, or any semver entry v1.0+
-        if ($content -match "v2\.0.*2024-12-20") {
-            Write-Host "[PASS]" -ForegroundColor Green -NoNewline
-            Write-Host " $CommandName - Has v2.0 version history"
-            $test.Status = "PASS"
-            $testResults.Passed++
-        } elseif ($content -match "CHANGELOG-skills\.md") {
-            Write-Host "[PASS]" -ForegroundColor Green -NoNewline
-            Write-Host " $CommandName - References consolidated CHANGELOG-skills.md (v4.9+)"
-            $test.Status = "PASS"
-            $testResults.Passed++
-        } elseif ($content -match "\*\*v\d+\.\d+") {
-            Write-Host "[PASS]" -ForegroundColor Green -NoNewline
-            Write-Host " $CommandName - Has semver version entry"
-            $test.Status = "PASS"
-            $testResults.Passed++
-        } else {
-            Write-Host "[WARN]" -ForegroundColor Yellow -NoNewline
-            Write-Host " $CommandName - Version history present but no recognised version entry"
-            $test.Status = "WARN"
-            $test.Details = "No v2.0/v3.0+/CHANGELOG pointer found"
-            $testResults.Warnings++
-        }
-    } else {
-        Write-Host "[FAIL]" -ForegroundColor Red -NoNewline
-        Write-Host " $CommandName - Missing version history section"
-        $test.Status = "FAIL"
-        $test.Details = "Missing version history section"
-        $testResults.Failed++
-    }
-
-    $testResults.Tests += $test
-}
-
-function Test-CommandHasLibraryIntegration {
-    param([string]$FilePath, [string]$CommandName)
-
-    $testResults.Total++
-    $test = @{
-        Name = "Library integration section in $CommandName"
-        Status = "Unknown"
-        Details = ""
-    }
-
-    $content = Get-Content $FilePath -Raw
-
-    if ($content -match "## Library Integration") {
+    # Skills must start with --- ... --- containing name + description (Anthropic format)
+    if ($content -match "(?s)^---\s*\r?\n.*?name:\s*\S+.*?description:\s*\S+.*?\r?\n---") {
         Write-Host "[PASS]" -ForegroundColor Green -NoNewline
-        Write-Host " $CommandName - Has Library Integration section"
-        $test.Status = "PASS"
-        $testResults.Passed++
-    } else {
-        Write-Host "[WARN]" -ForegroundColor Yellow -NoNewline
-        Write-Host " $CommandName - Missing Library Integration section (recommended)"
-        $test.Status = "WARN"
-        $test.Details = "Missing Library Integration section"
-        $testResults.Warnings++
-    }
-
-    $testResults.Tests += $test
-}
-
-function Test-AdapterExists {
-    param([string]$AdapterPath, [string]$AdapterName)
-
-    $testResults.Total++
-    $test = @{
-        Name = "Adapter exists: $AdapterName"
-        Status = "Unknown"
-        Details = ""
-    }
-
-    if (Test-Path $AdapterPath) {
-        Write-Host "[PASS]" -ForegroundColor Green -NoNewline
-        Write-Host " Adapter exists: $AdapterName"
+        Write-Host " $SkillName - Has YAML frontmatter (name + description)"
         $test.Status = "PASS"
         $testResults.Passed++
     } else {
         Write-Host "[FAIL]" -ForegroundColor Red -NoNewline
-        Write-Host " Adapter missing: $AdapterName"
-        Write-Host "       Expected at: $AdapterPath" -ForegroundColor Red
+        Write-Host " $SkillName - Missing or malformed YAML frontmatter"
         $test.Status = "FAIL"
-        $test.Details = "Adapter file not found"
+        $test.Details = "Frontmatter must contain name + description"
         $testResults.Failed++
     }
 
@@ -225,95 +131,77 @@ function Test-AdapterExists {
 Write-Host "`n[Test Suite 1: Core Library Files]" -ForegroundColor Cyan
 Write-Host "-----------------------------------" -ForegroundColor Cyan
 Test-FileExists "$LibraryPath\prompt-perfection-core.md" "Core library (prompt-perfection-core.md) exists"
-
-# Test 2: Adapters exist
-# v1.1: session-adapter.md removed (session commands sunset in v4.5);
-#       added research-adapter, context-editing-adapter, memory-tool-adapter;
-#       added caching-strategy as top-level library file check.
-Write-Host "`n[Test Suite 2: Adapter Files]" -ForegroundColor Cyan
-Write-Host "------------------------------" -ForegroundColor Cyan
-Test-AdapterExists "$LibraryPath\adapters\technical-adapter.md" "technical-adapter.md"
-Test-AdapterExists "$LibraryPath\adapters\article-adapter.md" "article-adapter.md"
-Test-AdapterExists "$LibraryPath\adapters\hybrid-adapter.md" "hybrid-adapter.md"
-Test-AdapterExists "$LibraryPath\adapters\research-adapter.md" "research-adapter.md"
-Test-AdapterExists "$LibraryPath\adapters\context-editing-adapter.md" "context-editing-adapter.md (v4.9)"
-Test-AdapterExists "$LibraryPath\adapters\memory-tool-adapter.md" "memory-tool-adapter.md (v4.9)"
-Test-FileExists "$LibraryPath\caching-strategy.md" "caching-strategy.md (v4.9) exists"
-Test-FileExists "$LibraryPath\model-router.md" "model-router.md exists"
+Test-FileExists "$LibraryPath\model-router.md"           "model-router.md exists"
 Test-FileExists "$LibraryPath\execution-plan-template.md" "execution-plan-template.md exists"
+Test-FileExists "$LibraryPath\caching-strategy.md"        "caching-strategy.md exists"
 
-# Test 3: Commands have library references
-Write-Host "`n[Test Suite 3: Command Library References]" -ForegroundColor Cyan
-Write-Host "------------------------------------------" -ForegroundColor Cyan
+# Test 2: Adapter files (flat in library/, not in adapters/ subdir per v5.0)
+Write-Host "`n[Test Suite 2: Adapter Files (flat in library/)]" -ForegroundColor Cyan
+Write-Host "-------------------------------------------------" -ForegroundColor Cyan
+Test-FileExists "$LibraryPath\readme-adapter.md"   "readme-adapter.md exists"
+Test-FileExists "$LibraryPath\research-adapter.md" "research-adapter.md exists"
 
-$commands = Get-ChildItem -Path $CommandsPath -Filter "*.md" | Where-Object { $_.Name -ne "example-custom-command.md" }
+# Test 3: All active skills have YAML frontmatter
+Write-Host "`n[Test Suite 3: Skill Frontmatter]" -ForegroundColor Cyan
+Write-Host "----------------------------------" -ForegroundColor Cyan
 
-foreach ($command in $commands) {
-    $commandName = $command.BaseName
-    Test-CommandHasLibraryReference $command.FullName $commandName
+$skillDirs = Get-ChildItem -Path $SkillsPath -Directory -ErrorAction SilentlyContinue
+foreach ($dir in $skillDirs) {
+    $skillFile = Join-Path $dir.FullName "SKILL.md"
+    if (Test-Path $skillFile) {
+        Test-SkillHasFrontmatter $skillFile $dir.Name
+    }
 }
 
-# Test 4: Commands have version history
-Write-Host "`n[Test Suite 4: Version History]" -ForegroundColor Cyan
-Write-Host "--------------------------------" -ForegroundColor Cyan
+# Test 4: Skills (except non-Phase-0 ones) reference prompt-perfection-core
+Write-Host "`n[Test Suite 4: Phase 0 Library Import]" -ForegroundColor Cyan
+Write-Host "---------------------------------------" -ForegroundColor Cyan
 
-foreach ($command in $commands) {
-    $commandName = $command.BaseName
-    Test-CommandHasVersionHistory $command.FullName $commandName
+foreach ($dir in $skillDirs) {
+    $skillFile = Join-Path $dir.FullName "SKILL.md"
+    if (Test-Path $skillFile) {
+        Test-SkillHasLibraryReference $skillFile $dir.Name
+    }
 }
 
-# Test 5: Commands have Library Integration section
-Write-Host "`n[Test Suite 5: Library Integration Sections]" -ForegroundColor Cyan
-Write-Host "---------------------------------------------" -ForegroundColor Cyan
-
-foreach ($command in $commands) {
-    $commandName = $command.BaseName
-    Test-CommandHasLibraryIntegration $command.FullName $commandName
-}
-
-# Test 6: Check for proper adapter references in commands
-Write-Host "`n[Test Suite 6: Adapter References in Commands]" -ForegroundColor Cyan
+# Test 5: Adapter usage by domain skills
+Write-Host "`n[Test Suite 5: Adapter Usage by Domain Skills]" -ForegroundColor Cyan
 Write-Host "-----------------------------------------------" -ForegroundColor Cyan
 
-# v1.1: session-start/session-end removed (commands sunset in v4.5).
-#       prompt-research added with research-adapter.md mapping.
+# v1.2: Mappings reflect v5.0 skill names. prompt + reflect-diary do not
+# need a domain adapter (prompt is generic; reflect-diary is non-Phase-0).
 $adapterMappings = @{
-    "prompt-technical" = "technical-adapter.md"
-    "prompt-hybrid" = "hybrid-adapter.md"
-    "prompt-article" = "article-adapter.md"
-    "prompt-article-readme" = "article-adapter.md"
-    "prompt-research" = "research-adapter.md"
+    "prompt-article-readme" = "readme-adapter.md"
+    "prompt-research"       = "research-adapter.md"
 }
 
-foreach ($command in $commands) {
-    $commandName = $command.BaseName
+foreach ($dir in $skillDirs) {
+    $skillName = $dir.Name
+    if (-not $adapterMappings.ContainsKey($skillName)) { continue }
 
-    if ($adapterMappings.ContainsKey($commandName)) {
-        $testResults.Total++
-        $expectedAdapter = $adapterMappings[$commandName]
-        $content = Get-Content $command.FullName -Raw
+    $skillFile = Join-Path $dir.FullName "SKILL.md"
+    if (-not (Test-Path $skillFile)) { continue }
 
-        $test = @{
-            Name = "Adapter reference in $commandName"
-            Status = "Unknown"
-            Details = ""
-        }
+    $testResults.Total++
+    $expected = $adapterMappings[$skillName]
+    $content = Get-Content $skillFile -Raw
 
-        if ($content -match [regex]::Escape($expectedAdapter)) {
-            Write-Host "[PASS]" -ForegroundColor Green -NoNewline
-            Write-Host " $commandName references $expectedAdapter"
-            $test.Status = "PASS"
-            $testResults.Passed++
-        } else {
-            Write-Host "[WARN]" -ForegroundColor Yellow -NoNewline
-            Write-Host " $commandName - Expected reference to $expectedAdapter"
-            $test.Status = "WARN"
-            $test.Details = "Expected reference to $expectedAdapter"
-            $testResults.Warnings++
-        }
+    $test = @{ Name = "Adapter reference in $skillName"; Status = "Unknown"; Details = "" }
 
-        $testResults.Tests += $test
+    if ($content -match [regex]::Escape($expected)) {
+        Write-Host "[PASS]" -ForegroundColor Green -NoNewline
+        Write-Host " $skillName references $expected"
+        $test.Status = "PASS"
+        $testResults.Passed++
+    } else {
+        Write-Host "[WARN]" -ForegroundColor Yellow -NoNewline
+        Write-Host " $skillName - Expected reference to $expected"
+        $test.Status = "WARN"
+        $test.Details = "Expected reference to $expected"
+        $testResults.Warnings++
     }
+
+    $testResults.Tests += $test
 }
 
 # Summary
@@ -331,7 +219,6 @@ Write-Host "Warnings:     " -NoNewline
 Write-Host $testResults.Warnings -ForegroundColor Yellow
 Write-Host ""
 
-# Calculate success rate
 $successRate = if ($testResults.Total -gt 0) {
     [math]::Round(($testResults.Passed / $testResults.Total) * 100, 2)
 } else { 0 }
@@ -344,10 +231,8 @@ if ($successRate -ge 90) {
 } else {
     Write-Host "$successRate%" -ForegroundColor Red
 }
-
 Write-Host ""
 
-# Exit code
 if ($testResults.Failed -gt 0) {
     Write-Host "RESULT: FAILED - Some tests failed" -ForegroundColor Red
     exit 1
