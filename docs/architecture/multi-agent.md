@@ -54,6 +54,19 @@ Multi-agent research is designed for complex problems requiring multiple perspec
 └─────────────────────────────────────────────────────────────┘
 ```
 
+## Aggregation Pipeline
+
+The "Result Aggregation" stage in the diagram above runs an 8-phase
+synthesis: (1) **Collection** of per-agent outputs, (2) **Deduplication**
+of overlapping findings, (3) **Conflict resolution** when agents disagree
+on the same artefact, (4) **Confidence scoring** per finding,
+(5) **Organisation** into Critical / Important / Informational tiers,
+(6) **Citation enrichment** with `file:line` evidence, (7) **Knowledge
+graph update** so subsequent runs build on prior context, and (8) **Metrics**
+(coverage %, agent agreement, iteration cost). Convergence is declared
+when coverage ≥ 70 % and confidence ≥ 80 % across all open questions, or
+when the iteration cap (default 4) is reached.
+
 ## Agent Types
 
 ### Explore Agent
