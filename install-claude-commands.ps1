@@ -22,6 +22,11 @@
 .PARAMETER Force
     Force reinstall even if already installed
 
+.PARAMETER RebaselineMemory
+    Discard existing memory files (except sessions.md + prompt-patterns.md)
+    and redeploy fresh templates. Recommended when upgrading across major
+    versions where memory may reference removed library files.
+
 .EXAMPLE
     .\install-claude-commands.ps1
     Standard installation to current directory
@@ -29,12 +34,17 @@
 .EXAMPLE
     .\install-claude-commands.ps1 -InstallPath "C:\MyProjects" -Force
     Force reinstall to specific directory
+
+.EXAMPLE
+    .\install-claude-commands.ps1 -RebaselineMemory
+    Update and reset stale memory files (keeps sessions.md + prompt-patterns.md)
 #>
 
 param(
     [string]$InstallPath = $PWD.Path,
     [switch]$SkipBackup = $false,
-    [switch]$Force = $false
+    [switch]$Force = $false,
+    [switch]$RebaselineMemory = $false
 )
 
 # Configuration
@@ -73,6 +83,82 @@ function Test-GitHubAuth {
         return $LASTEXITCODE -eq 0
     } catch {
         return $false
+    }
+}
+
+# Read version string from a package.json. Returns "unknown" on any failure.
+function Get-SourceVersion {
+    param([string]$RepoPath)
+
+    $packageJson = Join-Path $RepoPath "package.json"
+    if (-not (Test-Path $packageJson)) { return "unknown" }
+    try {
+        $json = Get-Content $packageJson -Raw | ConvertFrom-Json
+        if ($json.version) { return [string]$json.version }
+    } catch {}
+    return "unknown"
+}
+
+# Scan target memory files for references to library/<file>.md paths
+# that no longer exist in the deployed library/. Returns array of
+# [PSCustomObject]@{ MemoryFile, StaleRef } — empty if all fresh.
+# v2.6: defends against silent regression where preserved user memory
+# carries references to library files removed in newer versions.
+function Test-MemoryFreshness {
+    param([string]$TargetClaudeDir)
+
+    $memoryDir = Join-Path $TargetClaudeDir "memory"
+    $libraryDir = Join-Path $TargetClaudeDir "library"
+    if (-not (Test-Path $memoryDir) -or -not (Test-Path $libraryDir)) {
+        return @()
+    }
+
+    $existingLibraryFiles = @(
+        Get-ChildItem -Path $libraryDir -Recurse -File -Filter "*.md" -ErrorAction SilentlyContinue |
+            ForEach-Object { $_.Name }
+    )
+
+    $staleRefs = @()
+    Get-ChildItem -Path $memoryDir -File -Filter "*.md" -ErrorAction SilentlyContinue | ForEach-Object {
+        $memoryFile = $_
+        $content = Get-Content $memoryFile.FullName -Raw -ErrorAction SilentlyContinue
+        if (-not $content) { return }
+        # Match `library/<name>.md` and `library\<name>.md` and bare `<name>-adapter.md` etc.
+        $regexMatches = [regex]::Matches($content, "library[/\\]([\w\-\.]+\.md)")
+        foreach ($m in $regexMatches) {
+            $refName = $m.Groups[1].Value
+            if ($existingLibraryFiles -notcontains $refName) {
+                $staleRefs += [PSCustomObject]@{
+                    MemoryFile = $memoryFile.Name
+                    StaleRef   = "library/$refName"
+                }
+            }
+        }
+    }
+    # Deduplicate
+    return $staleRefs | Sort-Object MemoryFile, StaleRef -Unique
+}
+
+# Show version transition: existing target VERSION vs. source package.json.
+# Always informational — does not block installation.
+function Test-VersionDrift {
+    param(
+        [string]$TargetPath,
+        [string]$SourcePath
+    )
+
+    $targetVersionFile = Join-Path $TargetPath "$ClaudeDir\VERSION"
+    $sourceVersion = Get-SourceVersion -RepoPath $SourcePath
+
+    if (Test-Path $targetVersionFile) {
+        $installedVersion = (Get-Content $targetVersionFile -Raw).Trim()
+        if ($installedVersion -eq $sourceVersion) {
+            Write-Info "Reinstalling v$sourceVersion (no version change)"
+        } else {
+            Write-Info "Upgrading: v$installedVersion -> v$sourceVersion"
+        }
+    } else {
+        Write-Info "Fresh install: v$sourceVersion"
     }
 }
 
@@ -168,6 +254,10 @@ function Deploy-ClaudeDirectory {
 
     Write-Info "Deploying Claude commands..."
 
+    # v2.6: source version computed up-front; reused for obsolete-dir
+    # message and VERSION-file write at end.
+    $sourceVersion = Get-SourceVersion -RepoPath $SourcePath
+
     try {
         # Preserve existing memory directory
         $memoryBackup = $null
@@ -223,14 +313,36 @@ function Deploy-ClaudeDirectory {
             Write-Success "CHANGELOG-skills.md deployed"
         }
 
-        # Clean up directories that should not exist (removed in newer versions)
-        $obsoleteDirs = @("tasks", "commands")
-        foreach ($dir in $obsoleteDirs) {
-            $obsoleteDir = Join-Path $targetClaudeDir $dir
-            if (Test-Path $obsoleteDir) {
-                Write-Info "Removing obsolete directory: $dir..."
-                Remove-Item -Path $obsoleteDir -Recurse -Force
-                Write-Success "Removed obsolete: $dir"
+        # v2.6: discover obsolete subdirs dynamically. Anything in the target
+        # .claude/ that is neither in the deploy whitelist nor in the preserved
+        # set (memory, cache) is a candidate for removal — it's a leftover from
+        # a prior version that the LLM may pick up via globs / @imports and act
+        # on stale info. Always prompts before deleting unless -Force is set.
+        $preservedSubdirs = @("memory", "cache")
+        $knownSubdirs = $directoriesToDeploy + $preservedSubdirs
+        $obsoleteSubdirs = @(
+            Get-ChildItem -Path $targetClaudeDir -Directory -ErrorAction SilentlyContinue |
+                Where-Object { $knownSubdirs -notcontains $_.Name } |
+                Select-Object -ExpandProperty Name
+        )
+
+        if ($obsoleteSubdirs.Count -gt 0) {
+            Write-Warning "Found subdir(s) not in v$sourceVersion layout:"
+            foreach ($d in $obsoleteSubdirs) {
+                Write-Host "    - .claude\$d" -ForegroundColor Yellow
+            }
+            $shouldDelete = [bool]$Force
+            if (-not $Force) {
+                $response = Read-Host "Remove these obsolete subdir(s)? (y/N)"
+                $shouldDelete = ($response -eq 'y' -or $response -eq 'Y')
+            }
+            if ($shouldDelete) {
+                foreach ($d in $obsoleteSubdirs) {
+                    Remove-Item -Path (Join-Path $targetClaudeDir $d) -Recurse -Force
+                    Write-Success "Removed obsolete: $d"
+                }
+            } else {
+                Write-Info "Kept obsolete subdir(s); they may confuse the LLM"
             }
         }
 
@@ -246,7 +358,31 @@ function Deploy-ClaudeDirectory {
         # Restore memory directory and deploy new memory files
         $sourceMemoryDir = Join-Path $sourceClaudeDir "memory"
 
-        if ($memoryBackup -and (Test-Path $memoryBackup)) {
+        if ($RebaselineMemory -and $memoryBackup -and (Test-Path $memoryBackup)) {
+            # v2.6: rebaseline mode — preserve only user-generated history,
+            # replace everything else with fresh templates from repo.
+            $preservedNames = @("sessions.md", "prompt-patterns.md")
+            Write-Info "Rebaselining memory (preserving: $($preservedNames -join ', '))..."
+
+            if (Test-Path $targetMemoryDir) {
+                Remove-Item -Path $targetMemoryDir -Recurse -Force
+            }
+            if (Test-Path $sourceMemoryDir) {
+                Copy-Item -Path $sourceMemoryDir -Destination $targetMemoryDir -Recurse -Force
+            } else {
+                New-Item -ItemType Directory -Path $targetMemoryDir -Force | Out-Null
+            }
+            foreach ($name in $preservedNames) {
+                $src = Join-Path $memoryBackup $name
+                $dst = Join-Path $targetMemoryDir $name
+                if (Test-Path $src) {
+                    Copy-Item -Path $src -Destination $dst -Force
+                    Write-Info "  Preserved: $name"
+                }
+            }
+            Remove-Item -Path $memoryBackup -Recurse -Force
+            Write-Success "Memory rebaselined"
+        } elseif ($memoryBackup -and (Test-Path $memoryBackup)) {
             # Update: restore user memory, then add new files from repo
             Write-Info "Restoring memory files..."
             if (Test-Path $targetMemoryDir) {
@@ -282,10 +418,12 @@ function Deploy-ClaudeDirectory {
             }
         }
 
-        # Create version file to track installed version
+        # Create version file to track installed version.
+        # v2.6: $sourceVersion was already read from source package.json
+        # at function entry — single source of truth, no hard-coded literal.
         $versionFile = Join-Path $targetClaudeDir "VERSION"
-        "5.0.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
-        Write-Success "Version file created (v5.0.0)"
+        $sourceVersion | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
+        Write-Success "Version file created (v$sourceVersion)"
 
         return $true
     } catch {
@@ -379,6 +517,21 @@ function Test-Installation {
     Write-Info "  - Adapters (readme, research): OK"
     Write-Info "  - Caching strategy: OK"
     Write-Info "  - Directory structure: OK"
+
+    # v2.6: warn if preserved memory still references library files removed
+    # in this version. The LLM @import-loads memory, so stale refs leak
+    # behaviour from old versions.
+    $staleMemoryRefs = Test-MemoryFreshness -TargetClaudeDir $targetClaudeDir
+    if ($staleMemoryRefs.Count -gt 0) {
+        Write-Warning "Memory file(s) reference library paths that no longer exist:"
+        foreach ($ref in $staleMemoryRefs) {
+            Write-Host "    - .claude\memory\$($ref.MemoryFile) -> $($ref.StaleRef)" -ForegroundColor Yellow
+        }
+        Write-Info "Re-run with -RebaselineMemory to reset stale memory templates."
+        Write-Info "(sessions.md and prompt-patterns.md are preserved in either mode.)"
+    } else {
+        Write-Info "  - Memory freshness: OK"
+    }
 
     return $true
 }
@@ -601,6 +754,9 @@ function Install-ClaudeCommands {
         Remove-TempFiles -TempPath $TempDir
         return $false
     }
+
+    # v2.6: Show version transition before destructive deploy
+    Test-VersionDrift -TargetPath $InstallPath -SourcePath $repoPath
 
     # Deploy files
     if (-not (Deploy-ClaudeDirectory -SourcePath $repoPath -TargetPath $InstallPath)) {
