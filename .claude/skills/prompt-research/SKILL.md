@@ -41,6 +41,10 @@ described in `.claude/library/research-adapter.md`.
 - Persistent knowledge graph across sessions
 - Comprehensive prioritised reports (Critical / Important / Informational)
 
+**Phase 0 Import:** `@.claude/library/prompt-perfection-core.md` (canonical
+flow with research-adapter Steps 0.25 / 0.35 / 0.55 add-ons; default MODEL
+HINT for research is `opus`).
+
 ---
 
 ## When to Use
