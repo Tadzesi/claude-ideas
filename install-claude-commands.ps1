@@ -22,6 +22,11 @@
 .PARAMETER Force
     Force reinstall even if already installed
 
+.PARAMETER RebaselineMemory
+    Discard existing memory files (except sessions.md + prompt-patterns.md)
+    and redeploy fresh templates. Recommended when upgrading across major
+    versions where memory may reference removed library files.
+
 .EXAMPLE
     .\install-claude-commands.ps1
     Standard installation to current directory
@@ -29,12 +34,17 @@
 .EXAMPLE
     .\install-claude-commands.ps1 -InstallPath "C:\MyProjects" -Force
     Force reinstall to specific directory
+
+.EXAMPLE
+    .\install-claude-commands.ps1 -RebaselineMemory
+    Update and reset stale memory files (keeps sessions.md + prompt-patterns.md)
 #>
 
 param(
     [string]$InstallPath = $PWD.Path,
     [switch]$SkipBackup = $false,
-    [switch]$Force = $false
+    [switch]$Force = $false,
+    [switch]$RebaselineMemory = $false
 )
 
 # Configuration
@@ -87,6 +97,46 @@ function Get-SourceVersion {
         if ($json.version) { return [string]$json.version }
     } catch {}
     return "unknown"
+}
+
+# Scan target memory files for references to library/<file>.md paths
+# that no longer exist in the deployed library/. Returns array of
+# [PSCustomObject]@{ MemoryFile, StaleRef } — empty if all fresh.
+# v2.6: defends against silent regression where preserved user memory
+# carries references to library files removed in newer versions.
+function Test-MemoryFreshness {
+    param([string]$TargetClaudeDir)
+
+    $memoryDir = Join-Path $TargetClaudeDir "memory"
+    $libraryDir = Join-Path $TargetClaudeDir "library"
+    if (-not (Test-Path $memoryDir) -or -not (Test-Path $libraryDir)) {
+        return @()
+    }
+
+    $existingLibraryFiles = @(
+        Get-ChildItem -Path $libraryDir -Recurse -File -Filter "*.md" -ErrorAction SilentlyContinue |
+            ForEach-Object { $_.Name }
+    )
+
+    $staleRefs = @()
+    Get-ChildItem -Path $memoryDir -File -Filter "*.md" -ErrorAction SilentlyContinue | ForEach-Object {
+        $memoryFile = $_
+        $content = Get-Content $memoryFile.FullName -Raw -ErrorAction SilentlyContinue
+        if (-not $content) { return }
+        # Match `library/<name>.md` and `library\<name>.md` and bare `<name>-adapter.md` etc.
+        $regexMatches = [regex]::Matches($content, "library[/\\]([\w\-\.]+\.md)")
+        foreach ($m in $regexMatches) {
+            $refName = $m.Groups[1].Value
+            if ($existingLibraryFiles -notcontains $refName) {
+                $staleRefs += [PSCustomObject]@{
+                    MemoryFile = $memoryFile.Name
+                    StaleRef   = "library/$refName"
+                }
+            }
+        }
+    }
+    # Deduplicate
+    return $staleRefs | Sort-Object MemoryFile, StaleRef -Unique
 }
 
 # Show version transition: existing target VERSION vs. source package.json.
@@ -308,7 +358,31 @@ function Deploy-ClaudeDirectory {
         # Restore memory directory and deploy new memory files
         $sourceMemoryDir = Join-Path $sourceClaudeDir "memory"
 
-        if ($memoryBackup -and (Test-Path $memoryBackup)) {
+        if ($RebaselineMemory -and $memoryBackup -and (Test-Path $memoryBackup)) {
+            # v2.6: rebaseline mode — preserve only user-generated history,
+            # replace everything else with fresh templates from repo.
+            $preservedNames = @("sessions.md", "prompt-patterns.md")
+            Write-Info "Rebaselining memory (preserving: $($preservedNames -join ', '))..."
+
+            if (Test-Path $targetMemoryDir) {
+                Remove-Item -Path $targetMemoryDir -Recurse -Force
+            }
+            if (Test-Path $sourceMemoryDir) {
+                Copy-Item -Path $sourceMemoryDir -Destination $targetMemoryDir -Recurse -Force
+            } else {
+                New-Item -ItemType Directory -Path $targetMemoryDir -Force | Out-Null
+            }
+            foreach ($name in $preservedNames) {
+                $src = Join-Path $memoryBackup $name
+                $dst = Join-Path $targetMemoryDir $name
+                if (Test-Path $src) {
+                    Copy-Item -Path $src -Destination $dst -Force
+                    Write-Info "  Preserved: $name"
+                }
+            }
+            Remove-Item -Path $memoryBackup -Recurse -Force
+            Write-Success "Memory rebaselined"
+        } elseif ($memoryBackup -and (Test-Path $memoryBackup)) {
             # Update: restore user memory, then add new files from repo
             Write-Info "Restoring memory files..."
             if (Test-Path $targetMemoryDir) {
@@ -443,6 +517,21 @@ function Test-Installation {
     Write-Info "  - Adapters (readme, research): OK"
     Write-Info "  - Caching strategy: OK"
     Write-Info "  - Directory structure: OK"
+
+    # v2.6: warn if preserved memory still references library files removed
+    # in this version. The LLM @import-loads memory, so stale refs leak
+    # behaviour from old versions.
+    $staleMemoryRefs = Test-MemoryFreshness -TargetClaudeDir $targetClaudeDir
+    if ($staleMemoryRefs.Count -gt 0) {
+        Write-Warning "Memory file(s) reference library paths that no longer exist:"
+        foreach ($ref in $staleMemoryRefs) {
+            Write-Host "    - .claude\memory\$($ref.MemoryFile) -> $($ref.StaleRef)" -ForegroundColor Yellow
+        }
+        Write-Info "Re-run with -RebaselineMemory to reset stale memory templates."
+        Write-Info "(sessions.md and prompt-patterns.md are preserved in either mode.)"
+    } else {
+        Write-Info "  - Memory freshness: OK"
+    }
 
     return $true
 }
