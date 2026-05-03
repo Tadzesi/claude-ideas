@@ -76,6 +76,42 @@ function Test-GitHubAuth {
     }
 }
 
+# Read version string from a package.json. Returns "unknown" on any failure.
+function Get-SourceVersion {
+    param([string]$RepoPath)
+
+    $packageJson = Join-Path $RepoPath "package.json"
+    if (-not (Test-Path $packageJson)) { return "unknown" }
+    try {
+        $json = Get-Content $packageJson -Raw | ConvertFrom-Json
+        if ($json.version) { return [string]$json.version }
+    } catch {}
+    return "unknown"
+}
+
+# Show version transition: existing target VERSION vs. source package.json.
+# Always informational — does not block installation.
+function Test-VersionDrift {
+    param(
+        [string]$TargetPath,
+        [string]$SourcePath
+    )
+
+    $targetVersionFile = Join-Path $TargetPath "$ClaudeDir\VERSION"
+    $sourceVersion = Get-SourceVersion -RepoPath $SourcePath
+
+    if (Test-Path $targetVersionFile) {
+        $installedVersion = (Get-Content $targetVersionFile -Raw).Trim()
+        if ($installedVersion -eq $sourceVersion) {
+            Write-Info "Reinstalling v$sourceVersion (no version change)"
+        } else {
+            Write-Info "Upgrading: v$installedVersion -> v$sourceVersion"
+        }
+    } else {
+        Write-Info "Fresh install: v$sourceVersion"
+    }
+}
+
 # Create backup of existing .claude directory
 function Backup-ClaudeDirectory {
     param([string]$SourcePath)
@@ -282,10 +318,13 @@ function Deploy-ClaudeDirectory {
             }
         }
 
-        # Create version file to track installed version
+        # Create version file to track installed version.
+        # v2.6: read from source package.json (single source of truth)
+        # instead of hard-coded literal so installer never drifts.
         $versionFile = Join-Path $targetClaudeDir "VERSION"
-        "5.0.0" | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
-        Write-Success "Version file created (v5.0.0)"
+        $sourceVersion = Get-SourceVersion -RepoPath $SourcePath
+        $sourceVersion | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
+        Write-Success "Version file created (v$sourceVersion)"
 
         return $true
     } catch {
@@ -601,6 +640,9 @@ function Install-ClaudeCommands {
         Remove-TempFiles -TempPath $TempDir
         return $false
     }
+
+    # v2.6: Show version transition before destructive deploy
+    Test-VersionDrift -TargetPath $InstallPath -SourcePath $repoPath
 
     # Deploy files
     if (-not (Deploy-ClaudeDirectory -SourcePath $repoPath -TargetPath $InstallPath)) {
