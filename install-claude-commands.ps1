@@ -1,6 +1,6 @@
 # Claude Commands Library Installer
 # Version: 5.0.0
-# Description: Installs/updates three Claude Code slash commands — /prompt, /prompt-article-readme, /prompt-research
+# Description: Installs/updates three Claude Code slash commands  - /prompt, /prompt-article-readme, /prompt-research
 # Repository: https://github.com/Tadzesi/claude-ideas
 # Platform: Windows PowerShell
 
@@ -436,9 +436,9 @@ function Show-Summary {
     Write-Host "  WHAT'S IN VERSION 5.0 (May 2026)" -ForegroundColor Magenta
     Write-Host "========================================" -ForegroundColor Magenta
     Write-Host "`nHonest 3-command portfolio (reduced from 11):" -ForegroundColor White
-    Write-Host "  - /prompt — prompt analysis, clarification, structured rewrite" -ForegroundColor Green
-    Write-Host "  - /prompt-article-readme — README generator from project scan" -ForegroundColor Green
-    Write-Host "  - /prompt-research — multi-agent research (orchestrator-worker, 2-4 iter)" -ForegroundColor Green
+    Write-Host "  - /prompt  - prompt analysis, clarification, structured rewrite" -ForegroundColor Green
+    Write-Host "  - /prompt-article-readme  - README generator from project scan" -ForegroundColor Green
+    Write-Host "  - /prompt-research  - multi-agent research (orchestrator-worker, 2-4 iter)" -ForegroundColor Green
     Write-Host "`nRemoved: prompt-hybrid, prompt-technical, prompt-article," -ForegroundColor Gray
     Write-Host "         prompt-dotnet, prompt-react, deploy, new-stack, reflect" -ForegroundColor Gray
     Write-Host "`nLibrary flattened (no adapters/ subdir):" -ForegroundColor White
@@ -490,7 +490,7 @@ function Install-GlobalHook {
     Write-Info "Installing global pre-compact hook..."
 
     if (-not (Test-Path $hookSource)) {
-        Write-Warning "pre-compact.sh not found in repo — skipping global hook install"
+        Write-Warning "pre-compact.sh not found in repo  - skipping global hook install"
         return $false
     }
 
@@ -501,7 +501,7 @@ function Install-GlobalHook {
     Copy-Item -Path $hookSource -Destination $globalHookTarget -Force
     Write-Success "pre-compact.sh deployed to ~/.claude/hooks/"
 
-    # Update ~/.claude/settings.json — add PreCompact block if missing
+    # Update ~/.claude/settings.json  - add PreCompact block if missing
     if (Test-Path $settingsPath) {
         $settings = Get-Content $settingsPath -Raw | ConvertFrom-Json
 
@@ -529,7 +529,7 @@ function Install-GlobalHook {
             [System.IO.File]::WriteAllText($settingsPath, $json, [System.Text.Encoding]::UTF8)
             Write-Success "PreCompact hook added to ~/.claude/settings.json"
         } else {
-            Write-Info "PreCompact hook already in settings.json — skipping"
+            Write-Info "PreCompact hook already in settings.json  - skipping"
         }
     } else {
         Write-Warning "~/.claude/settings.json not found"
