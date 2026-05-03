@@ -204,6 +204,10 @@ function Deploy-ClaudeDirectory {
 
     Write-Info "Deploying Claude commands..."
 
+    # v2.6: source version computed up-front; reused for obsolete-dir
+    # message and VERSION-file write at end.
+    $sourceVersion = Get-SourceVersion -RepoPath $SourcePath
+
     try {
         # Preserve existing memory directory
         $memoryBackup = $null
@@ -259,14 +263,36 @@ function Deploy-ClaudeDirectory {
             Write-Success "CHANGELOG-skills.md deployed"
         }
 
-        # Clean up directories that should not exist (removed in newer versions)
-        $obsoleteDirs = @("tasks", "commands")
-        foreach ($dir in $obsoleteDirs) {
-            $obsoleteDir = Join-Path $targetClaudeDir $dir
-            if (Test-Path $obsoleteDir) {
-                Write-Info "Removing obsolete directory: $dir..."
-                Remove-Item -Path $obsoleteDir -Recurse -Force
-                Write-Success "Removed obsolete: $dir"
+        # v2.6: discover obsolete subdirs dynamically. Anything in the target
+        # .claude/ that is neither in the deploy whitelist nor in the preserved
+        # set (memory, cache) is a candidate for removal — it's a leftover from
+        # a prior version that the LLM may pick up via globs / @imports and act
+        # on stale info. Always prompts before deleting unless -Force is set.
+        $preservedSubdirs = @("memory", "cache")
+        $knownSubdirs = $directoriesToDeploy + $preservedSubdirs
+        $obsoleteSubdirs = @(
+            Get-ChildItem -Path $targetClaudeDir -Directory -ErrorAction SilentlyContinue |
+                Where-Object { $knownSubdirs -notcontains $_.Name } |
+                Select-Object -ExpandProperty Name
+        )
+
+        if ($obsoleteSubdirs.Count -gt 0) {
+            Write-Warning "Found subdir(s) not in v$sourceVersion layout:"
+            foreach ($d in $obsoleteSubdirs) {
+                Write-Host "    - .claude\$d" -ForegroundColor Yellow
+            }
+            $shouldDelete = [bool]$Force
+            if (-not $Force) {
+                $response = Read-Host "Remove these obsolete subdir(s)? (y/N)"
+                $shouldDelete = ($response -eq 'y' -or $response -eq 'Y')
+            }
+            if ($shouldDelete) {
+                foreach ($d in $obsoleteSubdirs) {
+                    Remove-Item -Path (Join-Path $targetClaudeDir $d) -Recurse -Force
+                    Write-Success "Removed obsolete: $d"
+                }
+            } else {
+                Write-Info "Kept obsolete subdir(s); they may confuse the LLM"
             }
         }
 
@@ -319,10 +345,9 @@ function Deploy-ClaudeDirectory {
         }
 
         # Create version file to track installed version.
-        # v2.6: read from source package.json (single source of truth)
-        # instead of hard-coded literal so installer never drifts.
+        # v2.6: $sourceVersion was already read from source package.json
+        # at function entry — single source of truth, no hard-coded literal.
         $versionFile = Join-Path $targetClaudeDir "VERSION"
-        $sourceVersion = Get-SourceVersion -RepoPath $SourcePath
         $sourceVersion | Out-File -FilePath $versionFile -Encoding UTF8 -NoNewline
         Write-Success "Version file created (v$sourceVersion)"
 
