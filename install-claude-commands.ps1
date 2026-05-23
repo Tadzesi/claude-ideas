@@ -28,6 +28,12 @@
     and redeploy fresh templates. Recommended when upgrading across major
     versions where memory may reference removed library files.
 
+.PARAMETER Global
+    Install skills and library globally to ~/.claude/ instead of a project directory.
+    Deploys skills, library, config. Does NOT overwrite existing CLAUDE.md or memory files.
+    On first run, deploys global-template/CLAUDE.md and global-template/memory/global-facts.md
+    as starting templates — edit them after installation to match your machine.
+
 .EXAMPLE
     .\install-claude-commands.ps1
     Standard installation to current directory
@@ -39,13 +45,18 @@
 .EXAMPLE
     .\install-claude-commands.ps1 -RebaselineMemory
     Update and reset stale memory files (keeps sessions.md + prompt-patterns.md)
+
+.EXAMPLE
+    .\install-claude-commands.ps1 -Global
+    Install skills globally to ~/.claude/ (available in all projects)
 #>
 
 param(
     [string]$InstallPath = $PWD.Path,
     [switch]$SkipBackup = $false,
     [switch]$Force = $false,
-    [switch]$RebaselineMemory = $false
+    [switch]$RebaselineMemory = $false,
+    [switch]$Global = $false
 )
 
 # Configuration
@@ -242,11 +253,12 @@ function Get-Repository {
 function Deploy-ClaudeDirectory {
     param(
         [string]$SourcePath,
-        [string]$TargetPath
+        [string]$TargetPath,
+        [bool]$IsGlobal = $false
     )
 
     $sourceClaudeDir = Join-Path $SourcePath $ClaudeDir
-    $targetClaudeDir = Join-Path $TargetPath $ClaudeDir
+    $targetClaudeDir = if ($IsGlobal) { Join-Path $TargetPath ".claude" } else { Join-Path $TargetPath $ClaudeDir }
 
     if (-not (Test-Path $sourceClaudeDir)) {
         Write-Error ".claude directory not found in repository"
@@ -272,7 +284,11 @@ function Deploy-ClaudeDirectory {
 
         # Deploy directories that should be updated
         # v5.2: agents/ added for real Anthropic subagents (research-*)
-        $directoriesToDeploy = @("skills", "agents", "library", "config", "rules", "docs", "hooks")
+        $directoriesToDeploy = if ($IsGlobal) {
+            @("skills", "library", "config")   # global: no agents/rules/docs/hooks (project-specific)
+        } else {
+            @("skills", "agents", "library", "config", "rules", "docs", "hooks")
+        }
 
         # Create parent directory if needed
         if (-not (Test-Path $targetClaudeDir)) {
@@ -299,12 +315,29 @@ function Deploy-ClaudeDirectory {
             }
         }
 
-        # Deploy CLAUDE.md file (memory imports)
-        $sourceClaudeMd = Join-Path $sourceClaudeDir "CLAUDE.md"
-        $targetClaudeMd = Join-Path $targetClaudeDir "CLAUDE.md"
-        if (Test-Path $sourceClaudeMd) {
-            Copy-Item -Path $sourceClaudeMd -Destination $targetClaudeMd -Force
-            Write-Success "CLAUDE.md deployed"
+        # Deploy CLAUDE.md
+        if ($IsGlobal) {
+            # Global mode: deploy global-template/CLAUDE.md only if target doesn't exist yet
+            $globalTemplateMd = Join-Path $SourcePath "global-template\CLAUDE.md"
+            $targetClaudeMd = Join-Path $targetClaudeDir "CLAUDE.md"
+            if (-not (Test-Path $targetClaudeMd)) {
+                if (Test-Path $globalTemplateMd) {
+                    Copy-Item -Path $globalTemplateMd -Destination $targetClaudeMd -Force
+                    Write-Success "Global CLAUDE.md deployed from template (edit to match your machine)"
+                } else {
+                    Write-Warning "global-template/CLAUDE.md not found - skipping"
+                }
+            } else {
+                Write-Info "Global CLAUDE.md already exists - not overwritten"
+            }
+        } else {
+            # Project mode: deploy inner .claude/CLAUDE.md as before
+            $sourceClaudeMd = Join-Path $sourceClaudeDir "CLAUDE.md"
+            $targetClaudeMd = Join-Path $targetClaudeDir "CLAUDE.md"
+            if (Test-Path $sourceClaudeMd) {
+                Copy-Item -Path $sourceClaudeMd -Destination $targetClaudeMd -Force
+                Write-Success "CLAUDE.md deployed"
+            }
         }
 
         # Deploy CHANGELOG-skills.md (consolidated skills history, v4.9)
@@ -410,13 +443,33 @@ function Deploy-ClaudeDirectory {
                 }
             }
         } else {
-            # Fresh install: deploy all memory templates from repo
-            if (Test-Path $sourceMemoryDir) {
-                Copy-Item -Path $sourceMemoryDir -Destination $targetMemoryDir -Recurse -Force
-                Write-Success "Memory templates deployed"
+            # Fresh install: deploy memory templates from repo
+            if ($IsGlobal) {
+                # Global mode: deploy only global-template/memory/ (not project memory templates)
+                $globalMemoryTemplate = Join-Path $SourcePath "global-template\memory"
+                if (-not (Test-Path $targetMemoryDir)) {
+                    New-Item -ItemType Directory -Path $targetMemoryDir -Force | Out-Null
+                }
+                if (Test-Path $globalMemoryTemplate) {
+                    Get-ChildItem -Path $globalMemoryTemplate -File | ForEach-Object {
+                        $targetFile = Join-Path $targetMemoryDir $_.Name
+                        if (-not (Test-Path $targetFile)) {
+                            Copy-Item -Path $_.FullName -Destination $targetFile -Force
+                            Write-Info "  Global memory template: $($_.Name)"
+                        } else {
+                            Write-Info "  Kept existing: $($_.Name)"
+                        }
+                    }
+                    Write-Success "Global memory templates deployed"
+                }
             } else {
-                New-Item -ItemType Directory -Path $targetMemoryDir -Force | Out-Null
-                Write-Success "Memory directory created"
+                if (Test-Path $sourceMemoryDir) {
+                    Copy-Item -Path $sourceMemoryDir -Destination $targetMemoryDir -Recurse -Force
+                    Write-Success "Memory templates deployed"
+                } else {
+                    New-Item -ItemType Directory -Path $targetMemoryDir -Force | Out-Null
+                    Write-Success "Memory directory created"
+                }
             }
         }
 
@@ -635,9 +688,16 @@ function Show-Summary {
     Write-Host "========================================`n" -ForegroundColor Magenta
 
     Write-Host "`nNext Steps:" -ForegroundColor Cyan
-    Write-Host "  1. Navigate to your project directory" -ForegroundColor Gray
-    Write-Host "  2. Use Claude Code with your custom commands" -ForegroundColor Gray
-    Write-Host "  3. Run this script again to update to the latest version" -ForegroundColor Gray
+    if ($Global) {
+        Write-Host "  1. Edit ~/.claude/CLAUDE.md - fill in your machine-specific paths" -ForegroundColor Gray
+        Write-Host "  2. Edit ~/.claude/memory/global-facts.md - add your projects and infra" -ForegroundColor Gray
+        Write-Host "  3. Skills are now available in ALL projects - no per-project install needed" -ForegroundColor Gray
+        Write-Host "  4. Run with -Global again to update skills to latest version" -ForegroundColor Gray
+    } else {
+        Write-Host "  1. Navigate to your project directory" -ForegroundColor Gray
+        Write-Host "  2. Use Claude Code with your custom commands" -ForegroundColor Gray
+        Write-Host "  3. Run this script again to update to the latest version" -ForegroundColor Gray
+    }
 
     Write-Host "`nAvailable Commands:" -ForegroundColor Cyan
     Write-Host "  /prompt                - Prompt analysis and structured rewrite" -ForegroundColor Gray
@@ -725,6 +785,12 @@ function Install-GlobalHook {
 
 # Main installation flow
 function Install-ClaudeCommands {
+    # Global mode: override install path to user profile root
+    if ($Global) {
+        $script:InstallPath = $env:USERPROFILE
+        Write-Info "Global mode: installing to $env:USERPROFILE\.claude\"
+    }
+
     Write-Info "Starting installation process..."
     Write-Info "Install path: $InstallPath"
 
@@ -789,7 +855,7 @@ function Install-ClaudeCommands {
     Test-VersionDrift -TargetPath $InstallPath -SourcePath $repoPath
 
     # Deploy files
-    if (-not (Deploy-ClaudeDirectory -SourcePath $repoPath -TargetPath $InstallPath)) {
+    if (-not (Deploy-ClaudeDirectory -SourcePath $repoPath -TargetPath $InstallPath -IsGlobal $Global)) {
         Write-Error "Deployment failed"
         Remove-TempFiles -TempPath $TempDir
         return $false

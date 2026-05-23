@@ -32,18 +32,68 @@ The installer (`install-claude-commands.ps1`) deploys the hook to `~/.claude/hoo
 
 ## Installation
 
-Clone the repo, then copy `.claude/` into your project:
+Three ways to install, depending on what you want.
+
+---
+
+### Option A — Global install (recommended for personal use)
+
+Installs skills, library and config into `~/.claude/` so the commands are available in **every project** without per-project setup. Also deploys a `CLAUDE.md` template and `memory/global-facts.md` on first run — edit them to match your machine after install.
 
 ```powershell
 git clone https://github.com/Tadzesi/claude-ideas.git
-cp -r claude-ideas/.claude /your/project/
+cd claude-ideas
+.\install-claude-commands.ps1 -Global
 ```
 
-Or use the PowerShell installer:
+After install, fill in your details:
+- `~/.claude/CLAUDE.md` — language, working style, machine-specific paths
+- `~/.claude/memory/global-facts.md` — active projects, shared infrastructure (SSH, DBs, etc.)
+
+To update to the latest version later, run the same command again. Existing `CLAUDE.md` and memory files are never overwritten.
+
+---
+
+### Option B — Per-project install
+
+Installs into a specific project directory. Use this if you want project-isolated skills or you are installing into a shared repo.
+
+```powershell
+git clone https://github.com/Tadzesi/claude-ideas.git
+cd claude-ideas
+.\install-claude-commands.ps1 -InstallPath "C:\your\project"
+```
+
+Or download and run directly without cloning:
 
 ```powershell
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Tadzesi/claude-ideas/main/install-claude-commands.ps1" -OutFile "install-claude-commands.ps1"
-.\install-claude-commands.ps1
+.\install-claude-commands.ps1 -InstallPath "C:\your\project"
+```
+
+---
+
+### Option C — Manual copy
+
+Copy `.claude/` directly into your project. No script needed.
+
+```powershell
+git clone https://github.com/Tadzesi/claude-ideas.git
+Copy-Item -Path "claude-ideas\.claude" -Destination "C:\your\project\" -Recurse
+```
+
+---
+
+### Updating
+
+Re-run the same install command. Memory files are preserved; skills and library are updated.
+
+```powershell
+# Global update
+.\install-claude-commands.ps1 -Global
+
+# Per-project update
+.\install-claude-commands.ps1 -InstallPath "C:\your\project" -Force
 ```
 
 ## Statusline (optional)
